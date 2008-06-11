@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd" >
+<beans>
+	<!-- Configure spring to give a hook to axis2 without a ServletContext -->
+	<bean id="applicationContext"
+		class="org.apache.axis2.extensions.spring.receivers.ApplicationContextHolder" />
+
+	<!-- Axis2 Web Service, but to Spring, its just another bean that has dependencies -->
+	<bean id="bankService" class="com.bank.server.BankService">
+		<property name="inject" value="Test Spring inject by Terry" />
+	</bean>
+
+</beans>
