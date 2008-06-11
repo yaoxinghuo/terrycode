@@ -1,0 +1,58 @@
+.DragBox {
+	PADDING-RIGHT: 2px; 
+	PADDING-LEFT: 2px; 
+	FONT-SIZE: 11px; 
+	MARGIN-BOTTOM: 5px; 
+	PADDING-BOTTOM: 2px; 
+	WIDTH: 98%; 
+	CURSOR: pointer; 
+	COLOR: green;
+}
+
+.DragContainer {
+	FLOAT: left; 
+	WIDTH: 99%; 
+	min-height: 15px;
+}
+
+.OverDragBox {
+	PADDING-RIGHT: 2px; 
+	PADDING-LEFT: 2px; 
+	FONT-SIZE: 11px; 
+	MARGIN-BOTTOM: 5px; 
+	PADDING-BOTTOM: 2px;
+	WIDTH: 100%; 
+	CURSOR: move;
+	BACKGROUND-COLOR: #eee
+}
+
+.DragDragBox {
+	BORDER-RIGHT: #000 1px solid;
+	PADDING-RIGHT: 2px;
+	BORDER-TOP: #000 1px solid;
+	PADDING-LEFT: 2px;
+	FONT-SIZE: 11px;
+	MARGIN-BOTTOM: 5px;
+	PADDING-BOTTOM: 2px;
+	BORDER-LEFT: #000 1px solid;
+	WIDTH: 31%; 
+	CURSOR: move;
+	BORDER-BOTTOM: #000 1px solid;
+	BACKGROUND-COLOR: #eee
+}
+
+.DragHelpBox {
+	PADDING-RIGHT: 2px; 
+	PADDING-LEFT: 2px; 
+	FONT-SIZE: 11px; 
+	MARGIN-BOTTOM: 5px; 
+	PADDING-BOTTOM: 2px;
+	WIDTH: 97%; 
+	CURSOR: move;
+}
+
+.DragDragBox {
+	opacity: 0.5; 
+	filter:alpha(opacity=50);
+	BACKGROUND-COLOR: #ff99cc
+}
