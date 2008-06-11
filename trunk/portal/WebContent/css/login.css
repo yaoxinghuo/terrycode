@@ -1,0 +1,36 @@
+#login_box{ 
+	position:absolute;  
+	width:350px; 
+	height:200px;
+	filter:dropshadow(color=#666666,offx=3,offy=3,positive=2); 
+	z-index:2; 
+	visibility:hidden
+}
+#login_mask{ 
+	position:absolute; 
+	top:0; 
+	left:0; 
+	background:#666; 
+	filter:ALPHA(opacity=60); 
+	opacity:0.6;
+	z-index:1; 
+	visibility:hidden
+}
+.login_message{
+	border:#036 solid; 
+	border-width:1 1 3 1; 
+	width:95%; 
+	height:95%; 
+	background:#fff; 
+	color:#036; 
+	font-size:12px; 
+	line-height:150%
+}
+.login_header{
+	background:#036; 
+	height:10%; 
+	font-family:Verdana, Arial, Helvetica, sans-serif; 
+	font-size:12px; 
+	padding:3 5 0 5; 
+	color:#fff
+}
