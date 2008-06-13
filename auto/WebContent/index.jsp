@@ -5,24 +5,21 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>汽配网</title>
 <link href="css/style.css" rel="stylesheet" type="text/css" />
+<script type='text/javascript' src='js/MSClass.js'></script>
 <script type="text/javascript">
-	function showQiyeLogin(){
-	 	document.getElementById("qiyelogin").style.display="block";
-	    document.getElementById("userlogin").style.display="none";
-	 }
-	 function showUserLogin(){
-	    document.getElementById("userlogin").style.display="block";
-	    document.getElementById("qiyelogin").style.display="none";
-	 }
+	function checkKeyValue(obj,steValue){         
+		if (obj.value==''){
+			obj.value=steValue;
+		}   
+	}
 </script>
-
 </head>
 
 <body style="margin-right:auto;margin-left:auto;width:935px">
 <jsp:include page="header.jsp"/>
-<jsp:include page="login.jsp"/>
-<jsp:include page="content1.jsp"/>
+<jsp:include page="content3.jsp"/>
 <jsp:include page="content2.jsp"/>
+<jsp:include page="content1.jsp"/>
 <jsp:include page="footer.jsp"/>
 
 </body>
