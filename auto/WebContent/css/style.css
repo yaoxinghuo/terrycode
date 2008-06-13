@@ -1,6 +1,6 @@
 @charset "utf-8";
 /*main*/
-body {font-family:"宋体", arial;margin-right:auto;margin-left:auto;padding:0;font-size:12px;color:#484848;width: 778px;height: auto;margin-top: 0px;margin-bottom: 0px;line-height:18px;}
+body {text-align: center;font-family:"宋体", arial;margin-right:auto;margin-left:auto;padding:0;font-size:12px;color:#484848;width: 778px;height: auto;margin-top: 0px;margin-bottom: 0px;line-height:18px;}
 div,form,img,ul,ol,li,dl,dt,dd {margin: 0; padding: 0; border: 0;}
 h1,h2,h3,h4,h5,h6 { margin:0; padding:0;}
 table,td,tr,th{	font-size:12px;color:#484848}
@@ -87,7 +87,7 @@ A:active {COLOR: #999; TEXT-DECORATION: underline}
 .h373{height:290px}
 
 /*newhomepage2008*/
-.h255{height:255px}
+.loginh{height:255px}
 .h318{height:317px}
 .h367{height:365px}
 .h252{height:244px}
@@ -100,8 +100,12 @@ A:active {COLOR: #999; TEXT-DECORATION: underline}
 #topbarb ul{margin:0px;padding: 0px;}
 #topbarb li{line-height: 16px;display: block;height: 16px;margin-top:10px;margin-left:7px;margin-bottom:0px;margin-right:0px;list-style-type: none;BACKGROUND: url(../images/index_icon5.gif) no-repeat left center;width:60px;float:left;text-indent: 0.7em}
 .w935{width:935px}
-#mainmenubg{height:90px;width:935px;background-image:url(../images/main_menu_bg.gif);background-repeat:no-repeat}
-#notice{width:227px; height:255px;OVERFLOW: hidden;FLOAT: right;margin: 0px;padding: 0px}
+.content2h{height:170px}
+.content2h ul{margin:0px; padding-top:0px;padding-left:15px; width:290px;FLOAT: left}
+.content2h li{line-height:21px;display: block;height:21px;text-align: left;text-indent: 0.5em;margin:0px;
+	list-style-type: none;}
+#mainmenubg{height:90px;width:935px;background-image:url(../images/main_menu_bg.gif);background-repeat:no-repeat;text-align: left;}
+#notice{float:left;width:227px; height:255px;OVERFLOW: hidden;margin: 0px;padding: 0px}
 #notice ul{margin-top:5px;padding:0px;}
 #notice li{line-height:21px;display: block;height:21px;text-align: left;text-indent: 0.5em;margin:0px;
 	list-style-type: none;BACKGROUND: url(../images/index_icon2.gif) no-repeat left center;}
@@ -112,13 +116,13 @@ A:active {COLOR: #999; TEXT-DECORATION: underline}
 #maintab li.dqy{padding: 0px;background-image:url(../images/menu.gif);background-repeat:no-repeat;height:26px; FLOAT: left; PADDING-BOTTOM: 0px; COLOR:#FFF; LINE-HEIGHT: 22px; PADDING-TOP:4px; HEIGHT: 22px; font-size:14px;font-weight:bold;text-align: center;width:84px}
 #maintab li.qy{padding: 0px;background-image:url(../images/menu3.gif);background-repeat:no-repeat;height:26px;text-align: center;width:84px}
 #maintab li.qy a{DISPLAY: block; FLOAT: left; PADDING-BOTTOM: 0px; COLOR: #FFF; LINE-HEIGHT: 20px; PADDING-TOP: 6px; HEIGHT: 20px;text-align: center;width:84px}
-#userlogin{width:258px; height:255px; FLOAT: left}
-#userlogin #logint{height:76px; background-color:#FFEDD2; FLOAT: left; width:242px}
+#userlogin{width:258px; height:255px; FLOAT: right;text-align:left}
+#userlogin #logint{height:76px; background-color:#D9E7F7; FLOAT: left; width:242px}
 #userlogin #loginl{background-image:url(../images/login_img.gif);background-repeat:no-repeat; width:237px; height:18px;margin-left:5px}
 #userlogin #loginl A{COLOR:#77A202; padding-left:2px}
 #userlogin .logintitle{width:129px; height:24px; FLOAT: left}
 #qiyelogin{width:258px; height:255px; FLOAT: left}
-#qiyelogin #logint{height:76px; background-color:#FFEDD2; FLOAT: left; width:242px}
+#qiyelogin #logint{height:76px; background-color:#FFEDD2; FLOAT: right; width:242px}
 #qiyelogin #loginl{background-image:url(../images/login_img.gif);background-repeat:no-repeat; width:237px; height:18px;margin-left:5px}
 #qiyelogin #loginl A{COLOR:#77A202; padding-left:2px}
 #qiyelogin .logintitle{width:129px; height:24px; FLOAT: left}
@@ -131,8 +135,8 @@ A:active {COLOR: #999; TEXT-DECORATION: underline}
 #loginimgb li#loginl{background-image:url(../images/login_img.gif);background-repeat:no-repeat; width:237px; height:18px;margin-left:5px}
 #loginimgb li#loginl A{COLOR:#77A202; padding-left:2px}
 
-#logintb{height:76px; background-color:#D9E7F7; FLOAT: left; width:242px}
-#mbox{OVERFLOW: hidden;FLOAT: left;margin-left:10px; width:431px; height:255px;background-image:url(../images/box_bg.gif);background-repeat:no-repeat}
+#logintb{height:76px; background-color:#FFEDD2; FLOAT: left; width:242px}
+#mbox{text-align:left;OVERFLOW: hidden;FLOAT: left;margin-left:10px; width:431px; height:255px;background-image:url(../images/box_bg.gif);background-repeat:no-repeat}
 #boxxi{width:430px; height:228px}
 #boxxi #boxi{width:430px; height:228px;POSITION: relative}
 #boxxi #boxi Li{POSITION: absolute;}
