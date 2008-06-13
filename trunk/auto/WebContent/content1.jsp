@@ -4,14 +4,14 @@
 <body>
 <div class="w935 fl mt7" style="height: 280px">
 <div id="zx">
-<div><img src="images//zx_img.gif" width="643" height="30"
+<div><img src="images/zx_img.gif" width="643" height="30"
 	usemap="#Map6" /></div>
 <div class="mainline h252">
 <div id="zx1">
 <h2><a href="http://www.104china.com/careerdiary/index_career.jsp"
 	target="_blank">焦点话题</a></h2>
 <div class="mt7" style="height: 75px"><img
-	src="images//zczx_01.gif" />&nbsp;&nbsp;&nbsp;&nbsp; <a
+	src="images/zczx_01.gif" />&nbsp;&nbsp;&nbsp;&nbsp; <a
 	href="http://www.104china.com/careerdiary/DiaryDetailAction.do?careerDiaryId=102577&type=1004&parentType=1000"
 	target="_blank">跳槽、转行不能是说跳就跳，说转就转，在此之前一定要好做各种各样的准备...</a></div>
 <ul>
@@ -42,7 +42,7 @@
 <h2><a
 	href="http://www.104china.com/careerdiary/career_goodjob.jsp"
 	target="_blank">求职宝典</a></h2>
-<div class="cp1v mt5"><img src="images//zczx_02.gif" /> <a
+<div class="cp1v mt5"><img src="images/zczx_02.gif" /> <a
 	href="http://www.104china.com/careerdiary/DiaryDetailAction.do?careerDiaryId=102529&type=1001&parentType=1000"
 	class="redl" target="_blank">·[简历秘笈] 名企最欢迎言简意赅的简历</a><br />
 <a
@@ -56,7 +56,7 @@
 	class="blue" target="_blank">·[面试技巧] 求职面试必备的15个问题</a></div>
 <div class="dashed mt5"></div>
 <div class="cp11 mr5">
-<h3><img src="images//index_icon8.gif" width="4" height="7" /> <a
+<h3><img src="images/index_icon8.gif" width="4" height="7" /> <a
 	href="http://www.104china.com/careerdiary/career_jobsalary.jsp"
 	target="_blank">才市薪情</a></h3>
 <a
@@ -66,7 +66,7 @@
 	href="http://www.104china.com/careerdiary/DiaryDetailAction.do?careerDiaryId=102576&type=1104&parentType=1100"
 	class="blue" target="_blank">·理财︱年终奖金的投资计划</a></div>
 <div class="cp11">
-<h3><img src="images//index_icon8.gif" width="4" height="7" /> <a
+<h3><img src="images/index_icon8.gif" width="4" height="7" /> <a
 	href="http://www.104china.com/careerdiary/career_learn.jsp"
 	target="_blank">职场加油站</a></h3>
 <a
@@ -76,7 +76,7 @@
 	href="http://www.104china.com/careerdiary/DiaryDetailAction.do?careerDiaryId=102437&type=1205&parentType=1200"
 	class="blue" target="_blank">·金领︱雷富礼：宝洁七年之变</a></div>
 <div class="cp11 mr5">
-<h3><img src="images//index_icon8.gif" width="4" height="7" /> <a
+<h3><img src="images/index_icon8.gif" width="4" height="7" /> <a
 	href="http://www.104china.com/careerdiary/career_relax.jsp"
 	target="_blank">白领休闲馆</a></h3>
 <a
@@ -86,7 +86,7 @@
 	href="http://www.104china.com/careerdiary/DiaryDetailAction.do?careerDiaryId=102534&type=1303&parentType=1300"
 	class="blue" target="_blank">·健康︱上班族该怎么放显示器</a></div>
 <div class="cp11">
-<h3><img src="images//index_icon8.gif" width="4" height="7" /> <a
+<h3><img src="images/index_icon8.gif" width="4" height="7" /> <a
 	href="http://www.104china.com/careerdiary/career_twcareer.jsp"
 	target="_blank">宝岛来风</a></h3>
 <a
@@ -97,17 +97,17 @@
 	class="blue" target="_blank">·专家︱你身上有树荫吗？</a></div>
 </div>
 </div>
-<div><img src="images//zx_img2.gif" /></div>
+<div><img src="images/zx_img2.gif" /></div>
 </div>
 
 
 <div id="cp">
-<div><img src="images//cp_img.gif" width="284" height="30"
+<div><img src="images/cp_img.gif" width="284" height="30"
 	usemap="#Map7" /></div>
 <div class="mainline h252">
 <div class="cpp">
 <h3>素质测评：</h3>
-<img src="images//zczx_03.gif" width="-49749256" height="13882816" />
+<img src="images/zczx_03.gif" width="-49749256" height="13882816" />
 ·<a href="http://skill.104china.com/testing/disc_sk_start_5.jsp"
 	class="blue" target="_blank">心理素质量表</a><br />
 ·<a href="http://skill.104china.com/testing/disc_sk_start_4.jsp"
@@ -118,7 +118,7 @@
 <div class="dashed mr10 ml10 pt5"></div>
 <div class="cpp">
 <h3>能力测评：</h3>
-<img src="images//zczx_04.gif" /> ·<a
+<img src="images/zczx_04.gif" /> ·<a
 	href="http://skill.104china.com/testing/disc_hk_start_8.jsp"
 	class="blue" target="_blank">英语阅读测验</a><br />
 ·<a href="http://skill.104china.com/testing/disc_hk_start_9.jsp"
@@ -128,7 +128,7 @@
 ·<a href="http://skill.104china.com/testing/disc_hk_start_7.jsp"
 	class="blue" target="_blank">知觉速度</a></div>
 </div>
-<div><img src="images//cp_img2.gif" /></div>
+<div><img src="images/cp_img2.gif" /></div>
 </div>
 </div>
 </body>
