@@ -2,10 +2,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <body>
-<div class="w935 fl mt7" style="height: 280px">
+<div class="w935 fl mt7" style="height: 280px;text-align:left">
 <div id="zx">
-<div><img src="images/zx_img.gif" width="643" height="30"
-	usemap="#Map6" /></div>
+<div class="colorGradient">
+<div class="RoundedCorner"><b class="rtop"><b class="r1"></b><b
+	class="r2"></b><b class="r3"></b><b class="r4"></b></b>&nbsp;测试内容1<b
+	class="rbottom"><b class="r0"></b><b class="r0"></b><b class="r0"></b></b>
+</div>
+</div>
 <div class="mainline h252">
 <div id="zx1">
 <h2><a href="http://www.104china.com/careerdiary/index_career.jsp"
@@ -102,8 +106,12 @@
 
 
 <div id="cp">
-<div><img src="images/cp_img.gif" width="284" height="30"
-	usemap="#Map7" /></div>
+<div class="colorGradient">
+<div class="RoundedCorner"><b class="rtop"><b class="r1"></b><b
+	class="r2"></b><b class="r3"></b><b class="r4"></b></b>&nbsp;测试内容<b
+	class="rbottom"><b class="r0"></b><b class="r0"></b><b class="r0"></b></b>
+</div>
+</div>
 <div class="mainline h252">
 <div class="cpp">
 <h3>素质测评：</h3>

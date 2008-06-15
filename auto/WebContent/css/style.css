@@ -100,12 +100,12 @@ A:active {COLOR: #999; TEXT-DECORATION: underline}
 #topbarb ul{margin:0px;padding: 0px;}
 #topbarb li{line-height: 16px;display: block;height: 16px;margin-top:10px;margin-left:7px;margin-bottom:0px;margin-right:0px;list-style-type: none;BACKGROUND: url(../images/index_icon5.gif) no-repeat left center;width:60px;float:right;text-indent: 0.7em}
 .w935{width:935px}
-.content2h{height:170px}
+.content2h{height:170px;text-align:left}
 .content2h ul{margin:0px; padding-top:0px;padding-left:15px; width:290px;FLOAT: left}
 .content2h li{line-height:21px;display: block;height:21px;text-align: left;text-indent: 0.5em;margin:0px;
 	list-style-type: none;}
 #mainmenubg{height:90px;width:935px;background-image:url(../images/main_menu_bg.gif);background-repeat:no-repeat;text-align: left;}
-#notice{float:left;width:227px; height:255px;OVERFLOW: hidden;margin: 0px;padding: 0px}
+#notice{text-align:left;float:left;width:227px; height:255px;OVERFLOW: hidden;margin: 0px;padding: 0px}
 #notice ul{margin-top:5px;padding:0px;}
 #notice li{line-height:21px;display: block;height:21px;text-align: left;text-indent: 0.5em;margin:0px;
 	list-style-type: none;BACKGROUND: url(../images/index_icon2.gif) no-repeat left center;}
@@ -117,35 +117,18 @@ A:active {COLOR: #999; TEXT-DECORATION: underline}
 #maintab li.qy{padding: 0px;background-image:url(../images/menu3.gif);background-repeat:no-repeat;height:26px;text-align: center;width:84px}
 #maintab li.qy a{DISPLAY: block; FLOAT: left; PADDING-BOTTOM: 0px; COLOR: #FFF; LINE-HEIGHT: 20px; PADDING-TOP: 6px; HEIGHT: 20px;text-align: center;width:84px}
 
-#mbox{text-align:left;OVERFLOW: hidden;FLOAT: left;margin-left:10px; width:431px; height:255px;background-image:url(../images/box_bg.gif);background-repeat:no-repeat}
-#boxxi{width:430px; height:228px}
-#boxxi #boxi{width:430px; height:228px;POSITION: relative}
-#boxxi #boxi Li{POSITION: absolute;}
-#boxi Li H3 {FONT: 12px normal;WIDTH:101px;POSITION: absolute;TOP: 195px;HEIGHT: 20px;left: 8px; TEXT-ALIGN: center;POSITION: absolute;
-	left: -1px;
-	background-color:#FFFFFF;
-	BORDER-left: #74A8EC 2px solid;
-	BORDER-right: #74A8EC 2px solid;
-	BORDER-bottom: #74A8EC 2px solid;
-	DISPLAY: block;
-	WIDTH:101px;font-weight:bold;
-	TEXT-ALIGN: center; COLOR:#215BA7;padding-top:8px}
-	
-#boxi Li#boxii{height:190px;padding-left:10px;padding-right:10px; padding-top:8px;DISPLAY: none; OVERFLOW: hidden;}
-
-#boxi Li#tu2 H3 {left:202px}
-#boxi Li .mbu H3 A {FONT-WEIGHT: bold; BACKGROUND: url(../images/box_button.gif) no-repeat center top; COLOR: #2F78D8; BORDER-TOP-STYLE: none; BORDER-RIGHT-STYLE: none; BORDER-LEFT-STYLE: none; HEIGHT: 33px; BORDER-BOTTOM-STYLE: none}
-#boxi Li .mbu div {DISPLAY: block;width:430px;height:195px}
-
-#boxii{height:190px;padding-left:10px;padding-right:10px; padding-top:17px}
-#boxii H2 a{ FONT: 14px normal;COLOR:#2F78D8;FONT-WEIGHT: bold}
-#boxii ul{margin:0px; padding:0px}
+#mbox{text-align:left;OVERFLOW: hidden;FLOAT: left;margin-left:10px; width:438px; height:255px;}
+#boxxi{height:190px;border-left: #5B9BCB solid 1px; border-right: #5B9BCB solid 1px}
+#boxxt{padding: 7px;background-image:url(../images/box_bg2.gif);background-repeat:no-repeat;height:35px;}
+.boxxt2{cursor:pointer;background:#FFF;padding: 8px;border-top:2px solid #FFF;border-bottom:2px solid #5B9BCB;border-left:2px solid #5B9BCB;border-right:2px solid #5B9BCB}
+.boxxt2b{cursor:pointer}
 
 #topic{float:right;width:250px; height:255px;OVERFLOW: hidden;margin: 0px;padding: 0px}
 #topic ul{margin:0px; padding-top:0px;padding-left:5px; width:75px;FLOAT: left}
 #topic li{display: block;height:22px;text-align: left;text-indent: 0.5em;margin:0px;
 	list-style-type: none;}
 #topic span{cursor:pointer;padding:7px 10px 6px 10px;position:relative;}
+.topiccontent{height: 215px; border-left: #5B9BCB solid 1px; border-right: #5B9BCB solid 1px}
 
 .w200{height:20px;width:195px;float:left;line-height:20px;}
 #mlogo{width:258px; height:317px; FLOAT: left}
@@ -185,7 +168,7 @@ A:active {COLOR: #999; TEXT-DECORATION: underline}
 .zx11 li{line-height:21px;display: block;height:21px;text-align: left;text-indent:1.2em;margin:0px;
 	list-style-type: none;BACKGROUND: url(../images/index_icon7.gif) no-repeat left center;}
 .zx11 ul{margin-top:5px; padding:0px}	
-#cp{width:284px; height:285px;float:right}
+#cp{width:284px; height:285px;float:right;text-align:left}
 #cp1{width:370px;height:237px;float:left;padding-left:10px;padding-right:10px;padding-top:7px}
 #cp1 h2 A{FONT: 14px normal;COLOR:#484848;FONT-WEIGHT: bold}
 #cp1 .cp1v{height:75px;padding-top:5px;padding-bottom:5px; background-color:#E8E8E8}
@@ -214,13 +197,4 @@ b.rtop b.r4, b.rbottom b.r4{margin: 0 1px;height: 2px}
 	width:100%;
 	filter : progid:DXImageTransform.Microsoft.Alpha (style=1,startX=0,startY=0,finishX=0,finishY=50,opacity=30,finishOpacity=100);
 	height: 20px;
-}
-.buttonText {
-    color:#003060;
-	text-align: center;
-	margin-top: 3px;
-	position:relative;
-	font-size:9pt;
-	cursor:pointer;
-	background:#5B9BCB;
 }
