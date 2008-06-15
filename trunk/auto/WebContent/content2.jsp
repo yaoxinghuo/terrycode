@@ -4,8 +4,12 @@
 <body>
 <div class="w935 fl content2h">
 <div class="mt5">
-<div><img src="images/index_title3.gif" width="935" height="31"
-	border="0" usemap="#Map2" /></div>
+<div class="colorGradient">
+<div class="RoundedCorner"><b class="rtop"><b class="r1"></b><b
+	class="r2"></b><b class="r3"></b><b class="r4"></b></b>&nbsp;测试内容2<b
+	class="rbottom"><b class="r0"></b><b class="r0"></b><b class="r0"></b></b>
+</div>
+</div>
 <div
 	style="height: 90px; border-left: #D25F5D solid 1px; border-right: #D25F5D solid 1px"
 	class="p10">
