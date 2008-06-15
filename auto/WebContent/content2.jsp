@@ -5,9 +5,7 @@
 <div class="w935 fl content2h">
 <div class="mt5">
 <div class="colorGradient">
-<div class="RoundedCorner"><b class="rtop"><b class="r1"></b><b
-	class="r2"></b><b class="r3"></b><b class="r4"></b></b>&nbsp;测试内容2<b
-	class="rbottom"><b class="r0"></b><b class="r0"></b><b class="r0"></b></b>
+<div class="RoundedCorner">&nbsp;测试内容2
 </div>
 </div>
 <div
