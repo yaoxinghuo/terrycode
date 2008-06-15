@@ -6,6 +6,11 @@
 <title>汽配网</title>
 <link href="css/style.css" rel="stylesheet" type="text/css" />
 <script type='text/javascript' src='js/MSClass.js'></script>
+<script type='text/javascript' src='js/jquery-1.2.6.min.js'></script>
+<script type="text/javascript" src="js/jquery.dimensions.js"></script>
+<script type="text/javascript" src="js/jquery.gradient.js"></script>
+<script type="text/javascript" src="js/jquery.roundcorner.js"></script>
+<script type='text/javascript' src='js/index.js'></script>
 <script type="text/javascript">
 	function checkKeyValue(obj,steValue){         
 		if (obj.value==''){

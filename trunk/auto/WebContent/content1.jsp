@@ -5,9 +5,7 @@
 <div class="w935 fl mt7" style="height: 280px;text-align:left">
 <div id="zx">
 <div class="colorGradient">
-<div class="RoundedCorner"><b class="rtop"><b class="r1"></b><b
-	class="r2"></b><b class="r3"></b><b class="r4"></b></b>&nbsp;测试内容1<b
-	class="rbottom"><b class="r0"></b><b class="r0"></b><b class="r0"></b></b>
+<div class="RoundedCorner">&nbsp;测试内容1
 </div>
 </div>
 <div class="mainline h252">
@@ -107,9 +105,7 @@
 
 <div id="cp">
 <div class="colorGradient">
-<div class="RoundedCorner"><b class="rtop"><b class="r1"></b><b
-	class="r2"></b><b class="r3"></b><b class="r4"></b></b>&nbsp;测试内容<b
-	class="rbottom"><b class="r0"></b><b class="r0"></b><b class="r0"></b></b>
+<div class="RoundedCorner">&nbsp;测试内容
 </div>
 </div>
 <div class="mainline h252">
