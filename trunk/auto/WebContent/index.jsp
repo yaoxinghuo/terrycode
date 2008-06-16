@@ -10,6 +10,7 @@
 <script type="text/javascript" src="js/jquery.dimensions.js"></script>
 <script type="text/javascript" src="js/jquery.gradient.js"></script>
 <script type="text/javascript" src="js/jquery.roundcorner.js"></script>
+<script type="text/javascript" src="js/jquery.watermarkinput.js"></script>
 <script type='text/javascript' src='js/index.js'></script>
 <script type="text/javascript">
 	function checkKeyValue(obj,steValue){         

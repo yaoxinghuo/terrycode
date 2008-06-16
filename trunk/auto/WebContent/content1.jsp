@@ -4,9 +4,7 @@
 <body>
 <div class="w935 fl mt7" style="height: 280px;text-align:left">
 <div id="zx">
-<div class="colorGradient">
 <div class="RoundedCorner">&nbsp;测试内容1
-</div>
 </div>
 <div class="mainline h252">
 <div id="zx1">
@@ -104,9 +102,7 @@
 
 
 <div id="cp">
-<div class="colorGradient">
 <div class="RoundedCorner">&nbsp;测试内容
-</div>
 </div>
 <div class="mainline h252">
 <div class="cpp">
@@ -132,7 +128,7 @@
 ·<a href="http://skill.104china.com/testing/disc_hk_start_7.jsp"
 	class="blue" target="_blank">知觉速度</a></div>
 </div>
-<div><img src="images/cp_img2.gif" /></div>
+<div><img src="images/cp_img2.gif"/></div>
 </div>
 </div>
 </body>

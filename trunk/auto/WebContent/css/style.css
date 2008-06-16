@@ -104,18 +104,18 @@ A:active {COLOR: #999; TEXT-DECORATION: underline}
 .content2h ul{margin:0px; padding-top:0px;padding-left:15px; width:290px;FLOAT: left}
 .content2h li{line-height:21px;display: block;height:21px;text-align: left;text-indent: 0.5em;margin:0px;
 	list-style-type: none;}
-#mainmenubg{height:90px;width:935px;background-image:url(../images/main_menu_bg.gif);background-repeat:no-repeat;text-align: left;}
-#notice{text-align:left;float:left;width:227px; height:255px;OVERFLOW: hidden;margin: 0px;padding: 0px}
+#searchbar{background:#6AA9E4;text-align:left}
+#notice{text-align:left;float:left;width:227px; height:255px;OVERFLOW: hidden;margin: 0px;padding: 0px;}
 #notice ul{margin-top:5px;padding:0px;}
 #notice li{line-height:21px;display: block;height:21px;text-align: left;text-indent: 0.5em;margin:0px;
 	list-style-type: none;BACKGROUND: url(../images/index_icon2.gif) no-repeat left center;}
 #maintab{height:26px;width:725px;float:left;margin-top:32px}
 #maintab ul{margin: 0px;padding: 0px;height:26px}
-#maintab li{list-style:none;height:26px;background-image:url(../images/menu2.gif);background-repeat:no-repeat;margin-left:4px;float:left; padding:0px;text-align: center;width:84px}
-#maintab li a{DISPLAY: block;FLOAT: left; PADDING-BOTTOM: 0px; COLOR: #484848; LINE-HEIGHT: 20px; PADDING-TOP: 6px; HEIGHT: 20px;text-align: center;width:84px}
-#maintab li.dqy{padding: 0px;background-image:url(../images/menu.gif);background-repeat:no-repeat;height:26px; FLOAT: left; PADDING-BOTTOM: 0px; COLOR:#FFF; LINE-HEIGHT: 22px; PADDING-TOP:4px; HEIGHT: 22px; font-size:14px;font-weight:bold;text-align: center;width:84px}
-#maintab li.qy{padding: 0px;background-image:url(../images/menu3.gif);background-repeat:no-repeat;height:26px;text-align: center;width:84px}
-#maintab li.qy a{DISPLAY: block; FLOAT: left; PADDING-BOTTOM: 0px; COLOR: #FFF; LINE-HEIGHT: 20px; PADDING-TOP: 6px; HEIGHT: 20px;text-align: center;width:84px}
+#maintab li{background:#9DBCED;list-style:none;height:26px;margin-left:4px;float:left; padding:0px;text-align: center;width:84px}
+#maintab li a{position:relative;DISPLAY: block;FLOAT: left; PADDING-BOTTOM: 0px; COLOR: #484848; LINE-HEIGHT: 20px; PADDING-TOP: 6px; HEIGHT: 20px;text-align: center;width:84px}
+#maintab li.dqy{background:#5B9BCB;padding: 0px;height:26px; FLOAT: left; PADDING-BOTTOM: 0px; COLOR:#FFF; LINE-HEIGHT: 20px; PADDING-TOP:6px; HEIGHT: 20px; font-size:12px;font-weight:bold;width:84px}
+#maintab li.qy{background:#FFA648;padding: 0px;height:26px;text-align: center;width:84px}
+#maintab li.qy a{position:relative;FLOAT: left; PADDING-BOTTOM: 0px; COLOR: #FFF; LINE-HEIGHT: 20px; PADDING-TOP: 6px; HEIGHT: 20px;text-align: center;width:84px}
 
 #mbox{text-align:left;OVERFLOW: hidden;FLOAT: left;margin-left:10px; width:438px; height:255px;}
 #boxxi{height:190px;border-left: #5B9BCB solid 1px; border-right: #5B9BCB solid 1px}
@@ -127,7 +127,7 @@ A:active {COLOR: #999; TEXT-DECORATION: underline}
 #topic ul{margin:0px; padding-top:0px;padding-left:5px; width:75px;FLOAT: left}
 #topic li{display: block;height:22px;text-align: left;text-indent: 0.5em;margin:0px;
 	list-style-type: none;}
-#topic span{cursor:pointer;padding:5px;position:relative;top:3px}
+#topic span{cursor:pointer;padding:6px 6px 3px;position:relative;top:3px}
 .topiccontent{height: 215px; border-left: #5B9BCB solid 1px; border-right: #5B9BCB solid 1px}
 
 .w200{height:20px;width:195px;float:left;line-height:20px;}
