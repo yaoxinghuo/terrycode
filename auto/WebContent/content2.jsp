@@ -4,12 +4,10 @@
 <body>
 <div class="w935 fl content2h">
 <div class="mt5">
-<div class="colorGradient">
 <div class="RoundedCorner">&nbsp;测试内容2
 </div>
-</div>
 <div
-	style="height: 90px; border-left: #D25F5D solid 1px; border-right: #D25F5D solid 1px"
+	style="height: 120px; border-left: #C9C9C9 solid 1px; border-right: #C9C9C9 solid 1px"
 	class="p10">
 <ul>
 	<li>·<a href="http://hunter.104china.com/hunter_hotjob.html#lc_01"
