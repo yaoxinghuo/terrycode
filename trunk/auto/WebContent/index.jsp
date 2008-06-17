@@ -12,21 +12,16 @@
 <script type="text/javascript" src="js/jquery.roundcorner.js"></script>
 <script type="text/javascript" src="js/jquery.watermarkinput.js"></script>
 <script type='text/javascript' src='js/index.js'></script>
-<script type="text/javascript">
-	function checkKeyValue(obj,steValue){         
-		if (obj.value==''){
-			obj.value=steValue;
-		}   
-	}
-</script>
 </head>
 
-<body style="margin-right:auto;margin-left:auto;width:935px">
+<body>
 <jsp:include page="header.jsp"/>
+<jsp:include page="search.jsp"/>
+<div style="margin-right:auto;margin-left:auto;width:1000px;text-align:center">
 <jsp:include page="content3.jsp"/>
 <jsp:include page="content2.jsp"/>
 <jsp:include page="content1.jsp"/>
+</div>
 <jsp:include page="footer.jsp"/>
-
 </body>
 </html>
