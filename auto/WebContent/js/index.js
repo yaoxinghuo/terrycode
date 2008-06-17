@@ -1,31 +1,43 @@
 var $j=jQuery.noConflict();
-$j(function(){
+$j(function(){	
 	$j('.RoundedCorner').corner('round top 5px');
 	$j('.RoundedCorner').gradient({
 		from:      'E1EBF4',
 		to:        '2F8FEA',
 		direction: 'horizontal'
 	});
-	$j('#maintab li.dqy').corner('round top 5px');
 	$j('#maintab li.dqy').gradient({
-		from:      'D5E1F4',
-		to:        '6AA9E4',
+		from:      'F99A46',
+		to:        'ED5929',
 		direction: 'horizontal'
 	});
 	$j('#maintab li.qy').corner('round top 5px');
-	$j('#maintab li.qy').gradient({
-		from:      'FCDCBA',
-		to:        'FFA648',
-		direction: 'horizontal'
-	});
 	$j('#maintab li.xqy').corner('round top 5px');
-	$j('#maintab li.xqy').gradient({
-		from:      'D5E1F4',
-		to:        '9DBCED',
+	
+	$j('#maintab li.tabinactive').hover(function(){
+		$j(this).css("background","#5B9BCB");
+	},function(){
+		$j(this).css("background","#C0D9FB");
+	});
+	$j("#searchsubmit").hover(function(){
+		alert("Hover");
+		$j(this).css("background","#FB8C31");
+	},function(){
+		$j(this).css("background","#E8895C");
+	});
+
+	//$j('#searchbar').corner('round top 5px');
+	//$j('#searchbar').corner('round bottom 5px');
+//	$j("#header").gradient({
+//		from:      'F8F8F8',
+//		to:        'E1EBF4',
+//		direction: 'horizontal'
+//	});
+	$j('#searchbar').gradient({
+		from:      'E1EBF4',
+		to:        '2F8FEA',
 		direction: 'horizontal'
 	});
-	$j('#searchbar').corner('round top 5px');
-	$j('#searchbar').corner('round bottom 5px');
 	
 	$j("#topic span").hover(function(){
 		$j("#topic span").each(function(){
@@ -75,8 +87,12 @@ $j(function(){
 	
 	$j("#searchkey").Watermark("填写关键字");
 	
-	if(jQuery.browser.msie) {
-		window.onresize=function(){window.location.reload();}
-	}
+//	if(jQuery.browser.msie) {
+//		window.onresize=function(){window.location.reload();}
+//	}
 });
+
+function changebg(id,color){
+	$j("#"+id).css("background",color);
+}
 

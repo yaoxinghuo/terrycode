@@ -3,10 +3,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <body>
 
-<div class="w935 fl h255 mt5">
+<div class="w1000 fl content3h mt5">
 
 <div id="notice">
-<div class="RoundedCorner" style="position:static"><span>&nbsp;最新公告</span></div>
+<div class="RoundedCorner" style="position: static"><span>&nbsp;最新公告</span></div>
 
 <div class="mt5"><script type="text/javascript">
 imgUrl1="images/flash_01.jpg";
@@ -39,6 +39,7 @@ document.write('<embed src="images/picnews.swf" wmode="opaque" FlashVars="pics='
 <ul>
 	<li><a href="http://it.104china.com" target="_blank" class="redl">汽配网火热上线</a></li>
 	<li><a href="http://it.104china.com" target="_blank" class="redl">汽配网火热上线2</a></li>
+	<li><a href="http://it.104china.com" target="_blank" class="redl">汽配网火热上线3</a></li>
 	<!-- <li><img style="border: medium none; padding: 0pt 2px 0pt 0pt;"
 		src="http://www.google.com/talk/service/resources/chaticon.gif" alt=""
 		height="14" width="16"></img><img
@@ -71,6 +72,7 @@ document.write('<embed src="images/picnews.swf" wmode="opaque" FlashVars="pics='
 <ul>
 	<li><a href='/topic/trade95.htm' target='_blank'>刹车片</a></li>
 	<li><a href='/topic/trade61.htm' target='_blank'>滤清器</a></li>
+	<li><a href='/topic/trade42.htm' target='_blank'>活塞</a></li>
 	<li><a href='/topic/trade144.htm' target='_blank'>汽车空调</a></li>
 	<li><a href='/topic/trade72.htm' target='_blank'>轮毂</a></li>
 	<li><a href='/topic/trade156.htm' target='_blank'>大灯</a></li>
@@ -80,6 +82,7 @@ document.write('<embed src="images/picnews.swf" wmode="opaque" FlashVars="pics='
 	<li><a href='/topic/trade201.htm' target='_blank'>火花塞</a></li>
 </ul>
 <ul>
+	<li><a href='/topic/trade48.htm' target='_blank'>气缸及配件</a></li>
 	<li><a href='/topic/trade182.htm' target='_blank'>汽车仪表</a></li>
 	<li><a href='/topic/trade115.htm' target='_blank'>离合器</a></li>
 	<li><a href='/topic/trade70.htm' target='_blank'>汽车消声器</a></li>
@@ -88,9 +91,10 @@ document.write('<embed src="images/picnews.swf" wmode="opaque" FlashVars="pics='
 	<li><a href='/topic/trade150.htm' target='_blank'>雨刮器</a></li>
 	<li><a href='/topic/trade208.htm' target='_blank'>汽车弹簧</a></li>
 	<li><a href='/topic/trade187.htm' target='_blank'>发电机</a></li>
-	<li><a href='/topic/trade173.htm' target='_blank'>润滑油</a></li>
+	<li><a href='/topic/trade108.htm' target='_blank'>方向机</a></li>
 </ul>
 <ul>
+	<li><a href='/topic/trade173.htm' target='_blank'>润滑油</a></li>
 	<li><a href='/topic/trade64.htm' target='_blank'>油泵</a></li>
 	<li><a href='/topic/trade110.htm' target='_blank'>转向器</a></li>
 	<li><a href='/topic/trade56.htm' target='_blank'>增压器</a></li>
@@ -99,7 +103,6 @@ document.write('<embed src="images/picnews.swf" wmode="opaque" FlashVars="pics='
 	<li><a href='/topic/trade118.htm' target='_blank'>变速器</a></li>
 	<li><a href='/topic/trade93.htm' target='_blank'>刹车鼓</a></li>
 	<li><a href='/topic/trade79.htm' target='_blank'>车桥</a></li>
-	<li><a href='/topic/trade48.htm' target='_blank'>气缸及配件</a></li>
 </ul>
 </div>
 <div id="topic2c" class="topiccontent" style="display: none"><br />
@@ -113,9 +116,9 @@ document.write('<embed src="images/picnews.swf" wmode="opaque" FlashVars="pics='
 	<li><a href='/topic/trade225.htm' target='_blank'>CD/DVD</a></li>
 	<li><a href='/topic/trade270.htm' target='_blank'>座套</a></li>
 	<li><a href='/topic/trade223.htm' target='_blank'>MP3</a></li>
+	<li><a href='/topic/trade243.htm' target='_blank'>后视镜</a></li>
 </ul>
 <ul>
-	<li><a href='/topic/trade243.htm' target='_blank'>后视镜</a></li>
 	<li><a href='/topic/trade333.htm' target='_blank'>尾翼</a></li>
 	<li><a href='/topic/trade246.htm' target='_blank'>倒车雷达</a></li>
 	<li><a href='/topic/trade335.htm' target='_blank'>雨挡</a></li>
@@ -124,10 +127,10 @@ document.write('<embed src="images/picnews.swf" wmode="opaque" FlashVars="pics='
 	<li><a href='/topic/trade355.htm' target='_blank'>氙气灯</a></li>
 	<li><a href='/topic/trade232.htm' target='_blank'>车载电视</a></li>
 	<li><a href='/topic/trade274.htm' target='_blank'>脚垫</a></li>
-</ul>
-<ul>
 	<li><a href='/topic/trade241.htm' target='_blank'>安全气囊</a></li>
 	<li><a href='/topic/trade343.htm' target='_blank'>行李架</a></li>
+</ul>
+<ul>
 	<li><a href='/topic/trade229.htm' target='_blank'>低音炮</a></li>
 	<li><a href='/topic/trade251.htm' target='_blank'>防盗器</a></li>
 	<li><a href='/topic/trade277.htm' target='_blank'>汽车香水</a></li>
@@ -135,6 +138,8 @@ document.write('<embed src="images/picnews.swf" wmode="opaque" FlashVars="pics='
 	<li><a href='/topic/trade236.htm' target='_blank'>汽车功放</a></li>
 	<li><a href='/topic/trade336.htm' target='_blank'>中网</a></li>
 	<li><a href='/topic/trade267.htm' target='_blank'>打气泵</a></li>
+	<li><a href='/topic/trade296.htm' target='_blank'>扶手箱</a></li>
+	<li><a href='/topic/trade222.htm' target='_blank'>卡带机</a></li>
 </ul>
 </div>
 <div id="topic3c" class="topiccontent" style="display: none"><br />
@@ -148,9 +153,9 @@ document.write('<embed src="images/picnews.swf" wmode="opaque" FlashVars="pics='
 	<li><a href='/topic/trade374.htm' target='_blank'>试验台</a></li>
 	<li><a href='/topic/trade403.htm' target='_blank'>汽车解码器</a></li>
 	<li><a href='/topic/trade389.htm' target='_blank'>校正仪</a></li>
+	<li><a href='/topic/trade380.htm' target='_blank'>汽车检测线</a></li>
 </ul>
 <ul>
-	<li><a href='/topic/trade380.htm' target='_blank'>汽车检测线</a></li>
 	<li><a href='/topic/trade386.htm' target='_blank'>烤漆房</a></li>
 	<li><a href='/topic/trade410.htm' target='_blank'>手动工具</a></li>
 	<li><a href='/topic/trade378.htm' target='_blank'>检漏仪</a></li>
@@ -159,10 +164,10 @@ document.write('<embed src="images/picnews.swf" wmode="opaque" FlashVars="pics='
 	<li><a href='/topic/trade375.htm' target='_blank'>定位仪</a></li>
 	<li><a href='/topic/trade392.htm' target='_blank'>镗鼓机</a></li>
 	<li><a href='/topic/trade408.htm' target='_blank'>电动工具</a></li>
-</ul>
-<ul>
 	<li><a href='/topic/trade449.htm' target='_blank'>玻璃水</a></li>
 	<li><a href='/topic/trade373.htm' target='_blank'>检测台</a></li>
+</ul>
+<ul>
 	<li><a href='/topic/trade424.htm' target='_blank'>喷枪</a></li>
 	<li><a href='/topic/trade451.htm' target='_blank'>防冻液</a></li>
 	<li><a href='/topic/trade376.htm' target='_blank'>分析仪</a></li>
@@ -170,6 +175,8 @@ document.write('<embed src="images/picnews.swf" wmode="opaque" FlashVars="pics='
 	<li><a href='/topic/trade436.htm' target='_blank'>打蜡机</a></li>
 	<li><a href='/topic/trade388.htm' target='_blank'>整形机</a></li>
 	<li><a href='/topic/trade402.htm' target='_blank'>抛光机</a></li>
+	<li><a href='/topic/trade427.htm' target='_blank'>黄油加注机</a></li>
+	<li><a href='/topic/trade406.htm' target='_blank'>洗车工具</a></li>
 </ul>
 </div>
 <div><img src="images/topic_img2.gif" /></div>
