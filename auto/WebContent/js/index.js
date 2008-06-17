@@ -6,15 +6,15 @@ $j(function(){
 		to:        '2F8FEA',
 		direction: 'horizontal'
 	});
-	$j('#maintab li.dqy').gradient({
-		from:      'F99A46',
-		to:        'ED5929',
-		direction: 'horizontal'
-	});
-	$j('#maintab li.qy').corner('round top 5px');
-	$j('#maintab li.xqy').corner('round top 5px');
+//	$j('#maintab span.tabinactive').gradient({
+//		from:      'F99A46',
+//		to:        'ED5929',
+//		direction: 'horizontal'
+//	});
+//	$j('#maintab span.qy').corner('round top 5px');
+//	$j('#maintab span.xqy').corner('round top 5px');
 	
-	$j('#maintab li.tabinactive').hover(function(){
+	$j('#maintab span.tabinactive').hover(function(){
 		$j(this).css("background","#5B9BCB");
 	},function(){
 		$j(this).css("background","#C0D9FB");
