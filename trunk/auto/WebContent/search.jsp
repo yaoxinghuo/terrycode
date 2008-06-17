@@ -9,7 +9,7 @@
 		<select name="type" style="width: 100px">
 			<option>配件</option>
 			<option>厂商</option>
-		</select>&nbsp;<input id="searchkey" name="searchKey" type="text" class="input" size="40"/> <input type="button"
+		</select>&nbsp;<input id="searchkey" name="searchKey" type="text" size="40"/> <input type="button"
 			name="Submit" id="searchsubmit" value=" 搜 索 " onmouseover="changebg('searchsubmit','#FB8C31')" onmouseout="changebg('searchsubmit','#F26C2C')"/>
 </form>
 </div>

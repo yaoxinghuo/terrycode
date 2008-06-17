@@ -17,20 +17,24 @@
 		class="agray48">加入收藏</a></li>
 </ul>
 </div>
+
+<div style="float:right;position:absolute;top:46px;right:2px;">
+	<a href="#" onclick="javascript:;">[登录]</a>&nbsp;|&nbsp;<a href="#" onclick="javascript:;">[注册]</a>
 </div>
+
 <div id="maintab">
-<ul>
-	<li class="tabactive">首 页</li>
-	<li class="tabinactive"><a href="#" onclick="javascript:;">求购</a></li>
-	<li class="tabinactive"><a href="#" onclick="javascript:;">供应</a></li>
-	<li class="tabinactive"><a href="#" onclick="javascript:;">产品</a></li>
-	<li class="tabinactive"><a href="#" onclick="javascript:;">产品</a></li>
-	<li class="tabinactive"><a href="http://vip.104china.com/" target="_blank">企业服务</a></li>
-	<li class="tabinactive"><a href="http://hunter.104china.com/"
-		target="_blank">供应商</a></li>
-	<li class="tabinactive"><a href="http://ehrweb.104china.com/"
-		target="_blank">采购商</a></li>
-</ul>
+	<span class="tabactive">首 页</span>
+	<span class="tabinactive"><a href="#" onclick="javascript:;">求购</a></span>
+	<span class="tabinactive"><a href="#" onclick="javascript:;">供应</a></span>
+	<span class="tabinactive"><a href="#" onclick="javascript:;">产品</a></span>
+	<span class="tabinactive"><a href="#" onclick="javascript:;">产品</a></span>
+	<span class="tabinactive"><a href="http://vip.104china.com/" target="_blank">企业服务</a></span>
+	<span class="tabinactive"><a href="http://hunter.104china.com/"
+		target="_blank">供应商</a></span>
+	<span class="tabinactive"><a href="http://ehrweb.104china.com/"
+		target="_blank">采购商</a></span>
+</div>
+
 </div>
 <div class="redline"></div>
 </body>
