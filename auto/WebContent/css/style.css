@@ -98,12 +98,12 @@ A:active {COLOR: #999; TEXT-DECORATION: underline}
 	list-style-type: none;}
 #searchbar{float:left;background:#6AA9E4;OVERFLOW: hidden;padding: 7px 0px;height:27px;width:100%}
 .redline{float:left;background:#F26C2C;width:100%; height:4px;OVERFLOW: hidden;}
-#searchsubmit{background:#F26C2C;padding: 1px;color:#FFF;cursor:pointer;border:1px solid #FD0202;}
+#searchsubmit{BACKGROUND: url(../images/button_search.gif) no-repeat left center;padding: 1px;cursor:pointer;border:1px solid #2F8FEA;width:50px;}
 #notice{text-align:left;float:left;width:227px; height:270px;OVERFLOW: hidden;margin: 0px;padding: 0px;}
 #notice ul{margin-top:5px;padding:0px;}
 #notice li{line-height:21px;display: block;height:21px;text-align: left;text-indent: 0.5em;margin:0px;
 	list-style-type: none;BACKGROUND: url(../images/index_icon2.gif) no-repeat left center;}
-#maintab{float:left;height:26px;padding:46px 0px 0px 180px;width:660px;}
+#maintab{float:left;height:26px;padding:46px 0px 0px 180px;width:760px;/*border:1px solid #2F8FEA;*/}
 #maintab span{height:26px;margin-left:4px;padding:0px;width:74px}
 #maintab span.tabactive{background:#F26C2C;height:26px; FLOAT: left;COLOR:#FFF; LINE-HEIGHT: 20px; PADDING-TOP:6px; HEIGHT: 20px; font-size:12px;font-weight:bold;width:74px}
 #maintab span.tabinactive{background:#C0D9FB;float:left;padding: 0px;height:26px;width:74px}

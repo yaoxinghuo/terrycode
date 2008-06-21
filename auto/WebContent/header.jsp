@@ -1,7 +1,4 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<body>
 
 <div id="header">
 <div id="logo"><a href="http://www.104china.com" target="_blank"><img
@@ -18,10 +15,6 @@
 </ul>
 </div>
 
-<div style="float:right;position:absolute;top:46px;right:2px;">
-	<a href="#" onclick="javascript:;">[登录]</a>&nbsp;|&nbsp;<a href="#" onclick="javascript:;">[注册]</a>
-</div>
-
 <div id="maintab">
 	<span class="tabactive">首 页</span>
 	<span class="tabinactive"><a href="#" onclick="javascript:;">求购</a></span>
@@ -33,9 +26,10 @@
 		target="_blank">供应商</a></span>
 	<span class="tabinactive"><a href="http://ehrweb.104china.com/"
 		target="_blank">采购商</a></span>
+	<div>
+		<a href="#" onclick="javascript:;">[登录]</a>&nbsp;|&nbsp;<a href="#" onclick="javascript:;">[注册]</a>
+	</div>
 </div>
 
 </div>
 <div class="redline"></div>
-</body>
-</html>

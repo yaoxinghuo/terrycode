@@ -19,12 +19,12 @@ $j(function(){
 	},function(){
 		$j(this).css("background","#C0D9FB");
 	});
-	$j("#searchsubmit").hover(function(){
-		alert("Hover");
-		$j(this).css("background","#FB8C31");
-	},function(){
-		$j(this).css("background","#E8895C");
-	});
+//	$j("#searchsubmit").hover(function(){
+//		alert("Hover");
+//		$j(this).css("background","#FB8C31");
+//	},function(){
+//		$j(this).css("background","#2F8FEA");
+//	});
 
 	//$j('#searchbar').corner('round top 5px');
 	//$j('#searchbar').corner('round bottom 5px');
@@ -93,6 +93,6 @@ $j(function(){
 });
 
 function changebg(id,color){
-	$j("#"+id).css("background",color);
+	$j("#"+id).css("border","1px solid "+color);
 }
 
