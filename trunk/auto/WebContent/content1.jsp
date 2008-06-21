@@ -1,7 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<body>
+
 <div class="w1000 fl mt7" style="height: 280px;text-align:left">
 <div id="zx">
 <div class="RoundedCorner">&nbsp;测试内容1
@@ -131,5 +129,3 @@
 <div><img src="images/cp_img2.gif"/></div>
 </div>
 </div>
-</body>
-</html>
