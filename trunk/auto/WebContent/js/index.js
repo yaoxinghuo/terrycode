@@ -86,6 +86,15 @@ $j(function(){
 	},2500);
 	
 	$j("#searchkey").Watermark("填写关键字");
+	$j("#search_advance_button").toggle(function(){
+		$j("#searchbar").animate({ height: 50, opacity: 'slow' }); 
+		$j("#search_advance").show("slow");
+		$j("#search_advance_button > img").attr({ src: "images/arrow-up.gif", alt: "收起" }); 
+	},function(){
+		$j("#search_advance").hide();
+		$j("#searchbar").animate({ height: 27, opacity: 'slow' });
+		$j("#search_advance_button img").attr({ src: "images/arrow-down.gif", alt: "展开" }); 
+	});
 	
 //	if(jQuery.browser.msie) {
 //		window.onresize=function(){window.location.reload();}
@@ -95,4 +104,3 @@ $j(function(){
 function changebg(id,color){
 	$j("#"+id).css("border","1px solid "+color);
 }
-

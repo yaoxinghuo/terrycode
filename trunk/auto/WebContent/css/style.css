@@ -96,7 +96,8 @@ A:active {COLOR: #999; TEXT-DECORATION: underline}
 .content2h ul{margin:0px; padding-top:0px;padding-left:15px; width:290px;FLOAT: left}
 .content2h li{line-height:21px;display: block;height:21px;text-align: left;text-indent: 0.5em;margin:0px;
 	list-style-type: none;}
-#searchbar{float:left;background:#6AA9E4;OVERFLOW: hidden;padding: 7px 0px;height:27px;width:100%}
+#searchbar{float:left;background:#2F8FEA;OVERFLOW: hidden;padding: 7px 0px;height:27px;width:100%;}
+#search_advance{height:20px;display:none;color:#FFF;}
 .redline{float:left;background:#F26C2C;width:100%; height:4px;OVERFLOW: hidden;}
 #searchsubmit{BACKGROUND: url(../images/button_search.gif) no-repeat left center;padding: 1px;cursor:pointer;border:1px solid #2F8FEA;width:50px;}
 #notice{text-align:left;float:left;width:227px; height:270px;OVERFLOW: hidden;margin: 0px;padding: 0px;}
@@ -178,3 +179,40 @@ A:active {COLOR: #999; TEXT-DECORATION: underline}
 .logobt img{width:90px;height:33px;FLOAT: left;margin-right:7px}
 
 .RoundedCorner{background: #5B9BCB;padding:4px 0px 3px;}
+
+#login_box{ 
+	position:absolute;  
+	width:350px; 
+	height:200px;
+	filter:dropshadow(color=#666666,offx=3,offy=3,positive=2); 
+	z-index:2000; 
+	visibility:hidden
+}
+#login_mask{ 
+	position:absolute; 
+	top:0; 
+	left:0; 
+	background:#666; 
+	filter:ALPHA(opacity=60); 
+	opacity:0.6;
+	z-index:1500; 
+	visibility:hidden
+}
+.login_message{
+	border:#036 solid; 
+	width:95%; 
+	height:95%; 
+	background:#fff; 
+	color:#036; 
+	font-size:12px; 
+	line-height:150%
+}
+.login_header{
+	background:#2F8FEA; 
+	position:relative;
+	height:12%; 
+	font-family:Verdana, Arial, Helvetica, sans-serif; 
+	font-size:12px; 
+	padding:3 5 0 5; 
+	color:#fff
+}

@@ -5,17 +5,26 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>汽配网(JSP)</title>
 <link href="css/style.css" rel="stylesheet" type="text/css" />
-<script type='text/javascript' src='js/MSClass.js'></script>
+<!-- DWR -->
+<script type='text/javascript' src='dwr/engine.js'></script>
+<script type='text/javascript' src='dwr/util.js'></script>
+<script type='text/javascript' src='dwr/interface/Account.js'></script>
+<!-- jQuery -->
 <script type='text/javascript' src='js/jquery-1.2.6.min.js'></script>
 <script type="text/javascript" src="js/jquery.dimensions.js"></script>
 <script type="text/javascript" src="js/jquery.gradient.js"></script>
 <script type="text/javascript" src="js/jquery.roundcorner.js"></script>
 <script type="text/javascript" src="js/jquery.watermarkinput.js"></script>
+<script type="text/javascript" src="js/jquery.cookie.js"></script>
+<!-- Customize -->
+<script type='text/javascript' src='js/MSClass.js'></script>
 <script type='text/javascript' src='js/index.js'></script>
+<script type='text/javascript' src='js/login.js'></script>
 </head>
 
 <body>
 <jsp:include page="header.jsp"/>
+<jsp:include page="login.jsp"/>
 <jsp:include page="search.jsp"/>
 <div style="margin-right:auto;margin-left:auto;width:1000px;text-align:center">
 <jsp:include page="content3.jsp"/>
