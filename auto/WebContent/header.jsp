@@ -27,7 +27,7 @@
 	<span class="tabinactive"><a href="http://ehrweb.104china.com/"
 		target="_blank">采购商</a></span>
 	<div>
-		<a href="#" onclick="javascript:;">[登录]</a>&nbsp;|&nbsp;<a href="#" onclick="javascript:;">[注册]</a>
+		<a href="#" onclick="showLoginBox();return false;">登录</a>&nbsp;|&nbsp;<a href="javascript:;">[注册]</a>
 	</div>
 </div>
 
