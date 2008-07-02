@@ -10,6 +10,15 @@ import com.test.data.service.AccountServiceIntf;
 
 public class SpringDemo {
 	public static void main(String[] args) {
+		try {
+			test();
+		} catch (Exception e) {
+			System.out.println("*************Exception occured");
+			e.printStackTrace();
+		}
+	}
+	
+	public static void test() throws Exception {
 		Collection<String> files = new ArrayList<String>();
 		files.add("WebContent/WEB-INF/beans.xml");
 		files.add("WebContent/WEB-INF/dataAccessContext-local.xml");
