@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
+	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/beans.xml,/WEB-INF/dataAccessContext-local.xml</param-value>
+	</context-param>
+	<servlet>
+		<servlet-name>post</servlet-name>
+		<servlet-class>com.test.servlet.StudentServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>post</servlet-name>
+		<url-pattern>/post</url-pattern>
+	</servlet-mapping>
+	<listener>
+		<listener-class>
+			org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+</web-app>
