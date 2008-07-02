@@ -9,15 +9,15 @@
 	<context:annotation-config />
 	<context:component-scan base-package="*" />
 
-	<bean id="accountDao"
+	<!-- <bean id="accountDao"
 		class="com.test.data.dao.AccountDaoImpl">
 		<property name="sessionFactory">
 			<ref bean="sessionFactory"/>
-		</property>
-	</bean>
-	<bean id="demo" class="com.test.data.service.AccountServiceImpl">
+		</property> 
+	</bean>-->
+	<!-- <bean id="demo" class="com.test.data.service.AccountServiceImpl">
 		<property name="accountDao">
 			<ref local="accountDao"/>
 		</property>
-	</bean>
+	</bean> -->
 </beans>

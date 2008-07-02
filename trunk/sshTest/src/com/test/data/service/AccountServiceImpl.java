@@ -1,5 +1,7 @@
 package com.test.data.service;
 
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -12,6 +14,8 @@ import com.test.data.model.Account;
 @Transactional(readOnly = true)
 @Repository
 public class AccountServiceImpl implements AccountServiceIntf {
+
+	@Resource(name="accountDao")
 	private AccountDaoIntf accountDao;
 
 	@Transactional(propagation = Propagation.SUPPORTS)
@@ -25,13 +29,5 @@ public class AccountServiceImpl implements AccountServiceIntf {
 		for (Account account : accounts) {
 			System.out.println(accountDao.addAccount(account));
 		}
-	}
-
-	public AccountDaoIntf getAccountDao() {
-		return accountDao;
-	}
-
-	public void setAccountDao(AccountDaoIntf accountDao) {
-		this.accountDao = accountDao;
 	}
 }
