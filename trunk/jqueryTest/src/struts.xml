@@ -8,6 +8,9 @@
     <package name="ajax" extends="json-default" namespace="/ajax">
         <action name="retrieveStudents" class="retrieveStudentsAction">
             <result type="json" />
-        </action>            
+        </action>
+        <action name="jqGridRetrieveStudents" class="jqGridRetrieveStudentsAction">
+        	<result type="json" />
+        </action>         
     </package>
 </struts>
