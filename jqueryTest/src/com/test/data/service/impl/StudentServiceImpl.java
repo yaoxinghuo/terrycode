@@ -1,4 +1,4 @@
-package com.test.data.dao.service;
+package com.test.data.service.impl;
 
 import java.util.List;
 
@@ -11,35 +11,34 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.test.data.dao.intf.IStudentDao;
 import com.test.data.model.Student;
+import com.test.data.service.intf.IStudentService;
 
 @Service("studentService")
 @Transactional(readOnly = true)
 @Repository
 public class StudentServiceImpl implements IStudentService {
 
-	@Resource(name="studentDao")
+	@Resource(name = "studentDao")
 	private IStudentDao studentDao;
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS)
-	public List<Student> findPagedAll(int currentPage, int pageSize,
-			String data, String username, String order) {
-		return studentDao.findPagedAll(currentPage, pageSize, data, username,
-				order);
+	public List<Student> findPagedAll(long currentPage, long pageSize,
+			String column, String keyword, String sortname, String order) {
+		return studentDao.findPagedAll(currentPage, pageSize, column, keyword,
+				sortname, order);
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS)
-	public long getStudentTotalCount(String data, String username, String order) {
-		return studentDao.getStudentTotalCount(data, username, order);
+	public long getStudentTotalCount(String column, String keyword) {
+		return studentDao.getStudentTotalCount(column, keyword);
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS)
-	public long getTotalPage(int pageSize, String data, String username,
-			String order) {
-		long totalCount = studentDao
-				.getStudentTotalCount(data, username, order);
+	public long getTotalPage(long pageSize, String column, String keyword) {
+		long totalCount = studentDao.getStudentTotalCount(column, keyword);
 		long totalPageCount = ((totalCount + pageSize) - 1) / pageSize;
 		return totalPageCount;
 	}

@@ -33,26 +33,33 @@ public class StudentDaoImpl implements IStudentDao {
 	}
 
 	@Override
-	public long getStudentTotalCount(String data, String username, String order) {
+	public long getStudentTotalCount(String column, String keyword) {
+		StringBuffer sql = new StringBuffer("select count(*) from Student s ");
+		if (keyword != null && !keyword.equals("")) {
+			sql.append("where s.").append(column);
+			sql.append(" like '%").append(keyword).append("%'");
+		}
 		Query query = sessionFactory.getCurrentSession().createQuery(
-				"select count(*) from Student s where s." + data + " like '%"
-						+ username + "%'  order by s.id " + order + "");
+				sql.toString());
 		return (Long) query.uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Student> findPagedAll(int currentPage, int pageSize,
-			String data, String username, String order) {
-		if (currentPage == 0) {
+	public List<Student> findPagedAll(long currentPage, long pageSize,
+			String column, String keyword, String sortname, String order) {
+		if (currentPage == 0)
 			currentPage = 1;
+		StringBuffer sql = new StringBuffer("from Student s ");
+		if (keyword != null && !keyword.equals("")) {
+			sql.append("where s.").append(column);
+			sql.append(" like '%").append(keyword).append("%'");
 		}
-		String queryString = "from Student s where s." + data + " like '%"
-				+ username + "%'  order by s.id " + order + "";
+		sql.append(" order by s.").append(sortname).append(" ").append(order);
 		Query queryObject = sessionFactory.getCurrentSession().createQuery(
-				queryString);
-		queryObject.setFirstResult((currentPage - 1) * pageSize);
-		queryObject.setMaxResults(pageSize);
+				sql.toString());
+		queryObject.setFirstResult(((int) currentPage - 1) * (int) pageSize);
+		queryObject.setMaxResults((int) pageSize);
 		return queryObject.list();
 	}
 

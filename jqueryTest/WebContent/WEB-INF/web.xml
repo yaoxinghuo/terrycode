@@ -5,16 +5,48 @@
 	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/beans.xml,/WEB-INF/dataAccessContext-local.xml</param-value>
+		<param-value>
+			/WEB-INF/beans.xml,/WEB-INF/dataAccessContext-local.xml
+		</param-value>
 	</context-param>
-	<servlet>
-		<servlet-name>post</servlet-name>
-		<servlet-class>com.test.servlet.StudentServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>post</servlet-name>
-		<url-pattern>/post</url-pattern>
-	</servlet-mapping>
+	<filter>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<filter-class>
+			org.springframework.web.filter.CharacterEncodingFilter
+		</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter>
+		<filter-name>struts2</filter-name>
+		<filter-class>
+			org.apache.struts2.dispatcher.FilterDispatcher
+		</filter-class>
+	</filter>
+	<filter>
+		<filter-name>struts2-cleanup</filter-name>
+		<filter-class>
+			org.apache.struts2.dispatcher.ActionContextCleanUp
+		</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>struts2</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>struts2-cleanup</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 	<listener>
 		<listener-class>
 			org.springframework.web.context.ContextLoaderListener
