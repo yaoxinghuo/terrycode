@@ -42,14 +42,15 @@
 			$("#flex1").flexigrid
 			(
 			{
-			url: 'post',
+			url: 'ajax/retrieveStudents.action',
+			//url: 'post',
 			dataType: 'json',
 			colModel : [
 				{display: '编号', name : 'id', width : 60, sortable : true, align: 'center'},
-				{display: '姓名', name : 'name', width : 120, sortable : true, align: 'left'},
-				{display: '密码', name : 'iso3', width : 120, sortable : true, align: 'left', hide: true},
-				{display: '年龄', name : 'managename', width : 120, sortable : true, align: 'left'},
-				{display: '住址', name : 'data', width : 120, sortable : true, align: 'left'}
+				{display: '姓名', name : 'username', width : 120, sortable : true, align: 'left'},
+				{display: '密码', name : 'password', width : 120, sortable : true, align: 'left', hide: true},
+				{display: '年龄', name : 'age', width : 120, sortable : true, align: 'left'},
+				{display: '住址', name : 'address', width : 120, sortable : true, align: 'left'}
 				],
 			buttons : [
 				{name: '增加', bclass: 'add', onpress : test},
