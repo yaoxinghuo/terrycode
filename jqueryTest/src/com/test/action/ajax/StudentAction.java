@@ -18,20 +18,35 @@ import com.test.data.service.intf.IStudentService;
 public class StudentAction extends ActionSupport {
 
 	/**
-	 * 
+	 * 示例返回的JSON
+	 * {
+	 * "page":1,
+	 * "rows":[
+	 * {"id":"ZW","cell":["1","cssrain","cssrain",23,""]},
+	 * {"id":"ZW","cell":["10","ee","ee",44,"ff"]},
+	 * {"id":"ZW","cell":["11","ee","ee",55,"ff"]},
+	 * {"id":"ZW","cell":["12","ff","ff",33,"ff"]},
+	 * {"id":"ZW","cell":["13","ee","eee",22,"ff"]},
+	 * {"id":"ZW","cell":["14","adsf","adsf",22,"adsf"]},
+	 * {"id":"ZW","cell":["15","","",23,""]},
+	 * {"id":"ZW","cell":["16","","",22,""]},
+	 * {"id":"ZW","cell":["17","","",44,""]},
+	 * {"id":"ZW","cell":["18","","",33,""]}
+	 * ],
+	 * "total":45}
 	 */
 	private static final long serialVersionUID = 6007792478000829933L;
 
 	@Resource(name = "studentService")
 	private IStudentService studentService;
 
-	private long rp;
-	private long page;
-	private String query;
-	private String qtype;
-	private String sortorder;
-	private String sortname;
-	private long total;
+	private long rp;//每页显示多少条记录，传过来的参数，不需要返回
+	private long page;//第几页，传过来的参数，需要返回
+	private String query;//查询关键词，传过来的参数，不需要返回
+	private String qtype;//查询哪一行，传过来的参数，不需要返回
+	private String sortorder;//排序是asc还是desc，传过来的参数，不需要返回
+	private String sortname;//排序根据哪一行，传过来的参数,不需要返回
+	private long total;//一共多少条记录，需要返回
 
 	private JSONArray rows;
 

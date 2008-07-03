@@ -1,0 +1,32 @@
+/* CSS Document */
+
+.xsnazzy {background: transparent; margin:4px;}
+
+.xtop, .xbottom {display:block; background:transparent; font-size:1px; width:100%}
+.xb1, .xb2, .xb3, .xb4 {display:block; overflow:hidden;}
+.xb1, .xb2, .xb3 {height:1px;}
+.xb2, .xb3, .xb4 {background:#D3E4FE; border-left:1px solid #94B2DE; border-right:1px solid #94B2DE;}
+.xb1 {margin:0 3px; }
+.xb2 {margin:0 2px; border-width:0 2px;}
+.xb3 {margin:0 1px;}
+.xb4 {height:2px; margin:0 1px;}
+.title{
+	font-weight: bold;
+	width:auto;
+	height:20px;
+	padding-left: 4px;
+	border-bottom:#94B2DE 1px solid;
+	border-left:#94B2DE 1px solid;
+	border-right:#94B2DE 1px solid;
+}
+.xboxcontent {display:block; background:#fff; border:0 solid #94B2DE; border-width:0 1px; margin-top:-2px;}
+.content{
+	padding:4px;
+	width: auto;
+	word-wrap:break-word;
+	line-height: 20px;
+	background:#F7F8FB;
+}
+.yj{}
+.yj1{}
+.yj2{}
