@@ -45,10 +45,10 @@
 		        <h3>锁定页面的例子</h3>        
 		        <p>下面显示了几种锁定页面的方法。每个按钮都会激活blockUI并进行一次远程通信。</p>
                 <p>
-        <input id="pageDemo1" class="demo" value="默认信息" type="submit">
-        <input id="pageDemo2" class="demo" value="自定义信息" type="submit">
-        <input id="pageDemo3" class="demo" value="自定义样式" type="submit">
-        <input id="pageDemo4" class="demo" value="显示DOM元素" type="submit">
+        <input id="pageDemo1" class="demo" value="默认信息" type="submit"/>
+        <input id="pageDemo2" class="demo" value="自定义信息" type="submit"/>
+        <input id="pageDemo3" class="demo" value="自定义样式" type="submit"/>
+        <input id="pageDemo4" class="demo" value="显示DOM元素" type="submit"/>
         </p>
                 <p>
 
@@ -104,9 +104,9 @@
 		<p>这里展示了如何锁定页面中的元素，而不是整个页面。
         请点击block/unblock按钮查看效果。</p>
 		<p>
-                <input id="blockButton" value="锁定" type="submit">
-                <input id="blockButton2" value="锁定并显示信息" type="submit">
-                <input id="unblockButton" value="解除锁定" type="submit">
+                <input id="blockButton" value="锁定" type="submit"/>
+                <input id="blockButton2" value="锁定并显示信息" type="submit"/>
+                <input id="unblockButton" value="解除锁定" type="submit"/>
     </p>
 
         <div class="blockMe">
@@ -125,7 +125,7 @@
             lorem ipsum dolor sit amet
             consectetuer adipiscing elit
             sed lorem leo
-            <a href="#" class="test">测试链接 - 请点击!</a><br>
+            <a href="#" class="test">测试链接 - 请点击!</a><br/>
           
            
           <br/>
@@ -174,7 +174,7 @@
 		此页展示了如何显示一个简单的模拟对话框。以下按钮将激活<code class="inline">blockUI</code>显示一段自定义信息。这个AJAX请求将根据用户的反应（是或否）来发送或取消，在用户决定的这段时间内，会一直保持页面的锁定状态。
         </p>
         <p>
-        <input id="showDialog" value="显示对话框" type="submit">
+        <input id="showDialog" value="显示对话框" type="submit"/>
 
         </p><p>
 
@@ -222,8 +222,8 @@
         </p>
         <div id="question" style="display: none; cursor: default;">
             <h1>你确信要继续么？</h1>
-            <input id="yes" value="确认" type="button">
-            <input id="no" value="取消" type="button">
+            <input id="yes" value="确认" type="button"/>
+            <input id="no" value="取消" type="button"/>
         </div>
 
 		
@@ -274,7 +274,7 @@ $.blockUI.defaults = {
             <p>改变blockUI的设置非常简单，有2种方式：
             </p>
            <ul>
-        <li>1、全局设置, 通过直接指定<code class="inline">$.blockUI.defaults</code>对象的值来设置。
+        <li>1、全局设置, 通过直接指定<code class="inline">$.blockUI.defaults</code>对象的值来设置。</li>
 
         <li>2、局部设置, 将options对象放到 <code class="inline">blockUI</code>
             (或 <code class="inline">block</code>) 函数内部。
@@ -295,7 +295,7 @@ $.blockUI.defaults.fadeOut = 200;
 
 
     <h3>局部设置</h3>
-           <p>局部设置是将options对象放到 <code class="inline">blockUI</code>
+           <p>局部设置是将options对象放到 <code class="inline">blockUI</code></p>
             (或 <code class="inline">block</code>) 函数内部。这会强制使用局部设置来代替全局设置的值。例如:
            <pre><code class="mix">// 改变提示信息的边框
 $.blockUI({ css: { border = '5px solid red'} });

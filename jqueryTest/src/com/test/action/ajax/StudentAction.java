@@ -120,6 +120,7 @@ public class StudentAction extends ActionSupport {
 		this.total = total;
 	}
 
+	@SuppressWarnings("null")
 	@Override
 	public String execute() {
 		total = studentService.getStudentTotalCount(qtype, query); // 记录总数
