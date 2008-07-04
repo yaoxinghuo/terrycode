@@ -9,8 +9,8 @@
 	<body>
 		<script>
 			$(document).ready(function(){
-				$('#a').click(function(){
-					alert("A")
+				$('#a').mousedown(function(e){
+					alert(e.which);
 				});
 				$('#b').click(function(e){
 					alert("B")

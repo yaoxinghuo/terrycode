@@ -54,6 +54,7 @@ public class JqGridStudentAction extends ActionSupport {
 		this.records = records;
 	}
 
+	@SuppressWarnings("null")
 	@Override
 	public String execute() {
 		records = studentService.getStudentTotalCount(sidx, ""); // 记录总数
