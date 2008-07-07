@@ -16,14 +16,26 @@
 					alert("B")
 					e.stopPropagation();//阻止冒泡， 从来不输出 “A" 。 可以去掉 ，试试对比效果。
 				});
-				
+				$('#c').click(function(){
+					$.getScript("js/test.js",function(){
+						//alert("Script loaded");
+					});
+				});
+				$("#msg").ajaxError(function(event, request, settings, error){
+					$(this).html("Error requesting page " + settings.url);
+				});
+				$("#msg").ajaxSuccess(
+					function(request, settings){
+						$(this).html("Successful Request!");
+					}
+				); 
 			});
 		</script>
 		<button>Test</button>
 		
 		<div id="a">aaaaa</div>
 		<div id="b">bbbbb</div>
-		<div>ccccc</div>
-		<div>ddddd</div>
+		<div id="c">ccccc</div>
+		Msg:<span class="test" id="msg"></span>
 	</body>
 </html>
