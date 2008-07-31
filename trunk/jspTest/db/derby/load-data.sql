@@ -1,0 +1,1 @@
+insert into USERS (LOGIN_NAME,PASSWORD,NAME) values('admin','admin','Admin');
