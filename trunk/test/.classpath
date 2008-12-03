@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="E:/lib/yuicompressor-2.3.5.jar"/>
+	<classpathentry kind="lib" path="E:/lib/commons-beanutils-1.7.0.jar"/>
+	<classpathentry kind="lib" path="E:/lib/commons-logging-1.1.jar"/>
+	<classpathentry kind="lib" path="E:/lib/json-lib-2.1-jdk15.jar"/>
+	<classpathentry kind="lib" path="E:/lib/commons-lang-2.1.jar"/>
+	<classpathentry kind="lib" path="E:/lib/commons-collections-3.2.jar"/>
+	<classpathentry kind="lib" path="E:/lib/ezmorph-1.0.3.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
