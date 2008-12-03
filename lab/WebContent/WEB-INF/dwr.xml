@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dwr PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 2.0//EN" "http://getahead.org/dwr/dwr20.dtd">
+
+<dwr>
+	<allow>
+		<create javascript="Equip" creator="spring">
+			<param name="beanName" value="dwr_equip"></param>
+		</create>
+		<create javascript="Account" creator="spring">
+			<param name="beanName" value="dwr_account"></param>
+		</create>
+		<create javascript="Book" creator="spring">
+			<param name="beanName" value="dwr_book"></param>
+		</create>
+		<create javascript="Message" creator="spring">
+			<param name="beanName" value="dwr_message"></param>
+		</create>
+		<create javascript="Notice" creator="spring">
+			<param name="beanName" value="dwr_notice"></param>
+		</create>
+	</allow>
+</dwr>

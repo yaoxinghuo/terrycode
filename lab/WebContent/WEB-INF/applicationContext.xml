@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+	<bean id="equipDao" class="cn.edu.jiangnan.lab.data.dao.impl.EquipDaoImpl">
+		<property name="sessionFactory">
+			<ref local="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="bookDao" class="cn.edu.jiangnan.lab.data.dao.impl.BookDaoImpl">
+		<property name="sessionFactory">
+			<ref local="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="accountDao" class="cn.edu.jiangnan.lab.data.dao.impl.AccountDaoImpl">
+		<property name="sessionFactory">
+			<ref local="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="logDao" class="cn.edu.jiangnan.lab.data.dao.impl.LogDaoImpl">
+		<property name="sessionFactory">
+			<ref local="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="noticeDao" class="cn.edu.jiangnan.lab.data.dao.impl.NoticeDaoImpl">
+		<property name="sessionFactory">
+			<ref local="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="feedbackDao" class="cn.edu.jiangnan.lab.data.dao.impl.FeedbackDaoImpl">
+		<property name="sessionFactory">
+			<ref local="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="equipTarget" class="cn.edu.jiangnan.lab.data.service.impl.EquipServiceImpl">
+		<property name="equipDao">
+			<ref local="equipDao" />
+		</property>
+		<property name="accountDao">
+			<ref local="accountDao" />
+		</property>
+	</bean>
+	<bean id="bookTarget" class="cn.edu.jiangnan.lab.data.service.impl.BookServiceImpl">
+		<property name="bookDao">
+			<ref local="bookDao" />
+		</property>
+		<property name="accountDao">
+			<ref local="accountDao" />
+		</property>
+		<property name="equipDao">
+			<ref local="equipDao" />
+		</property>
+		<property name="logDao">
+			<ref local="logDao" />
+		</property>
+	</bean>
+	<bean id="accountTarget"
+		class="cn.edu.jiangnan.lab.data.service.impl.AccountServiceImpl">
+		<property name="accountDao">
+			<ref local="accountDao" />
+		</property>
+	</bean>
+	<bean id="noticeTarget" class="cn.edu.jiangnan.lab.data.service.impl.NoticeServiceImpl">
+		<property name="noticeDao">
+			<ref local="noticeDao" />
+		</property>
+		<property name="bookDao">
+			<ref local="bookDao" />
+		</property>
+		<property name="feedbackDao">
+			<ref local="feedbackDao" />
+		</property>
+		<property name="logDao">
+			<ref local="logDao" />
+		</property>
+		<property name="accountDao">
+			<ref local="accountDao" />
+		</property>
+	</bean>
+	<context:property-placeholder location="classpath:jdbc.properties" />
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName">
+			<value>${jdbc.driverClassName}</value>
+		</property>
+		<property name="url">
+			<value>${jdbc.url}</value>
+		</property>
+		<property name="username">
+			<value>${jdbc.username}</value>
+		</property>
+		<property name="password">
+			<value>${jdbc.password}</value>
+		</property>
+		<property name="maxIdle">
+			<value>20</value>
+		</property>
+		<property name="minIdle">
+			<value>5</value>
+		</property>
+		<property name="maxActive">
+			<value>50</value>
+		</property>
+		<property name="maxWait">
+			<value>3000</value>
+		</property>
+	</bean>
+	<!--
+		<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver">
+		</property> <property name="url"
+		value="jdbc:mysql://localhost:3306/lab?useUnicode=true&amp;characterEncoding=utf8">
+		</property> <property name="username" value="terry"></property>
+		<property name="password" value="123456"></property> </bean>
+	-->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="annotatedClasses">
+			<list>
+				<value>cn.edu.jiangnan.lab.data.pojo.Equip</value>
+				<value>cn.edu.jiangnan.lab.data.pojo.Account</value>
+				<value>cn.edu.jiangnan.lab.data.pojo.Book</value>
+				<value>cn.edu.jiangnan.lab.data.pojo.Log</value>
+				<value>cn.edu.jiangnan.lab.data.pojo.Notice</value>
+				<value>cn.edu.jiangnan.lab.data.pojo.Feedback</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect"> org.hibernate.dialect.MySQLDialect </prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="current_session_context_class">thread</prop>
+				<prop key="connection_pool_size">10</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+			</props>
+		</property>
+		<property name="dataSource">
+			<ref local="dataSource" />
+		</property>
+	</bean>
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory">
+			<ref local="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="equipService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref local="transactionManager" />
+		</property>
+		<property name="target">
+			<ref local="equipTarget" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="batch*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="bookService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref local="transactionManager" />
+		</property>
+		<property name="target">
+			<ref local="bookTarget" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="save*">PROPAGATION_REQUIRED</prop>
+				<prop key="*onfirm*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="accountService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref local="transactionManager" />
+		</property>
+		<property name="target">
+			<ref local="accountTarget" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="batch*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="messageService"
+		class="cn.edu.jiangnan.lab.data.service.impl.MessageServiceImpl">
+		<property name="bookDao">
+			<ref local="bookDao" />
+		</property>
+		<property name="logDao">
+			<ref local="logDao" />
+		</property>
+	</bean>
+	<bean id="noticeService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref local="transactionManager" />
+		</property>
+		<property name="target">
+			<ref local="noticeTarget" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="batch*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="dwr_equip" class="cn.edu.jiangnan.lab.dwr.Equip">
+		<property name="equipService">
+			<ref local="equipService" />
+		</property>
+		<property name="accountService">
+			<ref local="accountService" />
+		</property>
+	</bean>
+	<bean id="dwr_account" class="cn.edu.jiangnan.lab.dwr.Account">
+		<property name="accountService">
+			<ref local="accountService" />
+		</property>
+	</bean>
+	<bean id="dwr_book" class="cn.edu.jiangnan.lab.dwr.Book">
+		<property name="bookService">
+			<ref local="bookService" />
+		</property>
+		<property name="accountService">
+			<ref local="accountService" />
+		</property>
+	</bean>
+	<bean id="dwr_message" class="cn.edu.jiangnan.lab.dwr.Message">
+		<property name="messageService">
+			<ref local="messageService" />
+		</property>
+	</bean>
+	<bean id="dwr_notice" class="cn.edu.jiangnan.lab.dwr.Notice">
+		<property name="noticeService">
+			<ref local="noticeService" />
+		</property>
+		<property name="accountService">
+			<ref local="accountService" />
+		</property>
+	</bean>
+	<bean id="loginAction" class="cn.edu.jiangnan.lab.action.LoginAction" scope="prototype">
+		<property name="accountService">
+			<ref local="accountService" />
+		</property>
+	</bean>
+	<bean id="logAction" class="cn.edu.jiangnan.lab.action.LogAction" scope="prototype">
+		<property name="bookService">
+			<ref local="bookService" />
+		</property>
+		<property name="noticeService">
+			<ref local="noticeService" />
+		</property>
+	</bean>
+	<bean id="noticeAction" class="cn.edu.jiangnan.lab.action.NoticeAction" scope="prototype">
+		<property name="noticeService">
+			<ref local="noticeService" />
+		</property>
+	</bean>
+	<bean id="detailAction" class="cn.edu.jiangnan.lab.action.DetailAction" scope="prototype">
+		<property name="equipService">
+			<ref local="equipService"/>
+		</property>
+	</bean>
+	<bean id="feedbackAction" class="cn.edu.jiangnan.lab.action.FeedbackAction" scope="prototype">
+		<property name="noticeService">
+			<ref local="noticeService" />
+		</property>
+		<property name="accountService">
+			<ref local="accountService" />
+		</property>
+	</bean>
+	<bean id="task_logClean" class="cn.edu.jiangnan.lab.task.LogCleanTask">
+		<property name="bookService">
+			<ref local="bookService" />
+		</property>
+	</bean>
+
+	<!--定义定时执行ServerMessages 这个bean中的run()方法-->
+	<!--
+		<bean id="logCleanTask"
+		class="org.springframework.scheduling.timer.MethodInvokingTimerTaskFactoryBean">
+		<property name="targetObject" ref="task_logClean" />
+	-->
+		<!-- 调用方法的名称 -->
+		<!-- <property name="targetMethod" value="logChean" />
+	</bean> -->
+
+	<!-- 使用ScheduledTimerTask来包装任务 -->
+	<!--
+		<bean id="logCleanScheduledTask"
+		class="org.springframework.scheduling.timer.ScheduledTimerTask">
+		<property name="timerTask" ref="logCleanTask" />
+	-->
+		<!-- 任务执行周期1天-->
+	<!--
+		<property name="period"> <value>86400000</value> </property>
+	-->
+		<!-- 延时执行任务 -->
+	<!--
+		<property name="delay"> <value>10000</value> </property> </bean>
+	-->
+	<!-- 使用TimerFactoryBean来实现任务-->
+	<!--
+		<bean id="timerFactory"
+		class="org.springframework.scheduling.timer.TimerFactoryBean">
+		<property name="scheduledTimerTasks"> <list> <ref
+		bean="logCleanScheduledTask" /> </list> </property> </bean>
+	-->
+</beans>
