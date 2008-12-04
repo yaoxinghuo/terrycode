@@ -64,7 +64,10 @@
 		header : '设备名称',
 		width : 150,
 		sortable : true,
-		dataIndex : 'name'
+		dataIndex : 'name',
+		renderer : function(value, cellmeta, record) {
+			return "<span class='nounderline'><a href=# onclick=\"showEditWin('"+record.data["id"]+"');return false;\">"+value+"</a></span>";
+		}
 	}, {
 		header : '型号',
 		width : 150,
