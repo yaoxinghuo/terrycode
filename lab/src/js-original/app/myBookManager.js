@@ -146,7 +146,7 @@
 		sortable : true,
 		dataIndex : 'exp_time'
 	}, {
-		header : '计算/实际费用',
+		header : '实验/应收费用',
 		width : 100,
 		sortable : true,
 		dataIndex : 'fee'

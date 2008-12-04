@@ -178,7 +178,7 @@
 	&nbsp;搜索后的操作同上；<br/><br/>
 	<img src="resources/icons/note.png">本系统不提供修改新增和删除设备的功能；<br/><br/>
 	<img src="resources/icons/note.png"><b>若使用中画面出现错误，请尝试清空浏览器缓存，并刷新整个页面；</b><br/><br/>
-	<img src="resources/icons/note.png">有任何意见和建议请到首页<a href='form_feedback.jsp' target='_blank'>投诉与反馈</a>，谢谢！<br/>
+	<img src="resources/icons/note.png">有任何意见和建议请到首页<a href='form_feedback.jsp' target='_blank'>投诉与反馈</a>，或<a href='http://sites.google.com/site/it/'>联系程序设计</a>，谢谢！<br/>
 </div>
 
 </div>

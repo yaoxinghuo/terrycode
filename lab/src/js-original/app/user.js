@@ -236,11 +236,9 @@ Ext.onReady(function() {
 
 	initUserLogNotice();
 	if(!islogin&&cp.get("login_cookie")){
-		DWRUtil.useLoadingMessage("正在加载...");
-		$("account_content").innerHTML = "自动登录中,请稍候...";
+		$("account_content").innerHTML = "<font color='blue'>自动登录中,请稍候...</font>";
 		Account.cookieLogin(cp.get("login_cookie"),{
 			callback:function(value) {
-				cancelLoadingMessage();
 				var result = Ext.decode(value);
 				if(result.type==0){
 					$("account_content").innerHTML = getWelcomeMessage(result.message);
@@ -253,7 +251,6 @@ Ext.onReady(function() {
 			timeout:8000,
 			errorHandler:function(message){
 				$("account_content").innerHTML = "<a href='#' onclick='showLoginWin();return false;'>登录</a>&nbsp;|&nbsp;<a href='index.action'>转到首页</a>&nbsp;|&nbsp;<a href='equipview.action'>设备查询系统</a>";
-				cancelLoadingMessage();
 			}
 		});
 	}
