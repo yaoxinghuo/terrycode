@@ -18,7 +18,7 @@ function userlogout() {
 	Account.logout();
 	cp.set("login_cookie",null);
 	DWREngine.setAsync(true);
-	$("account_content").innerHTML = "<a href='#' onclick='showLoginWin();return false;'>登录</a>&nbsp;|&nbsp;<a href='index.action'>转到首页</a>&nbsp;|&nbsp;<a href='equipview.action'>设备查询系统</a>";
+	$("account_content").innerHTML = "<a href='#' onclick='showLoginWin();return false;'>登录</a>&nbsp;|&nbsp;<a href='index.action'>首页</a>&nbsp;|&nbsp;<a href='equipview.action'>设备查询系统</a>";
 	showMsg("您已经成功注销，再次登录请<a href='javascript:;' onclick='showLoginWin();'>单击这里</a></span>");
 	islogin = false;
 	$("validate_img").src = "image?" + Math.random();
@@ -39,7 +39,7 @@ function getWelcomeMessage(username) {
 			+ '&nbsp;|&nbsp;<a '
 			+
 //			 'href="#" onclick="Account.invalidateSession();return false;">Invalid Session</a>&nbsp;|&nbsp;<a ' +
-			'href="#" onclick="initUserAccount();return false;">我的帐户</a>&nbsp;|&nbsp;<a href="index.action">转到首页</a>&nbsp;|&nbsp;<a '
+			'href="#" onclick="initUserAccount();return false;">我的帐户</a>&nbsp;|&nbsp;<a href="index.action">首页</a>&nbsp;|&nbsp;<a '
 			+ 'href="equipview.action">设备查询系统</a>&nbsp;|&nbsp;<a href="#" onclick="userlogout();return false;">退出</a>';
 }
 

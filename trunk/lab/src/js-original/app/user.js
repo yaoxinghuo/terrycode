@@ -246,11 +246,11 @@ Ext.onReady(function() {
 					$("my-shengpi").style.visibility = "visible";
 					getRecentLogsNotice();
 				}else
-				$("account_content").innerHTML = "<a href='#' onclick='showLoginWin();return false;'>登录</a>&nbsp;|&nbsp;<a href='index.action'>转到首页</a>&nbsp;|&nbsp;<a href='equipview.action'>设备查询系统</a>";
+				$("account_content").innerHTML = "<a href='#' onclick='showLoginWin();return false;'>登录</a>&nbsp;|&nbsp;<a href='index.action'>首页</a>&nbsp;|&nbsp;<a href='equipview.action'>设备查询系统</a>";
 			},
 			timeout:8000,
 			errorHandler:function(message){
-				$("account_content").innerHTML = "<a href='#' onclick='showLoginWin();return false;'>登录</a>&nbsp;|&nbsp;<a href='index.action'>转到首页</a>&nbsp;|&nbsp;<a href='equipview.action'>设备查询系统</a>";
+				$("account_content").innerHTML = "<a href='#' onclick='showLoginWin();return false;'>登录</a>&nbsp;|&nbsp;<a href='index.action'>首页</a>&nbsp;|&nbsp;<a href='equipview.action'>设备查询系统</a>";
 			}
 		});
 	}
