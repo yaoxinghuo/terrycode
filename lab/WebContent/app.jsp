@@ -145,7 +145,7 @@
 <script type="text/javascript">	
 	var welcomeHTML = null;
 	if(<%=(session.getAttribute(Constants.SESSION_ID)==null)%>)
-		welcomeHTML = '<a href="javascript:;" onclick="showLoginWin();">登录</a>&nbsp;|&nbsp;<a href="<%=request.getContextPath() %>">转到首页</a>&nbsp;|&nbsp;<a href="equipview.action">设备查询系统</a>';
+		welcomeHTML = '<a href="javascript:;" onclick="showLoginWin();">登录</a>&nbsp;|&nbsp;<a href="<%=request.getContextPath() %>">首页</a>&nbsp;|&nbsp;<a href="equipview.action">设备查询系统</a>';
 	else {
 		//islogin = true;
 		welcomeHTML = getWelcomeMessage("<%=session.getAttribute(Constants.SESSION_NAME)%>");

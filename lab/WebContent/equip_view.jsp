@@ -138,7 +138,7 @@
 			<tr>
 				<td align="center" nowrap><font size='-1'>&nbsp;<span
 					id="account_content"> 欢迎 <s:property value="#session._userName" default="访客"/> |&nbsp;<a
-					href="<%=request.getContextPath() %>">转到首页</a>&nbsp;|&nbsp;<a
+					href="<%=request.getContextPath() %>">首页</a>&nbsp;|&nbsp;<a
 					href="app.action">设备预约系统</a>
 				</span></font></td>
 			</tr>
