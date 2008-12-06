@@ -153,6 +153,10 @@
 						<td><s:property value="log.remark" /></td>
 					</tr>
 					<tr>
+						<td><b>审批人</b></td>
+						<td><s:property value="log.admin_name" /></td>
+					</tr>
+					<tr>
 						<td><b>审批情况</b></td>
 						<td><s:if test="log.action==0"><font color="red">未批准</font></s:if> <s:elseif
 						test="log.action==1">已批准</s:elseif> <s:elseif
