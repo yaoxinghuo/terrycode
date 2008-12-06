@@ -501,7 +501,8 @@ public class NoticeServiceImpl implements INoticeService {
 			Account account = accountDao.getAccountById(userid);
 			if (account.getMobile().equals("")
 					|| account.getTeacher().equals(""))
-				return "您的基本资料不完整，在预约设备前，请先更新您的<a href=# onclick=initUserAccount();return false;>基本资料</a>！&nbsp<a href=# onclick='clearMsg();return false;'><img src='resources/images/close.gif'/></a>";
+				//return "您的基本资料不完整，在预约设备前，请先更新您的<a href='javascript:void(0);' onclick='initUserAccount();return false;'>基本资料</a>！&nbsp<a href=# onclick='clearMsg();return false;'><img src='resources/images/close.gif'/></a>";
+				return "您的基本资料不完整，在预约设备前，请先更新您的<a href=# onclick='initUserAccount();return false;'>基本资料</a>！&nbsp<a href=# onclick='clearMsg();return false;'><img src='resources/images/close.gif'/></a>";
 			else
 				return "您好，"
 						+ account.getUsername()

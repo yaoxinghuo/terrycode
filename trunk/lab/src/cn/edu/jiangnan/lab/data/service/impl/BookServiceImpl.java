@@ -279,7 +279,7 @@ public class BookServiceImpl implements IBookService {
 			jo
 					.put(
 							"message",
-							"您的基本资料不完整，在预约设备前，请先更新您的<a href=# onclick=initUserAccount();return false;>基本资料</a>！");
+							"您的基本资料不完整，在预约设备前，请先更新您的<a href=# onclick='initUserAccount();return false;'>基本资料</a>！");
 			return jo.toString();
 		}
 		Date nowDate = new Date();
@@ -415,7 +415,7 @@ public class BookServiceImpl implements IBookService {
 			jo
 					.put(
 							"message",
-							"您的基本资料不完整，在预约设备前，请先更新您的<a href=# onclick=initUserAccount();return false;>基本资料</a>！");
+							"您的基本资料不完整，在预约设备前，请先更新您的<a href=# onclick='initUserAccount();return false;'>基本资料</a>！");
 			return jo.toString();
 		}
 		Date nowDate = new Date();
