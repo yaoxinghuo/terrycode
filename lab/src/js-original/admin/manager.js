@@ -847,7 +847,7 @@ function showFeeWin(bookid,fee) {
 				fieldLabel : '应收费用(元)*',
 				name : 'fee',
 				width : 200,
-				minValue : 1,
+				minValue : 0,
 				maxLength : 8,
 				allowBlank : false
 			}), new Ext.form.TextArea({
