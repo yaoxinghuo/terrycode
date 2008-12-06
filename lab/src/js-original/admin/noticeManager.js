@@ -156,15 +156,20 @@ function initNoticeManager(id, tabTitle) {
 			xtype : 'checkbox',
 			boxLabel : '<b>前台显示的记录</b>',
 			checked : false,
-			onClick : function() {
-				if (lastChecked != this.getValue()) {
-					lastChecked = this.getValue();
-					store.reload({
-						params : {
-							start : 0,
-							limit : pageSize
+			listeners : {
+				"check" : {
+					fn : function(obj,checked) {
+						if (lastChecked != checked) {
+							lastChecked = checked;
+							store.reload({
+								params : {
+									start : 0,
+									limit : pageSize
+								}
+							});
 						}
-					});
+					},
+					scope : this
 				}
 			}
 		}, '-', {
