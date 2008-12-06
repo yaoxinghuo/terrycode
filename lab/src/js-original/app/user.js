@@ -253,7 +253,7 @@ Ext.onReady(function() {
 				$("account_content").innerHTML = "<a href='#' onclick='showLoginWin();return false;'>登录</a>&nbsp;|&nbsp;<a href='index.action'>首页</a>&nbsp;|&nbsp;<a href='equipview.action'>设备查询系统</a>";
 			}
 		});
-	} else
+	}else
 		getRecentLogsNotice();
 });
 
@@ -754,8 +754,8 @@ function showDetailWin(id, name, appd, appt1, appt2, status) {
 					loadMask : true,
 					closable : true,
 					tbar : new Ext.PagingToolbar({
-								pageSize : pageSize,
-								store : 10,
+								pageSize : 10,
+								store : store,
 								displayInfo : true
 							})
 				});
