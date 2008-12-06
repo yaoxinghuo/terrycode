@@ -253,7 +253,8 @@ Ext.onReady(function() {
 				$("account_content").innerHTML = "<a href='#' onclick='showLoginWin();return false;'>登录</a>&nbsp;|&nbsp;<a href='index.action'>首页</a>&nbsp;|&nbsp;<a href='equipview.action'>设备查询系统</a>";
 			}
 		});
-	}
+	} else
+		getRecentLogsNotice();
 });
 
 function getRecentLogsNotice() {
@@ -754,7 +755,7 @@ function showDetailWin(id, name, appd, appt1, appt2, status) {
 					closable : true,
 					tbar : new Ext.PagingToolbar({
 								pageSize : pageSize,
-								store : store,
+								store : 10,
 								displayInfo : true
 							})
 				});
@@ -788,7 +789,7 @@ function showDetailWin(id, name, appd, appt1, appt2, status) {
 	store.load({
 				params : {
 					start : 0,
-					limit : pageSize,
+					limit : 10,
 					id : id
 				}
 			});
