@@ -35,7 +35,9 @@ public class LogDaoImpl extends HibernateDaoSupport implements ILogDao {
 						c.setTime(endDate);
 						c.add(Calendar.DAY_OF_MONTH, 1);
 						StringBuffer sb = new StringBuffer(
-								"select count(l) from Log l where l.input>:startDate and l.input<:endDate");
+								"select count(l) from Log l where l.input<:endDate");
+						if (startDate != null)
+							sb.append(" and l.input>:startDate");
 						if (action != -1)
 							sb.append(" and l.action=:action");
 						if (!keyword.equals("")) {
@@ -43,7 +45,8 @@ public class LogDaoImpl extends HibernateDaoSupport implements ILogDao {
 							sb.append(" like :keyword");
 						}
 						Query query = session.createQuery(sb.toString());
-						query.setDate("startDate", startDate);
+						if (startDate != null)
+							query.setDate("startDate", startDate);
 						query.setDate("endDate", c.getTime());
 						if (action != -1)
 							query.setInteger("action", action);
@@ -66,7 +69,9 @@ public class LogDaoImpl extends HibernateDaoSupport implements ILogDao {
 						c.setTime(endDate);
 						c.add(Calendar.DAY_OF_MONTH, 1);
 						StringBuffer sb = new StringBuffer(
-								"from Log l where l.input>:startDate and l.input<:endDate ");
+								"from Log l where l.input<:endDate ");
+						if (startDate != null)
+							sb.append(" and l.input>:startDate");
 						if (action != -1)
 							sb.append("and l.action=:action ");
 						if (!keyword.equals("")) {
@@ -75,7 +80,8 @@ public class LogDaoImpl extends HibernateDaoSupport implements ILogDao {
 						}
 						sb.append(" order by l.input desc");
 						Query query = session.createQuery(sb.toString());
-						query.setDate("startDate", startDate);
+						if (startDate != null)
+							query.setDate("startDate", startDate);
 						query.setDate("endDate", c.getTime());
 						if (action != -1)
 							query.setInteger("action", action);
