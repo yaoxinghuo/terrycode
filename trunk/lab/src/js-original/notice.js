@@ -47,8 +47,8 @@
 			dwrFunction : Book.getBooksLogInfo,
 			listeners : {
 				'beforeload' : function(dataProxy, params) {
-					params[dataProxy.loadArgsKey] = [params.start,
-							params.limit, -1, startDate, endDate, "", "id"]
+					params[dataProxy.loadArgsKey] = [params.start,//改成获取所有的日志
+							params.limit, -1, null, endDate, "", "id"]
 				}
 			}
 		}),
@@ -198,8 +198,8 @@ function initAdminLogNotice() {
 			dwrFunction : Book.getLogsInfo,
 			listeners : {
 				'beforeload' : function(dataProxy, params) {
-					params[dataProxy.loadArgsKey] = [params.start,
-							params.limit, -1, startDate, endDate, '', 'id']
+					params[dataProxy.loadArgsKey] = [params.start,//改成获取所有的日志
+							params.limit, -1, null, endDate, '', 'id']
 				}
 			}
 		}),

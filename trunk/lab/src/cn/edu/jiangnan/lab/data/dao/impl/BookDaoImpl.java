@@ -132,7 +132,9 @@ public class BookDaoImpl extends HibernateDaoSupport implements IBookDao {
 						c.setTime(endDate);
 						c.add(Calendar.DAY_OF_MONTH, 1);
 						StringBuffer sb = new StringBuffer(
-								"from Book b where b.input>:startDate and b.input<:endDate ");
+								"from Book b where b.input<:endDate ");
+						if (startDate != null)
+							sb.append("and b.input>:startDate ");
 						if (action != -1)
 							sb.append("and b.action=:action ");
 						if (!keyword.equals("")) {
@@ -141,7 +143,8 @@ public class BookDaoImpl extends HibernateDaoSupport implements IBookDao {
 						}
 						sb.append(" order by b.input desc");
 						Query query = session.createQuery(sb.toString());
-						query.setDate("startDate", startDate);
+						if (startDate != null)
+							query.setDate("startDate", startDate);
 						query.setDate("endDate", c.getTime());
 						if (action != -1)
 							query.setInteger("action", action);
@@ -165,7 +168,9 @@ public class BookDaoImpl extends HibernateDaoSupport implements IBookDao {
 						c.setTime(endDate);
 						c.add(Calendar.DAY_OF_MONTH, 1);
 						StringBuffer sb = new StringBuffer(
-								"select count(b) from Book b where b.input>:startDate and b.input<:endDate");
+								"select count(b) from Book b where b.input<:endDate");
+						if (startDate != null)
+							sb.append(" and b.input>:startDate");
 						if (action != -1)
 							sb.append(" and b.action=:action");
 						if (!keyword.equals("")) {
@@ -173,7 +178,8 @@ public class BookDaoImpl extends HibernateDaoSupport implements IBookDao {
 							sb.append(" like :keyword");
 						}
 						Query query = session.createQuery(sb.toString());
-						query.setDate("startDate", startDate);
+						if (startDate != null)
+							query.setDate("startDate", startDate);
 						query.setDate("endDate", c.getTime());
 						if (action != -1)
 							query.setInteger("action", action);

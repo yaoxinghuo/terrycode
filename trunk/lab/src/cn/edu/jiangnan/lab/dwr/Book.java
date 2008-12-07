@@ -107,15 +107,17 @@ public class Book {
 	public String getBooksLogInfo(int start, int limit, int action,
 			String startDate, String endDate, String keyword, String column)
 			throws ParseException {
-		return bookService.getBooksLogs(start, limit, action, sdfd
-				.parse(startDate), sdfd.parse(endDate), keyword, column);
+		return bookService.getBooksLogs(start, limit, action,
+				startDate == null ? null : sdfd.parse(startDate), sdfd
+						.parse(endDate), keyword, column);
 	}
 
 	public String getLogsInfo(int start, int limit, int action,
 			String startDate, String endDate, String keyword, String column)
 			throws ParseException {
-		return bookService.getLogs(start, limit, action, sdfd.parse(startDate),
-				sdfd.parse(endDate), keyword, column);
+		return bookService.getLogs(start, limit, action,
+				startDate == null ? null : sdfd.parse(startDate), sdfd
+						.parse(endDate), keyword, column);
 	}
 
 	public String messageBook(String book_id) {
