@@ -35,6 +35,9 @@
 		name : 'end',
 		mapping : 'end'
 	}, {
+		name : 'sample',
+		mapping : 'sample'
+	}, {
 		name : 'action',
 		mapping : 'action'
 	}, {
@@ -89,10 +92,10 @@
 		sortable : true,
 		dataIndex : 'user_name'
 	}, {
-		header : '预约内容',
+		header : '样品/数量',
 		width : 150,
 		sortable : true,
-		dataIndex : 'content'
+		dataIndex : 'sample'
 	}, {
 		header : '起始日期',
 		width : 100,
