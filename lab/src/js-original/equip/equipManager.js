@@ -237,7 +237,7 @@
 	tabPanel.add(grid).show();
 
 	function batchRemoveEquip(list) {
-		Ext.MessageBox.confirm('确认批量删除设备记录', '是否确认批量删除设备记录？', function(btn) {
+		Ext.MessageBox.confirm('确认批量删除设备记录', '是否确认批量删除设备记录？<br><b>建议删除设备之前先导出该设备的预约记录！</b>', function(btn) {
 			if ("yes" != btn)
 				return;
 			DWRUtil.useLoadingMessage("处理中...");
@@ -263,7 +263,7 @@
 		var record = grid.getSelectionModel().getSelected();
 		if (!record)
 			return;
-		Ext.MessageBox.confirm('确认删除设备记录', '是否确认删除设备记录？', function(btn) {
+		Ext.MessageBox.confirm('确认删除设备记录', '是否确认删除设备记录？<br><b>建议删除设备之前先导出该设备的预约记录！</b>', function(btn) {
 			if ("yes" != btn)
 				return;
 			DWRUtil.useLoadingMessage("处理中...");
