@@ -334,21 +334,25 @@
 	}
 
 	function batchCancelBook(list) {
-		DWRUtil.useLoadingMessage("处理中...");
-		Book.batchCancelBook(list, {
-			callback : function(value) {
-				cancelLoadingMessage();
-				var result = Ext.decode(value);
-				if (result.result) {
-					store.reload();
-					showMsg(result.message);
-				} else
-					Ext.Msg.alert("报告", result.message);
-			},
-			errorHandler : function(message) {
-				Ext.Msg.alert("错误", "对不起，程序出现错误!");
-				cancelLoadingMessage();
-			}
+		Ext.MessageBox.confirm('确认批量撤销预约', '是否确认批量撤销预约？<br/><b>有些预约可能已经过期而不能被撤销</b>', function(btn) {
+			if ("yes" != btn)
+				return;
+			DWRUtil.useLoadingMessage("处理中...");
+			Book.batchCancelBook(list, {
+				callback : function(value) {
+					cancelLoadingMessage();
+					var result = Ext.decode(value);
+					if (result.result) {
+						store.reload();
+						showMsg(result.message);
+					} else
+						Ext.Msg.alert("报告", result.message);
+				},
+				errorHandler : function(message) {
+					Ext.Msg.alert("错误", "对不起，程序出现错误!");
+					cancelLoadingMessage();
+				}
+			});
 		});
 	}
 
