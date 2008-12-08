@@ -499,9 +499,13 @@ public class NoticeServiceImpl implements INoticeService {
 		}
 		if (a[0] == 0 && a[1] == 0 && a[2] == 0) {
 			Account account = accountDao.getAccountById(userid);
+			if (account.isDisabled())
+				return "您被禁用预约，若要恢复预约功能，请联系管理员！&nbsp<a href=# onclick='clearMsg();return false;'><img src='resources/images/close.gif'/></a>";
 			if (account.getMobile().equals("")
 					|| account.getTeacher().equals(""))
-				//return "您的基本资料不完整，在预约设备前，请先更新您的<a href='javascript:void(0);' onclick='initUserAccount();return false;'>基本资料</a>！&nbsp<a href=# onclick='clearMsg();return false;'><img src='resources/images/close.gif'/></a>";
+				// return
+				// "您的基本资料不完整，在预约设备前，请先更新您的<a href='javascript:void(0);' onclick='initUserAccount();return false;'>基本资料</a>！&nbsp<a href=# onclick='clearMsg();return false;'><img src='resources/images/close.gif'/></a>"
+				// ;
 				return "您的基本资料不完整，在预约设备前，请先更新您的<a href=# onclick='initUserAccount();return false;'>基本资料</a>！&nbsp<a href=# onclick='clearMsg();return false;'><img src='resources/images/close.gif'/></a>";
 			else
 				return "您好，"
