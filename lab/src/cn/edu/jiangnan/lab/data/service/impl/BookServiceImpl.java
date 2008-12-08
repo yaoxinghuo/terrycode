@@ -650,8 +650,9 @@ public class BookServiceImpl implements IBookService {
 		String mobile = account.getMobile();
 		if (mobile != null && !mobile.equals(""))
 			sb.append("\n申请人联系方式:\n  ").append(mobile);
-		sb.append("\n\n实验费用：\n  ").append(nf.format(book.getCompute_fee())+"元");
-		sb.append("\n应收费用：\n  ").append(nf.format(book.getActual_fee())+"元");
+		sb.append("\n\n实验费用：\n  ").append(
+				nf.format(book.getCompute_fee()) + "元");
+		sb.append("\n应收费用：\n  ").append(nf.format(book.getActual_fee()) + "元");
 		String remark = book.getRemark();
 		if (remark != null && !remark.equals("")) {
 			sb.append("\n费用备注:\n  ").append(remark);
@@ -781,7 +782,7 @@ public class BookServiceImpl implements IBookService {
 				pass++;
 				book.setAction(1);
 				book.setActual_fee(book.getCompute_fee());
-				Equip equip = equipDao.getEquipById(book.getEquip_id());
+				Equip equip = book.getEquip();
 				equip.setCounter(equip.getCounter() + 1);
 				equipDao.saveEquip(equip);
 				bookDao.saveBook(book);
@@ -938,7 +939,9 @@ public class BookServiceImpl implements IBookService {
 		book.setAction(0);
 		book.setActual_fee(0);
 		book.setRemark("");
-		if (bookDao.saveBook(book)) {
+		Equip equip = book.getEquip();
+		equip.setCounter(equip.getCounter() - 1);
+		if (bookDao.saveBook(book) && equipDao.saveEquip(equip)) {
 			jo.put("result", true);
 			jo.put("message", "您已经成功取消了'" + book.getUser_name() + "'的预约！");
 			logDao.saveLog(generateLog(book, 0, admin_id, admin_account
@@ -994,11 +997,13 @@ public class BookServiceImpl implements IBookService {
 		java.util.Date date = new java.util.Date();
 		for (int i = 0; i < book_ids.length; i++) {
 			Book book = bookDao.getBookById(book_ids[i]);
+			Equip equip = book.getEquip();
+			equip.setCounter(equip.getCounter() - 1);
 			book.setAction(0);
 			book.setActual_fee(0);
 			book.setRemark("");
 			if (book.getEnd().getTime() >= date.getTime()
-					&& bookDao.saveBook(book)) {
+					&& bookDao.saveBook(book) && equipDao.saveEquip(equip)) {
 				pass++;
 				logDao.saveLog(generateLog(book, 0, admin_id, admin_account
 						.getUsername(), null));
