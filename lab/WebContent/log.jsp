@@ -164,7 +164,7 @@
 						test="log.action==3">改费用</s:elseif></td>
 					</tr>
 					<tr>
-						<td><b>管理员附言</b></td>
+						<td><b>审批人附言</b></td>
 						<td><s:property value="log.admin_remark" /></td>
 					</tr>
 
