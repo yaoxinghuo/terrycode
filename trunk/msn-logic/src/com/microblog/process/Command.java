@@ -1,8 +1,6 @@
 package com.microblog.process;
 
-import java.util.EventObject;
-
-public class Command extends EventObject {
+public class Command {
 	/*
 	 * [指令][空格][機器人帳號][空格][朋友帳號][空格][附加資訊長度][換行字元][附加資訊]
 	 */
@@ -12,6 +10,8 @@ public class Command extends EventObject {
 	 */
 	private static final long serialVersionUID = -2546916448053378948L;
 	private Commands name;// 指令名字
+
+	private boolean nextCommandStart = true;// 下一条Socket消息是否是新的一条Comamnd命令
 
 	public Commands getName() {
 		return name;
@@ -64,27 +64,38 @@ public class Command extends EventObject {
 	}
 
 	private String msg;// 附加資訊
-	
-	public Command(Object source) {
-		super(source);
-	}
-	
-	public Command(String mix) {
-		super(mix);
-		String[] parts = mix.replace("\\n", "\n").split("\\s",5);
-		name = Commands.valueOf(parts[0]);
+
+	public Command(String mix) throws Exception {
+		String[] parts = mix.split("\\s", 5);
+		if (parts.length < 4)
+			throw new Exception("Syntax Error:" + mix);
+		try {
+			name = Commands.valueOf(parts[0]);
+		} catch (Exception e) {
+			throw new Exception("Unrecognized command:" + parts[0]);
+		}
 		robotId = parts[1].toLowerCase();
 		friendId = parts[2].toLowerCase();
-		len = Integer.parseInt(parts[3]);
-		if (len != 0)
-			msg = parts[4];
-		else
-			msg = null;
+		try {
+			len = Integer.parseInt(parts[3]);
+		} catch (Exception e) {
+			throw new Exception("Unable to parser number:" + parts[3]);
+		}
+		if (len != 0) {
+			if (parts.length < 5)
+				nextCommandStart = false;
+			else {
+				msg = parts[4];
+				nextCommandStart = msg.length() >= len;
+			}
+		} else {
+			msg = "";
+			nextCommandStart = true;
+		}
 	}
 
 	public Command(Commands name, String robotId, String friendId, int len,
 			String msg) {
-		super(name);
 		this.name = name;
 		this.robotId = robotId;
 		this.friendId = friendId;
@@ -102,5 +113,27 @@ public class Command extends EventObject {
 		if (len != 0)
 			sb.append(msg);
 		return sb.toString();
+	}
+
+	public void appendCommandMsg(String msg) {
+		if (nextCommandStart)
+			return;
+		if (this.msg == null)
+			this.msg = "";
+		if (this.msg.length() >= this.len) {
+			this.nextCommandStart = true;
+			return;
+		}
+		this.msg = this.msg + msg;
+		if (this.msg.length() >= this.len)
+			nextCommandStart = true;
+	}
+
+	public void setNextCommandStart(boolean nextCommandStart) {
+		this.nextCommandStart = nextCommandStart;
+	}
+
+	public boolean isNextCommandStart() {
+		return nextCommandStart;
 	}
 }

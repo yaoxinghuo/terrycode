@@ -31,7 +31,7 @@ public class SocketObservable extends Observable implements Runnable {
 		this.port = port;
 		this.passcode = passcode;
 		this.passport = passport;
-		
+
 		connect();
 	}
 
@@ -42,8 +42,7 @@ public class SocketObservable extends Observable implements Runnable {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		String commandString = command.toString().replace("\n", "\\n").replace(
-				"\r", "\\r");
+		String commandString = command.toString();
 		Logs.getLogger().info(
 				"Client send command to server:\t" + commandString);
 		out.println(commandString);
@@ -55,38 +54,23 @@ public class SocketObservable extends Observable implements Runnable {
 			String line;
 			while (true) {
 				if (!isConnected) {
-//					try {
-//						Thread.sleep(3000);
-//					} catch (InterruptedException e) {
-//					}
 					continue;
 				}
 				line = br.readLine();
 				if (line == null || line.trim().equals("")) {
-//					try {
-//						Thread.sleep(3000);
-//					} catch (InterruptedException e) {
-//					}
 					continue;
 				}
-				Logs.getLogger().debug("Receive socket message from server:\t"+line);
+				Logs.getLogger().debug(
+						"Receive socket message from server:\t" + line);
 				if (line.trim().equalsIgnoreCase(OK)) {
 					isReady = true;
 					Logs
 							.getLogger()
 							.info(
-									"Socket connected to:\t"
-											+ host
-											+ ":"
-											+ port
-											+ "\tReady for incoming comands from server...");
+									"Receive ok message from server.Ready for incoming comands...");
 					continue;
 				}
 				if (!isReady) {
-//					try {
-//						Thread.sleep(3000);
-//					} catch (InterruptedException e) {
-//					}
 					continue;
 				}
 				Logs.getLogger().info(
@@ -106,7 +90,7 @@ public class SocketObservable extends Observable implements Runnable {
 
 	public void fireChanged(String line) {
 		setChanged();
-		notifyObservers(new Command(line));
+		notifyObservers(new SocketEventObject(new String(line)));
 	}
 
 	private void setConnectionCloseAndReconnect() {
@@ -134,6 +118,7 @@ public class SocketObservable extends Observable implements Runnable {
 					.getInputStream(), "UTF-8"));
 			out = new PrintWriter(server.getOutputStream(), true);
 			isConnected = true;
+			Logs.getLogger().info("Socket connected to:\t" + host + ":" + port);
 			out.println(passport);
 			out.println(passcode);
 			Logs.getLogger().info(
