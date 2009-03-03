@@ -20,6 +20,8 @@ public class SocketObservable extends Observable implements Runnable {
 	private BufferedReader br;
 	private PrintWriter out;
 
+	private StringBuffer sCommand = new StringBuffer();
+
 	private static final String OK = "ok";
 
 	private boolean isConnected = false;
@@ -45,7 +47,7 @@ public class SocketObservable extends Observable implements Runnable {
 		String commandString = command.toString();
 		Logs.getLogger().info(
 				"Client send command to server:\t" + commandString);
-		out.println(commandString);
+		out.print(commandString);
 	}
 
 	@Override
@@ -60,23 +62,22 @@ public class SocketObservable extends Observable implements Runnable {
 				if (line == null || line.trim().equals("")) {
 					continue;
 				}
-				Logs.getLogger().debug(
-						"Receive socket message from server:\t" + line);
 				if (line.trim().equalsIgnoreCase(OK)) {
 					isReady = true;
 					Logs
 							.getLogger()
 							.info(
-									"Receive ok message from server.Ready for incoming comands...");
+									"Receive 'ok' message from server.Ready for incoming comands...");
 					continue;
 				}
 				if (!isReady) {
 					continue;
 				}
+				sCommand.append(line).append("\n");
 				Logs.getLogger().info(
 						"Receive command from server:\t" + line
 								+ "\tParse it...");
-				fireChanged(line);
+				checkCompleteCommand();
 			}
 		} catch (IOException e) {
 			isConnected = false;
@@ -88,9 +89,27 @@ public class SocketObservable extends Observable implements Runnable {
 
 	}
 
-	public void fireChanged(String line) {
+	private void checkCompleteCommand() {
+		Command command;
+		try {
+			command = new Command(sCommand.toString());
+			if (command.getMsg().length() == command.getLen()) {
+				sCommand.delete(0, command.toString().length());
+				fireChanged(command);
+			} else
+				Logs.getLogger().info(
+						"Command not complete, waiting for next command...");
+		} catch (Exception e) {
+			sCommand.delete(0, sCommand.length());
+			Logs.getLogger().error(
+					"Error parse command:\t" + sCommand + "\tError Message:\t"
+							+ e.getMessage());
+		}
+	}
+
+	public void fireChanged(Command command) {
 		setChanged();
-		notifyObservers(new SocketEventObject(new String(line)));
+		notifyObservers(command);
 	}
 
 	private void setConnectionCloseAndReconnect() {

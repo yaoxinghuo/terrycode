@@ -19,6 +19,8 @@ public class Settings {
 	}
 
 	private String adminAccounts[];
+	
+	private String forumAdminAccount;
 
 	private String webBaseUrl;
 
@@ -27,6 +29,16 @@ public class Settings {
 	private String socketPassport;
 	private String socketPasscode;
 	private String wsUrl;
+	private String wsPassport;
+	private String wsPasscode;
+
+	public String getWsPasscode() {
+		return wsPasscode;
+	}
+
+	public void setWsPasscode(String wsPasscode) {
+		this.wsPasscode = wsPasscode;
+	}
 
 	private static Settings instance;
 
@@ -64,8 +76,13 @@ public class Settings {
 		socketPort = Integer.parseInt(properties.getProperty("socket.port"));
 		socketPassport = properties.getProperty("socket.passport");
 		socketPasscode = properties.getProperty("socket.passcode");
+		
 		wsUrl = properties.getProperty("ws.url");
+		setWsPassport(properties.getProperty("ws.passport"));
+		wsPasscode = properties.getProperty("ws.passcode");
+		
 		adminAccounts = properties.getProperty("msn.adminAccounts").split(",");
+		forumAdminAccount = properties.getProperty("msn.forumAdminAccount");
 
 		webBaseUrl = properties.getProperty("web.webBaseUrl");
 	}
@@ -129,5 +146,21 @@ public class Settings {
 	public static void main(String[] args) {
 		Settings s = Settings.getInstance();
 		System.out.println(s.getSocketHost());
+	}
+
+	public void setForumAdminAccount(String forumAdminAccount) {
+		this.forumAdminAccount = forumAdminAccount;
+	}
+
+	public String getForumAdminAccount() {
+		return forumAdminAccount;
+	}
+
+	public void setWsPassport(String wsPassport) {
+		this.wsPassport = wsPassport;
+	}
+
+	public String getWsPassport() {
+		return wsPassport;
 	}
 }
