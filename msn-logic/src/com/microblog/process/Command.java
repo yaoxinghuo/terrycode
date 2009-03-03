@@ -1,17 +1,14 @@
 package com.microblog.process;
 
-public class Command {
+import java.util.EventObject;
+
+public class Command extends EventObject {
 	/*
 	 * [指令][空格][機器人帳號][空格][朋友帳號][空格][附加資訊長度][換行字元][附加資訊]
 	 */
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -2546916448053378948L;
 	private Commands name;// 指令名字
-
-	private boolean nextCommandStart = true;// 下一条Socket消息是否是新的一条Comamnd命令
 
 	public Commands getName() {
 		return name;
@@ -65,7 +62,12 @@ public class Command {
 
 	private String msg;// 附加資訊
 
+	public Command(Object source) {
+		super(source);
+	}
+
 	public Command(String mix) throws Exception {
+		super(mix);
 		String[] parts = mix.split("\\s", 5);
 		if (parts.length < 4)
 			throw new Exception("Syntax Error:" + mix);
@@ -83,19 +85,18 @@ public class Command {
 		}
 		if (len != 0) {
 			if (parts.length < 5)
-				nextCommandStart = false;
-			else {
+				msg = "";
+			else
 				msg = parts[4];
-				nextCommandStart = msg.length() >= len;
-			}
-		} else {
+
+		} else
 			msg = "";
-			nextCommandStart = true;
-		}
+
 	}
 
 	public Command(Commands name, String robotId, String friendId, int len,
 			String msg) {
+		super(name);
 		this.name = name;
 		this.robotId = robotId;
 		this.friendId = friendId;
@@ -115,25 +116,4 @@ public class Command {
 		return sb.toString();
 	}
 
-	public void appendCommandMsg(String msg) {
-		if (nextCommandStart)
-			return;
-		if (this.msg == null)
-			this.msg = "";
-		if (this.msg.length() >= this.len) {
-			this.nextCommandStart = true;
-			return;
-		}
-		this.msg = this.msg + msg;
-		if (this.msg.length() >= this.len)
-			nextCommandStart = true;
-	}
-
-	public void setNextCommandStart(boolean nextCommandStart) {
-		this.nextCommandStart = nextCommandStart;
-	}
-
-	public boolean isNextCommandStart() {
-		return nextCommandStart;
-	}
 }

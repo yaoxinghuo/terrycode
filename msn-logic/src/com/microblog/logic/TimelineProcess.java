@@ -1097,8 +1097,11 @@ public class TimelineProcess extends Process {
 				replys[i] = reply.substring(i * 400);
 		}
 		for (String r : replys) {
-			if (!r.equals(""))
+			if (!r.equals("")) {
+				Logs.getLogger().info(
+						"Call webservice to send text(" + r + ") to " + email);
 				wsActionService.sendText(email, r);
+			}
 		}
 
 	}
@@ -1155,14 +1158,14 @@ public class TimelineProcess extends Process {
 
 	@Override
 	protected void init() throws Exception {
-		wsMemberService.init(settings.getWsUrl(), settings.getSocketPassport(),
-				settings.getSocketPasscode());
-		wsServiceService.init(settings.getWsUrl(),
-				settings.getSocketPassport(), settings.getSocketPasscode());
-		wsMessengerService.init(settings.getWsUrl(), settings
-				.getSocketPassport(), settings.getSocketPasscode());
-		wsActionService.init(settings.getWsUrl(), settings.getSocketPassport(),
-				settings.getSocketPasscode());
+		wsMemberService.init(settings.getWsUrl(), settings.getWsPassport(),
+				settings.getWsPasscode());
+		wsServiceService.init(settings.getWsUrl(), settings.getWsPassport(),
+				settings.getWsPasscode());
+		wsMessengerService.init(settings.getWsUrl(), settings.getWsPassport(),
+				settings.getWsPasscode());
+		wsActionService.init(settings.getWsUrl(), settings.getWsPassport(),
+				settings.getWsPasscode());
 
 	}
 }
