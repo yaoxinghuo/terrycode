@@ -23,7 +23,7 @@ public class MessegerServiceImpl implements IMessengerService {
 			wsUrl = "http://" + wsUrl;
 		this.passport = passport;
 		this.passcode = passcode;
-		targetEPR = new EndpointReference(wsUrl + "/services/Action");
+		targetEPR = new EndpointReference(wsUrl + "/services/Messenger");
 		serviceClient = new RPCServiceClient();
 		Options options = serviceClient.getOptions();
 		options.setTo(targetEPR);
@@ -37,7 +37,7 @@ public class MessegerServiceImpl implements IMessengerService {
 				displayName };
 		Class[] classes = new Class[] { Boolean.class };
 		QName opAddEntry = new QName(
-				"http://member.webservice.msn.microblog.com",
+				"http://messenger.webservice.msn.microblog.com",
 				"changeDisplayName");
 		return (Boolean) (serviceClient.invokeBlocking(opAddEntry,
 				opAddEntryArgs, classes)[0]);
@@ -51,7 +51,7 @@ public class MessegerServiceImpl implements IMessengerService {
 				personalMessage };
 		Class[] classes = new Class[] { Boolean.class };
 		QName opAddEntry = new QName(
-				"http://member.webservice.msn.microblog.com",
+				"http://messenger.webservice.msn.microblog.com",
 				"changePersonalMessage");
 		return (Boolean) (serviceClient.invokeBlocking(opAddEntry,
 				opAddEntryArgs, classes)[0]);
@@ -64,7 +64,8 @@ public class MessegerServiceImpl implements IMessengerService {
 		String[] opAddEntryArgs = new String[] { passport, passcode, account };
 		Class[] classes = new Class[] { MessengerStatusWrapper.class };
 		QName opAddEntry = new QName(
-				"http://member.webservice.msn.microblog.com", "currentStatus");
+				"http://messenger.webservice.msn.microblog.com",
+				"currentStatus");
 		return (MessengerStatusWrapper) (serviceClient.invokeBlocking(
 				opAddEntry, opAddEntryArgs, classes)[0]);
 	}
@@ -75,7 +76,7 @@ public class MessegerServiceImpl implements IMessengerService {
 		String[] opAddEntryArgs = new String[] { passport, passcode };
 		Class[] classes = new Class[] { String[].class };
 		QName opAddEntry = new QName(
-				"http://member.webservice.msn.microblog.com", "list");
+				"http://messenger.webservice.msn.microblog.com", "list");
 		return (String[]) (serviceClient.invokeBlocking(opAddEntry,
 				opAddEntryArgs, classes)[0]);
 	}

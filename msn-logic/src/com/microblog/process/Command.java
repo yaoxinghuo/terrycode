@@ -14,29 +14,29 @@ public class Command extends EventObject {
 		return name;
 	}
 
+	public String getAccount() {
+		return account;
+	}
+
+	public void setAccount(String account) {
+		this.account = account;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public void setName(Commands name) {
 		this.name = name;
 	}
 
-	private String robotId;// 機器人帳號
-	private String friendId;// 朋友帳號
+	private String account;// 機器人帳號
+	private String email;// 朋友帳號
 	private int len;// 附加資訊長度
-
-	public String getRobotId() {
-		return robotId;
-	}
-
-	public void setRobotId(String robotId) {
-		this.robotId = robotId;
-	}
-
-	public String getFriendId() {
-		return friendId;
-	}
-
-	public void setFriendId(String friendId) {
-		this.friendId = friendId;
-	}
 
 	public int getLen() {
 		return len;
@@ -45,22 +45,22 @@ public class Command extends EventObject {
 	public void setLen(int len) {
 		this.len = len;
 		if (len == 0)
-			msg = null;
+			body = "";
 	}
 
-	public String getMsg() {
-		return msg;
+	public String getBody() {
+		return body;
 	}
 
-	public void setMsg(String msg) {
-		this.msg = msg;
-		if (msg == null)
+	public void setBody(String body) {
+		this.body = body;
+		if (body == null)
 			len = 0;
 		else
-			len = msg.length();
+			len = body.length();
 	}
 
-	private String msg;// 附加資訊
+	private String body;// 附加資訊
 
 	public Command(Object source) {
 		super(source);
@@ -76,43 +76,41 @@ public class Command extends EventObject {
 		} catch (Exception e) {
 			throw new Exception("Unrecognized command:" + parts[0]);
 		}
-		robotId = parts[1].toLowerCase();
-		friendId = parts[2].toLowerCase();
+		account = parts[1].toLowerCase();
+		email = parts[2].toLowerCase();
 		try {
 			len = Integer.parseInt(parts[3]);
 		} catch (Exception e) {
 			throw new Exception("Unable to parser number:" + parts[3]);
 		}
 		if (len != 0) {
-			if (parts.length < 5)
-				msg = "";
-			else
-				msg = parts[4];
-
+			if (parts[4].length() < len)
+				throw new Exception("Extra msg length error:" + parts[4]);
+			body = parts[4].substring(0, len);
 		} else
-			msg = "";
+			body = "";
 
 	}
 
-	public Command(Commands name, String robotId, String friendId, int len,
-			String msg) {
-		super(name);
+	public Command(Commands name, String account, String email, int len,
+			String body) {
+		super(name.toString());
 		this.name = name;
-		this.robotId = robotId;
-		this.friendId = friendId;
+		this.account = account;
+		this.email = email;
 		this.len = len;
-		this.msg = msg;
+		this.body = body;
 	}
 
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append(name.toString()).append(" ");
-		sb.append(robotId).append(" ");
-		sb.append(friendId).append(" ");
+		sb.append(account).append(" ");
+		sb.append(email).append(" ");
 		sb.append(len).append("\n");
 		if (len != 0)
-			sb.append(msg);
+			sb.append(body);
 		return sb.toString();
 	}
 

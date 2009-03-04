@@ -33,7 +33,7 @@ public class ActionServiceImpl implements IActionService {
 		String[] opAddEntryArgs = new String[] { passport, passcode, email };
 		Class[] classes = new Class[] { Boolean.class };
 		QName opAddEntry = new QName(
-				"http://member.webservice.msn.microblog.com", "knockOn");
+				"http://action.webservice.msn.microblog.com", "knockOn");
 		return (Boolean) (serviceClient.invokeBlocking(opAddEntry,
 				opAddEntryArgs, classes)[0]);
 	}
@@ -44,7 +44,7 @@ public class ActionServiceImpl implements IActionService {
 		String[] opAddEntryArgs = new String[] { passport, passcode, account };
 		Class[] classes = new Class[] { Boolean.class };
 		QName opAddEntry = new QName(
-				"http://member.webservice.msn.microblog.com", "knockOnAll");
+				"http://action.webservice.msn.microblog.com", "knockOnAll");
 		return (Boolean) (serviceClient.invokeBlocking(opAddEntry,
 				opAddEntryArgs, classes)[0]);
 	}
@@ -56,7 +56,7 @@ public class ActionServiceImpl implements IActionService {
 				text };
 		Class[] classes = new Class[] { Boolean.class };
 		QName opAddEntry = new QName(
-				"http://member.webservice.msn.microblog.com", "sendText");
+				"http://action.webservice.msn.microblog.com", "sendText");
 		return (Boolean) (serviceClient.invokeBlocking(opAddEntry,
 				opAddEntryArgs, classes)[0]);
 	}
@@ -68,7 +68,7 @@ public class ActionServiceImpl implements IActionService {
 				text };
 		Class[] classes = new Class[] { Boolean.class };
 		QName opAddEntry = new QName(
-				"http://member.webservice.msn.microblog.com", "sendTextToAll");
+				"http://action.webservice.msn.microblog.com", "sendTextToAll");
 		return (Boolean) (serviceClient.invokeBlocking(opAddEntry,
 				opAddEntryArgs, classes)[0]);
 	}
