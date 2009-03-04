@@ -6,6 +6,8 @@ import java.util.Properties;
 public class Settings {
 
 	private Properties properties;
+	
+	private String forumId;
 
 	private String userImgBasePath;
 	private String userFileBasePath;
@@ -78,12 +80,12 @@ public class Settings {
 		socketPasscode = properties.getProperty("socket.passcode");
 		
 		wsUrl = properties.getProperty("ws.url");
-		setWsPassport(properties.getProperty("ws.passport"));
+		wsPassport = properties.getProperty("ws.passport");
 		wsPasscode = properties.getProperty("ws.passcode");
 		
 		adminAccounts = properties.getProperty("msn.adminAccounts").split(",");
 		forumAdminAccount = properties.getProperty("msn.forumAdminAccount");
-
+		forumId = properties.getProperty("msn.forumId");
 		webBaseUrl = properties.getProperty("web.webBaseUrl");
 	}
 
@@ -162,5 +164,13 @@ public class Settings {
 
 	public String getWsPassport() {
 		return wsPassport;
+	}
+
+	public void setForumId(String forumId) {
+		this.forumId = forumId;
+	}
+
+	public String getForumId() {
+		return forumId;
 	}
 }
