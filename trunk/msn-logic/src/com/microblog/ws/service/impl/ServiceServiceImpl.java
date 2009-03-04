@@ -23,7 +23,7 @@ public class ServiceServiceImpl implements IServiceService {
 			wsUrl = "http://" + wsUrl;
 		this.passport = passport;
 		this.passcode = passcode;
-		targetEPR = new EndpointReference(wsUrl + "/services/Action");
+		targetEPR = new EndpointReference(wsUrl + "/services/Service");
 		serviceClient = new RPCServiceClient();
 		Options options = serviceClient.getOptions();
 		options.setTo(targetEPR);
@@ -36,7 +36,7 @@ public class ServiceServiceImpl implements IServiceService {
 				displayName };
 		Class[] classes = new Class[] { Boolean.class };
 		QName opAddEntry = new QName(
-				"http://member.webservice.msn.microblog.com",
+				"http://service.webservice.msn.microblog.com",
 				"changeDisplayName");
 		return (Boolean) (serviceClient.invokeBlocking(opAddEntry,
 				opAddEntryArgs, classes)[0]);
@@ -50,7 +50,7 @@ public class ServiceServiceImpl implements IServiceService {
 				personalMessage };
 		Class[] classes = new Class[] { Boolean.class };
 		QName opAddEntry = new QName(
-				"http://member.webservice.msn.microblog.com",
+				"http://service.webservice.msn.microblog.com",
 				"changePersonalMessage");
 		return (Boolean) (serviceClient.invokeBlocking(opAddEntry,
 				opAddEntryArgs, classes)[0]);
@@ -62,7 +62,7 @@ public class ServiceServiceImpl implements IServiceService {
 		String[] opAddEntryArgs = new String[] { passport, passcode };
 		Class[] classes = new Class[] { ServiceStatusWrapper.class };
 		QName opAddEntry = new QName(
-				"http://member.webservice.msn.microblog.com",
+				"http://service.webservice.msn.microblog.com",
 				"currentStatus");
 		return (ServiceStatusWrapper) (serviceClient.invokeBlocking(opAddEntry,
 				opAddEntryArgs, classes)[0]);

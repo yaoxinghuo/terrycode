@@ -1,26 +1,76 @@
 package com.microblog.socket;
 
-import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Observable;
 
 import com.microblog.process.Command;
+import com.microblog.process.Commands;
 import com.microblog.util.Logs;
 
 public class SocketObservable extends Observable implements Runnable {
+
+	private class Cmd {
+		int len;
+		Commands name;
+		String account;
+		String email;
+		String body;
+
+		Command command;
+
+		public Cmd(final String line) throws Exception {
+			String[] parts = line.split(" ");
+			if (parts.length < 3)
+				throw new Exception("Syntax Error:" + line);
+			try {
+				name = Commands.valueOf(parts[0]);
+			} catch (Exception e) {
+				throw new Exception("Unrecognized command:" + parts[0]);
+			}
+			account = parts[1];
+			email = parts[2];
+			try {
+				len = Integer.parseInt(parts[3]);
+			} catch (Exception e) {
+				throw new Exception("Unable to parser number:" + parts[3]);
+			}
+			final byte[] bb = new byte[len];
+			try {
+				in.read(bb, 0, len);
+				body = new String(bb, "UTF-8");
+				command = new Command(name, account, email, len, body);
+			} catch (Exception e) {
+				throw new Exception("Unable to read extra msg:");
+			}
+		}
+
+		@Override
+		public String toString() {
+			StringBuffer sb = new StringBuffer();
+			sb.append(name.toString()).append(" ");
+			sb.append(account).append(" ");
+			sb.append(email).append(" ");
+			sb.append(len).append("\n");
+			if (len != 0)
+				sb.append(body);
+			return sb.toString();
+		}
+	}
+
 	private String host;
 	private int port;
 	private String passport;
 	private String passcode;
 
 	private Socket server;
-	private BufferedReader br;
-	private PrintWriter out;
 
-	private StringBuffer sCommand = new StringBuffer();
+	private PrintWriter out;
+	private final ByteArrayOutputStream inbuf = new ByteArrayOutputStream();
+	private InputStream in;
 
 	private static final String OK = "ok";
 
@@ -53,31 +103,31 @@ public class SocketObservable extends Observable implements Runnable {
 	@Override
 	public void run() {
 		try {
-			String line;
 			while (true) {
 				if (!isConnected) {
 					continue;
 				}
-				line = br.readLine();
-				if (line == null || line.trim().equals("")) {
-					continue;
-				}
-				if (line.trim().equalsIgnoreCase(OK)) {
+				if (readLine().trim().equalsIgnoreCase(OK)) {
 					isReady = true;
 					Logs
 							.getLogger()
 							.info(
 									"Receive 'ok' message from server.Ready for incoming comands...");
-					continue;
+					while (true) {
+						Cmd cmd;
+						try {
+							cmd = new Cmd(readLine());
+							Logs.getLogger().info(
+									"Receive command from server:\t"
+											+ cmd.toString());
+							fireChanged(cmd.command);
+						} catch (Exception e) {
+							Logs.getLogger().error(
+									"Error parse command.exception:"
+											+ e.getMessage());
+						}
+					}
 				}
-				if (!isReady) {
-					continue;
-				}
-				sCommand.append(line).append("\n");
-				Logs.getLogger().info(
-						"Receive command from server:\t" + line
-								+ "\tParse it...");
-				checkCompleteCommand();
 			}
 		} catch (IOException e) {
 			isConnected = false;
@@ -89,22 +139,22 @@ public class SocketObservable extends Observable implements Runnable {
 
 	}
 
-	private void checkCompleteCommand() {
-		Command command;
-		try {
-			command = new Command(sCommand.toString());
-			if (command.getMsg().length() == command.getLen()) {
-				sCommand.delete(0, command.toString().length());
-				fireChanged(command);
-			} else
-				Logs.getLogger().info(
-						"Command not complete, waiting for next command...");
-		} catch (Exception e) {
-			sCommand.delete(0, sCommand.length());
-			Logs.getLogger().error(
-					"Error parse command:\t" + sCommand + "\tError Message:\t"
-							+ e.getMessage());
+	private String readLine() throws IOException {
+		inbuf.reset();
+		while (true) {
+			final int v = in.read();
+			if (v == -1) {
+				return null;
+			}
+			if (v == 13) {
+				continue;
+			}
+			if (v == 10) {
+				break;
+			}
+			inbuf.write(v);
 		}
+		return new String(inbuf.toByteArray(), "UTF-8");
 	}
 
 	public void fireChanged(Command command) {
@@ -114,16 +164,16 @@ public class SocketObservable extends Observable implements Runnable {
 
 	private void setConnectionCloseAndReconnect() {
 		try {
-			if (br != null)
-				br.close();
+			if (in != null)
+				in.close();
 			if (out != null)
 				out.close();
-			if (server != null)
+			if (server != null && !server.isClosed())
 				server.close();
 		} catch (IOException e) {
 		}
 		server = null;
-		br = null;
+		in = null;
 		out = null;
 
 		connect();
@@ -132,9 +182,7 @@ public class SocketObservable extends Observable implements Runnable {
 	private void connect() {
 		try {
 			server = new Socket(host, port);
-
-			br = new BufferedReader(new InputStreamReader(server
-					.getInputStream(), "UTF-8"));
+			in = server.getInputStream();
 			out = new PrintWriter(server.getOutputStream(), true);
 			isConnected = true;
 			Logs.getLogger().info("Socket connected to:\t" + host + ":" + port);

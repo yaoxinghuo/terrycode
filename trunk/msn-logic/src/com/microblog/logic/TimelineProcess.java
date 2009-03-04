@@ -11,6 +11,7 @@ import com.microblog.process.Commands;
 import com.microblog.process.Process;
 import com.microblog.util.Logs;
 import com.microblog.util.StringUtil;
+import com.microblog.ws.model.MemberStatusWrapper;
 
 public class TimelineProcess extends Process {
 
@@ -142,9 +143,9 @@ public class TimelineProcess extends Process {
 
 	@Override
 	public void textMessage(Command command) throws Exception {
-		String choise = command.getMsg();
+		String choise = command.getBody();
 		String sessionDefaultReply = defaultReply;
-		String email = command.getFriendId();
+		String email = command.getEmail();
 
 		String account_id = userAccountId.get(email);
 		if (account_id == null) {
@@ -1101,6 +1102,12 @@ public class TimelineProcess extends Process {
 				Logs.getLogger().info(
 						"Call webservice to send text(" + r + ") to " + email);
 				wsActionService.sendText(email, r);
+				MemberStatusWrapper fs=(MemberStatusWrapper)wsMemberService.friendStatus(command.getAccount(),email);
+				System.out.println("-----------------------------------------");
+					System.out.println(fs.getPersonalMessage());
+					System.out.println(fs.getEmail());
+					System.out.println(fs.getDisplayName());
+				System.out.println("-----------------------------------------");
 			}
 		}
 
