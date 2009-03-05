@@ -2,7 +2,7 @@ package com.microblog.process;
 
 public class Robot {
 
-	private Process process = null;;
+	private ProcessBase process = null;;
 
 	public Robot(String email, String passport, String passcode) {
 		this.email = email;
@@ -10,12 +10,12 @@ public class Robot {
 		this.passcode = passcode;
 	}
 
-	public Process getProcess() {
-		return process;
+	public void setProcess(ProcessBase process) {
+		this.process = process;
 	}
 
-	public void setProcess(Process process) {
-		this.process = process;
+	public ProcessBase getProcess() {
+		return process;
 	}
 
 	private String email;

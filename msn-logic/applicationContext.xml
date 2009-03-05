@@ -50,6 +50,11 @@
 			<ref local="sessionFactory" />
 		</property>
 	</bean>
+	<bean id="robotDao" class="com.microblog.data.dao.impl.RobotDaoImpl">
+		<property name="sessionFactory">
+			<ref local="sessionFactory" />
+		</property>
+	</bean>
 	<bean id="urlDao" class="com.microblog.data.dao.impl.UrlDaoImpl">
 		<property name="sessionFactory">
 			<ref local="sessionFactory" />
@@ -109,6 +114,11 @@
 	<bean id="urlTarget" class="com.microblog.data.service.impl.UrlServiceImpl">
 		<property name="urlDao">
 			<ref local="urlDao" />
+		</property>
+	</bean>
+	<bean id="serviceTarget" class="com.microblog.data.service.impl.ServiceServiceImpl">
+		<property name="robotDao">
+			<ref local="robotDao" />
 		</property>
 	</bean>
 	
@@ -190,6 +200,20 @@
 		</property>
 		<property name="target">
 			<ref local="urlTarget" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="im*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="serviceService"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref local="transactionManager" />
+		</property>
+		<property name="target">
+			<ref local="serviceTarget" />
 		</property>
 		<property name="transactionAttributes">
 			<props>

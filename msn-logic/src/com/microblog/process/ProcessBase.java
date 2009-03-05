@@ -11,13 +11,15 @@ import com.microblog.ws.messenger.intf.IMessengerService;
 import com.microblog.ws.model.MemberStatusWrapper;
 import com.microblog.ws.service.intf.IServiceService;
 
-public abstract class Process {
+public abstract class ProcessBase {
 
-	public Process() throws Exception {
+	public ProcessBase() throws Exception {
 		ApplicationContext ctx = new FileSystemXmlApplicationContext(
 				"applicationContext.xml");
 		messageService = (IMessageService) ctx.getBean("messageService");
 		accountService = (IAccountService) ctx.getBean("accountService");
+		serviceService = (com.microblog.data.service.intf.IServiceService) ctx
+				.getBean("serviceService");
 		wsMemberService = (IMemberService) ctx.getBean("wsMemberService");
 		wsServiceService = (IServiceService) ctx.getBean("wsServiceService");
 		wsMessengerService = (IMessengerService) ctx
@@ -73,11 +75,21 @@ public abstract class Process {
 
 	protected IMessageService messageService;
 	protected IAccountService accountService;
+	protected com.microblog.data.service.intf.IServiceService serviceService;
 
 	protected IMemberService wsMemberService;
 	protected IServiceService wsServiceService;
 	protected IMessengerService wsMessengerService;
 	protected IActionService wsActionService;
+
+	public com.microblog.data.service.intf.IServiceService getServiceService() {
+		return serviceService;
+	}
+
+	public void setServiceService(
+			com.microblog.data.service.intf.IServiceService serviceService) {
+		this.serviceService = serviceService;
+	}
 
 	public IMessageService getMessageService() {
 		return messageService;

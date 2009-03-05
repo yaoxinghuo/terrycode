@@ -1,4 +1,4 @@
-package com.microblog.logic;
+package com.microblog.main;
 
 import java.util.List;
 
