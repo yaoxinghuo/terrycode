@@ -1,7 +1,10 @@
 package com.microblog.ws.member.impl;
 
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.om.impl.llom.OMElementImpl;
 import org.apache.axis2.addressing.EndpointReference;
 import org.apache.axis2.client.Options;
 import org.apache.axis2.rpc.client.RPCServiceClient;
@@ -12,6 +15,8 @@ import com.microblog.ws.model.MemberStatusWrapper;
 public class MemberServiceImpl implements IMemberService {
 	private EndpointReference targetEPR;
 	private RPCServiceClient serviceClient;
+
+	private String ns = "http://member.webservice.msn.microblog.com";
 
 	private String passport;
 	private String passcode;
@@ -37,8 +42,7 @@ public class MemberServiceImpl implements IMemberService {
 		// 指定方法返回值的数据类型的Class对象
 		Class[] classes = new Class[] { Integer.class };
 		// 指定要调用的getGreeting方法及WSDL文件的命名空间
-		QName opAddEntry = new QName(
-				"http://member.webservice.msn.microblog.com", "acceptFriend");
+		QName opAddEntry = new QName(ns, "acceptFriend");
 		// 调用acceptFriend方法并输出该方法的返回值
 		return (Integer) (serviceClient.invokeBlocking(opAddEntry,
 				opAddEntryArgs, classes)[0]);
@@ -51,8 +55,7 @@ public class MemberServiceImpl implements IMemberService {
 		String[] opAddEntryArgs = new String[] { passport, passcode, account,
 				email };
 		Class[] classes = new Class[] { Integer.class };
-		QName opAddEntry = new QName(
-				"http://member.webservice.msn.microblog.com", "addFriend");
+		QName opAddEntry = new QName(ns, "addFriend");
 		return (Integer) (serviceClient.invokeBlocking(opAddEntry,
 				opAddEntryArgs, classes)[0]);
 	}
@@ -63,8 +66,7 @@ public class MemberServiceImpl implements IMemberService {
 		String[] opAddEntryArgs = new String[] { passport, passcode, account,
 				email };
 		Class[] classes = new Class[] { Boolean.class };
-		QName opAddEntry = new QName(
-				"http://member.webservice.msn.microblog.com", "allowFriend");
+		QName opAddEntry = new QName(ns, "allowFriend");
 		return (Boolean) (serviceClient.invokeBlocking(opAddEntry,
 				opAddEntryArgs, classes)[0]);
 	}
@@ -75,8 +77,7 @@ public class MemberServiceImpl implements IMemberService {
 		String[] opAddEntryArgs = new String[] { passport, passcode, account,
 				email };
 		Class[] classes = new Class[] { Boolean.class };
-		QName opAddEntry = new QName(
-				"http://member.webservice.msn.microblog.com", "blockFriend");
+		QName opAddEntry = new QName(ns, "blockFriend");
 		return (Boolean) (serviceClient.invokeBlocking(opAddEntry,
 				opAddEntryArgs, classes)[0]);
 	}
@@ -85,11 +86,15 @@ public class MemberServiceImpl implements IMemberService {
 	@Override
 	public String[] friendList(String account) throws Exception {
 		String[] opAddEntryArgs = new String[] { passport, passcode, account };
-		Class[] classes = new Class[] { String[].class };
-		QName opAddEntry = new QName(
-				"http://member.webservice.msn.microblog.com", "friendList");
-		return (String[]) (serviceClient.invokeBlocking(opAddEntry,
-				opAddEntryArgs, classes)[0]);
+		Class[] classes = new Class[] { List.class };
+		QName opAddEntry = new QName(ns, "friendList");
+		List<OMElementImpl> olists = (List) (serviceClient.invokeBlocking(
+				opAddEntry, opAddEntryArgs, classes)[0]);
+		String[] lists = new String[olists.size()];
+		for (int i = 0; i < olists.size(); i++) {
+			lists[i] = olists.get(i).getText();
+		}
+		return lists;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -99,8 +104,7 @@ public class MemberServiceImpl implements IMemberService {
 		String[] opAddEntryArgs = new String[] { passport, passcode, account,
 				email };
 		Class[] classes = new Class[] { MemberStatusWrapper.class };
-		QName opAddEntry = new QName(
-				"http://member.webservice.msn.microblog.com", "friendStatus");
+		QName opAddEntry = new QName(ns, "friendStatus");
 		return (MemberStatusWrapper) (serviceClient.invokeBlocking(opAddEntry,
 				opAddEntryArgs, classes)[0]);
 	}
@@ -109,11 +113,15 @@ public class MemberServiceImpl implements IMemberService {
 	@Override
 	public String[] pendingList(String account) throws Exception {
 		String[] opAddEntryArgs = new String[] { passport, passcode, account };
-		Class[] classes = new Class[] { String[].class };
-		QName opAddEntry = new QName(
-				"http://member.webservice.msn.microblog.com", "pendingList");
-		return (String[]) (serviceClient.invokeBlocking(opAddEntry,
-				opAddEntryArgs, classes)[0]);
+		Class[] classes = new Class[] { List.class };
+		QName opAddEntry = new QName(ns, "pendingList");
+		List<OMElementImpl> olists = (List) (serviceClient.invokeBlocking(
+				opAddEntry, opAddEntryArgs, classes)[0]);
+		String[] lists = new String[olists.size()];
+		for (int i = 0; i < olists.size(); i++) {
+			lists[i] = olists.get(i).getText();
+		}
+		return lists;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -123,9 +131,7 @@ public class MemberServiceImpl implements IMemberService {
 		String[] opAddEntryArgs = new String[] { passport, passcode, account,
 				email };
 		Class[] classes = new Class[] { Integer.class };
-		QName opAddEntry = new QName(
-				"http://member.webservice.msn.microblog.com",
-				"removeAndBlockFriend");
+		QName opAddEntry = new QName(ns, "removeAndBlockFriend");
 		return (Integer) (serviceClient.invokeBlocking(opAddEntry,
 				opAddEntryArgs, classes)[0]);
 	}
@@ -136,8 +142,7 @@ public class MemberServiceImpl implements IMemberService {
 		String[] opAddEntryArgs = new String[] { passport, passcode, account,
 				email };
 		Class[] classes = new Class[] { Integer.class };
-		QName opAddEntry = new QName(
-				"http://member.webservice.msn.microblog.com", "removeFriend");
+		QName opAddEntry = new QName(ns, "removeFriend");
 		return (Integer) (serviceClient.invokeBlocking(opAddEntry,
 				opAddEntryArgs, classes)[0]);
 	}
