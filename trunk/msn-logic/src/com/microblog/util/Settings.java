@@ -1,4 +1,4 @@
-package com.microblog.logic;
+package com.microblog.util;
 
 import java.io.FileInputStream;
 import java.util.Properties;
@@ -7,8 +7,6 @@ public class Settings {
 
 	private Properties properties;
 	
-	private String forumId;
-
 	private String userImgBasePath;
 	private String userFileBasePath;
 
@@ -19,10 +17,6 @@ public class Settings {
 	public void setUserFileBasePath(String userFileBasePath) {
 		this.userFileBasePath = userFileBasePath;
 	}
-
-	private String adminAccounts[];
-	
-	private String forumAdminAccount;
 
 	private String webBaseUrl;
 
@@ -83,9 +77,6 @@ public class Settings {
 		wsPassport = properties.getProperty("ws.passport");
 		wsPasscode = properties.getProperty("ws.passcode");
 		
-		adminAccounts = properties.getProperty("msn.adminAccounts").split(",");
-		forumAdminAccount = properties.getProperty("msn.forumAdminAccount");
-		forumId = properties.getProperty("msn.forumId");
 		webBaseUrl = properties.getProperty("web.webBaseUrl");
 	}
 
@@ -137,25 +128,9 @@ public class Settings {
 		this.userImgBasePath = userImgBasePath;
 	}
 
-	public void setAdminAccounts(String adminAccounts[]) {
-		this.adminAccounts = adminAccounts;
-	}
-
-	public String[] getAdminAccounts() {
-		return adminAccounts;
-	}
-
 	public static void main(String[] args) {
 		Settings s = Settings.getInstance();
 		System.out.println(s.getSocketHost());
-	}
-
-	public void setForumAdminAccount(String forumAdminAccount) {
-		this.forumAdminAccount = forumAdminAccount;
-	}
-
-	public String getForumAdminAccount() {
-		return forumAdminAccount;
 	}
 
 	public void setWsPassport(String wsPassport) {
@@ -166,11 +141,4 @@ public class Settings {
 		return wsPassport;
 	}
 
-	public void setForumId(String forumId) {
-		this.forumId = forumId;
-	}
-
-	public String getForumId() {
-		return forumId;
-	}
 }

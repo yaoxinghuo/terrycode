@@ -1,4 +1,4 @@
-package com.microblog.logic;
+package com.microblog.process;
 
 import java.util.Date;
 import java.util.Enumeration;
@@ -6,13 +6,11 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 
 import com.microblog.data.model.Account;
-import com.microblog.process.Command;
-import com.microblog.process.Commands;
-import com.microblog.process.Process;
 import com.microblog.util.Logs;
+import com.microblog.util.Settings;
 import com.microblog.util.StringUtil;
 
-public class TimelineProcess extends Process {
+public class TimelineProcess extends ProcessBase {
 
 	private String[] adminAccounts;
 
@@ -76,11 +74,16 @@ public class TimelineProcess extends Process {
 
 	private Settings settings;
 
-	public TimelineProcess() throws Exception {
+	public TimelineProcess(String account) throws Exception {
 		super();
 		settings = Settings.getInstance();
 		init();
-		this.adminAccounts = settings.getAdminAccounts();
+		com.microblog.data.model.Robot robot = serviceService
+				.imGetRobotByAccount(account);
+		if (robot == null)
+			throw new Exception("Cannot query record from database by account:"
+					+ account);
+		adminAccounts = robot.getAdminAccounts().split(",");
 		this.webBaseUrl = settings.getWebBaseUrl();
 
 		StringBuffer sb = new StringBuffer();

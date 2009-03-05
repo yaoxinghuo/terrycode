@@ -1,4 +1,4 @@
-package com.microblog.logic;
+package com.microblog.process;
 
 import java.util.Date;
 import java.util.Enumeration;
@@ -11,10 +11,8 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 import com.microblog.data.model.Account;
 import com.microblog.data.service.intf.IAccountService;
 import com.microblog.data.service.intf.IMessageService;
-import com.microblog.process.Command;
-import com.microblog.process.Commands;
-import com.microblog.process.Process;
 import com.microblog.util.Logs;
+import com.microblog.util.Settings;
 import com.microblog.util.StringUtil;
 import com.microblog.ws.action.intf.IActionService;
 import com.microblog.ws.member.intf.IMemberService;
@@ -22,7 +20,7 @@ import com.microblog.ws.messenger.intf.IMessengerService;
 import com.microblog.ws.model.MemberStatusWrapper;
 import com.microblog.ws.service.intf.IServiceService;
 
-public class ForumProcess extends Process {
+public class ForumProcess extends ProcessBase {
 
 	private String webBaseUrl;
 
@@ -85,13 +83,23 @@ public class ForumProcess extends Process {
 	private IMessengerService wsMessengerService;
 	private IActionService wsActionService;
 
-	public ForumProcess() throws Exception {
+	public ForumProcess(String account) throws Exception {
+		super();
 		settings = Settings.getInstance();
+		init();
+		com.microblog.data.model.Robot robot = serviceService
+				.imGetRobotByAccount(account);
+		if (robot == null || robot.getForumId() == null
+				|| robot.getForumAdmin() == null)
+			throw new Exception(
+					"Cannot query record or record not complete from database by account:"
+							+ account);
+		this.forumid = robot.getForumId();
+		this.forumAdminAccount = robot.getForumAdmin();
+		this.adminAccounts = robot.getAdminAccounts().split(",");
+
 		this.webBaseUrl = settings.getWebBaseUrl();
-		this.forumid = settings.getForumId();
 		this.forumBaseUrl = webBaseUrl + "forum.action?id=" + forumid;
-		this.adminAccounts = settings.getAdminAccounts();
-		this.forumAdminAccount = settings.getForumAdminAccount();
 
 		StringBuffer sb = new StringBuffer();
 		for (int i = 0; i < managerMenu.length; i++) {
