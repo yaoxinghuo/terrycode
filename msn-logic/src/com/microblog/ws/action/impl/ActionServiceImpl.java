@@ -12,6 +12,8 @@ public class ActionServiceImpl implements IActionService {
 	private EndpointReference targetEPR;
 	private RPCServiceClient serviceClient;
 
+	private String ns = "http://action.webservice.msn.microblog.com";
+
 	private String passport;
 	private String passcode;
 
@@ -32,8 +34,7 @@ public class ActionServiceImpl implements IActionService {
 	public boolean knockOn(String email) throws Exception {
 		String[] opAddEntryArgs = new String[] { passport, passcode, email };
 		Class[] classes = new Class[] { Boolean.class };
-		QName opAddEntry = new QName(
-				"http://action.webservice.msn.microblog.com", "knockOn");
+		QName opAddEntry = new QName(ns, "knockOn");
 		return (Boolean) (serviceClient.invokeBlocking(opAddEntry,
 				opAddEntryArgs, classes)[0]);
 	}
@@ -43,8 +44,7 @@ public class ActionServiceImpl implements IActionService {
 	public boolean knockOnAll(String account) throws Exception {
 		String[] opAddEntryArgs = new String[] { passport, passcode, account };
 		Class[] classes = new Class[] { Boolean.class };
-		QName opAddEntry = new QName(
-				"http://action.webservice.msn.microblog.com", "knockOnAll");
+		QName opAddEntry = new QName(ns, "knockOnAll");
 		return (Boolean) (serviceClient.invokeBlocking(opAddEntry,
 				opAddEntryArgs, classes)[0]);
 	}
@@ -55,8 +55,7 @@ public class ActionServiceImpl implements IActionService {
 		String[] opAddEntryArgs = new String[] { passport, passcode, email,
 				text };
 		Class[] classes = new Class[] { Boolean.class };
-		QName opAddEntry = new QName(
-				"http://action.webservice.msn.microblog.com", "sendText");
+		QName opAddEntry = new QName(ns, "sendText");
 		return (Boolean) (serviceClient.invokeBlocking(opAddEntry,
 				opAddEntryArgs, classes)[0]);
 	}
@@ -67,8 +66,7 @@ public class ActionServiceImpl implements IActionService {
 		String[] opAddEntryArgs = new String[] { passport, passcode, account,
 				text };
 		Class[] classes = new Class[] { Boolean.class };
-		QName opAddEntry = new QName(
-				"http://action.webservice.msn.microblog.com", "sendTextToAll");
+		QName opAddEntry = new QName(ns, "sendTextToAll");
 		return (Boolean) (serviceClient.invokeBlocking(opAddEntry,
 				opAddEntryArgs, classes)[0]);
 	}

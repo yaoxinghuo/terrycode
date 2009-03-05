@@ -11,7 +11,6 @@ import com.microblog.process.Commands;
 import com.microblog.process.Process;
 import com.microblog.util.Logs;
 import com.microblog.util.StringUtil;
-import com.microblog.ws.model.MemberStatusWrapper;
 
 public class TimelineProcess extends Process {
 
@@ -1102,12 +1101,6 @@ public class TimelineProcess extends Process {
 				Logs.getLogger().info(
 						"Call webservice to send text(" + r + ") to " + email);
 				wsActionService.sendText(email, r);
-				MemberStatusWrapper fs=(MemberStatusWrapper)wsMemberService.friendStatus(command.getAccount(),email);
-				System.out.println("-----------------------------------------");
-					System.out.println(fs.getPersonalMessage());
-					System.out.println(fs.getEmail());
-					System.out.println(fs.getDisplayName());
-				System.out.println("-----------------------------------------");
 			}
 		}
 

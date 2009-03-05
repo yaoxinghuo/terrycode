@@ -1,7 +1,10 @@
 package com.microblog.ws.messenger.impl;
 
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.om.impl.llom.OMElementImpl;
 import org.apache.axis2.addressing.EndpointReference;
 import org.apache.axis2.client.Options;
 import org.apache.axis2.rpc.client.RPCServiceClient;
@@ -13,6 +16,8 @@ public class MessegerServiceImpl implements IMessengerService {
 
 	private EndpointReference targetEPR;
 	private RPCServiceClient serviceClient;
+
+	private String ns = "http://messenger.webservice.msn.microblog.com";
 
 	private String passport;
 	private String passcode;
@@ -36,9 +41,7 @@ public class MessegerServiceImpl implements IMessengerService {
 		String[] opAddEntryArgs = new String[] { passport, passcode, account,
 				displayName };
 		Class[] classes = new Class[] { Boolean.class };
-		QName opAddEntry = new QName(
-				"http://messenger.webservice.msn.microblog.com",
-				"changeDisplayName");
+		QName opAddEntry = new QName(ns, "changeDisplayName");
 		return (Boolean) (serviceClient.invokeBlocking(opAddEntry,
 				opAddEntryArgs, classes)[0]);
 	}
@@ -50,9 +53,7 @@ public class MessegerServiceImpl implements IMessengerService {
 		String[] opAddEntryArgs = new String[] { passport, passcode, account,
 				personalMessage };
 		Class[] classes = new Class[] { Boolean.class };
-		QName opAddEntry = new QName(
-				"http://messenger.webservice.msn.microblog.com",
-				"changePersonalMessage");
+		QName opAddEntry = new QName(ns, "changePersonalMessage");
 		return (Boolean) (serviceClient.invokeBlocking(opAddEntry,
 				opAddEntryArgs, classes)[0]);
 	}
@@ -63,9 +64,7 @@ public class MessegerServiceImpl implements IMessengerService {
 			throws Exception {
 		String[] opAddEntryArgs = new String[] { passport, passcode, account };
 		Class[] classes = new Class[] { MessengerStatusWrapper.class };
-		QName opAddEntry = new QName(
-				"http://messenger.webservice.msn.microblog.com",
-				"currentStatus");
+		QName opAddEntry = new QName(ns, "currentStatus");
 		return (MessengerStatusWrapper) (serviceClient.invokeBlocking(
 				opAddEntry, opAddEntryArgs, classes)[0]);
 	}
@@ -74,11 +73,15 @@ public class MessegerServiceImpl implements IMessengerService {
 	@Override
 	public String[] list() throws Exception {
 		String[] opAddEntryArgs = new String[] { passport, passcode };
-		Class[] classes = new Class[] { String[].class };
-		QName opAddEntry = new QName(
-				"http://messenger.webservice.msn.microblog.com", "list");
-		return (String[]) (serviceClient.invokeBlocking(opAddEntry,
-				opAddEntryArgs, classes)[0]);
+		Class[] classes = new Class[] { List.class };
+		QName opAddEntry = new QName(ns, "list");
+		List<OMElementImpl> olists = (List) (serviceClient.invokeBlocking(
+				opAddEntry, opAddEntryArgs, classes)[0]);
+		String[] lists = new String[olists.size()];
+		for (int i = 0; i < olists.size(); i++) {
+			lists[i] = olists.get(i).getText();
+		}
+		return lists;
 	}
 
 }
