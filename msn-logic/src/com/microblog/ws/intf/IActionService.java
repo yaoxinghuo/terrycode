@@ -1,4 +1,4 @@
-package com.microblog.ws.action.intf;
+package com.microblog.ws.intf;
 
 public interface IActionService {
 	public void init(String wsUrl, String passport, String passcode)

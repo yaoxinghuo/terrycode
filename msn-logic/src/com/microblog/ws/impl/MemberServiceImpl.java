@@ -1,4 +1,4 @@
-package com.microblog.ws.member.impl;
+package com.microblog.ws.impl;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import org.apache.axis2.addressing.EndpointReference;
 import org.apache.axis2.client.Options;
 import org.apache.axis2.rpc.client.RPCServiceClient;
 
-import com.microblog.ws.member.intf.IMemberService;
+import com.microblog.ws.intf.IMemberService;
 import com.microblog.ws.model.MemberStatusWrapper;
 
 public class MemberServiceImpl implements IMemberService {

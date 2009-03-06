@@ -1,4 +1,4 @@
-package com.microblog.ws.action.impl;
+package com.microblog.ws.impl;
 
 import javax.xml.namespace.QName;
 
@@ -6,7 +6,7 @@ import org.apache.axis2.addressing.EndpointReference;
 import org.apache.axis2.client.Options;
 import org.apache.axis2.rpc.client.RPCServiceClient;
 
-import com.microblog.ws.action.intf.IActionService;
+import com.microblog.ws.intf.IActionService;
 
 public class ActionServiceImpl implements IActionService {
 	private EndpointReference targetEPR;

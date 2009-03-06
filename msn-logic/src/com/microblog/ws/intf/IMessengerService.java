@@ -1,4 +1,4 @@
-package com.microblog.ws.messenger.intf;
+package com.microblog.ws.intf;
 
 import com.microblog.ws.model.MessengerStatusWrapper;
 

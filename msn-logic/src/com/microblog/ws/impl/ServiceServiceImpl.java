@@ -1,4 +1,4 @@
-package com.microblog.ws.service.impl;
+package com.microblog.ws.impl;
 
 import javax.xml.namespace.QName;
 
@@ -6,8 +6,8 @@ import org.apache.axis2.addressing.EndpointReference;
 import org.apache.axis2.client.Options;
 import org.apache.axis2.rpc.client.RPCServiceClient;
 
+import com.microblog.ws.intf.IServiceService;
 import com.microblog.ws.model.ServiceStatusWrapper;
-import com.microblog.ws.service.intf.IServiceService;
 
 public class ServiceServiceImpl implements IServiceService {
 

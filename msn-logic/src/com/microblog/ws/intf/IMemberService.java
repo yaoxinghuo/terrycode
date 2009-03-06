@@ -1,4 +1,4 @@
-package com.microblog.ws.member.intf;
+package com.microblog.ws.intf;
 
 import com.microblog.ws.model.MemberStatusWrapper;
 
