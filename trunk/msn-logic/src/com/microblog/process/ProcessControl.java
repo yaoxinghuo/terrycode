@@ -26,11 +26,6 @@ public class ProcessControl {
 		Robot robot = robots.get(account);
 		if (robot == null) {
 			int type = serviceService.imGetRobotTypeByAccount(account);
-			if (type == 0) {
-				Logs.getLogger().error(
-						"Account:" + account + " not supported. Ignore");
-				return;
-			}
 			ProcessBase process;
 			try {
 				switch (type) {
@@ -41,7 +36,13 @@ public class ProcessControl {
 					process = new TimelineProcess(account);
 					break;
 				default:
-					process = new TimelineProcess(account);
+					process = new DefaultProcess(account);
+					Logs
+							.getLogger()
+							.error(
+									"Robot account:"
+											+ account
+											+ " not registered in DB. call default process");
 				}
 				robot = new Robot(account, settings.getSocketPassport(),
 						settings.getSocketPasscode());

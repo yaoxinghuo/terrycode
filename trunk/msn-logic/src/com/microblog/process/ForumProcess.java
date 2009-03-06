@@ -683,8 +683,14 @@ public class ForumProcess extends ProcessBase {
 				replys[i] = reply.substring(i * 400);
 		}
 		for (String r : replys) {
-			if (!r.equals(""))
-				wsActionService.sendText(email, r);
+			if (!r.equals("")) {
+				Logs.getLogger().info(
+						"Call webservice to send text(" + r + ") to " + email);
+				if (!wsActionService.sendText(email, r))
+					Logs.getLogger().error(
+							"Unable to send text to " + email
+									+ " via webservice");
+			}
 		}
 
 	}
