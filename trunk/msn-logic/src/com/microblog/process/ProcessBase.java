@@ -5,11 +5,11 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import com.microblog.data.service.intf.IAccountService;
 import com.microblog.data.service.intf.IMessageService;
-import com.microblog.ws.action.intf.IActionService;
-import com.microblog.ws.member.intf.IMemberService;
-import com.microblog.ws.messenger.intf.IMessengerService;
+import com.microblog.ws.intf.IActionService;
+import com.microblog.ws.intf.IMemberService;
+import com.microblog.ws.intf.IMessengerService;
+import com.microblog.ws.intf.IServiceService;
 import com.microblog.ws.model.MemberStatusWrapper;
-import com.microblog.ws.service.intf.IServiceService;
 
 public abstract class ProcessBase {
 

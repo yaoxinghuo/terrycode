@@ -1,4 +1,4 @@
-package com.microblog.ws.service.intf;
+package com.microblog.ws.intf;
 
 import com.microblog.ws.model.ServiceStatusWrapper;
 

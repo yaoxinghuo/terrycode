@@ -19,7 +19,7 @@ public class Robot implements Serializable {
 	private static final long serialVersionUID = 1549776101986444210L;
 	private String id;
 	private String account;
-	private int type;
+	private int type;// -1 未注册 0 未激活 1时间轴 2论坛
 	private String adminAccounts;
 	private String forumAdmin;
 	private String forumId;

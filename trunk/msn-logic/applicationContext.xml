@@ -222,41 +222,9 @@
 		</property>
 	</bean>
 	
-	<bean id="wsMemberService" class="com.microblog.ws.member.impl.MemberServiceImpl"></bean>
-	<bean id="wsServiceService" class="com.microblog.ws.service.impl.ServiceServiceImpl"></bean>
-	<bean id="wsMessegerService" class="com.microblog.ws.messenger.impl.MessegerServiceImpl"></bean>
-	<bean id="wsActionService" class="com.microblog.ws.action.impl.ActionServiceImpl"></bean>
+	<bean id="wsMemberService" class="com.microblog.ws.impl.MemberServiceImpl"></bean>
+	<bean id="wsServiceService" class="com.microblog.ws.impl.ServiceServiceImpl"></bean>
+	<bean id="wsMessegerService" class="com.microblog.ws.impl.MessegerServiceImpl"></bean>
+	<bean id="wsActionService" class="com.microblog.ws.impl.ActionServiceImpl"></bean>
 	
-
-	<!--定义定时执行ServerMessages 这个bean中的run()方法-->
-	<!--
-		<bean id="logCleanTask"
-		class="org.springframework.scheduling.timer.MethodInvokingTimerTaskFactoryBean">
-		<property name="targetObject" ref="task_logClean" />
-	-->
-		<!-- 调用方法的名称 -->
-		<!-- <property name="targetMethod" value="logChean" />
-	</bean> -->
-
-	<!-- 使用ScheduledTimerTask来包装任务 -->
-	<!--
-		<bean id="logCleanScheduledTask"
-		class="org.springframework.scheduling.timer.ScheduledTimerTask">
-		<property name="timerTask" ref="logCleanTask" />
-	-->
-		<!-- 任务执行周期1天-->
-	<!--
-		<property name="period"> <value>86400000</value> </property>
-	-->
-		<!-- 延时执行任务 -->
-	<!--
-		<property name="delay"> <value>10000</value> </property> </bean>
-	-->
-	<!-- 使用TimerFactoryBean来实现任务-->
-	<!--
-		<bean id="timerFactory"
-		class="org.springframework.scheduling.timer.TimerFactoryBean">
-		<property name="scheduledTimerTasks"> <list> <ref
-		bean="logCleanScheduledTask" /> </list> </property> </bean>
-	-->
 </beans>
