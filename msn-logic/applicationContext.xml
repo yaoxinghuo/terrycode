@@ -50,11 +50,11 @@
 			<ref local="sessionFactory" />
 		</property>
 	</bean>
-	<bean id="robotDao" class="com.microblog.data.dao.impl.RobotDaoImpl">
+	<!-- <bean id="robotDao" class="com.microblog.data.dao.impl.RobotDaoImpl">
 		<property name="sessionFactory">
 			<ref local="sessionFactory" />
 		</property>
-	</bean>
+	</bean> -->
 	<bean id="urlDao" class="com.microblog.data.dao.impl.UrlDaoImpl">
 		<property name="sessionFactory">
 			<ref local="sessionFactory" />
@@ -116,11 +116,11 @@
 			<ref local="urlDao" />
 		</property>
 	</bean>
-	<bean id="serviceTarget" class="com.microblog.data.service.impl.ServiceServiceImpl">
+	<!-- <bean id="serviceTarget" class="com.microblog.data.service.impl.ServiceServiceImpl">
 		<property name="robotDao">
 			<ref local="robotDao" />
 		</property>
-	</bean>
+	</bean> -->
 	
 	<bean id="placeholderConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="location">
@@ -207,7 +207,7 @@
 			</props>
 		</property>
 	</bean>
-	<bean id="serviceService"
+	<!-- <bean id="serviceService"
 		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 		<property name="transactionManager">
 			<ref local="transactionManager" />
@@ -220,7 +220,7 @@
 				<prop key="im*">PROPAGATION_REQUIRED</prop>
 			</props>
 		</property>
-	</bean>
+	</bean> -->
 	
 	<bean id="wsMemberService" class="com.microblog.ws.impl.MemberServiceImpl"></bean>
 	<bean id="wsServiceService" class="com.microblog.ws.impl.ServiceServiceImpl"></bean>

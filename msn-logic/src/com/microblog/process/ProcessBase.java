@@ -18,8 +18,8 @@ public abstract class ProcessBase {
 				"applicationContext.xml");
 		messageService = (IMessageService) ctx.getBean("messageService");
 		accountService = (IAccountService) ctx.getBean("accountService");
-		serviceService = (com.microblog.data.service.intf.IServiceService) ctx
-				.getBean("serviceService");
+//		serviceService = (com.microblog.data.service.intf.IServiceService) ctx
+//				.getBean("serviceService");
 		wsMemberService = (IMemberService) ctx.getBean("wsMemberService");
 		wsServiceService = (IServiceService) ctx.getBean("wsServiceService");
 		wsMessengerService = (IMessengerService) ctx
@@ -75,21 +75,21 @@ public abstract class ProcessBase {
 
 	protected IMessageService messageService;
 	protected IAccountService accountService;
-	protected com.microblog.data.service.intf.IServiceService serviceService;
+//	protected com.microblog.data.service.intf.IServiceService serviceService;
 
 	protected IMemberService wsMemberService;
 	protected IServiceService wsServiceService;
 	protected IMessengerService wsMessengerService;
 	protected IActionService wsActionService;
 
-	public com.microblog.data.service.intf.IServiceService getServiceService() {
+	/*public com.microblog.data.service.intf.IServiceService getServiceService() {
 		return serviceService;
 	}
 
 	public void setServiceService(
 			com.microblog.data.service.intf.IServiceService serviceService) {
 		this.serviceService = serviceService;
-	}
+	}*/
 
 	public IMessageService getMessageService() {
 		return messageService;

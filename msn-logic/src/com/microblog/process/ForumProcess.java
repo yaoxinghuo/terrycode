@@ -87,16 +87,20 @@ public class ForumProcess extends ProcessBase {
 		super();
 		settings = Settings.getInstance();
 		init();
-		com.microblog.data.model.Robot robot = serviceService
-				.imGetRobotByAccount(account);
-		if (robot == null || robot.getForumId() == null
-				|| robot.getForumAdmin() == null)
-			throw new Exception(
-					"Cannot query record or record not complete from database by account:"
-							+ account);
-		this.forumid = robot.getForumId();
-		this.forumAdminAccount = robot.getForumAdmin();
-		this.adminAccounts = robot.getAdminAccounts().split(",");
+//		com.microblog.data.model.Robot robot = serviceService
+//				.imGetRobotByAccount(account);
+//		if (robot == null || robot.getForumId() == null
+//				|| robot.getForumAdmin() == null)
+//			throw new Exception(
+//					"Cannot query record or record not complete from database by account:"
+//							+ account);
+//		this.forumid = robot.getForumId();
+//		this.forumAdminAccount = robot.getForumAdmin();
+//		this.adminAccounts = robot.getAdminAccounts().split(",");
+		
+		this.forumid = settings.getForumId();		 
+		this.adminAccounts = settings.getAdminAccounts();		 
+		this.forumAdminAccount = settings.getForumAdminAccount();
 
 		this.webBaseUrl = settings.getWebBaseUrl();
 		this.forumBaseUrl = webBaseUrl + "forum.action?id=" + forumid;
