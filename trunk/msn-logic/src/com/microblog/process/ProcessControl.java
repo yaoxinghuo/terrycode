@@ -2,22 +2,22 @@ package com.microblog.process;
 
 import java.util.Hashtable;
 
-import org.springframework.context.ApplicationContext;
+//import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-import com.microblog.data.service.intf.IServiceService;
+//import com.microblog.data.service.intf.IServiceService;
 import com.microblog.util.Logs;
 import com.microblog.util.Settings;
 
 public class ProcessControl {
 	private static Hashtable<String, Robot> robots = new Hashtable<String, Robot>();
-	private IServiceService serviceService;
+//	private IServiceService serviceService;
 	private Settings settings;
 
-	public ProcessControl() throws Exception {
-		ApplicationContext ctx = new FileSystemXmlApplicationContext(
+	public ProcessControl()/* throws Exception*/ {
+		/*ApplicationContext ctx = */new FileSystemXmlApplicationContext(
 				"applicationContext.xml");
-		serviceService = (IServiceService) ctx.getBean("serviceService");
+//		serviceService = (IServiceService) ctx.getBean("serviceService");
 		settings = Settings.getInstance();
 	}
 
@@ -25,10 +25,10 @@ public class ProcessControl {
 		String account = command.getAccount();
 		Robot robot = robots.get(account);
 		if (robot == null) {
-			int type = serviceService.imGetRobotTypeByAccount(account);
+//			int type = serviceService.imGetRobotTypeByAccount(account);
 			ProcessBase process;
 			try {
-				switch (type) {
+				switch (/*type*/settings.getMsnModel()) {
 				case 2:
 					process = new ForumProcess(account);
 					break;
@@ -66,11 +66,11 @@ public class ProcessControl {
 		}
 	}
 
-	public void setServiceService(IServiceService serviceService) {
+	/*public void setServiceService(IServiceService serviceService) {
 		this.serviceService = serviceService;
 	}
 
 	public IServiceService getServiceService() {
 		return serviceService;
-	}
+	}*/
 }

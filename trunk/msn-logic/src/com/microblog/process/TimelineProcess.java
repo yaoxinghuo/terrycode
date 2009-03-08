@@ -78,12 +78,13 @@ public class TimelineProcess extends ProcessBase {
 		super();
 		settings = Settings.getInstance();
 		init();
-		com.microblog.data.model.Robot robot = serviceService
-				.imGetRobotByAccount(account);
-		if (robot == null)
-			throw new Exception("Cannot query record from database by account:"
-					+ account);
-		adminAccounts = robot.getAdminAccounts().split(",");
+//		com.microblog.data.model.Robot robot = serviceService
+//				.imGetRobotByAccount(account);
+//		if (robot == null)
+//			throw new Exception("Cannot query record from database by account:"
+//					+ account);
+//		adminAccounts = robot.getAdminAccounts().split(",");
+		this.adminAccounts = settings.getAdminAccounts();
 		this.webBaseUrl = settings.getWebBaseUrl();
 
 		StringBuffer sb = new StringBuffer();

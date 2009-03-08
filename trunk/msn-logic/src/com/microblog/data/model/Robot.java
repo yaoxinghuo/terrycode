@@ -24,6 +24,25 @@ public class Robot implements Serializable {
 	private String forumAdmin;
 	private String forumId;
 
+	private String passport;
+	private String passcode;
+
+	public String getPassport() {
+		return passport;
+	}
+
+	public void setPassport(String passport) {
+		this.passport = passport;
+	}
+
+	public String getPasscode() {
+		return passcode;
+	}
+
+	public void setPasscode(String passcode) {
+		this.passcode = passcode;
+	}
+
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
