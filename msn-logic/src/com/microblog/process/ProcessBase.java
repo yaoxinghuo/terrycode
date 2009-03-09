@@ -12,22 +12,48 @@ import com.microblog.ws.intf.IServiceService;
 import com.microblog.ws.model.MemberStatusWrapper;
 
 public abstract class ProcessBase {
+	
+	protected String account;
+	protected String passport;
+	protected String passcode;
+
+	public String getPassport() {
+		return passport;
+	}
+
+	public void setPassport(String passport) {
+		this.passport = passport;
+	}
+
+	public String getPasscode() {
+		return passcode;
+	}
+
+	public void setPasscode(String passcode) {
+		this.passcode = passcode;
+	}
+
+	public String getAccount() {
+		return account;
+	}
+
+	public void setAccount(String account) {
+		this.account = account;
+	}
 
 	public ProcessBase() throws Exception {
 		ApplicationContext ctx = new FileSystemXmlApplicationContext(
 				"applicationContext.xml");
 		messageService = (IMessageService) ctx.getBean("messageService");
 		accountService = (IAccountService) ctx.getBean("accountService");
-//		serviceService = (com.microblog.data.service.intf.IServiceService) ctx
-//				.getBean("serviceService");
+		serviceService = (com.microblog.data.service.intf.IServiceService) ctx
+				.getBean("serviceService");
 		wsMemberService = (IMemberService) ctx.getBean("wsMemberService");
 		wsServiceService = (IServiceService) ctx.getBean("wsServiceService");
 		wsMessengerService = (IMessengerService) ctx
 				.getBean("wsMessegerService");
 		wsActionService = (IActionService) ctx.getBean("wsActionService");
 	}
-
-	protected abstract void init() throws Exception;
 
 	protected abstract boolean isAdmin(String friend);
 
@@ -50,10 +76,10 @@ public abstract class ProcessBase {
 		return sb.toString();
 	}
 
-	protected String goMsnFriendDetail(String email, String friendEmail)
-			throws Exception {
-		MemberStatusWrapper friend = wsMemberService.friendStatus(email,
-				friendEmail);
+	protected String goMsnFriendDetail(
+			String email, String friendEmail) throws Exception {
+		MemberStatusWrapper friend = wsMemberService.friendStatus(passport,
+				passcode, account, friendEmail);
 		if (friend == null) {
 			return "找不到對象.";
 		} else {
@@ -75,21 +101,21 @@ public abstract class ProcessBase {
 
 	protected IMessageService messageService;
 	protected IAccountService accountService;
-//	protected com.microblog.data.service.intf.IServiceService serviceService;
+	protected com.microblog.data.service.intf.IServiceService serviceService;
 
 	protected IMemberService wsMemberService;
 	protected IServiceService wsServiceService;
 	protected IMessengerService wsMessengerService;
 	protected IActionService wsActionService;
 
-	/*public com.microblog.data.service.intf.IServiceService getServiceService() {
+	public com.microblog.data.service.intf.IServiceService getServiceService() {
 		return serviceService;
 	}
 
 	public void setServiceService(
 			com.microblog.data.service.intf.IServiceService serviceService) {
 		this.serviceService = serviceService;
-	}*/
+	}
 
 	public IMessageService getMessageService() {
 		return messageService;

@@ -5,11 +5,11 @@
            http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
            http://www.springframework.org/schema/context
            http://www.springframework.org/schema/context/spring-context-2.5.xsd">
-    <bean id="accountDao" class="com.microblog.data.dao.impl.AccountDaoImpl">
-    	<property name="sessionFactory">
+	<bean id="accountDao" class="com.microblog.data.dao.impl.AccountDaoImpl">
+		<property name="sessionFactory">
 			<ref local="sessionFactory" />
 		</property>
-    </bean>
+	</bean>
 	<bean id="friendDao" class="com.microblog.data.dao.impl.FriendDaoImpl">
 		<property name="sessionFactory">
 			<ref local="sessionFactory" />
@@ -50,39 +50,37 @@
 			<ref local="sessionFactory" />
 		</property>
 	</bean>
-	<!-- <bean id="robotDao" class="com.microblog.data.dao.impl.RobotDaoImpl">
+	<bean id="robotDao" class="com.microblog.data.dao.impl.RobotDaoImpl">
 		<property name="sessionFactory">
 			<ref local="sessionFactory" />
 		</property>
-	</bean> -->
+	</bean>
 	<bean id="urlDao" class="com.microblog.data.dao.impl.UrlDaoImpl">
 		<property name="sessionFactory">
 			<ref local="sessionFactory" />
 		</property>
 	</bean>
-	
-	<bean id="accountTarget"
-		class="com.microblog.data.service.impl.AccountServiceImpl">
+	<bean id="accountTarget" class="com.microblog.data.service.impl.AccountServiceImpl">
 		<property name="accountDao">
 			<ref local="accountDao" />
 		</property>
 		<property name="passportDao">
-			<ref local="passportDao"/>
+			<ref local="passportDao" />
 		</property>
 		<property name="friendDao">
-			<ref local="friendDao"/>
+			<ref local="friendDao" />
 		</property>
 		<property name="groupDao">
-			<ref local="groupDao"/>
+			<ref local="groupDao" />
 		</property>
 		<property name="groupFriendDao">
-			<ref local="groupFriendDao"/>
+			<ref local="groupFriendDao" />
 		</property>
 		<property name="subscribeDao">
-			<ref local="subscribeDao"/>
+			<ref local="subscribeDao" />
 		</property>
 		<property name="headDao">
-			<ref local="headDao"/>
+			<ref local="headDao" />
 		</property>
 	</bean>
 	<bean id="messageTarget" class="com.microblog.data.service.impl.MessageServiceImpl">
@@ -90,25 +88,25 @@
 			<ref local="messageDao" />
 		</property>
 		<property name="accountDao">
-			<ref local="accountDao"/>
+			<ref local="accountDao" />
 		</property>
 		<property name="replyDao">
-			<ref local="replyDao"/>
+			<ref local="replyDao" />
 		</property>
 		<property name="groupFriendDao">
-			<ref local="groupFriendDao"/>
+			<ref local="groupFriendDao" />
 		</property>
 		<property name="subscribeDao">
-			<ref local="subscribeDao"/>
+			<ref local="subscribeDao" />
 		</property>
 		<property name="headDao">
-			<ref local="headDao"/>
+			<ref local="headDao" />
 		</property>
 		<property name="friendDao">
-			<ref local="friendDao"/>
+			<ref local="friendDao" />
 		</property>
 		<property name="groupDao">
-			<ref local="groupDao"/>
+			<ref local="groupDao" />
 		</property>
 	</bean>
 	<bean id="urlTarget" class="com.microblog.data.service.impl.UrlServiceImpl">
@@ -116,20 +114,18 @@
 			<ref local="urlDao" />
 		</property>
 	</bean>
-	<!-- <bean id="serviceTarget" class="com.microblog.data.service.impl.ServiceServiceImpl">
+	<bean id="serviceTarget" class="com.microblog.data.service.impl.ServiceServiceImpl">
 		<property name="robotDao">
 			<ref local="robotDao" />
 		</property>
-	</bean> -->
-	
-	<bean id="placeholderConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	</bean>
+	<bean id="placeholderConfig"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="location">
 			<value>jdbc.properties</value>
 		</property>
 	</bean>
-
-	<bean id="dataSource"
-		class="org.apache.commons.dbcp.BasicDataSource"
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
 		<property name="driverClassName">
 			<value>${jdbc.driverClassName}</value>
@@ -144,21 +140,16 @@
 			<value>${jdbc.password}</value>
 		</property>
 	</bean>
-	
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
 		<property name="dataSource">
 			<ref local="dataSource" />
 		</property>
-
-		<property name="configurationClass"
-			value="org.hibernate.cfg.AnnotationConfiguration" />
-
+		<property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration" />
 		<property name="configLocation">
 			<value>classpath:hibernate.cfg.xml</value>
 		</property>
 	</bean>
-	
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
 		<property name="sessionFactory">
@@ -207,7 +198,7 @@
 			</props>
 		</property>
 	</bean>
-	<!-- <bean id="serviceService"
+	<bean id="serviceService"
 		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 		<property name="transactionManager">
 			<ref local="transactionManager" />
@@ -220,11 +211,25 @@
 				<prop key="im*">PROPAGATION_REQUIRED</prop>
 			</props>
 		</property>
-	</bean> -->
-	
-	<bean id="wsMemberService" class="com.microblog.ws.impl.MemberServiceImpl"></bean>
-	<bean id="wsServiceService" class="com.microblog.ws.impl.ServiceServiceImpl"></bean>
-	<bean id="wsMessegerService" class="com.microblog.ws.impl.MessegerServiceImpl"></bean>
-	<bean id="wsActionService" class="com.microblog.ws.impl.ActionServiceImpl"></bean>
-	
+	</bean>
+	<bean id="wsMemberService" class="com.microblog.ws.impl.MemberServiceImpl">
+		<constructor-arg>
+			<value>http://imfarm.17fabu.net/services/Member</value>
+		</constructor-arg>
+	</bean>
+	<bean id="wsServiceService" class="com.microblog.ws.impl.ServiceServiceImpl">
+		<constructor-arg>
+			<value>http://imfarm.17fabu.net/services/Service</value>
+		</constructor-arg>
+	</bean>
+	<bean id="wsMessegerService" class="com.microblog.ws.impl.MessegerServiceImpl">
+		<constructor-arg>
+			<value>http://imfarm.17fabu.net/services/Messenger</value>
+		</constructor-arg>
+	</bean>
+	<bean id="wsActionService" class="com.microblog.ws.impl.ActionServiceImpl">
+		<constructor-arg>
+			<value>http://imfarm.17fabu.net/services/Action</value>
+		</constructor-arg>
+	</bean>
 </beans>

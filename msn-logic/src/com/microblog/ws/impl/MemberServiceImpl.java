@@ -18,16 +18,8 @@ public class MemberServiceImpl implements IMemberService {
 
 	private String ns = "http://member.webservice.msn.microblog.com";
 
-	private String passport;
-	private String passcode;
-
-	public void init(String wsUrl, String passport, String passcode)
-			throws Exception {
-		if (!wsUrl.startsWith("http://") && !wsUrl.startsWith("https://"))
-			wsUrl = "http://" + wsUrl;
-		this.passport = passport;
-		this.passcode = passcode;
-		targetEPR = new EndpointReference(wsUrl + "/services/Member");
+	public MemberServiceImpl(String url) throws Exception {
+		targetEPR = new EndpointReference(url);
 		serviceClient = new RPCServiceClient();
 		Options options = serviceClient.getOptions();
 		options.setTo(targetEPR);
@@ -35,7 +27,8 @@ public class MemberServiceImpl implements IMemberService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public int acceptFriend(String account, String email) throws Exception {
+	public int acceptFriend(String passport, String passcode, String account,
+			String email) throws Exception {
 		// 指定方法的参数值
 		String[] opAddEntryArgs = new String[] { passport, passcode, account,
 				email };
@@ -50,8 +43,8 @@ public class MemberServiceImpl implements IMemberService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public int addFriend(String account, String email, int type)
-			throws Exception {
+	public int addFriend(String passport, String passcode, String account,
+			String email, int type) throws Exception {
 		String[] opAddEntryArgs = new String[] { passport, passcode, account,
 				email };
 		Class[] classes = new Class[] { Integer.class };
@@ -62,7 +55,8 @@ public class MemberServiceImpl implements IMemberService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean allowFriend(String account, String email) throws Exception {
+	public boolean allowFriend(String passport, String passcode,
+			String account, String email) throws Exception {
 		String[] opAddEntryArgs = new String[] { passport, passcode, account,
 				email };
 		Class[] classes = new Class[] { Boolean.class };
@@ -73,7 +67,8 @@ public class MemberServiceImpl implements IMemberService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean blockFriend(String account, String email) throws Exception {
+	public boolean blockFriend(String passport, String passcode,
+			String account, String email) throws Exception {
 		String[] opAddEntryArgs = new String[] { passport, passcode, account,
 				email };
 		Class[] classes = new Class[] { Boolean.class };
@@ -84,7 +79,8 @@ public class MemberServiceImpl implements IMemberService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public String[] friendList(String account) throws Exception {
+	public String[] friendList(String passport, String passcode, String account)
+			throws Exception {
 		String[] opAddEntryArgs = new String[] { passport, passcode, account };
 		Class[] classes = new Class[] { List.class };
 		QName opAddEntry = new QName(ns, "friendList");
@@ -99,8 +95,8 @@ public class MemberServiceImpl implements IMemberService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public MemberStatusWrapper friendStatus(String account, String email)
-			throws Exception {
+	public MemberStatusWrapper friendStatus(String passport, String passcode,
+			String account, String email) throws Exception {
 		String[] opAddEntryArgs = new String[] { passport, passcode, account,
 				email };
 		Class[] classes = new Class[] { MemberStatusWrapper.class };
@@ -111,7 +107,8 @@ public class MemberServiceImpl implements IMemberService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public String[] pendingList(String account) throws Exception {
+	public String[] pendingList(String passport, String passcode, String account)
+			throws Exception {
 		String[] opAddEntryArgs = new String[] { passport, passcode, account };
 		Class[] classes = new Class[] { List.class };
 		QName opAddEntry = new QName(ns, "pendingList");
@@ -126,8 +123,8 @@ public class MemberServiceImpl implements IMemberService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public int removeAndBlockFriend(String account, String email)
-			throws Exception {
+	public int removeAndBlockFriend(String passport, String passcode,
+			String account, String email) throws Exception {
 		String[] opAddEntryArgs = new String[] { passport, passcode, account,
 				email };
 		Class[] classes = new Class[] { Integer.class };
@@ -138,7 +135,8 @@ public class MemberServiceImpl implements IMemberService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public int removeFriend(String account, String email) throws Exception {
+	public int removeFriend(String passport, String passcode, String account,
+			String email) throws Exception {
 		String[] opAddEntryArgs = new String[] { passport, passcode, account,
 				email };
 		Class[] classes = new Class[] { Integer.class };

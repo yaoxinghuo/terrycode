@@ -1,10 +1,10 @@
 package com.microblog.process;
 
-public class Robot {
+public class RobotWrapper {
 
 	private ProcessBase process = null;;
 
-	public Robot(String email, String passport, String passcode) {
+	public RobotWrapper(String passport, String passcode, String email) {
 		this.email = email;
 		this.passport = passport;
 		this.passcode = passcode;
