@@ -5,20 +5,10 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.LinkedList;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
-
 import com.microblog.data.model.Account;
-import com.microblog.data.service.intf.IAccountService;
-import com.microblog.data.service.intf.IMessageService;
 import com.microblog.util.Logs;
 import com.microblog.util.Settings;
 import com.microblog.util.StringUtil;
-import com.microblog.ws.intf.IActionService;
-import com.microblog.ws.intf.IMemberService;
-import com.microblog.ws.intf.IMessengerService;
-import com.microblog.ws.intf.IServiceService;
-import com.microblog.ws.model.MemberStatusWrapper;
 
 public class ForumProcess extends ProcessBase {
 
@@ -75,32 +65,23 @@ public class ForumProcess extends ProcessBase {
 
 	int defaultPageSize = 10;
 
-	private IMessageService messageService;
-	private IAccountService accountService;
-
-	private IMemberService wsMemberService;
-	private IServiceService wsServiceService;
-	private IMessengerService wsMessengerService;
-	private IActionService wsActionService;
-
-	public ForumProcess(String account) throws Exception {
+	public ForumProcess(String passport, String passcode, String account)
+			throws Exception {
 		super();
+		this.account = account;
+		this.passport = passport;
+		this.passcode = passcode;
 		settings = Settings.getInstance();
-		init();
-//		com.microblog.data.model.Robot robot = serviceService
-//				.imGetRobotByAccount(account);
-//		if (robot == null || robot.getForumId() == null
-//				|| robot.getForumAdmin() == null)
-//			throw new Exception(
-//					"Cannot query record or record not complete from database by account:"
-//							+ account);
-//		this.forumid = robot.getForumId();
-//		this.forumAdminAccount = robot.getForumAdmin();
-//		this.adminAccounts = robot.getAdminAccounts().split(",");
-		
-		this.forumid = settings.getForumId();		 
-		this.adminAccounts = settings.getAdminAccounts();		 
-		this.forumAdminAccount = settings.getForumAdminAccount();
+		com.microblog.data.model.Robot robot = serviceService
+				.imGetRobotByAccount(account);
+		if (robot == null || robot.getForumId() == null
+				|| robot.getForumAdmin() == null)
+			throw new Exception(
+					"Cannot query record or record not complete from database by account:"
+							+ account);
+		this.forumid = robot.getForumId();
+		this.forumAdminAccount = robot.getForumAdmin();
+		this.adminAccounts = robot.getAdminAccounts().split(",");
 
 		this.webBaseUrl = settings.getWebBaseUrl();
 		this.forumBaseUrl = webBaseUrl + "forum.action?id=" + forumid;
@@ -144,25 +125,6 @@ public class ForumProcess extends ProcessBase {
 		msnUserStatusHash.put("7", "LUN");
 		msnUserStatusHash.put("8", "HDN");
 		msnUserStatusHash.put("9", "FLN");
-
-		ApplicationContext ctx = new FileSystemXmlApplicationContext(
-				"applicationContext.xml");
-		messageService = (IMessageService) ctx.getBean("messageService");
-		accountService = (IAccountService) ctx.getBean("accountService");
-
-		wsMemberService = (IMemberService) ctx.getBean("wsMemberService");
-		wsMemberService.init(settings.getWsUrl(), settings.getSocketPassport(),
-				settings.getSocketPasscode());
-		wsServiceService = (IServiceService) ctx.getBean("wsServiceService");
-		wsServiceService.init(settings.getWsUrl(),
-				settings.getSocketPassport(), settings.getSocketPasscode());
-		wsMessengerService = (IMessengerService) ctx
-				.getBean("wsMessegerService");
-		wsMessengerService.init(settings.getWsUrl(), settings
-				.getSocketPassport(), settings.getSocketPasscode());
-		wsActionService = (IActionService) ctx.getBean("wsActionService");
-		wsActionService.init(settings.getWsUrl(), settings.getSocketPassport(),
-				settings.getSocketPasscode());
 	}
 
 	private Settings settings;
@@ -193,7 +155,8 @@ public class ForumProcess extends ProcessBase {
 		if (account_id == null) {
 			Account account = accountService.imGetAccountByMsn(email);
 			if (account == null) {
-				wsActionService.sendText(email, "数据库中找不到这个用户:" + email);
+				wsActionService.sendText(passport, passcode, email,
+						"数据库中找不到这个用户:" + email);
 			} else {
 				account_id = account.getId();
 				userAccountId.put(email, account_id);
@@ -229,7 +192,7 @@ public class ForumProcess extends ProcessBase {
 
 			lastSessionTime.put(email, new Date());
 			reply = sessionDefaultReply;
-			wsActionService.sendText(email, reply);
+			wsActionService.sendText(passport, passcode, email, reply);
 		}
 
 		lastSessionTime.put(email, new Date());
@@ -244,7 +207,7 @@ public class ForumProcess extends ProcessBase {
 				lastSessionTime.put(email, new Date());
 
 				reply = sessionDefaultReply;
-				wsActionService.sendText(email, reply);
+				wsActionService.sendText(passport, passcode, email, reply);
 			}
 
 			userStatus.removeLast();
@@ -377,25 +340,28 @@ public class ForumProcess extends ProcessBase {
 			} else {
 				switch (c.intValue()) {
 				case 1:
-					reply = arrayToMessage(wsMemberService.friendList(email))
+					reply = arrayToMessage(wsMemberService.friendList(passport,
+							passcode, account))
 							+ "\r\n\r\n" + managerMenuReply;
 					nextStatus = 19;
 					break;
 				case 2:
-					reply = arrayToMessage(wsMemberService.pendingList(email))
+					reply = arrayToMessage(wsMemberService.pendingList(
+							passport, passcode, account))
 							+ "\r\n\r\n" + managerMenuReply;
 					nextStatus = 19;
 					break;
 				case 3:
-					reply = arrayToMessage(wsMemberService.pendingList(email))
+					reply = arrayToMessage(wsMemberService.pendingList(
+							passport, passcode, account))
 							+ "\r\n\r\n" + managerMenuReply;
 					nextStatus = 19;
 					break;
 				case 4:// 查朋友資料
-					lastFriendsList.put(email, wsMemberService
-							.friendList(email));
+					lastFriendsList.put(email, wsMemberService.friendList(
+							passport, passcode, account));
 					reply = "請選擇聯絡人：\r\n"
-							+ arrayToMessage(wsMemberService.friendList(email));
+							+ arrayToMessage(lastFriendsList.get(email));
 					nextStatus = 194;
 					break;
 				case 5:// 改昵稱
@@ -420,14 +386,15 @@ public class ForumProcess extends ProcessBase {
 					// nextStatus = 199;
 					break;
 				case 10:// 移除聯絡人
-					lastFriendsList.put(email, wsMemberService
-							.friendList(email));
+					lastFriendsList.put(email, wsMemberService.friendList(
+							passport, passcode, account));
 					reply = "請選擇聯絡人：\r\n"
-							+ arrayToMessage(wsMemberService.friendList(email));
+							+ arrayToMessage(lastFriendsList.get(email));
 					nextStatus = 1910;
 					break;
 				case 11:// 加允許清單
-					String[] pendingList11 = wsMemberService.pendingList(email);
+					String[] pendingList11 = wsMemberService.pendingList(
+							passport, passcode, account);
 
 					lastFriendsList.put(email, pendingList11);
 					reply = "請選擇聯絡人\r\n" + arrayToMessage(pendingList11);
@@ -435,17 +402,17 @@ public class ForumProcess extends ProcessBase {
 					break;
 				case 12:// 加入黑名單
 					// TODO allowList
-					lastFriendsList.put(email, wsMemberService
-							.friendList(email));
+					lastFriendsList.put(email, wsMemberService.friendList(
+							passport, passcode, account));
 					reply = "請選擇聯絡人\r\n"
-							+ arrayToMessage(wsMemberService.friendList(email));
+							+ arrayToMessage(lastFriendsList.get(email));
 					nextStatus = 1912;
 					break;
 				case 13:// 送文字訊息
-					lastFriendsList.put(email, wsMemberService
-							.friendList(email));
+					lastFriendsList.put(email, wsMemberService.friendList(
+							passport, passcode, account));
 					reply = "請選擇聯絡人(多個聯絡人請用【,】隔開，送給全部聯絡人，請輸入【a】)\r\n"
-							+ arrayToMessage(wsMemberService.friendList(email));
+							+ arrayToMessage(lastFriendsList.get(email));
 					nextStatus = 1913;
 					break;
 				default:
@@ -462,7 +429,8 @@ public class ForumProcess extends ProcessBase {
 				String[] friendsList = lastFriendsList.get(email);
 				if (friendsList == null || f > friendsList.length || f < 0) {
 					reply = "請選擇聯系人\r\n"
-							+ arrayToMessage(wsMemberService.friendList(email));
+							+ arrayToMessage(wsMemberService.friendList(
+									passport, passcode, account));
 					nextStatus = 194;
 				} else {
 					reply = goMsnFriendDetail(email, friendsList[f - 1])
@@ -472,19 +440,22 @@ public class ForumProcess extends ProcessBase {
 
 			} catch (NumberFormatException e) {
 				reply = "請選擇聯系人\r\n"
-						+ arrayToMessage(wsMemberService.friendList(email));
+						+ arrayToMessage(wsMemberService.friendList(passport,
+								passcode, account));
 				nextStatus = 194;
 			}
 			break;
 		case 195:
-			if (wsMessengerService.changeDisplayName(email, choise))
+			if (wsMessengerService.changeDisplayName(passport, passcode, account,
+					choise))
 				reply = operateDone;// + "\r\n\r\n" + managerMenuReply;
 			else
 				reply = errorOccured;
 			nextStatus = 19;
 			break;
 		case 196:
-			if (wsMessengerService.changePersonalMessage(email, choise))
+			if (wsMessengerService.changePersonalMessage(passport, passcode,
+					account, choise))
 				reply = operateDone;// + "\r\n\r\n" + managerMenuReply;
 			else
 				reply = errorOccured;
@@ -519,7 +490,7 @@ public class ForumProcess extends ProcessBase {
 			nextStatus = 19;
 			break;
 		case 199:// 加联系人
-			if (wsMemberService.addFriend(email, choise, 1) != -1)
+			if (wsMemberService.addFriend(passport, passcode, account, choise, 1) != -1)
 				reply = operateDone;// + "\r\n\r\n" + managerMenuReply;
 			else
 				reply = errorOccured;
@@ -536,7 +507,7 @@ public class ForumProcess extends ProcessBase {
 							+ arrayToMessage(lastFriendsList.get(email));
 					nextStatus = 1910;
 				} else {
-					if (wsMemberService.removeFriend(email,
+					if (wsMemberService.removeFriend(passport, passcode, account,
 							friendsList[f1910 - 1]) != -1)
 						reply = operateDone;// + "\r\n\r\n" + managerMenuReply;
 					else
@@ -561,7 +532,7 @@ public class ForumProcess extends ProcessBase {
 							+ arrayToMessage(lastFriendsList.get(email));
 					nextStatus = 1911;
 				} else {
-					if (wsMemberService.allowFriend(email,
+					if (wsMemberService.allowFriend(passport, passcode, account,
 							friendsList[f1911 - 1]))
 						reply = operateDone;// + "\r\n\r\n" + managerMenuReply;
 					else
@@ -586,7 +557,7 @@ public class ForumProcess extends ProcessBase {
 							+ arrayToMessage(lastFriendsList.get(email));
 					nextStatus = 1912;
 				} else {
-					if (wsMemberService.blockFriend(email,
+					if (wsMemberService.blockFriend(passport, passcode, account,
 							friendsList[f1912 - 1]))
 						reply = operateDone;// + "\r\n\r\n" + managerMenuReply;
 					else
@@ -640,13 +611,16 @@ public class ForumProcess extends ProcessBase {
 		case 19131:
 			boolean ok = false;
 			if (lastFriendEmail.get(email).equals("all"))
-				ok = wsActionService.sendTextToAll(email, choise);
+				ok = wsActionService.sendTextToAll(passport, passcode, account,
+						choise);
 			else {
 				String[] friendsList = lastFriendEmail.get(email).split(",");
 				for (String friendList : friendsList) {
 					if (friendList.trim().equals(""))
 						continue;
-					ok = ok | wsActionService.sendText(friendList, choise);
+					ok = ok
+							| wsActionService.sendText(passport, passcode,
+									friendList, choise);
 				}
 			}
 			if (ok)
@@ -690,7 +664,7 @@ public class ForumProcess extends ProcessBase {
 			if (!r.equals("")) {
 				Logs.getLogger().info(
 						"Call webservice to send text(" + r + ") to " + email);
-				if (!wsActionService.sendText(email, r))
+				if (!wsActionService.sendText(passport, passcode, email, r))
 					Logs.getLogger().error(
 							"Unable to send text to " + email
 									+ " via webservice");
@@ -740,44 +714,6 @@ public class ForumProcess extends ProcessBase {
 	}
 
 	@Override
-	protected String arrayToMessage(final String[] arr) {
-		if (arr == null || arr.length == 0) {
-			return "沒有資料.";
-		}
-		// Arrays.sort(arr);
-		StringBuilder sb = new StringBuilder("");
-		for (int i = 0; i < arr.length; i++) {
-			String str = arr[i];
-			sb.append(i + 1).append(".\t").append(str).append("\r\n");
-		}
-		return sb.toString();
-	}
-
-	@Override
-	protected String goMsnFriendDetail(String email, String friendEmail)
-			throws Exception {
-		MemberStatusWrapper friend = wsMemberService.friendStatus(email,
-				friendEmail);
-		if (friend == null) {
-			return "找不到對象.";
-		} else {
-			final StringBuilder sb = new StringBuilder();
-			sb.append("名稱:\t").append(friend.getDisplayName()).append("\r\n");
-			sb.append("個人訊息:\t").append(friend.getPersonalMessage()).append(
-					"\r\n");
-			sb.append("狀態:\t").append(friend.getStatus()).append("\r\n");
-			sb.append("朋友清單:\t").append(friend.isFollow() ? "是" : "否").append(
-					"\r\n");
-			sb.append("允許清單:\t").append(friend.isAllow() ? "是" : "否").append(
-					"\r\n");
-			sb.append("黑名單:\t").append(friend.isBlock() ? "是" : "否").append(
-					"\r\n");
-			sb.append("待確認:\t").append(friend.isPending() ? "是" : "否");
-			return sb.toString();
-		}
-	}
-
-	@Override
 	protected boolean isAdmin(String friend) {
 		for (String adm : adminAccounts) {
 			if (adm.equals(friend))
@@ -795,19 +731,6 @@ public class ForumProcess extends ProcessBase {
 				return true;
 		}
 		return false;
-	}
-
-	@Override
-	protected void init() throws Exception {
-		wsMemberService.init(settings.getWsUrl(), settings.getSocketPassport(),
-				settings.getSocketPasscode());
-		wsServiceService.init(settings.getWsUrl(),
-				settings.getSocketPassport(), settings.getSocketPasscode());
-		wsMessengerService.init(settings.getWsUrl(), settings
-				.getSocketPassport(), settings.getSocketPasscode());
-		wsActionService.init(settings.getWsUrl(), settings.getSocketPassport(),
-				settings.getSocketPasscode());
-
 	}
 
 }

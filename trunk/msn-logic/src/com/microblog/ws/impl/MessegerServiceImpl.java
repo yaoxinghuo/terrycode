@@ -19,16 +19,8 @@ public class MessegerServiceImpl implements IMessengerService {
 
 	private String ns = "http://messenger.webservice.msn.microblog.com";
 
-	private String passport;
-	private String passcode;
-
-	public void init(String wsUrl, String passport, String passcode)
-			throws Exception {
-		if (!wsUrl.startsWith("http://") && !wsUrl.startsWith("https://"))
-			wsUrl = "http://" + wsUrl;
-		this.passport = passport;
-		this.passcode = passcode;
-		targetEPR = new EndpointReference(wsUrl + "/services/Messenger");
+	public MessegerServiceImpl(String url) throws Exception {
+		targetEPR = new EndpointReference(url);
 		serviceClient = new RPCServiceClient();
 		Options options = serviceClient.getOptions();
 		options.setTo(targetEPR);
@@ -36,8 +28,8 @@ public class MessegerServiceImpl implements IMessengerService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean changeDisplayName(String account, String displayName)
-			throws Exception {
+	public boolean changeDisplayName(String passport, String passcode,
+			String account, String displayName) throws Exception {
 		String[] opAddEntryArgs = new String[] { passport, passcode, account,
 				displayName };
 		Class[] classes = new Class[] { Boolean.class };
@@ -48,8 +40,8 @@ public class MessegerServiceImpl implements IMessengerService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean changePersonalMessage(String account, String personalMessage)
-			throws Exception {
+	public boolean changePersonalMessage(String passport, String passcode,
+			String account, String personalMessage) throws Exception {
 		String[] opAddEntryArgs = new String[] { passport, passcode, account,
 				personalMessage };
 		Class[] classes = new Class[] { Boolean.class };
@@ -60,8 +52,8 @@ public class MessegerServiceImpl implements IMessengerService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public MessengerStatusWrapper currentStatus(String account)
-			throws Exception {
+	public MessengerStatusWrapper currentStatus(String passport,
+			String passcode, String account) throws Exception {
 		String[] opAddEntryArgs = new String[] { passport, passcode, account };
 		Class[] classes = new Class[] { MessengerStatusWrapper.class };
 		QName opAddEntry = new QName(ns, "currentStatus");
@@ -71,7 +63,7 @@ public class MessegerServiceImpl implements IMessengerService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public String[] list() throws Exception {
+	public String[] list(String passport, String passcode) throws Exception {
 		String[] opAddEntryArgs = new String[] { passport, passcode };
 		Class[] classes = new Class[] { List.class };
 		QName opAddEntry = new QName(ns, "list");

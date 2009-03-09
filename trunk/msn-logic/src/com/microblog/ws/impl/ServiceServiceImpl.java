@@ -13,19 +13,11 @@ public class ServiceServiceImpl implements IServiceService {
 
 	private EndpointReference targetEPR;
 	private RPCServiceClient serviceClient;
-	
+
 	private String ns = "http://service.webservice.msn.microblog.com";
 
-	private String passport;
-	private String passcode;
-
-	public void init(String wsUrl, String passport, String passcode)
-			throws Exception {
-		if (!wsUrl.startsWith("http://") && !wsUrl.startsWith("https://"))
-			wsUrl = "http://" + wsUrl;
-		this.passport = passport;
-		this.passcode = passcode;
-		targetEPR = new EndpointReference(wsUrl + "/services/Service");
+	public ServiceServiceImpl(String url) throws Exception {
+		targetEPR = new EndpointReference(url);
 		serviceClient = new RPCServiceClient();
 		Options options = serviceClient.getOptions();
 		options.setTo(targetEPR);
@@ -33,7 +25,8 @@ public class ServiceServiceImpl implements IServiceService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean changeDisplayName(String displayName) throws Exception {
+	public boolean changeDisplayName(String passport, String passcode,
+			String displayName) throws Exception {
 		String[] opAddEntryArgs = new String[] { passport, passcode,
 				displayName };
 		Class[] classes = new Class[] { Boolean.class };
@@ -44,8 +37,8 @@ public class ServiceServiceImpl implements IServiceService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean changePersonalMessage(String personalMessage)
-			throws Exception {
+	public boolean changePersonalMessage(String passport, String passcode,
+			String personalMessage) throws Exception {
 		String[] opAddEntryArgs = new String[] { passport, passcode,
 				personalMessage };
 		Class[] classes = new Class[] { Boolean.class };
@@ -56,7 +49,8 @@ public class ServiceServiceImpl implements IServiceService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public ServiceStatusWrapper currentStatus() throws Exception {
+	public ServiceStatusWrapper currentStatus(String passport, String passcode)
+			throws Exception {
 		String[] opAddEntryArgs = new String[] { passport, passcode };
 		Class[] classes = new Class[] { ServiceStatusWrapper.class };
 		QName opAddEntry = new QName(ns, "currentStatus");

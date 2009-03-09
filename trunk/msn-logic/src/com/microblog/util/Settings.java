@@ -24,53 +24,13 @@ public class Settings {
 	private int socketPort;
 	private String socketPassport;
 	private String socketPasscode;
-	private String wsUrl;
-	private String wsPassport;
-	private String wsPasscode;
 	
-	private int msnModel;
-	private String adminAccounts[];
-	private String forumAdminAccount;
-	private String forumId;
-
 	public Properties getProperties() {
 		return properties;
 	}
 
 	public void setProperties(Properties properties) {
 		this.properties = properties;
-	}
-
-	public String[] getAdminAccounts() {
-		return adminAccounts;
-	}
-
-	public void setAdminAccounts(String[] adminAccounts) {
-		this.adminAccounts = adminAccounts;
-	}
-
-	public String getForumAdminAccount() {
-		return forumAdminAccount;
-	}
-
-	public void setForumAdminAccount(String forumAdminAccount) {
-		this.forumAdminAccount = forumAdminAccount;
-	}
-
-	public String getForumId() {
-		return forumId;
-	}
-
-	public void setForumId(String forumId) {
-		this.forumId = forumId;
-	}
-
-	public String getWsPasscode() {
-		return wsPasscode;
-	}
-
-	public void setWsPasscode(String wsPasscode) {
-		this.wsPasscode = wsPasscode;
 	}
 
 	private static Settings instance;
@@ -110,16 +70,8 @@ public class Settings {
 		socketPassport = properties.getProperty("socket.passport");
 		socketPasscode = properties.getProperty("socket.passcode");
 		
-		wsUrl = properties.getProperty("ws.url");
-		wsPassport = properties.getProperty("ws.passport");
-		wsPasscode = properties.getProperty("ws.passcode");
-		
 		webBaseUrl = properties.getProperty("web.webBaseUrl");
 		
-		msnModel = Integer.parseInt(properties.getProperty("msn.model"));
-		adminAccounts = properties.getProperty("msn.adminAccounts").split(",");		 
-		forumAdminAccount = properties.getProperty("msn.forumAdminAccount");		 
-		forumId = properties.getProperty("msn.forumId");
 	}
 
 	public String getUserImgBasePath() {
@@ -158,14 +110,6 @@ public class Settings {
 		this.socketPasscode = socketPasscode;
 	}
 
-	public String getWsUrl() {
-		return wsUrl;
-	}
-
-	public void setWsUrl(String wsUrl) {
-		this.wsUrl = wsUrl;
-	}
-
 	public void setUserImgBasePath(String userImgBasePath) {
 		this.userImgBasePath = userImgBasePath;
 	}
@@ -175,19 +119,4 @@ public class Settings {
 		System.out.println(s.getSocketHost());
 	}
 
-	public void setWsPassport(String wsPassport) {
-		this.wsPassport = wsPassport;
-	}
-
-	public String getWsPassport() {
-		return wsPassport;
-	}
-
-	public void setMsnModel(int msnModel) {
-		this.msnModel = msnModel;
-	}
-
-	public int getMsnModel() {
-		return msnModel;
-	}
 }

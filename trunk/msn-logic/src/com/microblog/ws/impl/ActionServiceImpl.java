@@ -14,16 +14,8 @@ public class ActionServiceImpl implements IActionService {
 
 	private String ns = "http://action.webservice.msn.microblog.com";
 
-	private String passport;
-	private String passcode;
-
-	public void init(String wsUrl, String passport, String passcode)
-			throws Exception {
-		if (!wsUrl.startsWith("http://") && !wsUrl.startsWith("https://"))
-			wsUrl = "http://" + wsUrl;
-		this.passport = passport;
-		this.passcode = passcode;
-		targetEPR = new EndpointReference(wsUrl + "/services/Action");
+	public ActionServiceImpl(String url) throws Exception {
+		targetEPR = new EndpointReference(url);
 		serviceClient = new RPCServiceClient();
 		Options options = serviceClient.getOptions();
 		options.setTo(targetEPR);
@@ -31,7 +23,8 @@ public class ActionServiceImpl implements IActionService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean knockOn(String email) throws Exception {
+	public boolean knockOn(String passport, String passcode, String email)
+			throws Exception {
 		String[] opAddEntryArgs = new String[] { passport, passcode, email };
 		Class[] classes = new Class[] { Boolean.class };
 		QName opAddEntry = new QName(ns, "knockOn");
@@ -41,7 +34,8 @@ public class ActionServiceImpl implements IActionService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean knockOnAll(String account) throws Exception {
+	public boolean knockOnAll(String passport, String passcode, String account)
+			throws Exception {
 		String[] opAddEntryArgs = new String[] { passport, passcode, account };
 		Class[] classes = new Class[] { Boolean.class };
 		QName opAddEntry = new QName(ns, "knockOnAll");
@@ -51,7 +45,8 @@ public class ActionServiceImpl implements IActionService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean sendText(String email, String text) throws Exception {
+	public boolean sendText(String passport, String passcode, String email,
+			String text) throws Exception {
 		String[] opAddEntryArgs = new String[] { passport, passcode, email,
 				text };
 		Class[] classes = new Class[] { Boolean.class };
@@ -62,7 +57,8 @@ public class ActionServiceImpl implements IActionService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean sendTextToAll(String account, String text) throws Exception {
+	public boolean sendTextToAll(String passport, String passcode,
+			String account, String text) throws Exception {
 		String[] opAddEntryArgs = new String[] { passport, passcode, account,
 				text };
 		Class[] classes = new Class[] { Boolean.class };

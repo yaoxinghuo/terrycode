@@ -27,6 +27,7 @@ public class Robot implements Serializable {
 	private String passport;
 	private String passcode;
 
+	@Column(unique = true)
 	public String getPassport() {
 		return passport;
 	}
@@ -55,6 +56,7 @@ public class Robot implements Serializable {
 		this.id = id;
 	}
 
+	@Column(unique = true)
 	public String getAccount() {
 		return account;
 	}

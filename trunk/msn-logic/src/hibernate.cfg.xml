@@ -21,6 +21,6 @@
 		<mapping class="com.microblog.data.model.Subscribe" />
 		<mapping class="com.microblog.data.model.Head" />
 		<mapping class="com.microblog.data.model.Url" />
-		<!-- <mapping class="com.microblog.data.model.Robot" /> -->
+		<mapping class="com.microblog.data.model.Robot" />
     </session-factory>
 </hibernate-configuration>

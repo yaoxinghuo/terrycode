@@ -23,9 +23,9 @@ public class TimelineProcess extends ProcessBase {
 			"改顯示名稱", "改個人訊息", "改線上狀態", "改個人頭像", "加入聯絡人", "移除聯絡人", "加允許清單",
 			"加入黑名單", "送文字訊息" };
 	private String managerMenuReply;
-	private String[] msnUserStatusMenu = { "取消", "Online", "Busy", "Idle",
-			"Be Right Back", "Away", "On the Phone", "Out to Lunch",
-			"Appear Offline", "Offline" };
+	private String[] msnUserStatusMenu = { "取消", "線上", "忙碌", "暫離",
+			"馬上回來", "離開", "通話中", "外出用餐",
+			"Appear Offline", "離線" };
 	private String msnUserStatusReply;
 	private Hashtable<String, String> lastFriendEmail = new Hashtable<String, String>();
 	private Hashtable<String, String[]> lastFriendsList = new Hashtable<String, String[]>();
@@ -74,17 +74,19 @@ public class TimelineProcess extends ProcessBase {
 
 	private Settings settings;
 
-	public TimelineProcess(String account) throws Exception {
+	public TimelineProcess(String passport, String passcode, String account)
+			throws Exception {
 		super();
+		this.account = account;
+		this.passport = passport;
+		this.passcode = passcode;
 		settings = Settings.getInstance();
-		init();
-//		com.microblog.data.model.Robot robot = serviceService
-//				.imGetRobotByAccount(account);
-//		if (robot == null)
-//			throw new Exception("Cannot query record from database by account:"
-//					+ account);
-//		adminAccounts = robot.getAdminAccounts().split(",");
-		this.adminAccounts = settings.getAdminAccounts();
+		com.microblog.data.model.Robot robot = serviceService
+				.imGetRobotByAccount(account);
+		if (robot == null)
+			throw new Exception("Cannot query record from database by account:"
+					+ account);
+		adminAccounts = robot.getAdminAccounts().split(",");
 		this.webBaseUrl = settings.getWebBaseUrl();
 
 		StringBuffer sb = new StringBuffer();
@@ -154,7 +156,8 @@ public class TimelineProcess extends ProcessBase {
 		if (account_id == null) {
 			Account account = accountService.imGetAccountByMsn(email);
 			if (account == null) {
-				wsActionService.sendText(email, "数据库中找不到这个用户:" + email);
+				wsActionService.sendText(passport, passcode, email,
+						"数据库中找不到这个用户:" + email);
 			} else {
 				account_id = account.getId();
 				userAccountId.put(email, account_id);
@@ -193,7 +196,7 @@ public class TimelineProcess extends ProcessBase {
 
 			lastSessionTime.put(email, new Date());
 			reply = sessionDefaultReply;
-			wsActionService.sendText(email, reply);
+			wsActionService.sendText(passport, passcode, email, reply);
 		}
 
 		lastSessionTime.put(email, new Date());
@@ -208,7 +211,7 @@ public class TimelineProcess extends ProcessBase {
 				lastSessionTime.put(email, new Date());
 
 				reply = sessionDefaultReply;
-				wsActionService.sendText(email, reply);
+				wsActionService.sendText(passport, passcode, email, reply);
 			}
 
 			userStatus.removeLast();
@@ -305,26 +308,29 @@ public class TimelineProcess extends ProcessBase {
 				switch (c.intValue()) {
 				case 1:
 					// TODO allowList
-					reply = arrayToMessage(wsMemberService.friendList(email))
+					reply = arrayToMessage(wsMemberService.friendList(passport,
+							passcode, account))
 							+ "\r\n\r\n" + managerMenuReply;
 					nextStatus = 19;
 					break;
 				case 2:
 					// TODO blockList
-					reply = arrayToMessage(wsMemberService.pendingList(email))
+					reply = arrayToMessage(wsMemberService.pendingList(
+							passport, passcode, account))
 							+ "\r\n\r\n" + managerMenuReply;
 					nextStatus = 19;
 					break;
 				case 3:
-					reply = arrayToMessage(wsMemberService.pendingList(email))
+					reply = arrayToMessage(wsMemberService.pendingList(
+							passport, passcode, account))
 							+ "\r\n\r\n" + managerMenuReply;
 					nextStatus = 19;
 					break;
 				case 4:// 查朋友資料
-					lastFriendsList.put(email, wsMemberService
-							.friendList(email));
+					lastFriendsList.put(email, wsMemberService.friendList(
+							passport, passcode, account));
 					reply = "請選擇聯絡人：\r\n"
-							+ arrayToMessage(wsMemberService.friendList(email));
+							+ arrayToMessage(lastFriendsList.get(email));
 					nextStatus = 194;
 					break;
 				case 5:// 改昵稱
@@ -347,32 +353,31 @@ public class TimelineProcess extends ProcessBase {
 					nextStatus = 199;
 					break;
 				case 10:// 移除聯絡人
-					lastFriendsList.put(email, wsMemberService
-							.friendList(email));
+					lastFriendsList.put(email, wsMemberService.friendList(
+							passport, passcode, account));
 					reply = "請選擇聯絡人：\r\n"
-							+ arrayToMessage(wsMemberService.friendList(email));
+							+ arrayToMessage(lastFriendsList.get(email));
 					nextStatus = 1910;
 					break;
 				case 11:// 加允許清單
-					String[] pendingList11 = wsMemberService.pendingList(email);
-
-					lastFriendsList.put(email, pendingList11);
-					reply = "請選擇聯絡人\r\n" + arrayToMessage(pendingList11);
+					lastFriendsList.put(email, wsMemberService.pendingList(
+							passport, passcode, account));
+					reply = "請選擇聯絡人\r\n" + arrayToMessage(lastFriendsList.get(email));
 					nextStatus = 1911;
 					break;
 				case 12:// 加入黑名單
 					// TODO allowList
-					lastFriendsList.put(email, wsMemberService
-							.friendList(email));
+					lastFriendsList.put(email, wsMemberService.friendList(
+							passport, passcode, account));
 					reply = "請選擇聯絡人\r\n"
-							+ arrayToMessage(wsMemberService.friendList(email));
+							+ arrayToMessage(lastFriendsList.get(email));
 					nextStatus = 1912;
 					break;
 				case 13:// 送文字訊息
-					lastFriendsList.put(email, wsMemberService
-							.friendList(email));
+					lastFriendsList.put(email, wsMemberService.friendList(
+							passport, passcode, account));
 					reply = "請選擇聯絡人(多個聯絡人請用【,】隔開，送給全部聯絡人，請輸入【a】)\r\n"
-							+ arrayToMessage(wsMemberService.friendList(email));
+							+ arrayToMessage(lastFriendsList.get(email));
 					nextStatus = 1913;
 					break;
 				default:
@@ -389,7 +394,8 @@ public class TimelineProcess extends ProcessBase {
 				String[] friendsList = lastFriendsList.get(email);
 				if (friendsList == null || f > friendsList.length || f < 0) {
 					reply = "請選擇聯系人\r\n"
-							+ arrayToMessage(wsMemberService.friendList(email));
+							+ arrayToMessage(wsMemberService.friendList(
+									passport, passcode, account));
 					nextStatus = 194;
 				} else {
 					reply = goMsnFriendDetail(email, friendsList[f - 1])
@@ -399,19 +405,22 @@ public class TimelineProcess extends ProcessBase {
 
 			} catch (NumberFormatException e) {
 				reply = "請選擇聯系人\r\n"
-						+ arrayToMessage(wsMemberService.friendList(email));
+						+ arrayToMessage(wsMemberService.friendList(passport,
+								passcode, account));
 				nextStatus = 194;
 			}
 			break;
 		case 195:
-			if (wsMessengerService.changeDisplayName(email, choise))
+			if (wsMessengerService.changeDisplayName(passport, passcode, account,
+					choise))
 				reply = operateDone;// + "\r\n\r\n" + managerMenuReply;
 			else
 				reply = errorOccured;
 			nextStatus = 19;
 			break;
 		case 196:
-			if (wsMessengerService.changePersonalMessage(email, choise))
+			if (wsMessengerService.changePersonalMessage(passport, passcode,
+					account, choise))
 				reply = operateDone;// + "\r\n\r\n" + managerMenuReply;
 			else
 				reply = errorOccured;
@@ -446,7 +455,7 @@ public class TimelineProcess extends ProcessBase {
 			nextStatus = 19;
 			break;
 		case 199:// 加联系人
-			if (wsMemberService.addFriend(email, choise, 1) != -1)
+			if (wsMemberService.addFriend(passport, passcode, account, choise, 1) != -1)
 				reply = operateDone;// + "\r\n\r\n" + managerMenuReply;
 			else
 				reply = errorOccured;
@@ -463,7 +472,7 @@ public class TimelineProcess extends ProcessBase {
 							+ arrayToMessage(lastFriendsList.get(email));
 					nextStatus = 1910;
 				} else {
-					if (wsMemberService.removeFriend(email,
+					if (wsMemberService.removeFriend(passport, passcode, account,
 							friendsList[f1910 - 1]) != -1)
 						reply = operateDone;// + "\r\n\r\n" + managerMenuReply;
 					else
@@ -488,7 +497,7 @@ public class TimelineProcess extends ProcessBase {
 							+ arrayToMessage(lastFriendsList.get(email));
 					nextStatus = 1911;
 				} else {
-					if (wsMemberService.allowFriend(email,
+					if (wsMemberService.allowFriend(passport, passcode, account,
 							friendsList[f1911 - 1]))
 						reply = operateDone;// + "\r\n\r\n" + managerMenuReply;
 					else
@@ -513,7 +522,7 @@ public class TimelineProcess extends ProcessBase {
 							+ arrayToMessage(lastFriendsList.get(email));
 					nextStatus = 1912;
 				} else {
-					if (wsMemberService.blockFriend(email,
+					if (wsMemberService.blockFriend(passport, passcode, account,
 							friendsList[f1912 - 1]))
 						reply = operateDone;// + "\r\n\r\n" + managerMenuReply;
 					else
@@ -567,13 +576,16 @@ public class TimelineProcess extends ProcessBase {
 		case 19131:
 			boolean ok = false;
 			if (lastFriendEmail.get(email).equals("all"))
-				ok = wsActionService.sendTextToAll(email, choise);
+				ok = wsActionService.sendTextToAll(passport, passcode, account,
+						choise);
 			else {
 				String[] friendsList = lastFriendEmail.get(email).split(",");
 				for (String friendList : friendsList) {
 					if (friendList.trim().equals(""))
 						continue;
-					ok = ok | wsActionService.sendText(friendList, choise);
+					ok = ok
+							| wsActionService.sendText(passport, passcode,
+									friendList, choise);
 				}
 			}
 			if (ok)
@@ -1104,7 +1116,7 @@ public class TimelineProcess extends ProcessBase {
 			if (!r.equals("")) {
 				Logs.getLogger().info(
 						"Call webservice to send text(" + r + ") to " + email);
-				if (!wsActionService.sendText(email, r))
+				if (!wsActionService.sendText(passport, passcode, email, r))
 					Logs.getLogger().error(
 							"Unable to send text to " + email
 									+ " via webservice");
@@ -1163,16 +1175,4 @@ public class TimelineProcess extends ProcessBase {
 		return isAdmin(friend);
 	}
 
-	@Override
-	protected void init() throws Exception {
-		wsMemberService.init(settings.getWsUrl(), settings.getWsPassport(),
-				settings.getWsPasscode());
-		wsServiceService.init(settings.getWsUrl(), settings.getWsPassport(),
-				settings.getWsPasscode());
-		wsMessengerService.init(settings.getWsUrl(), settings.getWsPassport(),
-				settings.getWsPasscode());
-		wsActionService.init(settings.getWsUrl(), settings.getWsPassport(),
-				settings.getWsPasscode());
-
-	}
 }

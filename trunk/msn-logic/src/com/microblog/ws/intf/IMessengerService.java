@@ -3,19 +3,15 @@ package com.microblog.ws.intf;
 import com.microblog.ws.model.MessengerStatusWrapper;
 
 public interface IMessengerService {
+	public boolean changeDisplayName(String passport, String passcode,
+			String account, String displayName) throws Exception;
 
-	public void init(String wsUrl, String passport, String passcode)
-			throws Exception;
+	public boolean changePersonalMessage(String passport, String passcode,
+			String account, String personalMessage) throws Exception;
 
-	public boolean changeDisplayName(String account, String displayName)
-			throws Exception;
+	public MessengerStatusWrapper currentStatus(String passport,
+			String passcode, String account) throws Exception;
 
-	public boolean changePersonalMessage(String account, String personalMessage)
-			throws Exception;
-
-	public MessengerStatusWrapper currentStatus(String account)
-			throws Exception;
-
-	public String[] list() throws Exception;
+	public String[] list(String passport, String passcode) throws Exception;
 
 }
