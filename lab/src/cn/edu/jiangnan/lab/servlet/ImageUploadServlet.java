@@ -253,7 +253,7 @@ public class ImageUploadServlet extends HttpServlet {
 				result.put("msg", "您已成功上传设备图片！");
 			} else {
 				result.put("result", false);
-				result.put("msg", "对不起，程序首先错误，请稍候再试！");
+				result.put("msg", "对不起，出现错误，请稍候再试！");
 			}
 
 		}
