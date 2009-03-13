@@ -35,7 +35,7 @@ public class Account implements Serializable {
 	private String id;
 	private String email;
 	private String avatar;
-	
+
 	private Date udate;
 
 	private String nickname;
@@ -109,6 +109,8 @@ public class Account implements Serializable {
 	private String skype;
 
 	private String pmessage;
+
+	private String robotid;
 
 	public String getPmessage() {
 		return pmessage;
@@ -357,6 +359,14 @@ public class Account implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date getUdate() {
 		return udate;
+	}
+
+	public void setRobotid(String robotid) {
+		this.robotid = robotid;
+	}
+
+	public String getRobotid() {
+		return robotid;
 	}
 
 }

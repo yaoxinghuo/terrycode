@@ -29,6 +29,8 @@ public class Passport implements Serializable {
 
 	private String account_id;
 
+	private int type;// 0 普通用户 1可以登录service forum管理后台
+
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
@@ -74,6 +76,14 @@ public class Passport implements Serializable {
 	@OneToOne(fetch = FetchType.LAZY)
 	public Account getAccount() {
 		return account;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
+	public int getType() {
+		return type;
 	}
 
 }
