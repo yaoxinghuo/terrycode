@@ -9,6 +9,8 @@ public interface IGroupDao {
 	
 	public List<Group> getForumGroupsByAccountId(String accountid);
 	
+	public Group getForumGroupByMsn(String msn);
+	
 	public List<Group> getForumGroups(String exclude);
 
 	public boolean saveGroup(Group group);

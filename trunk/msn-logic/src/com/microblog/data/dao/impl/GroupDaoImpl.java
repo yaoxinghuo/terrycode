@@ -87,4 +87,12 @@ public class GroupDaoImpl implements IGroupDao {
 		return query.list();
 	}
 
+	@Override
+	public Group getForumGroupByMsn(String msn) {
+		Query query = sessionFactory.getCurrentSession().createQuery(
+				"from Group g where g.msn=:msn and g.type=2");
+		query.setString("msn", msn);
+		return (Group) query.uniqueResult();
+	}
+
 }
