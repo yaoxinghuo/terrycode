@@ -6,6 +6,8 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 
 import com.microblog.data.model.Account;
+import com.microblog.data.model.Group;
+import com.microblog.data.model.Robot;
 import com.microblog.util.Logs;
 import com.microblog.util.Settings;
 import com.microblog.util.StringUtil;
@@ -72,16 +74,16 @@ public class ForumProcess extends ProcessBase {
 		this.passport = passport;
 		this.passcode = passcode;
 		settings = Settings.getInstance();
-		com.microblog.data.model.Robot robot = serviceService
-				.imGetRobotByAccount(account);
-		if (robot == null || robot.getForumId() == null
-				|| robot.getForumAdmin() == null)
+		Group forum = serviceService.imGetForumByAccount(account);
+		Robot robot = serviceService.imGetRobotByAccount(account);
+		if (forum == null || robot == null)
 			throw new Exception(
 					"Cannot query record or record not complete from database by account:"
 							+ account);
-		this.forumid = robot.getForumId();
-		this.forumAdminAccount = robot.getForumAdmin();
-		this.adminAccounts = robot.getAdminAccounts().split(",");
+		this.forumid = forum.getId();
+		this.forumAdminAccount = forum.getAccount().getMsn();
+		this.adminAccounts = robot.getAdminAccounts() == null ? null : robot
+				.getAdminAccounts().split(",");
 
 		this.webBaseUrl = settings.getWebBaseUrl();
 		this.forumBaseUrl = webBaseUrl + "forum.action?id=" + forumid;
@@ -446,8 +448,8 @@ public class ForumProcess extends ProcessBase {
 			}
 			break;
 		case 195:
-			if (wsMessengerService.changeDisplayName(passport, passcode, account,
-					choise))
+			if (wsMessengerService.changeDisplayName(passport, passcode,
+					account, choise))
 				reply = operateDone;// + "\r\n\r\n" + managerMenuReply;
 			else
 				reply = errorOccured;
@@ -490,7 +492,8 @@ public class ForumProcess extends ProcessBase {
 			nextStatus = 19;
 			break;
 		case 199:// 加联系人
-			if (wsMemberService.addFriend(passport, passcode, account, choise, 1) != -1)
+			if (wsMemberService.addFriend(passport, passcode, account, choise,
+					1) != -1)
 				reply = operateDone;// + "\r\n\r\n" + managerMenuReply;
 			else
 				reply = errorOccured;
@@ -507,8 +510,8 @@ public class ForumProcess extends ProcessBase {
 							+ arrayToMessage(lastFriendsList.get(email));
 					nextStatus = 1910;
 				} else {
-					if (wsMemberService.removeFriend(passport, passcode, account,
-							friendsList[f1910 - 1]) != -1)
+					if (wsMemberService.removeFriend(passport, passcode,
+							account, friendsList[f1910 - 1]) != -1)
 						reply = operateDone;// + "\r\n\r\n" + managerMenuReply;
 					else
 						reply = errorOccured;
@@ -532,8 +535,8 @@ public class ForumProcess extends ProcessBase {
 							+ arrayToMessage(lastFriendsList.get(email));
 					nextStatus = 1911;
 				} else {
-					if (wsMemberService.allowFriend(passport, passcode, account,
-							friendsList[f1911 - 1]))
+					if (wsMemberService.allowFriend(passport, passcode,
+							account, friendsList[f1911 - 1]))
 						reply = operateDone;// + "\r\n\r\n" + managerMenuReply;
 					else
 						reply = errorOccured;
@@ -557,8 +560,8 @@ public class ForumProcess extends ProcessBase {
 							+ arrayToMessage(lastFriendsList.get(email));
 					nextStatus = 1912;
 				} else {
-					if (wsMemberService.blockFriend(passport, passcode, account,
-							friendsList[f1912 - 1]))
+					if (wsMemberService.blockFriend(passport, passcode,
+							account, friendsList[f1912 - 1]))
 						reply = operateDone;// + "\r\n\r\n" + managerMenuReply;
 					else
 						reply = errorOccured;
@@ -715,17 +718,17 @@ public class ForumProcess extends ProcessBase {
 
 	@Override
 	protected boolean isAdmin(String friend) {
-		for (String adm : adminAccounts) {
-			if (adm.equals(friend))
-				return true;
-		}
 		if (forumAdminAccount.equals(friend))
 			return true;
+		if (adminAccounts == null)
+			return false;
 		return false;
 	}
 
 	@Override
 	protected boolean isSuperAdmin(String friend) {
+		if (adminAccounts == null)
+			return false;
 		for (String adm : adminAccounts) {
 			if (adm.equals(friend))
 				return true;

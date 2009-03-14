@@ -118,6 +118,9 @@
 		<property name="robotDao">
 			<ref local="robotDao" />
 		</property>
+		<property name="groupDao">
+			<ref local="groupDao" />
+		</property>
 	</bean>
 	<bean id="placeholderConfig"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">

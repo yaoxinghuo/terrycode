@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+//import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -21,8 +22,8 @@ public class Robot implements Serializable {
 	private String account;
 	private int type;// -1 未注册 0 未激活 1时间轴 2论坛
 	private String adminAccounts;
-	private String forumAdmin;
-	private String forumId;
+//	private String forumAdmin;
+//	private String forumId;
 
 	private String passport;
 	private String passcode;
@@ -81,19 +82,21 @@ public class Robot implements Serializable {
 		this.adminAccounts = adminAccounts;
 	}
 
-	public String getForumAdmin() {
-		return forumAdmin;
-	}
-
-	public void setForumAdmin(String forumAdmin) {
-		this.forumAdmin = forumAdmin;
-	}
-
-	public String getForumId() {
-		return forumId;
-	}
-
-	public void setForumId(String forumId) {
-		this.forumId = forumId;
-	}
+//	@Transient
+//	public String getForumAdmin() {
+//		return forumAdmin;
+//	}
+//
+//	public void setForumAdmin(String forumAdmin) {
+//		this.forumAdmin = forumAdmin;
+//	}
+//
+//	@Transient
+//	public String getForumId() {
+//		return forumId;
+//	}
+//
+//	public void setForumId(String forumId) {
+//		this.forumId = forumId;
+//	}
 }

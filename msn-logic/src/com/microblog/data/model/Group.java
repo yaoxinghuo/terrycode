@@ -36,7 +36,7 @@ public class Group implements Serializable {
 	private int counter;
 
 	private int type;//0系统默认群组 1一般群组 2论坛
-	private String msn;//如果是論壇的話，需要制定這個論壇的機器人msn
+	private String msn;//如果是論壇的話，需要制定這個論壇的機器人msn,robot.account
 	
 	private String account_id;
 
@@ -123,6 +123,7 @@ public class Group implements Serializable {
 		this.msn = msn;
 	}
 
+	@Column(unique = true)
 	public String getMsn() {
 		return msn;
 	}

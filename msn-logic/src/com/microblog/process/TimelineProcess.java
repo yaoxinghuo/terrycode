@@ -6,6 +6,7 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 
 import com.microblog.data.model.Account;
+import com.microblog.data.model.Robot;
 import com.microblog.util.Logs;
 import com.microblog.util.Settings;
 import com.microblog.util.StringUtil;
@@ -23,9 +24,8 @@ public class TimelineProcess extends ProcessBase {
 			"改顯示名稱", "改個人訊息", "改線上狀態", "改個人頭像", "加入聯絡人", "移除聯絡人", "加允許清單",
 			"加入黑名單", "送文字訊息" };
 	private String managerMenuReply;
-	private String[] msnUserStatusMenu = { "取消", "線上", "忙碌", "暫離",
-			"馬上回來", "離開", "通話中", "外出用餐",
-			"Appear Offline", "離線" };
+	private String[] msnUserStatusMenu = { "取消", "線上", "忙碌", "暫離", "馬上回來",
+			"離開", "通話中", "外出用餐", "Appear Offline", "離線" };
 	private String msnUserStatusReply;
 	private Hashtable<String, String> lastFriendEmail = new Hashtable<String, String>();
 	private Hashtable<String, String[]> lastFriendsList = new Hashtable<String, String[]>();
@@ -81,12 +81,12 @@ public class TimelineProcess extends ProcessBase {
 		this.passport = passport;
 		this.passcode = passcode;
 		settings = Settings.getInstance();
-		com.microblog.data.model.Robot robot = serviceService
-				.imGetRobotByAccount(account);
+		Robot robot = serviceService.imGetRobotByAccount(account);
 		if (robot == null)
 			throw new Exception("Cannot query record from database by account:"
 					+ account);
-		adminAccounts = robot.getAdminAccounts().split(",");
+		this.adminAccounts = robot.getAdminAccounts() == null ? null : robot
+				.getAdminAccounts().split(",");
 		this.webBaseUrl = settings.getWebBaseUrl();
 
 		StringBuffer sb = new StringBuffer();
@@ -362,7 +362,8 @@ public class TimelineProcess extends ProcessBase {
 				case 11:// 加允許清單
 					lastFriendsList.put(email, wsMemberService.pendingList(
 							passport, passcode, account));
-					reply = "請選擇聯絡人\r\n" + arrayToMessage(lastFriendsList.get(email));
+					reply = "請選擇聯絡人\r\n"
+							+ arrayToMessage(lastFriendsList.get(email));
 					nextStatus = 1911;
 					break;
 				case 12:// 加入黑名單
@@ -411,8 +412,8 @@ public class TimelineProcess extends ProcessBase {
 			}
 			break;
 		case 195:
-			if (wsMessengerService.changeDisplayName(passport, passcode, account,
-					choise))
+			if (wsMessengerService.changeDisplayName(passport, passcode,
+					account, choise))
 				reply = operateDone;// + "\r\n\r\n" + managerMenuReply;
 			else
 				reply = errorOccured;
@@ -455,7 +456,8 @@ public class TimelineProcess extends ProcessBase {
 			nextStatus = 19;
 			break;
 		case 199:// 加联系人
-			if (wsMemberService.addFriend(passport, passcode, account, choise, 1) != -1)
+			if (wsMemberService.addFriend(passport, passcode, account, choise,
+					1) != -1)
 				reply = operateDone;// + "\r\n\r\n" + managerMenuReply;
 			else
 				reply = errorOccured;
@@ -472,8 +474,8 @@ public class TimelineProcess extends ProcessBase {
 							+ arrayToMessage(lastFriendsList.get(email));
 					nextStatus = 1910;
 				} else {
-					if (wsMemberService.removeFriend(passport, passcode, account,
-							friendsList[f1910 - 1]) != -1)
+					if (wsMemberService.removeFriend(passport, passcode,
+							account, friendsList[f1910 - 1]) != -1)
 						reply = operateDone;// + "\r\n\r\n" + managerMenuReply;
 					else
 						reply = errorOccured;
@@ -497,8 +499,8 @@ public class TimelineProcess extends ProcessBase {
 							+ arrayToMessage(lastFriendsList.get(email));
 					nextStatus = 1911;
 				} else {
-					if (wsMemberService.allowFriend(passport, passcode, account,
-							friendsList[f1911 - 1]))
+					if (wsMemberService.allowFriend(passport, passcode,
+							account, friendsList[f1911 - 1]))
 						reply = operateDone;// + "\r\n\r\n" + managerMenuReply;
 					else
 						reply = errorOccured;
@@ -522,8 +524,8 @@ public class TimelineProcess extends ProcessBase {
 							+ arrayToMessage(lastFriendsList.get(email));
 					nextStatus = 1912;
 				} else {
-					if (wsMemberService.blockFriend(passport, passcode, account,
-							friendsList[f1912 - 1]))
+					if (wsMemberService.blockFriend(passport, passcode,
+							account, friendsList[f1912 - 1]))
 						reply = operateDone;// + "\r\n\r\n" + managerMenuReply;
 					else
 						reply = errorOccured;
@@ -1163,6 +1165,8 @@ public class TimelineProcess extends ProcessBase {
 
 	@Override
 	protected boolean isAdmin(String friend) {
+		if (adminAccounts == null)
+			return false;
 		for (String adm : adminAccounts) {
 			if (adm.equals(friend))
 				return true;
