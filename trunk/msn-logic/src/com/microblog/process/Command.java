@@ -70,22 +70,24 @@ public class Command extends EventObject {
 		super(mix);
 		String[] parts = mix.split("\\s", 5);
 		if (parts.length < 4)
-			throw new Exception("Syntax Error:" + mix);
+			throw new CommandParserException("Syntax Error:" + mix);
 		try {
 			name = Commands.valueOf(parts[0]);
 		} catch (Exception e) {
-			throw new Exception("Unrecognized command:" + parts[0]);
+			throw new CommandParserException("Unrecognized command:" + parts[0]);
 		}
 		account = parts[1].toLowerCase();
 		email = parts[2].toLowerCase();
 		try {
 			len = Integer.parseInt(parts[3]);
 		} catch (Exception e) {
-			throw new Exception("Unable to parser number:" + parts[3]);
+			throw new CommandParserException("Unable to parser number:"
+					+ parts[3]);
 		}
 		if (len != 0) {
 			if (parts[4].length() < len)
-				throw new Exception("Extra msg length error:" + parts[4]);
+				throw new CommandParserException("Extra msg length error:"
+						+ parts[4]);
 			body = parts[4].substring(0, len);
 		} else
 			body = "";

@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.Observable;
 
 import com.microblog.process.Command;
+import com.microblog.process.CommandParserException;
 import com.microblog.process.Commands;
 import com.microblog.util.Logs;
 
@@ -22,29 +23,31 @@ public class SocketObservable extends Observable implements Runnable {
 
 		Command command;
 
-		public Cmd(final String line) throws Exception {
+		public Cmd(final String line) throws CommandParserException, IOException {
 			String[] parts = line.split(" ");
 			if (parts.length < 3)
-				throw new Exception("Syntax Error:" + line);
+				throw new CommandParserException("Syntax Error:" + line);
 			try {
 				name = Commands.valueOf(parts[0]);
 			} catch (Exception e) {
-				throw new Exception("Unrecognized command:" + parts[0]);
+				throw new CommandParserException("Unrecognized command:"
+						+ parts[0]);
 			}
 			account = parts[1];
 			email = parts[2];
 			try {
 				len = Integer.parseInt(parts[3]);
 			} catch (Exception e) {
-				throw new Exception("Unable to parser number:" + parts[3]);
+				throw new CommandParserException("Unable to parser number:"
+						+ parts[3]);
 			}
 			final byte[] bb = new byte[len];
 			try {
 				in.read(bb, 0, len);
 				body = new String(bb, "UTF-8");
 				command = new Command(name, account, email, len, body);
-			} catch (Exception e) {
-				throw new Exception("Unable to read extra msg:");
+			} catch (IOException e) {
+				throw new IOException("Unable to read extra msg");
 			}
 		}
 
@@ -121,7 +124,7 @@ public class SocketObservable extends Observable implements Runnable {
 									"Receive command from server:\t"
 											+ cmd.toString());
 							fireChanged(cmd.command);
-						} catch (Exception e) {
+						} catch (CommandParserException e) {
 							Logs.getLogger().error(
 									"Error parse command.exception:"
 											+ e.getMessage());
@@ -202,4 +205,5 @@ public class SocketObservable extends Observable implements Runnable {
 			setConnectionCloseAndReconnect();
 		}
 	}
+
 }
