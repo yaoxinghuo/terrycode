@@ -14,6 +14,9 @@ import com.microblog.util.Logs;
 
 public class SocketObservable extends Observable implements Runnable {
 
+	public static final String QNG = "QNG";
+	public static final String PNG = "PNG";
+
 	private class Cmd {
 		int len;
 		Commands name;
@@ -23,7 +26,15 @@ public class SocketObservable extends Observable implements Runnable {
 
 		Command command;
 
-		public Cmd(final String line) throws CommandParserException, IOException {
+		public Cmd(final String line) throws CommandParserException,
+				IOException {
+			if (line.trim().equalsIgnoreCase(QNG)) {// Client端會定期接收到Server檢查指令
+				name = Commands.QNG;
+				out.println(PNG);// Client收到指定令須於30秒內回送回應指令, 以確保連線有效
+				Logs.getLogger().info(
+						"Receive QNG from server.echo PNG to server...");
+				return;
+			}
 			String[] parts = line.split(" ");
 			if (parts.length < 3)
 				throw new CommandParserException("Syntax Error:" + line);
@@ -117,9 +128,10 @@ public class SocketObservable extends Observable implements Runnable {
 							.info(
 									"Receive 'ok' message from server.Ready for incoming comands...");
 					while (true) {
-						Cmd cmd;
 						try {
-							cmd = new Cmd(readLine());
+							Cmd cmd = new Cmd(readLine());
+							if (cmd.name == Commands.QNG)
+								continue;
 							Logs.getLogger().info(
 									"Receive command from server:\t"
 											+ cmd.toString());
