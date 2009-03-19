@@ -118,20 +118,27 @@ public class AccountServiceImpl implements IAccountService {
 
 	@Override
 	public boolean imUpdateUserStatus(String accountid, String nickname,
-			String pmessage, boolean forceCreateHead) {
+			String pmessage, String avatar) {
 		Account account = accountDao.getAccountById(accountid);
 		if (!account.getNickname().equals(nickname))
 			groupFriendDao.updateFriendsNickname(accountid, nickname + "("
 					+ account.getEmail() + ")");
+		if (nickname == null)
+			nickname = account.getNickname();
+		if (pmessage == null)
+			pmessage = account.getPmessage();
+		if (avatar == null)
+			avatar = account.getAvatar();
 		boolean needUpdate = !account.getNickname().equals(nickname)
-				|| !account.getPmessage().equals(pmessage);
+				|| !account.getPmessage().equals(pmessage)
+				|| !account.getAvatar().equals(avatar);
 		if (needUpdate) {
 			account.setNickname(nickname);
 			account.setPmessage(pmessage);
 			account.setUdate(new Date());
 			accountDao.updateAccount(account);
 		}
-		if (needUpdate || forceCreateHead) {
+		if (needUpdate) {
 			Head head = new Head();
 			head.setAccount(account);
 			head.setAvatar(account.getAvatar());

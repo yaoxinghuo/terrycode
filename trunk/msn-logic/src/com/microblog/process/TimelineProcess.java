@@ -10,6 +10,7 @@ import com.microblog.data.model.Robot;
 import com.microblog.util.Logs;
 import com.microblog.util.Settings;
 import com.microblog.util.StringUtil;
+import com.microblog.ws.model.MemberStatusWrapper;
 
 public class TimelineProcess extends ProcessBase {
 
@@ -50,7 +51,6 @@ public class TimelineProcess extends ProcessBase {
 	private Hashtable<String, Integer> lastPage = new Hashtable<String, Integer>();
 	private Hashtable<String, String> lastChoise = new Hashtable<String, String>();
 	private Hashtable<String, String> lastId = new Hashtable<String, String>();
-	private Hashtable<String, String> userAccountId = new Hashtable<String, String>();
 
 	// 记录机器人回覆堆栈，方便在“返回上一层”菜单的操作
 	private Hashtable<String, LinkedList<String>> lastInput = new Hashtable<String, LinkedList<String>>();
@@ -131,37 +131,16 @@ public class TimelineProcess extends ProcessBase {
 	}
 
 	@Override
-	public void process(Command command) {
-		Commands commandEnum = command.getName();
-		switch (commandEnum) {
-		case MSG:
-			try {
-				textMessage(command);
-			} catch (Exception e) {
-				Logs.getLogger().error(
-						"Error process command:" + command.toString()
-								+ "\texception:" + e.getMessage());
-			}
-		default:
-		}
-	}
-
-	@Override
-	public void textMessage(Command command) throws Exception {
+	public void friendTextMessageReceived(Command command) throws Exception {
 		String choise = command.getBody();
 		String sessionDefaultReply = defaultReply;
 		String email = command.getEmail();
 
-		String account_id = userAccountId.get(email);
+		String account_id = checkInAndOutUserId(email);
 		if (account_id == null) {
-			Account account = accountService.imGetAccountByMsn(email);
-			if (account == null) {
-				wsActionService.sendText(passport, passcode, email,
-						"数据库中找不到这个用户:" + email);
-			} else {
-				account_id = account.getId();
-				userAccountId.put(email, account_id);
-			}
+			wsActionService.sendText(passport, passcode, email, "数据库中找不到这个用户:"
+					+ email);
+			return;
 		}
 
 		if (isAdmin(email))
@@ -1179,4 +1158,73 @@ public class TimelineProcess extends ProcessBase {
 		return isAdmin(friend);
 	}
 
+	@Override
+	protected void friendDisplayPicChanged(Command command) throws Exception {
+		String email = command.getEmail();
+		String account_id = checkInAndOutUserId(email);
+		if (account_id == null) {
+			return;
+		}
+		String fileName = wsFriendDisplayPicService.get(passport, passcode,
+				email, settings.getUserImgBasePath());
+		if (fileName == null)
+			return;
+		accountService.imUpdateUserStatus(account_id, null, null, email + "/"
+				+ fileName);
+	}
+
+	@Override
+	protected void friendNicknameChanged(Command command) throws Exception {
+		String email = command.getEmail();
+		String account_id = checkInAndOutUserId(email);
+		if (account_id == null) {
+			return;
+		}
+		accountService.imUpdateUserStatus(account_id, command.getBody(), null,
+				null);
+	}
+
+	@Override
+	protected void friendPersonalMessageChanged(Command command)
+			throws Exception {
+		String email = command.getEmail();
+		String account_id = checkInAndOutUserId(email);
+		if (account_id == null) {
+			return;
+		}
+		String pmessage = command.getBody() == null ? "" : command.getBody();
+		accountService.imUpdateUserStatus(account_id, null, pmessage, null);
+	}
+
+	@Override
+	protected void friendKnockOn(Command command) throws Exception {
+		String email = command.getEmail();
+		wsActionService.knockOn(passport, passcode, email);
+	}
+
+	@Override
+	protected void someoneAddMe(Command command) throws Exception {
+		String email = command.getEmail();
+		Account account = accountService.imGetAccountByMsn(email);
+		if (account != null) {
+			if (wsMemberService.acceptFriend(passport, passcode, command
+					.getAccount(), email) != -1) {
+				wsActionService.sendText(passport, passcode, email,
+						"機器人已成功加您為好友！");
+			} else {
+				wsActionService.sendText(passport, passcode, email,
+						"機器人無法加您為好友，可能已經達到人數上限或出現錯誤！");
+			}
+			String avatar = wsFriendDisplayPicService.get(passport, passcode,
+					email, settings.getUserImgBasePath());
+			MemberStatusWrapper status = wsMemberService.friendStatus(passport,
+					passcode, command.getAccount(), email);
+			if (status != null)
+				accountService.imUpdateUserStatus(account.getId(), status
+						.getDisplayName(), status.getPersonalMessage(), avatar);
+		} else
+			wsActionService.sendText(passport, passcode, email, "請先到"
+					+ webBaseUrl + "注冊后再加機器人為好友！");
+
+	}
 }

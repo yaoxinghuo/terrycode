@@ -1,18 +1,25 @@
 package com.microblog.process;
 
+import java.util.Hashtable;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
+import com.microblog.data.model.Account;
 import com.microblog.data.service.intf.IAccountService;
 import com.microblog.data.service.intf.IMessageService;
+import com.microblog.util.Logs;
 import com.microblog.ws.intf.IActionService;
+import com.microblog.ws.intf.IFriendDisplayPicService;
 import com.microblog.ws.intf.IMemberService;
 import com.microblog.ws.intf.IMessengerService;
 import com.microblog.ws.intf.IServiceService;
 import com.microblog.ws.model.MemberStatusWrapper;
 
 public abstract class ProcessBase {
-	
+
+	protected Hashtable<String, String> userAccountId = new Hashtable<String, String>();
+
 	protected String account;
 	protected String passport;
 	protected String passcode;
@@ -53,15 +60,60 @@ public abstract class ProcessBase {
 		wsMessengerService = (IMessengerService) ctx
 				.getBean("wsMessegerService");
 		wsActionService = (IActionService) ctx.getBean("wsActionService");
+		wsFriendDisplayPicService = (IFriendDisplayPicService) ctx
+				.getBean("wsFriendDisplayPicService");
 	}
 
 	protected abstract boolean isAdmin(String friend);
 
 	protected abstract boolean isSuperAdmin(String friend);
 
-	public abstract void textMessage(Command command) throws Exception;
+	protected abstract void friendTextMessageReceived(Command command)
+			throws Exception;
 
-	public abstract void process(Command command);
+	protected abstract void friendDisplayPicChanged(Command command)
+			throws Exception;
+
+	protected abstract void friendPersonalMessageChanged(Command command)
+			throws Exception;
+
+	protected abstract void friendNicknameChanged(Command command)
+			throws Exception;
+
+	protected abstract void someoneAddMe(Command command) throws Exception;
+
+	protected abstract void friendKnockOn(Command command) throws Exception;
+
+	protected void process(Command command) {
+		Commands commandEnum = command.getName();
+		try {
+			switch (commandEnum) {
+			case MSG:
+				friendTextMessageReceived(command);
+				break;
+			case CHP:
+				friendDisplayPicChanged(command);
+				break;
+			case CHM:
+				friendPersonalMessageChanged(command);
+				break;
+			case CHN:
+				friendNicknameChanged(command);
+				break;
+			case ADC:
+				someoneAddMe(command);
+				break;
+			case NAK:
+				friendKnockOn(command);
+				break;
+			default:
+			}
+		} catch (Exception e) {
+			Logs.getLogger().error(
+					"Error process command:" + command.toString()
+							+ "\texception:" + e.getMessage());
+		}
+	}
 
 	protected String arrayToMessage(final String[] arr) {
 		if (arr == null || arr.length == 0) {
@@ -76,8 +128,8 @@ public abstract class ProcessBase {
 		return sb.toString();
 	}
 
-	protected String goMsnFriendDetail(
-			String email, String friendEmail) throws Exception {
+	protected String goMsnFriendDetail(String email, String friendEmail)
+			throws Exception {
 		MemberStatusWrapper friend = wsMemberService.friendStatus(passport,
 				passcode, account, friendEmail);
 		if (friend == null) {
@@ -99,6 +151,20 @@ public abstract class ProcessBase {
 		}
 	}
 
+	protected String checkInAndOutUserId(String email) {
+		String account_id = userAccountId.get(email);
+		if (account_id == null) {
+			Account account = accountService.imGetAccountByMsn(email);
+			if (account == null) {
+				return null;
+			} else {
+				account_id = account.getId();
+				userAccountId.put(email, account_id);
+			}
+		}
+		return account_id;
+	}
+
 	protected IMessageService messageService;
 	protected IAccountService accountService;
 	protected com.microblog.data.service.intf.IServiceService serviceService;
@@ -107,6 +173,16 @@ public abstract class ProcessBase {
 	protected IServiceService wsServiceService;
 	protected IMessengerService wsMessengerService;
 	protected IActionService wsActionService;
+	protected IFriendDisplayPicService wsFriendDisplayPicService;
+
+	public IFriendDisplayPicService getWsFriendDisplayPicService() {
+		return wsFriendDisplayPicService;
+	}
+
+	public void setWsFriendDisplayPicService(
+			IFriendDisplayPicService wsFriendDisplayPicService) {
+		this.wsFriendDisplayPicService = wsFriendDisplayPicService;
+	}
 
 	public com.microblog.data.service.intf.IServiceService getServiceService() {
 		return serviceService;

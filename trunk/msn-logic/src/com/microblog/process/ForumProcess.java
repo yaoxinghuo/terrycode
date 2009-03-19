@@ -5,7 +5,6 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.LinkedList;
 
-import com.microblog.data.model.Account;
 import com.microblog.data.model.Group;
 import com.microblog.data.model.Robot;
 import com.microblog.util.Logs;
@@ -34,7 +33,6 @@ public class ForumProcess extends ProcessBase {
 	private String msnUserStatusReply;
 	private Hashtable<String, String> lastFriendEmail = new Hashtable<String, String>();
 	private Hashtable<String, String> lastMessageId = new Hashtable<String, String>();
-	private Hashtable<String, String> userAccountId = new Hashtable<String, String>();
 	private Hashtable<String, Integer> managerMenuHash = new Hashtable<String, Integer>();
 	private Hashtable<String, String> msnUserStatusHash = new Hashtable<String, String>();
 
@@ -137,7 +135,7 @@ public class ForumProcess extends ProcessBase {
 		switch (commandEnum) {
 		case MSG:
 			try {
-				textMessage(command);
+				friendTextMessageReceived(command);
 			} catch (Exception e) {
 				Logs.getLogger().error(
 						"Error process command:" + command.toString()
@@ -148,21 +146,16 @@ public class ForumProcess extends ProcessBase {
 	}
 
 	@Override
-	public void textMessage(Command command) throws Exception {
+	public void friendTextMessageReceived(Command command) throws Exception {
 		String choise = command.getBody();
 		String sessionDefaultReply = defaultReply;
 		String email = command.getEmail();
 
-		String account_id = userAccountId.get(email);
+		String account_id = checkInAndOutUserId(email);
 		if (account_id == null) {
-			Account account = accountService.imGetAccountByMsn(email);
-			if (account == null) {
-				wsActionService.sendText(passport, passcode, email,
-						"数据库中找不到这个用户:" + email);
-			} else {
-				account_id = account.getId();
-				userAccountId.put(email, account_id);
-			}
+			wsActionService.sendText(passport, passcode, email, "数据库中找不到这个用户:"
+					+ email);
+			return;
 		}
 
 		if (isAdmin(email))
@@ -734,6 +727,37 @@ public class ForumProcess extends ProcessBase {
 				return true;
 		}
 		return false;
+	}
+
+	@Override
+	protected void friendDisplayPicChanged(Command command) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void friendNicknameChanged(Command command) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void friendPersonalMessageChanged(Command command)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void friendKnockOn(Command command) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void someoneAddMe(Command command) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
