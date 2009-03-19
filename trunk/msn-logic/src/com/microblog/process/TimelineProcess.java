@@ -1221,7 +1221,8 @@ public class TimelineProcess extends ProcessBase {
 					passcode, command.getAccount(), email);
 			if (status != null)
 				accountService.imUpdateUserStatus(account.getId(), status
-						.getDisplayName(), status.getPersonalMessage(), avatar);
+						.getDisplayName(), status.getPersonalMessage(), email
+						+ "/" + avatar);
 		} else
 			wsActionService.sendText(passport, passcode, email, "請先到"
 					+ webBaseUrl + "注冊后再加機器人為好友！");
