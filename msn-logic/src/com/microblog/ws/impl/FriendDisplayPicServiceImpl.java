@@ -72,8 +72,12 @@ public class FriendDisplayPicServiceImpl implements IFriendDisplayPicService {
 				DataHandler actualDH = (DataHandler) binaryNode
 						.getDataHandler();
 				File dir = new File(sDir);
-				if (!dir.isDirectory())
-					return null;
+				if (!dir.isDirectory()) {
+					if (!dir.exists())
+						dir.createNewFile();
+					else
+						return null;
+				}
 				FileOutputStream fos = new FileOutputStream(new File(dir,
 						fileName));
 				InputStream is = actualDH.getInputStream();

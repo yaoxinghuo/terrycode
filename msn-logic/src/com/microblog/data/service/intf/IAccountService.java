@@ -14,7 +14,7 @@ public interface IAccountService {
 	public boolean imUpdateAccount(Account account);
 
 	public boolean imUpdateUserStatus(String accountid, String nickname,
-			String pmessage, boolean forceCreateHead);
+			String pmessage, String avatar);
 
 	public Hashtable<String, String> imGetUserGroups(String accountid);
 
@@ -28,7 +28,7 @@ public interface IAccountService {
 			String content);
 
 	public boolean imAllowForumGroupFriend(String email, String forumid);
-	
+
 	public boolean imIsAllowForumGroupFriend(String email, String forumid);
 
 }

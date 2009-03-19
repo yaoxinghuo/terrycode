@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Date;
 import java.util.Observable;
 
 import com.microblog.process.Command;
@@ -14,8 +15,10 @@ import com.microblog.util.Logs;
 
 public class SocketObservable extends Observable implements Runnable {
 
-	public static final String QNG = "QNG";
-	public static final String PNG = "PNG";
+	private static final String QNG = "QNG";
+	private static final String PNG = "PNG";
+	private long lastReceiveQNGTime = 0;
+	private static final int MAX_INACTIVE_TIME = 70 * 1000;
 
 	private class Cmd {
 		int len;
@@ -29,6 +32,7 @@ public class SocketObservable extends Observable implements Runnable {
 		public Cmd(final String line) throws CommandParserException,
 				IOException {
 			if (line.trim().equalsIgnoreCase(QNG)) {// Client端會定期接收到Server檢查指令
+				lastReceiveQNGTime = new Date().getTime();
 				name = Commands.QNG;
 				out.println(PNG);// Client收到指定令須於30秒內回送回應指令, 以確保連線有效
 				Logs.getLogger().info(
@@ -98,9 +102,45 @@ public class SocketObservable extends Observable implements Runnable {
 		this.passcode = passcode;
 		this.passport = passport;
 
+		new Thread() {
+			/*
+			 * (from Robert's Email)
+			 * 
+			 * 目前觀察機房firewall發現如果session接超過一定時間沒有動作firwall會把 session 踢掉
+			 * 如此會造成各位ｂ端程式接上後一段時間後離線
+			 * 
+			 * 我這邊會試著調整（但是目前發現是最多八萬秒，似乎無法調整）
+			 * 
+			 * 同時為了避免其他網路層的未知因素斷線請各位開發時務必要多做一件事
+			 * 
+			 * 就請記下你收到最後一你收到確認的tag的時間如果超過70秒沒收到
+			 */
+			@Override
+			public void run() {
+				while (true) {
+					if (isConnected
+							&& new Date().getTime() - lastReceiveQNGTime > MAX_INACTIVE_TIME) {
+						Logs
+								.getLogger()
+								.info(
+										"Havent receive 'QNG' from server for "
+												+ MAX_INACTIVE_TIME
+												+ "ms. Disconnect and reconnect now...");
+						setConnectionCloseAndReconnect();
+					}
+					try {
+						Thread.sleep(MAX_INACTIVE_TIME);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}.run();
+
 		connect();
 	}
 
+	@Deprecated
 	public void sendCommand(Command command) {
 		if (!isReady)
 			try {
@@ -116,8 +156,8 @@ public class SocketObservable extends Observable implements Runnable {
 
 	@Override
 	public void run() {
-		try {
-			while (true) {
+		while (true) {
+			try {
 				if (!isConnected) {
 					continue;
 				}
@@ -138,18 +178,18 @@ public class SocketObservable extends Observable implements Runnable {
 							fireChanged(cmd.command);
 						} catch (CommandParserException e) {
 							Logs.getLogger().error(
-									"Error parse command.exception:"
+									"Error parse command.CommandParserException:"
 											+ e.getMessage());
 						}
 					}
 				}
+			} catch (Exception e) {
+				isConnected = false;
+				isReady = false;
+				Logs.getLogger().error(
+						"Socket connection error:\t" + e.getMessage());
+				setConnectionCloseAndReconnect();
 			}
-		} catch (IOException e) {
-			isConnected = false;
-			isReady = false;
-			Logs.getLogger().error(
-					"Socket connection error:\t" + e.getMessage());
-			setConnectionCloseAndReconnect();
 		}
 
 	}
@@ -178,6 +218,8 @@ public class SocketObservable extends Observable implements Runnable {
 	}
 
 	private void setConnectionCloseAndReconnect() {
+		isConnected = false;
+		isReady = false;
 		try {
 			if (in != null)
 				in.close();

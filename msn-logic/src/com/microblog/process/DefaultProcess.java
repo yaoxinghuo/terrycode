@@ -24,7 +24,7 @@ public class DefaultProcess extends ProcessBase {
 		switch (commandEnum) {
 		case MSG:
 			try {
-				textMessage(command);
+				friendTextMessageReceived(command);
 			} catch (Exception e) {
 				Logs.getLogger().error(
 						"Error process command:" + command.toString()
@@ -35,7 +35,7 @@ public class DefaultProcess extends ProcessBase {
 	}
 
 	@Override
-	public void textMessage(Command command) throws Exception {
+	public void friendTextMessageReceived(Command command) throws Exception {
 		String email = command.getEmail();
 		String reply = "本機器人" + command.getAccount() + "暫未正式啟用，敬請期待！";
 		Logs.getLogger().info(
@@ -43,6 +43,37 @@ public class DefaultProcess extends ProcessBase {
 		if (!wsActionService.sendText(passport, passcode, email, reply))
 			Logs.getLogger().error(
 					"Unable to send text to " + email + " via webservice");
+	}
+
+	@Override
+	protected void friendDisplayPicChanged(Command command) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void friendNicknameChanged(Command command) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void friendPersonalMessageChanged(Command command)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void friendKnockOn(Command command) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void someoneAddMe(Command command) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
