@@ -235,4 +235,14 @@
 			<value>http://imfarm.17fabu.net/services/Action</value>
 		</constructor-arg>
 	</bean>
+	<bean id="wsChangeDisplayPicService" class="com.microblog.ws.impl.ChangeDisplayPicServiceImpl">
+		<constructor-arg>
+			<value>http://imfarm.17fabu.net/services/ChangeDisplayPic</value>
+		</constructor-arg>
+	</bean>
+	<bean id="wsFriendDisplayPicService" class="com.microblog.ws.impl.FriendDisplayPicServiceImpl">
+		<constructor-arg>
+			<value>http://imfarm.17fabu.net/services/FriendDisplayPic</value>
+		</constructor-arg>
+	</bean>
 </beans>
