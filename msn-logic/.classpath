@@ -34,5 +34,6 @@
 	<classpathentry kind="lib" path="E:/Java/msn-logic/lib/wsdl4j-1.6.2.jar"/>
 	<classpathentry kind="lib" path="E:/Java/msn-logic/lib/wstx-asl-3.2.4.jar"/>
 	<classpathentry kind="lib" path="E:/Java/msn-logic/lib/XmlSchema-1.4.2.jar"/>
+	<classpathentry kind="lib" path="E:/Java/msn-logic/lib/mail-1.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

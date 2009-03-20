@@ -71,10 +71,11 @@ public class FriendDisplayPicServiceImpl implements IFriendDisplayPicService {
 				binaryNode.setOptimize(true);// 必须加此句，否则会出现ContentID is null的异常!
 				DataHandler actualDH = (DataHandler) binaryNode
 						.getDataHandler();
-				File dir = new File(sDir + File.separator + eemail);
+				File dir = new File(sDir + File.separator + eemail
+						+ File.separator);
 				if (!dir.isDirectory()) {
 					if (!dir.exists())
-						dir.createNewFile();
+						dir.mkdir();
 					else
 						return null;
 				}
