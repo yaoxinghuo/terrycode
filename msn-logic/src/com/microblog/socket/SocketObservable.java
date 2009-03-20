@@ -17,7 +17,7 @@ public class SocketObservable extends Observable implements Runnable {
 
 	private static final String QNG = "QNG";
 	private static final String PNG = "PNG";
-	private long lastReceiveQNGTime = 0;
+	private long lastReceiveQNGTime = new Date().getTime();
 	private static final int MAX_INACTIVE_TIME = 70 * 1000;
 
 	private class Cmd {
@@ -102,41 +102,6 @@ public class SocketObservable extends Observable implements Runnable {
 		this.passcode = passcode;
 		this.passport = passport;
 
-		new Thread() {
-			/*
-			 * (from Robert's Email)
-			 * 
-			 * 目前觀察機房firewall發現如果session接超過一定時間沒有動作firwall會把 session 踢掉
-			 * 如此會造成各位ｂ端程式接上後一段時間後離線
-			 * 
-			 * 我這邊會試著調整（但是目前發現是最多八萬秒，似乎無法調整）
-			 * 
-			 * 同時為了避免其他網路層的未知因素斷線請各位開發時務必要多做一件事
-			 * 
-			 * 就請記下你收到最後一你收到確認的tag的時間如果超過70秒沒收到
-			 */
-			@Override
-			public void run() {
-				while (true) {
-					if (isConnected
-							&& new Date().getTime() - lastReceiveQNGTime > MAX_INACTIVE_TIME) {
-						Logs
-								.getLogger()
-								.info(
-										"Havent receive 'QNG' from server for "
-												+ MAX_INACTIVE_TIME
-												+ "ms. Disconnect and reconnect now...");
-						setConnectionCloseAndReconnect();
-					}
-					try {
-						Thread.sleep(MAX_INACTIVE_TIME);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}.run();
-
 		connect();
 	}
 
@@ -159,6 +124,26 @@ public class SocketObservable extends Observable implements Runnable {
 		while (true) {
 			try {
 				if (!isConnected) {
+					continue;
+				}
+				/*
+				 * (from Robert's Email)
+				 * 
+				 * 目前觀察機房firewall發現如果session接超過一定時間沒有動作firwall會把 session 踢掉
+				 * 如此會造成各位ｂ端程式接上後一段時間後離線
+				 * 
+				 * 我這邊會試著調整（但是目前發現是最多八萬秒，似乎無法調整）
+				 * 
+				 * 同時為了避免其他網路層的未知因素斷線請各位開發時務必要多做一件事
+				 * 
+				 * 就請記下你收到最後一你收到確認的tag的時間如果超過70秒沒收到
+				 */
+				if (new Date().getTime() - lastReceiveQNGTime > MAX_INACTIVE_TIME) {
+					Logs.getLogger().info(
+							"Havent receive 'QNG' from server for "
+									+ MAX_INACTIVE_TIME
+									+ "ms. Disconnect and reconnect now...");
+					setConnectionCloseAndReconnect();
 					continue;
 				}
 				if (readLine().trim().equalsIgnoreCase(OK)) {
