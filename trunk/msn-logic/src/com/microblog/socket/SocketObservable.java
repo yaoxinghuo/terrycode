@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Date;
 import java.util.Observable;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.microblog.process.Command;
 import com.microblog.process.CommandParserException;
@@ -17,8 +19,10 @@ public class SocketObservable extends Observable implements Runnable {
 
 	private static final String QNG = "QNG";
 	private static final String PNG = "PNG";
+	private static final String OK = "OK";
 	private long lastReceiveQNGTime = new Date().getTime();
 	private static final int MAX_INACTIVE_TIME = 70 * 1000;
+	private static final int MAX_WAIT_RECONNECT_TIME = 60 * 1000;
 
 	private class Cmd {
 		int len;
@@ -36,7 +40,7 @@ public class SocketObservable extends Observable implements Runnable {
 				name = Commands.QNG;
 				out.println(PNG);// Client收到指定令須於30秒內回送回應指令, 以確保連線有效
 				Logs.getLogger().info(
-						"Receive QNG from server.echo PNG to server...");
+						"Receive 'QNG' from server.Send 'PNG' to server...");
 				return;
 			}
 			String[] parts = line.split(" ");
@@ -90,8 +94,6 @@ public class SocketObservable extends Observable implements Runnable {
 	private final ByteArrayOutputStream inbuf = new ByteArrayOutputStream();
 	private InputStream in;
 
-	private static final String OK = "ok";
-
 	private boolean isConnected = false;
 	private boolean isReady = false;
 
@@ -102,14 +104,43 @@ public class SocketObservable extends Observable implements Runnable {
 		this.passcode = passcode;
 		this.passport = passport;
 
+		scheduleCheckConnectionAlive();
 		connect();
+	}
+
+	private void scheduleCheckConnectionAlive() {
+		new Timer().scheduleAtFixedRate(new TimerTask() {
+			/*
+			 * (from Robert's Email)
+			 * 
+			 * 目前觀察機房firewall發現如果session接超過一定時間沒有動作firwall會把 session 踢掉
+			 * 如此會造成各位ｂ端程式接上後一段時間後離線
+			 * 
+			 * 我這邊會試著調整（但是目前發現是最多八萬秒，似乎無法調整）
+			 * 
+			 * 同時為了避免其他網路層的未知因素斷線請各位開發時務必要多做一件事
+			 * 
+			 * 就請記下你收到最後一你收到確認的tag的時間如果超過70秒沒收到
+			 */
+			@Override
+			public void run() {
+				if (isConnected
+						&& (new Date().getTime() - lastReceiveQNGTime > MAX_INACTIVE_TIME)) {
+					Logs.getLogger().info(
+							"Havent receive 'QNG' from server for "
+									+ MAX_INACTIVE_TIME
+									+ "ms. Disconnect and reconnect now...");
+					setConnectionCloseAndReconnect();
+				}
+			}
+		}, MAX_INACTIVE_TIME, MAX_INACTIVE_TIME);
 	}
 
 	@Deprecated
 	public void sendCommand(Command command) {
 		if (!isReady)
 			try {
-				Thread.sleep(60000);
+				Thread.sleep(MAX_WAIT_RECONNECT_TIME);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -126,32 +157,14 @@ public class SocketObservable extends Observable implements Runnable {
 				if (!isConnected) {
 					continue;
 				}
-				/*
-				 * (from Robert's Email)
-				 * 
-				 * 目前觀察機房firewall發現如果session接超過一定時間沒有動作firwall會把 session 踢掉
-				 * 如此會造成各位ｂ端程式接上後一段時間後離線
-				 * 
-				 * 我這邊會試著調整（但是目前發現是最多八萬秒，似乎無法調整）
-				 * 
-				 * 同時為了避免其他網路層的未知因素斷線請各位開發時務必要多做一件事
-				 * 
-				 * 就請記下你收到最後一你收到確認的tag的時間如果超過70秒沒收到
-				 */
-				if (new Date().getTime() - lastReceiveQNGTime > MAX_INACTIVE_TIME) {
-					Logs.getLogger().info(
-							"Havent receive 'QNG' from server for "
-									+ MAX_INACTIVE_TIME
-									+ "ms. Disconnect and reconnect now...");
-					setConnectionCloseAndReconnect();
-					continue;
-				}
 				if (readLine().trim().equalsIgnoreCase(OK)) {
 					isReady = true;
 					Logs
 							.getLogger()
 							.info(
-									"Receive 'ok' message from server.Ready for incoming comands...");
+									"Receive "
+											+ OK
+											+ " message from server.Ready for incoming comands...");
 					while (true) {
 						try {
 							Cmd cmd = new Cmd(readLine());
@@ -235,10 +248,10 @@ public class SocketObservable extends Observable implements Runnable {
 		} catch (Exception e) {
 			Logs.getLogger().error(
 					"Socket connection disconnected, exception:\t"
-							+ e.getMessage()
-							+ "\tSystem will reconnect in 1 minute...");
+							+ e.getMessage() + "\tSystem will reconnect in "
+							+ MAX_WAIT_RECONNECT_TIME + "ms...");
 			try {
-				Thread.sleep(60000);// 一分钟后重新尝试连接
+				Thread.sleep(MAX_WAIT_RECONNECT_TIME);// 等待一段时间后重新尝试连接
 			} catch (InterruptedException e1) {
 			}
 			setConnectionCloseAndReconnect();
