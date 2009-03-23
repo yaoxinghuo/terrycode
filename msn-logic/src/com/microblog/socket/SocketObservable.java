@@ -22,7 +22,7 @@ public class SocketObservable extends Observable implements Runnable {
 	private static final String OK = "OK";
 	private long lastReceiveQNGTime = new Date().getTime();
 	private static final int MAX_INACTIVE_TIME = 70 * 1000;
-	private static final int MAX_WAIT_RECONNECT_TIME = 60 * 1000;
+	private static final int MAX_WAIT_RECONNECT_TIME = 15 * 1000;
 
 	private class Cmd {
 		int len;
