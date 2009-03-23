@@ -9,6 +9,8 @@ import org.apache.axis2.addressing.EndpointReference;
 import org.apache.axis2.client.Options;
 import org.apache.axis2.rpc.client.RPCServiceClient;
 
+import sun.misc.BASE64Encoder;
+
 import com.microblog.ws.intf.IChangeDisplayPicService;
 
 public class ChangeDisplayPicServiceImpl implements IChangeDisplayPicService {
@@ -63,6 +65,50 @@ public class ChangeDisplayPicServiceImpl implements IChangeDisplayPicService {
 		Object[] opAddEntryArgs = new Object[] { passport, passcode, b };
 		Class[] classes = new Class[] { Boolean.class };
 		QName opAddEntry = new QName(ns, "changeServiceDisplayPic");
+		return (Boolean) (serviceClient.invokeBlocking(opAddEntry,
+				opAddEntryArgs, classes)[0]);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean changeMessengerDisplayPicBase64(String passport,
+			String passcode, String account, String picPath) throws Exception {
+		File file = new File(picPath);
+		if (!file.exists())
+			return false;
+		long len = file.length();
+		if (((float) len / 1024f) > 30)
+			return false;
+		FileInputStream fin = new FileInputStream(file);
+		byte[] b = new byte[(int) len];
+		fin.read(b, 0, b.length);
+		fin.close();
+		Object[] opAddEntryArgs = new Object[] { passport, passcode, account,
+				new BASE64Encoder().encode(b) };
+		Class[] classes = new Class[] { Boolean.class };
+		QName opAddEntry = new QName(ns, "changeMessengerDisplayPicBase64");
+		return (Boolean) (serviceClient.invokeBlocking(opAddEntry,
+				opAddEntryArgs, classes)[0]);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean changeServiceDisplayPicBase64(String passport,
+			String passcode, String picPath) throws Exception {
+		File file = new File(picPath);
+		if (!file.exists())
+			return false;
+		long len = file.length();
+		if (((float) len / 1024f) > 30)
+			return false;
+		FileInputStream fin = new FileInputStream(file);
+		byte[] b = new byte[(int) len];
+		fin.read(b, 0, b.length);
+		fin.close();
+		Object[] opAddEntryArgs = new Object[] { passport, passcode,
+				new BASE64Encoder().encode(b) };
+		Class[] classes = new Class[] { Boolean.class };
+		QName opAddEntry = new QName(ns, "changeServiceDisplayPicBase64");
 		return (Boolean) (serviceClient.invokeBlocking(opAddEntry,
 				opAddEntryArgs, classes)[0]);
 	}
