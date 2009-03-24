@@ -135,13 +135,13 @@ public class AccountServiceImpl implements IAccountService {
 		if (needUpdate) {
 			account.setNickname(nickname);
 			account.setPmessage(pmessage);
+			account.setAvatar(avatar);
 			account.setUdate(new Date());
 			accountDao.updateAccount(account);
-		}
-		if (needUpdate) {
+			
 			Head head = new Head();
 			head.setAccount(account);
-			head.setAvatar(account.getAvatar());
+			head.setAvatar(avatar);
 			head.setInputdate(new Date());
 			head.setNickname(nickname);
 			head.setPmessage(pmessage);
