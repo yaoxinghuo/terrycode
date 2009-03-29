@@ -284,8 +284,7 @@ public class ForumProcess extends ProcessBase {
 				reply = "您的發佈太長，最大70個中文字，140個英文字，请重新输入：";
 				nextStatus = status;
 			} else {
-				reply = saveMessage(email, account_id, choise, null,
-						sessionDefaultReply);
+				reply = saveMessage(email, choise, null, sessionDefaultReply);
 				clearStack(email);
 			}
 			break;
@@ -669,10 +668,11 @@ public class ForumProcess extends ProcessBase {
 
 	}
 
-	private String saveMessage(String msn, String accountid, String content,
-			String image, String sessionDefaultReply) {
+	private String saveMessage(String msn, String content, String image,
+			String sessionDefaultReply) {
+		String account_id = checkInAndOutUserId(msn);
 		String text = null;
-		String messageid = messageService.imSaveMessage(accountid, content,
+		String messageid = messageService.imSaveMessage(account_id, content,
 				image, forumid, "", 1);
 		if (messageid != null) {
 			lastMessageId.put(msn, messageid);
@@ -732,32 +732,32 @@ public class ForumProcess extends ProcessBase {
 	@Override
 	protected void friendDisplayPicChanged(Command command) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	protected void friendNicknameChanged(Command command) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	protected void friendPersonalMessageChanged(Command command)
 			throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	protected void friendKnockOn(Command command) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	protected void someoneAddMe(Command command) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

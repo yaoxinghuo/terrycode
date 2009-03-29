@@ -8,6 +8,8 @@ import com.microblog.data.model.Friend;
 public interface IAccountService {
 	public Account imGetAccountByMsn(String msn);
 
+	public Account imGetAccountById(String id);
+
 	public Friend imGetFriendByAccountIdAndFriendId(String accountid,
 			String friendid);
 

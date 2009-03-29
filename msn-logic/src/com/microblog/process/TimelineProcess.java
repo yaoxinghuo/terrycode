@@ -675,8 +675,8 @@ public class TimelineProcess extends ProcessBase {
 				reply = "您的發佈太長，最大70個中文字，140個英文字，请重新输入：";
 				nextStatus = status;
 			} else {
-				reply = saveMessage(email, account_id, choise, null, "", "",
-						12, sessionDefaultReply);
+				reply = saveMessage(email, choise, null, "", "", 12,
+						sessionDefaultReply);
 				nextStatus = 1;
 			}
 			break;
@@ -685,8 +685,8 @@ public class TimelineProcess extends ProcessBase {
 				reply = "您的發佈太長，最大70個中文字，140個英文字，请重新输入：";
 				nextStatus = status;
 			} else {
-				reply = saveMessage(email, account_id, choise, null, "", "",
-						-1, sessionDefaultReply);
+				reply = saveMessage(email, choise, null, "", "", -1,
+						sessionDefaultReply);
 				nextStatus = 1;
 			}
 			break;
@@ -735,8 +735,8 @@ public class TimelineProcess extends ProcessBase {
 					reply = "您的發佈太長，最大70個中文字，140個英文字，请重新输入：";
 					nextStatus = status;
 				} else {
-					reply = saveMessage(email, account_id, choise, null, "",
-							friendid, 3, sessionDefaultReply);
+					reply = saveMessage(email, choise, null, "", friendid, 3,
+							sessionDefaultReply);
 					nextStatus = 1;
 				}
 			}
@@ -750,8 +750,8 @@ public class TimelineProcess extends ProcessBase {
 					reply = "您的發佈太長，最大70個中文字，140個英文字，请重新输入：";
 					nextStatus = status;
 				} else {
-					reply = saveMessage(email, account_id, choise, null,
-							groupid, "", 1, sessionDefaultReply);
+					reply = saveMessage(email, choise, null, groupid, "", 1,
+							sessionDefaultReply);
 					nextStatus = 1;
 				}
 			}
@@ -1122,17 +1122,33 @@ public class TimelineProcess extends ProcessBase {
 		return sb.toString();
 	}
 
-	private String saveMessage(String msn, String account_id, String content,
-			String image, String groupid, String friendid, int purview,
+	private String saveMessage(String msn, String content, String image,
+			String groupid, String friendid, int purview,
 			String sessionDefaultReply) {
+		String account_id = checkInAndOutUserId(msn);
 		String text = null;
 		String messageid = messageService.imSaveMessage(account_id, content,
 				image, groupid, friendid, purview);
 		if (messageid != null) {
 			lastId.put(msn, messageid);
-			if (image == null)
+			if (image == null) {
 				text = "發佈成功！\r\n" + webBaseUrl + "\r\n" + sessionDefaultReply;
-			else {
+				if (purview == 3) {// 如果消息是发給指定的个人，通知那个人有人发消息给他
+					Account friend = accountService.imGetAccountById(friendid);
+					Account account = accountService
+							.imGetAccountById(account_id);
+					try {
+						wsActionService.sendText(passport, passcode, friend
+								.getMsn(), account.getNickname() + "(" + msn
+								+ ")給你發送了消息，內容為：" + content + ",您可以登錄"
+								+ webBaseUrl + "查看并回復消息！");
+					} catch (Exception e) {
+						Logs.getLogger().error(
+								"Error send msg to:" + friend.getMsn()
+										+ ".Exception:" + e.getMessage());
+					}
+				}
+			} else {
 				text = "發佈圖檔成功！\r\n" + webBaseUrl
 						+ "\r\n您也可以輸入一段說明文字（最大70個中文字，140個英文字）:";
 			}
