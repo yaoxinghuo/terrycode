@@ -138,7 +138,7 @@ public class AccountServiceImpl implements IAccountService {
 			account.setAvatar(avatar);
 			account.setUdate(new Date());
 			accountDao.updateAccount(account);
-			
+
 			Head head = new Head();
 			head.setAccount(account);
 			head.setAvatar(avatar);
@@ -259,6 +259,11 @@ public class AccountServiceImpl implements IAccountService {
 		if (friend == null)
 			return false;
 		return friend.getStatus() == 1 ? true : false;
+	}
+
+	@Override
+	public Account imGetAccountById(String id) {
+		return accountDao.getAccountById(id);
 	}
 
 }
