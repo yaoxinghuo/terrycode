@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="/struts-tags" prefix="s"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -14,7 +13,7 @@
 	// Demo NyroModal
 	$(function() {
 		$.nyroModalSettings({
-			debug: true,
+			debug: false,
 			processHandler: function(settings) {
 				var url = settings.url;
 				if (url && url.indexOf('http://www.youtube.com/watch?v=') == 0) {
@@ -89,9 +88,12 @@
 		preloadImg('img/ajaxLoader.gif');
 		preloadImg('img/prev.gif');
 		preloadImg('img/next.gif');
-		
+
 	});
 	
+	function reload(){
+		window.location.href = "index.jsp";
+	}
 	
 	//]]>
 	</script>
