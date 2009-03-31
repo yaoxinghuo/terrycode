@@ -120,15 +120,15 @@ public class AccountServiceImpl implements IAccountService {
 	public boolean imUpdateUserStatus(String accountid, String nickname,
 			String pmessage, String avatar) {
 		Account account = accountDao.getAccountById(accountid);
-		if (!account.getNickname().equals(nickname))
-			groupFriendDao.updateFriendsNickname(accountid, nickname + "("
-					+ account.getEmail() + ")");
 		if (nickname == null)
 			nickname = account.getNickname();
 		if (pmessage == null)
 			pmessage = account.getPmessage();
 		if (avatar == null)
 			avatar = account.getAvatar();
+		if (!account.getNickname().equals(nickname))
+			groupFriendDao.updateFriendsNickname(accountid, nickname + "("
+					+ account.getEmail() + ")");
 		boolean needUpdate = !account.getNickname().equals(nickname)
 				|| !account.getPmessage().equals(pmessage)
 				|| !account.getAvatar().equals(avatar);
