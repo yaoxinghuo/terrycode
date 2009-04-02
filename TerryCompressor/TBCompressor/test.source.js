@@ -12,9 +12,9 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
 
     return {
         /**
-         * ÁĞ±íµÄcheckboxÑ¡Ôñ¿ò
+         * åˆ—è¡¨çš„checkboxé€‰æ‹©æ¡†
          *
-         * Ô¼¶¨£ºÈ«Ñ¡ all-selector, ÆÕÍ¨ selector
+         * çº¦å®šï¼šå…¨é€‰ all-selector, æ™®é€š selector
          *
          * @param containerId
          */
@@ -42,7 +42,7 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
                 },
 
                 /**
-                 * ³õÊ¼»¯È«Ñ¡checkbox
+                 * åˆå§‹åŒ–å…¨é€‰checkbox
                  */
                 initAllSelectors: function() {
                     Dom.batch(this.allSelectors, function(el) {
@@ -63,8 +63,8 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
                 },
 
                 /**
-                 * µ±uncheckµ¥¸öcheckboxÊ±£¬ÒªuncheckÈ«Ñ¡¿ò
-                 * µ±checkbox¶¼Ñ¡ÖĞÊ±£¬Òª×Ô¶¯checkÈ«Ñ¡¿ò
+                 * å½“uncheckå•ä¸ªcheckboxæ—¶ï¼Œè¦uncheckå…¨é€‰æ¡†
+                 * å½“checkboxéƒ½é€‰ä¸­æ—¶ï¼Œè¦è‡ªåŠ¨checkå…¨é€‰æ¡†
                  */
                 initSelectors: function() {
                     Dom.batch(this.selectors, function(el) {
@@ -92,7 +92,7 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
         },
 
         /**
-		 * ¶Ô»°¿ò¹ÜÀíÀà
+		 * å¯¹è¯æ¡†ç®¡ç†ç±»
 		 */
 		DialogMgr: {
 
@@ -117,7 +117,7 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
 			},
 
             /**
-             * ¸ø¶Ô»°¿òµÄ¹Ø±Õ°´Å¥Ìí¼ÓÊÂ¼ş
+             * ç»™å¯¹è¯æ¡†çš„å…³é—­æŒ‰é’®æ·»åŠ äº‹ä»¶
              */
             initDialogCloseBtn: function() {
                 Event.on('J_ContainerClose', 'click', function(){
@@ -173,10 +173,10 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
                 var closeBtn = Dom.getElementsByClassName('container-close', 'a', layer);
                 if (closeBtn.length == 1) {
                     closeBtn = closeBtn[0];
-                    // Çå³ıÆäËüÊÂ¼ş
+                    // æ¸…é™¤å…¶å®ƒäº‹ä»¶
                     Event.purgeElement(closeBtn);
 
-                    // Ìí¼ÓĞÂÊÂ¼ş
+                    // æ·»åŠ æ–°äº‹ä»¶
                     Event.on(closeBtn, 'click', function(ev) {
                         Event.preventDefault(ev);
                         this.hideDialog();
@@ -190,7 +190,7 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
 					this.initDialog(config);
 				}
 
-				// ÉèÖÃurl
+				// è®¾ç½®url
 				if(url.indexOf('?') == -1) url += '?';
 				url += '&t=' + (new Date()).getTime();
 
@@ -206,17 +206,17 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
 			hideDialog: function(confirmClose) {
 
 				if(typeof confirmClose == 'undefined') {
-					confirmClose = false; // Ä¬ÈÏÖ±½Ó¹Ø±Õ
+					confirmClose = false; // é»˜è®¤ç›´æ¥å…³é—­
 				}
 
 				if(confirmClose) {
-					var ok = confirm('È·ÈÏ¹Ø±Õ´°¿ÚÃ´£¿');
+					var ok = confirm('ç¡®è®¤å…³é—­çª—å£ä¹ˆï¼Ÿ');
 					if(!ok) return false;
 				}
 
 				Dom.get('J_Dialog').getElementsByTagName('iframe')[0].src = 'about:blank';
 				this.currentDialog.hide();
-                // Ò³ÃæÖĞÓĞ¶àÖÖ²»Í¬³ß´çµÄµ¯³ö¿ò£¬Òò´ËĞèÒªÖØ½¨
+                // é¡µé¢ä¸­æœ‰å¤šç§ä¸åŒå°ºå¯¸çš„å¼¹å‡ºæ¡†ï¼Œå› æ­¤éœ€è¦é‡å»º
                 var dialog = Dom.get('J_Dialog_c');
                 var dialogMask = Dom.get('J_Dialog_mask');
                 var resizeMonitor = Dom.get('_yuiResizeMonitor');
@@ -228,7 +228,7 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
 		},
 
         /**
-         * ¸Ä¼Û¡¢¹Ø±Õ½»Ò×¡¢ÑÓÊ±
+         * æ”¹ä»·ã€å…³é—­äº¤æ˜“ã€å»¶æ—¶
          */
         TradeOperations: {
 
@@ -263,16 +263,16 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
 
                 Event.on(frmInputs, 'blur', function(){
 
-                    // Ğ£Ñé
+                    // æ ¡éªŒ
                     if(!validateInputs()) return;
 
-                    // ¸üĞÂ¼ÆËã¹«Ê½
+                    // æ›´æ–°è®¡ç®—å…¬å¼
                     try {
-                        // ¸üĞÂÔË·Ñ
+                        // æ›´æ–°è¿è´¹
                         var postFee = parseFloat(postFeeInput.value).toFixed(2);
                         postFeeEl.innerHTML = postFee;
 
-                        // ¸üĞÂÕÇ¼Û»òÕÛ¿Û
+                        // æ›´æ–°æ¶¨ä»·æˆ–æŠ˜æ‰£
                         var totalAdjustFee = 0;
                         for (var i = 0, len = adjustFeeInputs.length; i < len; ++i) {
                             var val = YAHOO.lang.trim(adjustFeeInputs[i].value);
@@ -286,9 +286,9 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
                         }
                         adjustFeeEl.innerHTML = totalAdjustFeeStr;
 
-                        // ÅĞ¶ÏÊÇ·ñÂú×ãÂú¾Í¼õ
+                        // åˆ¤æ–­æ˜¯å¦æ»¡è¶³æ»¡å°±å‡
                         var price = parseFloat(originalPrice) + parseFloat(postFee) + parseFloat(totalAdjustFee);
-                        //¸ù¾İUC£¬¼òµ¥»¯´¦Àí£¬Ö»ÒªÏÂµ¥Ê±Âú×ã¾Í¿ÉÒÔ
+                        //æ ¹æ®UCï¼Œç®€å•åŒ–å¤„ç†ï¼Œåªè¦ä¸‹å•æ—¶æ»¡è¶³å°±å¯ä»¥
                         if (hasDiscount) {
                             //if (price >= discountCondition) {
                                 //Dom.removeClass(discountEl, 'hidden');
@@ -298,20 +298,20 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
                             //}
                         }
 
-                        // ¸üĞÂÂò¼ÒÊµ¸¶
+                        // æ›´æ–°ä¹°å®¶å®ä»˜
                         if(price <= 0) {
                             Dom.removeClass(errorMsg, 'hidden');
-                            // 2009-01-15 ³ö´íÁËÒ²Òª¸üĞÂ×Ü¼Û£¬±£Ö¤¹«Ê½Ê¼ÖÕÕıÈ·
+                            // 2009-01-15 å‡ºé”™äº†ä¹Ÿè¦æ›´æ–°æ€»ä»·ï¼Œä¿è¯å…¬å¼å§‹ç»ˆæ­£ç¡®
                             //return;
                         }
                         else {
-                            // ËµÃ÷Ò»ÇĞok£¬È¥³ı³ö´íÌáÊ¾
+                            // è¯´æ˜ä¸€åˆ‡okï¼Œå»é™¤å‡ºé”™æç¤º
                             Dom.addClass(errorMsg, 'hidden');
                         }
                         totalPriceEl.innerHTML = price.toFixed(2);
                         
                     } catch(e) {
-                        // Ö»ÒªÓĞ³ö´í£¬¾ÍÏÔÊ¾³ö´íÌáÊ¾
+                        // åªè¦æœ‰å‡ºé”™ï¼Œå°±æ˜¾ç¤ºå‡ºé”™æç¤º
                         Dom.removeClass(errorMsg, 'hidden');
                     }
                 });
@@ -319,7 +319,7 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
                 Event.on(form, 'submit', function(ev) {
                     if(!Dom.hasClass(errorMsg, 'hidden')) {
                         Event.preventDefault(ev);
-                        //alert('»¹ÓĞÊäÈë´íÎóÄØ£¬Çë×ĞÏ¸¼ì²é¡£');
+                        //alert('è¿˜æœ‰è¾“å…¥é”™è¯¯å‘¢ï¼Œè¯·ä»”ç»†æ£€æŸ¥ã€‚');
                         Trade.Util.twinkleErrorBox(errorMsg);
                     }
                 });
@@ -328,7 +328,7 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
                 Event.on(frmInputs, 'propertychange', checkFraction);
 
                 /**
-                 * ÊäÈë¿òÖ»ÄÜÊäÈëÁ½Î»Ğ¡Êı
+                 * è¾“å…¥æ¡†åªèƒ½è¾“å…¥ä¸¤ä½å°æ•°
                  */
                 function checkFraction() {
                     var val = String(this.value);
@@ -342,20 +342,20 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
                 }
 
                 /**
-                 * Ğ£ÑéÊäÈëÖµÊÇ·ñÕıÈ·
+                 * æ ¡éªŒè¾“å…¥å€¼æ˜¯å¦æ­£ç¡®
                  */
                 function validateInputs() {
                     for(var i = 0, len = frmInputs.length; i < len; ++i) {
                         var input = frmInputs[i];
                         var val = YAHOO.lang.trim(input.value);
 
-                        // Áô¿ÕÄ¬ÈÏÎª0
+                        // ç•™ç©ºé»˜è®¤ä¸º0
                         if (val == '') {
                             input.value = '0';
                             val = 0;
                         }
 
-                        // ·ÇÊıÖµ£¬±¨´í
+                        // éæ•°å€¼ï¼ŒæŠ¥é”™
                         if (parseFloat(val) != val) {
                             Dom.removeClass(errorMsg, 'hidden');
                             input.focus();
@@ -363,7 +363,7 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
                         }
                     }
 
-                    // ÔË·Ñ±ØĞëÎªÕıÊı
+                    // è¿è´¹å¿…é¡»ä¸ºæ­£æ•°
                     var postFeeValue = YAHOO.lang.trim(postFeeInput.value);
                     if(parseFloat(postFeeValue) < 0) {
                         Dom.removeClass(errorMsg, 'hidden');
@@ -371,7 +371,7 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
                         return false;
                     }
 
-                    // ¶¼Í¨¹ı
+                    // éƒ½é€šè¿‡
                     return true;
                 }
             },
@@ -384,7 +384,7 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
                    if(Dom.get('J_CloseReason').selectedIndex == 0) {
                        Event.preventDefault(ev);
                        Dom.removeClass('J_ErrorMsg', 'hidden');
-                       //alert('»¹ÓĞ´íÎóÄØ£¬Çë×ĞÏ¸¼ì²é¡£');
+                       //alert('è¿˜æœ‰é”™è¯¯å‘¢ï¼Œè¯·ä»”ç»†æ£€æŸ¥ã€‚');
                        Trade.Util.twinkleErrorBox('J_ErrorMsg');
                    }
                 });
@@ -393,11 +393,11 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
 
         Util: {
             /**
-             * ÇĞ»»Ãæ°åµÄÏÔÊ¾
+             * åˆ‡æ¢é¢æ¿çš„æ˜¾ç¤º
              *
              * @param trigger
              * @param panel
-             * @param callback »Øµ÷º¯Êı
+             * @param callback å›è°ƒå‡½æ•°
              */
             togglePanel: function(trigger, panel, callback) {
                 trigger = Dom.get(trigger);
@@ -406,7 +406,7 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
 
                 Event.on(trigger, 'click', function(e) {
                     Event.preventDefault(e);
-                    //TODO: ¶¯»­Ğ§¹û
+                    //TODO: åŠ¨ç”»æ•ˆæœ
                     var isVisible = (panel.style.display != 'none');
                     panel.style.display = isVisible ? 'none' : 'block';
 
@@ -415,7 +415,7 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
             },
 
             /**
-             * ÇĞ»»¶©µ¥µÄÏÔÊ¾ĞÅÏ¢
+             * åˆ‡æ¢è®¢å•çš„æ˜¾ç¤ºä¿¡æ¯
              */
             toggleOrderDetail: function(listTableId) {
                 var orders = Dom.getElementsByClassName('hidden-detail', 'tbody', listTableId);
@@ -427,7 +427,7 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
 
                         Event.on(orderHd, 'click', function(e) {
                             var clickTag = Event.getTarget(e).tagName;
-                            if(clickTag == 'INPUT' || clickTag == 'A') return; // µã»÷ÔÚcheckbox»òÁ´½ÓÉÏ
+                            if(clickTag == 'INPUT' || clickTag == 'A') return; // ç‚¹å‡»åœ¨checkboxæˆ–é“¾æ¥ä¸Š
                             
                             if (Dom.hasClass(order, 'hidden-detail')) {
                                 Dom.replaceClass(order, 'hidden-detail', 'display-detail');
@@ -440,12 +440,12 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
             },
 
             /**
-             * Ğü¸¡ÏÔÊ¾ÓÃ»§ĞÅÏ¢
+             * æ‚¬æµ®æ˜¾ç¤ºç”¨æˆ·ä¿¡æ¯
              */
             initUserInfoPopup: function(trigger) {
                 if(!trigger || !trigger.getAttribute('data')) return;
 
-                // È¥µôĞÂÁôÑÔµÄalt£¬·ñÔòieÏÂ»áĞü¸¡³öÀ´
+                // å»æ‰æ–°ç•™è¨€çš„altï¼Œå¦åˆ™ieä¸‹ä¼šæ‚¬æµ®å‡ºæ¥
                 var img = trigger.getElementsByTagName('img');
                 if(img && img.length > 0) {
                     img[0].setAttribute('alt', '');
@@ -456,7 +456,7 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
 
                 var htmlCode = '<div class="bl"><div class="br">';
                 htmlCode += '<div class="bd user-info">';
-                htmlCode += 'ÕıÔÚ¼ÓÔØ¡­¡­';
+                htmlCode += 'æ­£åœ¨åŠ è½½â€¦â€¦';
                 htmlCode += '</div>';
                 htmlCode += '</div></div>';
                 htmlCode += '<div class="bt"><div class="corner bt-l"></div><div class="mid"></div><div class="corner bt-r"></div></div>';
@@ -471,7 +471,7 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
                     onShow: function() {
                         Dom.setStyle(infoBox, 'display', 'block');
 
-                        // Èç¹ûÔÚinfoBoxÀïÄÜÕÒµ½h5±êÇ©£¬ËµÃ÷ĞÅÏ¢ÒÑ¾­³É¹¦»ñÈ¡£¬Ö±½ÓÏÔÊ¾¼´¿É
+                        // å¦‚æœåœ¨infoBoxé‡Œèƒ½æ‰¾åˆ°h5æ ‡ç­¾ï¼Œè¯´æ˜ä¿¡æ¯å·²ç»æˆåŠŸè·å–ï¼Œç›´æ¥æ˜¾ç¤ºå³å¯
                         if (infoBox.getElementsByTagName('h5').length > 0) return;
 
                         var infoBoxBd = Dom.getElementsByClassName('user-info', 'div', infoBox)[0];
@@ -481,37 +481,37 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
                                 try {
                                     var userInfo = eval('(' + o.responseText + ')');
 
-                                    var htmlCode = '<h5>ÁªÏµĞÅÏ¢</h5>';
+                                    var htmlCode = '<h5>è”ç³»ä¿¡æ¯</h5>';
                                     htmlCode += '<table class="user-info-table"><tbody>';
-                                    htmlCode += '<tr><th>ĞÕÃû£º</th><td>' + userInfo.name + '</td></tr>';
-                                    htmlCode += '<tr><th>µç»°£º</th><td>' + userInfo.tel + '</td></tr>';
-                                    htmlCode += '<tr><th>ÊÖ»ú£º</th><td>' + userInfo.mobile + '</td></tr>';
-                                    htmlCode += '<tr><th>±¸ÓÃµç»°£º</th><td>' + userInfo.otherPhone + '</td></tr>';
-                                    htmlCode += '<tr><th>µç×ÓÓÊ¼ş£º</th><td>' + userInfo.email + '</td></tr>';
-                                    htmlCode += '<tr><th>³ÇÊĞ£º</th><td>' + userInfo.city + '</td></tr>';
+                                    htmlCode += '<tr><th>å§“åï¼š</th><td>' + userInfo.name + '</td></tr>';
+                                    htmlCode += '<tr><th>ç”µè¯ï¼š</th><td>' + userInfo.tel + '</td></tr>';
+                                    htmlCode += '<tr><th>æ‰‹æœºï¼š</th><td>' + userInfo.mobile + '</td></tr>';
+                                    htmlCode += '<tr><th>å¤‡ç”¨ç”µè¯ï¼š</th><td>' + userInfo.otherPhone + '</td></tr>';
+                                    htmlCode += '<tr><th>ç”µå­é‚®ä»¶ï¼š</th><td>' + userInfo.email + '</td></tr>';
+                                    htmlCode += '<tr><th>åŸå¸‚ï¼š</th><td>' + userInfo.city + '</td></tr>';
                                     htmlCode += '<tr class="sep"><td colspan="2"><hr></td></tr>';
 
-                                    // Âò¼ÒÁôÑÔ¡£Ã»ÓĞÁôÑÔÊ±²»ÏÔÊ¾
+                                    // ä¹°å®¶ç•™è¨€ã€‚æ²¡æœ‰ç•™è¨€æ—¶ä¸æ˜¾ç¤º
                                     if(userInfo.message) {
-                                        htmlCode += '<tr><th>Âò¼ÒÁôÑÔ£º</th><td class="message">' + userInfo.message + '</td></tr>';
+                                        htmlCode += '<tr><th>ä¹°å®¶ç•™è¨€ï¼š</th><td class="message">' + userInfo.message + '</td></tr>';
                                         htmlCode += '<tr class="sep"><td colspan="2"><hr></td></tr>';
                                     }
 
-                                    // ¸½¼ÓĞÅÏ¢
+                                    // é™„åŠ ä¿¡æ¯
                                     var attachCode = '';
                                     if (userInfo.attachInfo) {
                                         for (key in userInfo.attachInfo)
-                                            attachCode += '<tr><th>' + key + '£º</th><td>' + userInfo.attachInfo[key] + '</td></tr>';
+                                            attachCode += '<tr><th>' + key + 'ï¼š</th><td>' + userInfo.attachInfo[key] + '</td></tr>';
                                     }
                                     if (attachCode.length > 0) {
                                         htmlCode += attachCode;
                                     }
                                     htmlCode += '</tbody></table>';
 
-                                    // ²é¿´ÊÕ»õµØÖ·
+                                    // æŸ¥çœ‹æ”¶è´§åœ°å€
                                     var linkCode = '';
                                     if (userInfo.buyerAddress && userInfo.buyerAddress.length > 0) {
-                                        linkCode += '<a href="' + userInfo.buyerAddress + '" target="_blank">²é¿´ÊÕ»õµØÖ·</a>';
+                                        linkCode += '<a href="' + userInfo.buyerAddress + '" target="_blank">æŸ¥çœ‹æ”¶è´§åœ°å€</a>';
                                     }
                                     if (linkCode.length > 0) {
                                         htmlCode += '<div class="view-address">' + linkCode + '</div>';
@@ -520,11 +520,11 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
                                     infoBoxBd.innerHTML = htmlCode;
                                 }
                                 catch (e) {
-                                    infoBoxBd.innerHTML = '¶Ô²»Æğ£¬ÔİÊ±ÎŞ·¨»ñµÃÊı¾İ£¬ÇëÉÔºòÖØÊÔ¡£';
+                                    infoBoxBd.innerHTML = 'å¯¹ä¸èµ·ï¼Œæš‚æ—¶æ— æ³•è·å¾—æ•°æ®ï¼Œè¯·ç¨å€™é‡è¯•ã€‚';
                                 }
                             },
                             failure: function() {
-                                infoBoxBd.innerHTML = '¶Ô²»Æğ£¬ÔİÊ±ÎŞ·¨»ñµÃÊı¾İ£¬ÇëÉÔºòÖØÊÔ¡£';
+                                infoBoxBd.innerHTML = 'å¯¹ä¸èµ·ï¼Œæš‚æ—¶æ— æ³•è·å¾—æ•°æ®ï¼Œè¯·ç¨å€™é‡è¯•ã€‚';
                             }
                         });
                     }
@@ -532,7 +532,7 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
             },
 
             /**
-             * Ïû±£¿¨µ¯³ö²ã
+             * æ¶ˆä¿å¡å¼¹å‡ºå±‚
              * @param trigger
              */
             initXBCardPopup: function() {
@@ -556,16 +556,16 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
             },
 
             /**
-             * ÉÁË¸boxµÄ±ß¿ò
+             * é—ªçƒboxçš„è¾¹æ¡†
              * @param boxId
-             * @param duration ÉÁË¸³ÖĞøÊ±¼ä µ¥Î»Îª s
+             * @param duration é—ªçƒæŒç»­æ—¶é—´ å•ä½ä¸º s
              */
             twinkleErrorBox: function(boxId, duration) {
                 var box = Dom.get(boxId);
                 box = Dom.getFirstChild(box); // <div class="msg"><p class="error"> ...
                 if(!box) return;
 
-                duration = duration || 2; // Ä¬ÈÏÎª2s
+                duration = duration || 2; // é»˜è®¤ä¸º2s
 
                 var hasBorder = true;
                 var timer = YAHOO.lang.later(200, null, function() {
@@ -581,7 +581,7 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
             },
 
             /**
-             * ½âÎöQueryStringÎª¶ÔÏó
+             * è§£æQueryStringä¸ºå¯¹è±¡
              * @param string
              * @param overwrite
              * @param separator
@@ -597,7 +597,7 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
 					pair = pairs[i].split('=');
 					name = decodeURIComponent(pair[0]);
 					value = decodeURIComponent(pair[1]);
-					if(value === '' || value === 'undefined') value = undefined; // &k ºÍ &k= ¶¼»¹Ô­³É undefined
+					if(value === '' || value === 'undefined') value = undefined; // &k å’Œ &k= éƒ½è¿˜åŸæˆ undefined
 
 					if(overwrite === true) {
 						obj[name] = value;
@@ -617,38 +617,38 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
         },
 
         /**
-         * Ò³Ãæ³õÊ¼»¯
+         * é¡µé¢åˆå§‹åŒ–
          *
-         * @param pageId Ò³Ãæid£¬·ÅÔÚbodyÉÏ
+         * @param pageId é¡µé¢idï¼Œæ”¾åœ¨bodyä¸Š
          */
         PageInit: function(pageId) {
 
-            // ±¦±´ÁĞ±íÒ³Ãæ
+            // å®è´åˆ—è¡¨é¡µé¢
             if (pageId == 'list-sold-items' || pageId == 'list-bought-items') {
                 initTradeSearchBox();
                 new Trade.ListSelector('J_ListTable');
                 Trade.Util.toggleOrderDetail('J_ListTable');
 
-                // ÓÃ»§Ğü¸¡ĞÅÏ¢
+                // ç”¨æˆ·æ‚¬æµ®ä¿¡æ¯
                 Dom.getElementsByClassName('J_UserInfo', 'span', 'J_ListTable', function(trigger) {
                     Trade.Util.initUserInfoPopup(trigger);
                 });
             }
 
-            // ÒÑÂòµ½µÄ±¦±´
+            // å·²ä¹°åˆ°çš„å®è´
             if (pageId == 'list-bought-items') {
-                // Ïû±£¿¨
+                // æ¶ˆä¿å¡
                 Trade.Util.initXBCardPopup();
             }
 
-            // ÒÑÂô³öµÄ±¦±´
+            // å·²å–å‡ºçš„å®è´
             if (pageId == 'list-sold-items') {
-                // ÅúÁ¿µ¼³öÃæ°åµÄÕ¹¿ª/ÕÛµş
+                // æ‰¹é‡å¯¼å‡ºé¢æ¿çš„å±•å¼€/æŠ˜å 
                 Trade.Util.togglePanel('J_BatchExportBtn', 'J_BatchExportPanel');
                 Trade.Util.togglePanel('J_BatchExportPanelCloseBtn', 'J_BatchExportPanel');
             }
 
-            // ¶©µ¥ÏêÇéÒ³Ãæ
+            // è®¢å•è¯¦æƒ…é¡µé¢
             if(pageId == 'trade-order-detail') {
                 var stab = TB.widget.SimpleTab.decorate('J_TabView',
                     { eventType: 'mouse',
@@ -656,7 +656,7 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
                       tabPanelClass: 'info-box'
                     });
                 
-                // ¸ù¾İhashÇĞ»»µ½¶ÔÓ¦µÄtab
+                // æ ¹æ®hashåˆ‡æ¢åˆ°å¯¹åº”çš„tab
                 var hash = location.hash;
                 if(hash && hash.length == 5) {
                     var tabIndex = hash.substring(4);
@@ -664,10 +664,10 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
                 }
             }
 
-            // ĞŞ¸Ä¼Û¸ñ¡¢ÑÓ³¤³¬Ê±Ê±¼äºÍÈ¡Ïû¶©µ¥µÄ´¥·¢Ò³Ãæ
+            // ä¿®æ”¹ä»·æ ¼ã€å»¶é•¿è¶…æ—¶æ—¶é—´å’Œå–æ¶ˆè®¢å•çš„è§¦å‘é¡µé¢
             if (pageId == 'list-sold-items' || pageId == 'list-bought-items' || pageId == 'trade-order-detail') {
                 var triggers = Dom.getElementsByClassName('J_DialogTrigger', '*', document.body);
-                if(triggers.length == 0) return; // Ã»ÓĞµ¯³ö´°¿Ú
+                if(triggers.length == 0) return; // æ²¡æœ‰å¼¹å‡ºçª—å£
 
                 var loader = new Y.YUILoader({
                    require: ['container'],
@@ -683,12 +683,12 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
                 loader.insert();
             }
 
-            // ĞŞ¸Ä¼Û¸ñµ¯³öÒ³Ãæ
+            // ä¿®æ”¹ä»·æ ¼å¼¹å‡ºé¡µé¢
             if (pageId == 'modify-price') {
                 Trade.TradeOperations.ModifyPrice(document.forms['modifyPriceForm']);
             }
 
-            // È¡Ïû¶©µ¥µ¯³öÒ³Ãæ
+            // å–æ¶ˆè®¢å•å¼¹å‡ºé¡µé¢
             if (pageId == 'cancel-order') {
                 Trade.TradeOperations.CancelOrder(document.forms['cancelOrderForm']);
             }
@@ -698,21 +698,21 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
                 Trade.DialogMgr.initDialogCloseBtn();
             }
 
-			// »ı·Ö
+			// ç§¯åˆ†
 			if (pageId == 'my-point') {
 				initTradeSearchBox();
 			}
 
-			// ÍË¿îÏêÇé
+			// é€€æ¬¾è¯¦æƒ…
 			if (pageId == 'refund-list') {
 				initRefundHelpBox();
 			}
 
             /**
-             * ³õÊ¼»¯ËÑË÷Ãæ°å
+             * åˆå§‹åŒ–æœç´¢é¢æ¿
              */
             function initTradeSearchBox() {
-                // ÕÛµşÕ¹¿ª¹¦ÄÜ
+                // æŠ˜å å±•å¼€åŠŸèƒ½
                 Trade.Util.togglePanel('J_SearchBoxToggle', 'J_SearchBox', function(trigger) {
                     if (Dom.hasClass(trigger, 'collapsed-tool-toggle')) {
                         Dom.removeClass(trigger, 'collapsed-tool-toggle');
@@ -721,14 +721,14 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
                     }
                 });
 
-                // TODO: ÈÕÆÚÊäÈë¿òµÄ³õÊ¼»¯
+                // TODO: æ—¥æœŸè¾“å…¥æ¡†çš„åˆå§‹åŒ–
             }
 
             /**
-             * ³õÊ¼»¯°ïÖúÃæ°å
+             * åˆå§‹åŒ–å¸®åŠ©é¢æ¿
              */
             function initRefundHelpBox() {
-                // ÕÛµşÕ¹¿ª¹¦ÄÜ
+                // æŠ˜å å±•å¼€åŠŸèƒ½
                 Trade.Util.togglePanel('J_RefundHelpBoxToggle', 'J_RefundHelpBox', function(trigger) {
 					var panel = trigger.parentNode;
                     if (Dom.hasClass(panel, 'collapsed')) {
@@ -738,7 +738,7 @@ YAHOO.lang.augmentObject(TB.app.Trade, function() {
                     }
                 });
 
-                // TODO: ÈÕÆÚÊäÈë¿òµÄ³õÊ¼»¯
+                // TODO: æ—¥æœŸè¾“å…¥æ¡†çš„åˆå§‹åŒ–
             }
         }
     };
