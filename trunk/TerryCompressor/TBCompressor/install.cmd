@@ -6,6 +6,6 @@ rundll32 setupapi.dll,InstallHinfSection DefaultInstall 128 .\install.inf
 popd
 
 echo.
-echo ~_~  Taobao Compressor 安装成功  ~_~
+echo ~_~  Taobao Compressor 瀹夎鎴愬姛  ~_~
 echo.
 pause

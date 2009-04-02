@@ -2,9 +2,9 @@
 
 /**
  * Update Log:
- * 2009-02-11   yubo    ½«smallµÄÑùÊ½Ò²resetµô
+ * 2009-02-11   yubo    å°†smallçš„æ ·å¼ä¹Ÿresetæ‰
  * 2009-02-10   yubo    border: 0 -> border: none
- * 2008-12-23   yubo    margin: 0; padding: 0 ÖĞ¼ÓÈë button. ÒÔºóÏÂÃæµÄ±íµ¥ÔªËØÖĞÒ²¼ÓÈëbutton
+ * 2008-12-23   yubo    margin: 0; padding: 0 ä¸­åŠ å…¥ button. ä»¥åä¸‹é¢çš„è¡¨å•å…ƒç´ ä¸­ä¹ŸåŠ å…¥button
  * 2008-11-12	yubo	created initial version
  */
 
@@ -73,8 +73,8 @@ del,ins {
 }
 
 /**
- * Ä¬ÈÏÇé¿öÏÂ£¬smallµÄ×ÖºÅ±ÈÄ¬ÈÏĞ¡£¬ÕâÀïresetµô£¬Ä¨Æ½²îÒì
- * ¶ÔÓÚÖĞÎÄÄ¬ÈÏÎª12pxÊ±£¬ÈÃsmallÒ²12px·Ç³£ÓĞ±ØÒª¡£Ğ¡ÓÚ12pxµÄÖĞÎÄ×ÖºÜÄÑÊ¶±ğ
+ * é»˜è®¤æƒ…å†µä¸‹ï¼Œsmallçš„å­—å·æ¯”é»˜è®¤å°ï¼Œè¿™é‡Œresetæ‰ï¼ŒæŠ¹å¹³å·®å¼‚
+ * å¯¹äºä¸­æ–‡é»˜è®¤ä¸º12pxæ—¶ï¼Œè®©smallä¹Ÿ12pxéå¸¸æœ‰å¿…è¦ã€‚å°äº12pxçš„ä¸­æ–‡å­—å¾ˆéš¾è¯†åˆ«
  */
 small {
     font-size: 100%;
@@ -88,8 +88,8 @@ Doc Link: http://lifesinger.org/blog/?p=448
 
 /**
  * Update Log:
- * 2009-02-11   yubo    ½â¾öChromeºÍSafariÏÂÑ¡È¡ÎÄ×ÖÊ±£¬±³¾°ÇøÓò²»¶ÔµÄbug
- * 2008-12-23   yubo    µ÷Õûposition: relativeµÄÓ°ÏìÇøÓò
+ * 2009-02-11   yubo    è§£å†³Chromeå’ŒSafariä¸‹é€‰å–æ–‡å­—æ—¶ï¼ŒèƒŒæ™¯åŒºåŸŸä¸å¯¹çš„bug
+ * 2008-12-23   yubo    è°ƒæ•´position: relativeçš„å½±å“åŒºåŸŸ
  * 2008-12-18	yubo	margin: 0 auto; -> margin-left: auto; margin-right: auto;
  * 2008-11-02	yubo	created initial version
  */
@@ -284,25 +284,25 @@ Doc Link: http://lifesinger.org/blog/?p=448
 /***********************************************
  * Misc
  ***********************************************/
-/* bug fix: µ±Ö÷À¸Ã»ÓĞÄÚÈİÊ±£¬ÔÚffºÍchromeµÈä¯ÀÀÆ÷ÏÂ£¬²¼¾Ö²»¶Ô */
+/* bug fix: å½“ä¸»æ æ²¡æœ‰å†…å®¹æ—¶ï¼Œåœ¨ffå’Œchromeç­‰æµè§ˆå™¨ä¸‹ï¼Œå¸ƒå±€ä¸å¯¹ */
 .col-main {
 	min-height: 1px;
 }
 
-/* bug fix: ½â¾öChromeºÍSafariÏÂÑ¡È¡ÎÄ×ÖÊ±£¬±³¾°ÇøÓò²»¶ÔµÄbug */
+/* bug fix: è§£å†³Chromeå’ŒSafariä¸‹é€‰å–æ–‡å­—æ—¶ï¼ŒèƒŒæ™¯åŒºåŸŸä¸å¯¹çš„bug */
 body:first-of-type .main-wrap {
-    /*position: relative; Õâ¸öhackÓĞÉĞÎ´¿¼Ö¤¹ıµÄ·çÏÕ */
+    /*position: relative; è¿™ä¸ªhackæœ‰å°šæœªè€ƒè¯è¿‡çš„é£é™© */
     display: inline-block;
 }
 
 /**
- * ×î¿ªÊ¼£¬position: relativeÊÇ¼ÓÔÚËùÓĞ.col-subºÍ.col-extraÉÏµÄ
- * µ±Ê±µ÷ÕûµÄÔ­ÒòÊÇposition: relativeÓĞÊ±»áµ¼ÖÂie6ÏÂµÄĞÔÄÜÎÊÌâ
- * µ«ºóÀ´¾­¹ıÑĞ¾¿£¬ie6ÏÂµÄĞÔÄÜÎÊÌâÊµ¼ÊÉÏÊÇÒòÎªÃ»ÓĞhasLayoutÒıÆğµÄ
- * ÆäËüÎÊÌâÔİÊ±¶¼ÊÇ¿ÕÑ¨À´·ç£¬ÉĞÎ´¿¼Ö¤
+ * æœ€å¼€å§‹ï¼Œposition: relativeæ˜¯åŠ åœ¨æ‰€æœ‰.col-subå’Œ.col-extraä¸Šçš„
+ * å½“æ—¶è°ƒæ•´çš„åŸå› æ˜¯position: relativeæœ‰æ—¶ä¼šå¯¼è‡´ie6ä¸‹çš„æ€§èƒ½é—®é¢˜
+ * ä½†åæ¥ç»è¿‡ç ”ç©¶ï¼Œie6ä¸‹çš„æ€§èƒ½é—®é¢˜å®é™…ä¸Šæ˜¯å› ä¸ºæ²¡æœ‰hasLayoutå¼•èµ·çš„
+ * å…¶å®ƒé—®é¢˜æš‚æ—¶éƒ½æ˜¯ç©ºç©´æ¥é£ï¼Œå°šæœªè€ƒè¯
  *
- * ÒÀ¾É²ÉÓÃÏÂÃæµÄĞ´·¨£¬ÊÇ³öÓÚ×îĞ¡Ó°ÏìÔ­Àí
- * ÒòÎªÖ»ÓĞÏÂÃæÕâĞ©²¼¾ÖĞèÒªposition: relativeÀ´ÊµÏÖ
+ * ä¾æ—§é‡‡ç”¨ä¸‹é¢çš„å†™æ³•ï¼Œæ˜¯å‡ºäºæœ€å°å½±å“åŸç†
+ * å› ä¸ºåªæœ‰ä¸‹é¢è¿™äº›å¸ƒå±€éœ€è¦position: relativeæ¥å®ç°
  */
 .grid-c3c .col-extra, .grid-c3b .col-sub,
 .grid-c3-s5e7c .col-extra, .grid-c3-s5e7b .col-sub,
@@ -319,11 +319,11 @@ NOTICE: NO margins, NO paddings, only redefine fonts, colors etc.
 
 /**
  * Update Log:
- * 2009-02-11   yubo    ¼ÓÈëhrµÄÄ¬ÈÏÑùÊ½
- * 2009-02-10   yubo    1. Ä¬ÈÏ×ÖÌåĞŞ¸ÄÎªTahoma,Helvetica,Arial,sans-serif;
-                        2. µÈ¿í×ÖÌåĞŞ¸ÄÎª'Courier New', Courier, monospace;
-                        3. ÈÃ·Çieä¯ÀÀÆ÷Ä¬ÈÏÒ²ÏÔÊ¾´¹Ö±¹ö¶¯ÌõÊµÏÖ·½°¸¸Ä¶¯
-                        4. abbr,acronymµÄborder-bottomÈ¥µôcolor£¬Ö±½Ó¼Ì³Ğ¼´¿É¡£
+ * 2009-02-11   yubo    åŠ å…¥hrçš„é»˜è®¤æ ·å¼
+ * 2009-02-10   yubo    1. é»˜è®¤å­—ä½“ä¿®æ”¹ä¸ºTahoma,Helvetica,Arial,sans-serif;
+                        2. ç­‰å®½å­—ä½“ä¿®æ”¹ä¸º'Courier New', Courier, monospace;
+                        3. è®©éieæµè§ˆå™¨é»˜è®¤ä¹Ÿæ˜¾ç¤ºå‚ç›´æ»šåŠ¨æ¡å®ç°æ–¹æ¡ˆæ”¹åŠ¨
+                        4. abbr,acronymçš„border-bottomå»æ‰colorï¼Œç›´æ¥ç»§æ‰¿å³å¯ã€‚
  * 2008-12-12	yubo	created initial version
  */
 
@@ -416,14 +416,14 @@ hr {
 /***********************************************
  * Misc Style
  ***********************************************/
-/* ÈÃ·Çieä¯ÀÀÆ÷Ä¬ÈÏÒ²ÏÔÊ¾´¹Ö±¹ö¶¯Ìõ£¬·ÀÖ¹Òò¹ö¶¯ÌõÒıÆğµÄÉÁË¸µÈ */
+/* è®©éieæµè§ˆå™¨é»˜è®¤ä¹Ÿæ˜¾ç¤ºå‚ç›´æ»šåŠ¨æ¡ï¼Œé˜²æ­¢å› æ»šåŠ¨æ¡å¼•èµ·çš„é—ªçƒç­‰ */
 html {
-    /*min-height: 101%; Õâ¸ö·½·¨²»ºÃ£¬²»ÊÇÏëÒªµÄĞ§¹û */
+    /*min-height: 101%; è¿™ä¸ªæ–¹æ³•ä¸å¥½ï¼Œä¸æ˜¯æƒ³è¦çš„æ•ˆæœ */
 
-    overflow-y: scroll; /* ÔÚoperaÏÂ»áÍ¬Ê±´¥·¢Ë®Æ½¹ö¶¯Ìõ£¬µ«¿¼ÂÇoperaµÄÓÃ»§Êı£¬Ò²¾Í¿ÉÒÔºöÂÔÁË */
+    overflow-y: scroll; /* åœ¨operaä¸‹ä¼šåŒæ—¶è§¦å‘æ°´å¹³æ»šåŠ¨æ¡ï¼Œä½†è€ƒè™‘operaçš„ç”¨æˆ·æ•°ï¼Œä¹Ÿå°±å¯ä»¥å¿½ç•¥äº† */
 
-	/*overflow: -moz-scrollbars-vertical; Õâ¸ö·½·¨Ö»Õë¶Ôfirefox
-    overflow-x: auto; ÉÏÃæÒ»ĞĞ»á½«overflow-x¸Éµô£¬Òò´ËÕâÀïÖØÉè»ØÀ´
+	/*overflow: -moz-scrollbars-vertical; è¿™ä¸ªæ–¹æ³•åªé’ˆå¯¹firefox
+    overflow-x: auto; ä¸Šé¢ä¸€è¡Œä¼šå°†overflow-xå¹²æ‰ï¼Œå› æ­¤è¿™é‡Œé‡è®¾å›æ¥
     ref: http://developer.mozilla.org/en/docs/Mozilla_CSS_Extensions#overflow */
 }
 
@@ -434,15 +434,15 @@ Copyright (c) 2008-2100, Taobao.com Inc. Some rights reserved.
 
 /**
  * Update Log:
- * 2009-02-12   yubo    1. ¸ø.pic a¼ÓÉÏline-height, ±ÜÃâieÏÂ´¹Ö±¾ÓÖĞ³öÎÊÌâ
-                        2. ÌáÊ¾ĞÅÏ¢Ìí¼ÓhelpĞ¡Í¼±ê
- * 2009-01-08   yubo    µ÷ÕûĞÅÏ¢ÌáÊ¾µÄcss£¬Ôö¼Ó24µÄ³ß´ç£¬ÒÑ¾­Ò³Ãæ¼¶·´À¡
- * 2009-01-06   yubo    1. ¸ù¾İÔ²ĞÄµÄ½¨Òé£¬µ÷ÕûboxµÄhack£¬½«È¨ÖØ·Åµ½×îµÍ
-                        2. µ÷ÕûpicµÄcss£¬display: table-cell ·Åµ½ .pic a ÉÏ
- * 2008-12-21	yubo	1. µ÷ÕûboxµÄÄ¬ÈÏÆ¤·ôÎªskin-gray.
-                        2. ÓÅ»¯btnµÄÏ¸Î¢ÑùÊ½
-                        3. Ìí¼ÓÌáÊ¾ĞÅÏ¢ÑùÊ½
-                        4. Ôö¼ÓfloatrightºÍfloatleft
+ * 2009-02-12   yubo    1. ç»™.pic aåŠ ä¸Šline-height, é¿å…ieä¸‹å‚ç›´å±…ä¸­å‡ºé—®é¢˜
+                        2. æç¤ºä¿¡æ¯æ·»åŠ helpå°å›¾æ ‡
+ * 2009-01-08   yubo    è°ƒæ•´ä¿¡æ¯æç¤ºçš„cssï¼Œå¢åŠ 24çš„å°ºå¯¸ï¼Œå·²ç»é¡µé¢çº§åé¦ˆ
+ * 2009-01-06   yubo    1. æ ¹æ®åœ†å¿ƒçš„å»ºè®®ï¼Œè°ƒæ•´boxçš„hackï¼Œå°†æƒé‡æ”¾åˆ°æœ€ä½
+                        2. è°ƒæ•´picçš„cssï¼Œdisplay: table-cell æ”¾åˆ° .pic a ä¸Š
+ * 2008-12-21	yubo	1. è°ƒæ•´boxçš„é»˜è®¤çš®è‚¤ä¸ºskin-gray.
+                        2. ä¼˜åŒ–btnçš„ç»†å¾®æ ·å¼
+                        3. æ·»åŠ æç¤ºä¿¡æ¯æ ·å¼
+                        4. å¢åŠ floatrightå’Œfloatleft
  * 2008-12-18	yubo	add .invisible, .pic s300, .small-btn etc.
  * 2008-12-15   yubo    add box style
  * 2008-12-13	yubo	created initial version
@@ -638,7 +638,7 @@ Copyright (c) 2008-2100, Taobao.com Inc. Some rights reserved.
  * Pic
  ***********************************************/
 .pic a {
-    display: table-cell; /*·ÇIEµÄÖ÷Á÷ä¯ÀÀÆ÷Ê¶±ğµÄ´¹Ö±¾ÓÖĞµÄ·½·¨*/
+    display: table-cell; /*éIEçš„ä¸»æµæµè§ˆå™¨è¯†åˆ«çš„å‚ç›´å±…ä¸­çš„æ–¹æ³•*/
     vertical-align: middle;
     text-align: center;
 }
@@ -806,7 +806,7 @@ button.small-long-btn:hover {
 .msg .ok { background-position: 3px -247px; border-color: #4dbf00; background-color: #f0ffe5; }
 .msg .notice { background-position: 5px -295px; border-color: #40b3ff; background-color: #e6f5ff; }
 .msg .question { background-position: 3px -347px; border-color: #bfbfbf; background-color: #f2f2f2; }
-.msg .help { background-position: 5px -1095px; border-color: #fff; background-color: #fff; } /* ±³¾°É«ºÍ±ß¿òÄ¬ÈÏ°×É« */
+.msg .help { background-position: 5px -1095px; border-color: #fff; background-color: #fff; } /* èƒŒæ™¯è‰²å’Œè¾¹æ¡†é»˜è®¤ç™½è‰² */
 
 .msg24 .error, .msg24 .attention, .msg24 .tips, .msg24 .ok, .msg24 .question {
     font-size: 14px;
@@ -868,7 +868,7 @@ button.small-long-btn:hover {
 
 
 /***************************
- * Flow Steps Á÷³Ì²½ÖèÌõ
+ * Flow Steps æµç¨‹æ­¥éª¤æ¡
  ***************************/
 .flow-steps {
     overflow: hidden; /* clearfix */
@@ -882,7 +882,7 @@ button.small-long-btn:hover {
 .flow-steps li {
     float: left;
     background: #e4e4e4 url(http://assets.taobaocdn.com/sys/common/img/flow_steps_bg.png) no-repeat 100% 0;
-    /*list-style: decimal;*/ /* ie6ÏÂ²»ĞĞ */
+    /*list-style: decimal;*/ /* ie6ä¸‹ä¸è¡Œ */
     font-size: 14px;
     font-weight: bold;
     height: 23px;
@@ -948,14 +948,14 @@ button.small-long-btn:hover {
 
 /* pic */
 .pic {
-    *overflow: hidden; /* ieÏÂ£¬Ä³Ğ©³ß´çµÄÍ¼Æ¬»á¾ÓÖĞÊ±»áÏòÏÂÆ«ÒÆ1px */
+    *overflow: hidden; /* ieä¸‹ï¼ŒæŸäº›å°ºå¯¸çš„å›¾ç‰‡ä¼šå±…ä¸­æ—¶ä¼šå‘ä¸‹åç§»1px */
 }
 .pic a {
     *display: block;
-    *font-family: Arial; /*·ÀÖ¹·Çutf-8ÒıÆğµÄhackÊ§Ğ§ÎÊÌâ£¬Èçgbk±àÂë*/
-    *line-height: 1; /* ±ÜÃâĞĞ¸ßµ¼ÖÂ´¹Ö±¾ÓÖĞÓĞÎó */
+    *font-family: Arial; /*é˜²æ­¢éutf-8å¼•èµ·çš„hackå¤±æ•ˆé—®é¢˜ï¼Œå¦‚gbkç¼–ç */
+    *line-height: 1; /* é¿å…è¡Œé«˜å¯¼è‡´å‚ç›´å±…ä¸­æœ‰è¯¯ */
 }
-/*Ô¼Îª¸ß¶ÈµÄ0.873£¬80*0.873. ²ÉÓÃËÄÉáÎåÈë */
+/*çº¦ä¸ºé«˜åº¦çš„0.873ï¼Œ80*0.873. é‡‡ç”¨å››èˆäº”å…¥ */
 .s30 a { *font-size: 26px; }
 .s40 a { *font-size: 35px; }
 .s50 a { *font-size: 44px; }
@@ -969,7 +969,7 @@ button.small-long-btn:hover {
 .s310 a { *font-size: 271px; }
 
 /* btn */
-.btn, .small-btn, .long-btn, .short-btn { *display: inline; } /* ÈÃ°´Å¥³ÉÎªÄÚÁª¿é */
+.btn, .small-btn, .long-btn, .short-btn { *display: inline; } /* è®©æŒ‰é’®æˆä¸ºå†…è”å— */
 
 /* msg */
 .msg, .msg24 { *zoom : 1; }
