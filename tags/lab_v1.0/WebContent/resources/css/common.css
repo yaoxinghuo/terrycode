@@ -1,0 +1,39 @@
+.body{
+	font-size: 11pt; 
+}
+.layout-title {
+	font: normal normal bold 21px verdana;
+	/*background:#dfe8f6;*/
+	padding: 5 5 5 10;
+	color: darkblue;
+}
+.layout-title span {
+	font: normal normal bold 22px verdana;
+	/*color: blue;*/
+}
+
+A:link {
+	COLOR: blue; TEXT-DECORATION: underline
+}
+A:visited {
+	COLOR: blue; TEXT-DECORATION: underline
+}
+A:active {
+	COLOR: blue; TEXT-DECORATION: none
+}
+A:hover {
+	COLOR: blue; TEXT-DECORATION: underline
+}
+
+.nounderline A:link {
+	COLOR: blue; TEXT-DECORATION: none
+}
+.nounderline A:visited {
+	COLOR: blue; TEXT-DECORATION: none
+}
+.nounderline A:active {
+	COLOR: blue; TEXT-DECORATION: none
+}
+.nounderline A:hover {
+	COLOR: blue; TEXT-DECORATION: underline
+}
