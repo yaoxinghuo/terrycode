@@ -21,5 +21,15 @@
     <servlet-name>greetServlet</servlet-name>
     <url-pattern>/apptest/greet</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>testServlet</servlet-name>
+  	<servlet-class>com.terry.servlet.TestServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>testServlet</servlet-name>
+  	<url-pattern>/test</url-pattern>
+  </servlet-mapping>
 
 </web-app>
