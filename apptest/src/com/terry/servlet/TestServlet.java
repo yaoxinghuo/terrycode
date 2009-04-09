@@ -41,24 +41,23 @@ public class TestServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		// response.setContentType("text/plain");
 		// response.getWriter().println("Hello, world");
-		Employee employee = new Employee("Alfred", "Smith", new Date());
+//		Employee employee = new Employee("Alfred", "Smith", new Date());
 
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 
 		List<Employee> employees;
 		try {
-			pm.makePersistent(employee);
+//			pm.makePersistent(employee);
 
 			String query = "select from " + Employee.class.getName()
 					+ " where lastName == 'Smith'";
 			employees = (List<Employee>) pm.newQuery(query).execute();
-
+			if (employees != null && employees.size() != 0)
+				request.setAttribute("employee", employees.get(0).getFirstName());
+			request.getRequestDispatcher("/success.jsp").forward(request, response);
 		} finally {
 			pm.close();
 		}
-		if (employees != null && employees.size() != 0)
-			request.setAttribute("employee", employees.get(0).getFirstName());
-		request.getRequestDispatcher("/success.jsp").forward(request, response);
 	}
 
 }
