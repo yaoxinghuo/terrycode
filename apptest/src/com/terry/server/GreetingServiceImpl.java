@@ -1,7 +1,7 @@
 package com.terry.server;
 
-import com.terry.client.GreetingService;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.terry.client.GreetingService;
 
 /**
  * The server side implementation of the RPC service.
