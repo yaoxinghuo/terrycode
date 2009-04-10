@@ -15,4 +15,6 @@
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='com.terry.client.Apptest'/>
+  
+  <extend-property name="locale" values="zh_CN" />
 </module>
