@@ -38,7 +38,8 @@ public class Apptest implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-		final Button sendButton = new Button("Send");
+		MyConstants constants = GWT.create(MyConstants.class);
+		final Button sendButton = new Button(constants.btSend());
 		final TextBox nameField = new TextBox();
 		nameField.setText("GWT User");
 
@@ -63,7 +64,6 @@ public class Apptest implements EntryPoint {
 		closeButton.getElement().setId("closeButton");
 		final Label textToServerLabel = new Label();
 		final HTML serverResponseLabel = new HTML();
-		MyConstants constants = GWT.create(MyConstants.class);
 		VerticalPanel dialogVPanel = new VerticalPanel();
 		dialogVPanel.addStyleName("dialogVPanel");
 		dialogVPanel.add(new HTML("<b>Sending name to the server:</b>"));
