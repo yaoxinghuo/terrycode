@@ -7,7 +7,7 @@
 	<constant name="struts.i18n.encoding" value="UTF-8" />
 	
 	<package name="gwt"  extends="gwt-default">
-		<action name="gwt-test" class="com.terry.action.TestAction" method="test">
+		<action name="gwt-test" class="gwt-testAction" method="test">
 			<interceptor-ref name="gwt"/>
 		</action>
 	</package>
