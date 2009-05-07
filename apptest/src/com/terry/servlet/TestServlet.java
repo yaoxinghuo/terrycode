@@ -3,14 +3,14 @@ package com.terry.servlet;
 import java.io.IOException;
 import java.util.List;
 
-import javax.jdo.PersistenceManager;
+import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.terry.data.model.Employee;
-import com.terry.data.util.PMF;
+import com.terry.data.util.EMF;
 
 /**
  * @author Terry E-mail: yaoxinghuo at 126 dot com
@@ -38,24 +38,27 @@ public class TestServlet extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	private void processRequest(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// response.setContentType("text/plain");
-		// response.getWriter().println("Hello, world");
-//		Employee employee = new Employee("Alfred", "Smith", new Date());
+		// Employee employee = new Employee("Alfred", "Smith", new Date());
 
-		PersistenceManager pm = PMF.get().getPersistenceManager();
+		EntityManager em = EMF.get().createEntityManager();
 
 		List<Employee> employees;
 		try {
-//			pm.makePersistent(employee);
+			// em.persist(employee);
 
-			String query = "select from " + Employee.class.getName()
-					+ " where lastName == 'Smith'";
-			employees = (List<Employee>) pm.newQuery(query).execute();
-			if (employees != null && employees.size() != 0)
-				request.setAttribute("employee", employees.get(0).getFirstName());
-			request.getRequestDispatcher("/success.jsp").forward(request, response);
+			employees = (List<Employee>) em.createQuery(
+					"SELECT e FROM com.terry.data.model.Employee e")
+					.getResultList();
+			if (employees != null && employees.size() != 0) {
+				request.setAttribute("employee", employees.get(0)
+						.getFirstName());
+				response.setContentType("text/plain");
+				response.getWriter().println(employees.get(0).getFirstName());
+			}
+			// request.getRequestDispatcher("/success.jsp").forward(request,
+			// response);
 		} finally {
-			pm.close();
+			em.close();
 		}
 	}
 

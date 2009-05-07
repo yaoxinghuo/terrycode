@@ -2,30 +2,36 @@ package com.terry.data.model;
 
 import java.util.Date;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+import javax.persistence.Basic;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+import org.datanucleus.jpa.annotations.Extension;
 
 /**
  * @author Terry E-mail: yaoxinghuo at 126 dot com
  * @version create：Apr 8, 2009 11:10:25 PM
  */
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+@Entity
 public class Employee {
-	@PrimaryKey
-	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Extension(vendorName = "datanucleus", key = "gae.encoded-pk", value = "true")
+	private String id;
 
-	@Persistent
+	@Basic
 	private String firstName;
 
-	@Persistent
+	@Basic
 	private String lastName;
 
-	@Persistent
+	@Basic
 	private Date hireDate;
+
+	// Accessors for the fields. JPA doesn't use these, but your application
+	// does.
 
 	public Employee(String firstName, String lastName, Date hireDate) {
 		this.firstName = firstName;
@@ -33,11 +39,11 @@ public class Employee {
 		this.hireDate = hireDate;
 	}
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
