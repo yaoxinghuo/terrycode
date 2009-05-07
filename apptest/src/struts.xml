@@ -5,11 +5,17 @@
 	"http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
 	<constant name="struts.i18n.encoding" value="UTF-8" />
-	
-	<package name="gwt"  extends="gwt-default">
-		<action name="gwt-test" class="gwt-testAction" method="test">
-			<interceptor-ref name="gwt"/>
+
+	<package name="test" extends="struts-default">
+		<action name="index" class="indexAction">
+			<result>/index.jsp</result>
 		</action>
 	</package>
-	
+
+	<package name="gwt" extends="gwt-default">
+		<action name="gwt-test" class="gwt-testAction" method="test">
+			<interceptor-ref name="gwt" />
+		</action>
+	</package>
+
 </struts>
