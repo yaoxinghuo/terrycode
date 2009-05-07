@@ -8,6 +8,7 @@
 <title>detail.jsp</title>
 </head>
 <body>
+<a href="index.action">index.action</a><br/>
 <s:property value="message" />
 </body>
 </html>
