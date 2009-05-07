@@ -13,6 +13,7 @@
 	<br/>
 	<a href="index!add.action">Add</a>
 	<br/>
+	<a href="index.action">index.action</a><br/>
 	<table>
 		<tr>
 			<td>ID</td>

@@ -3,6 +3,7 @@ package com.terry.data.dao.impl;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 import org.springframework.stereotype.Component;
@@ -30,7 +31,10 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 	@Override
 	public boolean saveEmplyee(Employee employee) {
 		try {
+			EntityTransaction tx = em.getTransaction();
+			tx.begin();
 			em.persist(employee);
+			tx.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
