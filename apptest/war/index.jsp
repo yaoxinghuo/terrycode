@@ -20,7 +20,7 @@
 		</tr>
 		<s:iterator value="employees">
 			<tr>
-				<td><s:property value="id"/></td>
+				<td><a href="index!detail.action?id=<s:property value="id"/>"><s:property value="id"/></a></td>
 				<td><s:property value="firstName"/></td>
 				<td><s:property value="lastName"/></td>
 				<td><s:property value="hireDate"/></td>

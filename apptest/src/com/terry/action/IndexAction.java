@@ -20,6 +20,7 @@ public class IndexAction extends ActionSupport {
 	private static final long serialVersionUID = 4575781393306576158L;
 
 	private String message;
+	private String id;
 	private List<Employee> employees;
 
 	@Autowired
@@ -30,6 +31,11 @@ public class IndexAction extends ActionSupport {
 		employees = employeeService.getEmployees();
 		setMessage("struts2 action 传过来的中文！");
 		return SUCCESS;
+	}
+
+	public String detail() {
+		message = employeeService.getEmployeeNameById(id);
+		return "detail";
 	}
 
 	public void setMessage(String message) {
@@ -46,6 +52,14 @@ public class IndexAction extends ActionSupport {
 
 	public List<Employee> getEmployees() {
 		return employees;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getId() {
+		return id;
 	}
 
 }

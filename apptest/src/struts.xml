@@ -9,6 +9,7 @@
 	<package name="test" extends="struts-default">
 		<action name="index" class="indexAction">
 			<result>/index.jsp</result>
+			<result name="detail">/detail.jsp</result>
 		</action>
 	</package>
 
