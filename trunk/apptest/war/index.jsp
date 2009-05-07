@@ -11,6 +11,8 @@
 	Index.jsp HelloWorld.<br/>
 	<s:property value="message"/>
 	<br/>
+	<a href="index!add.action">Add</a>
+	<br/>
 	<table>
 		<tr>
 			<td>ID</td>

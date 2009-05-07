@@ -1,5 +1,6 @@
 package com.terry.action;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,13 @@ public class IndexAction extends ActionSupport {
 	public String execute() {
 		employees = employeeService.getEmployees();
 		setMessage("struts2 action 传过来的中文！");
+		return SUCCESS;
+	}
+
+	public String add() {
+		boolean result = employeeService.saveEmployee("Terry", "Yao",
+				new Date());
+		message = "save result:" + result;
 		return SUCCESS;
 	}
 
