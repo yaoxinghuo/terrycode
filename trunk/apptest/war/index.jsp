@@ -10,5 +10,22 @@
 <body>
 	Index.jsp HelloWorld.<br/>
 	<s:property value="message"/>
+	<br/>
+	<table>
+		<tr>
+			<td>ID</td>
+			<td>First Name</td>
+			<td>Last Name</td>
+			<td>Hire Date</td>
+		</tr>
+		<s:iterator value="employees">
+			<tr>
+				<td><s:property value="id"/></td>
+				<td><s:property value="firstName"/></td>
+				<td><s:property value="lastName"/></td>
+				<td><s:property value="hireDate"/></td>
+			</tr>
+		</s:iterator>
+	</table>
 </body>
 </html>
