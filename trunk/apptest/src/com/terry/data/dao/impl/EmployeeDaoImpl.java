@@ -21,6 +21,9 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 	@Override
 	public Employee getEmplyeeById(String id) {
 		Key key = KeyFactory.stringToKey(id);
+		if (key == null || !key.isComplete())
+			return null;
+
 		return em.find(Employee.class, key);
 	}
 
