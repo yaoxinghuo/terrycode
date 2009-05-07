@@ -18,7 +18,11 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 
 	@Override
 	public Employee getEmplyeeById(String id) {
-		return em.find(Employee.class, id);
+		try {
+			return em.find(Employee.class, id);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	@Override
