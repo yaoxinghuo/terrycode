@@ -7,6 +7,8 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Component;
 
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.terry.data.dao.intf.IEmployeeDao;
 import com.terry.data.model.Employee;
 import com.terry.data.util.EMF;
@@ -18,11 +20,8 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 
 	@Override
 	public Employee getEmplyeeById(String id) {
-		try {
-			return em.find(Employee.class, id);
-		} catch (Exception e) {
-			return null;
-		}
+		Key key = KeyFactory.stringToKey(id);
+		return em.find(Employee.class, key);
 	}
 
 	@Override
@@ -30,6 +29,7 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 		try {
 			em.persist(employee);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 		return true;
