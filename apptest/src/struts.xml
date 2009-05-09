@@ -10,6 +10,7 @@
 		<action name="index" class="indexAction">
 			<result>/index.jsp</result>
 			<result name="detail">/detail.jsp</result>
+			<result name="input">/index.jsp</result>
 		</action>
 	</package>
 
