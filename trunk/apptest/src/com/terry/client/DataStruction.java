@@ -27,8 +27,11 @@ public class DataStruction {
 		// ------ json decoder -----------//
 		// basic load without paginate //
 		/*
-		 * 如果你不要做分頁就用這個設定就行了。 JsonReader<ListLoadResult<ModelData>> reader = new
+		 * 如果你不要做分頁就用這個設定就行了。
+		 * 
+		 * JsonReader<ListLoadResult<ModelData>> reader = new
 		 * JsonReader<ListLoadResult<ModelData>>(mt);
+		 * 
 		 * BaseListLoader<ListLoadResult<ModelData>> loader = new
 		 * BaseListLoader<ListLoadResult<ModelData>>(proxy, reader);
 		 */
@@ -69,7 +72,7 @@ public class DataStruction {
 		loader.setRemoteSort(true);
 		ListStore<ModelData> store = new ListStore<ModelData>(loader);
 		Registry.register(symbol, store);
-		loader.load(); // load Store
+		loader.load(0, 20); // load Store
 		return store;
 	}
 }
