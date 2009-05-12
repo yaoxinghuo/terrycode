@@ -13,20 +13,11 @@ import com.opensymphony.xwork2.ActionSupport;
 @Component("gridAction")
 public class GridAction extends ActionSupport {
 
-	private int start;
 	private int limit;
+	private int offset;
 
 	private int results;
 	private JSONArray rows;
-
-	@JSON(serialize = false)
-	public int getStart() {
-		return start;
-	}
-
-	public void setStart(int start) {
-		this.start = start;
-	}
 
 	@JSON(serialize = false)
 	public int getLimit() {
@@ -45,8 +36,7 @@ public class GridAction extends ActionSupport {
 	@Override
 	public String execute() {
 		JSONArray ja = new JSONArray();
-		System.out.println("Start:" + start + "Limit:" + limit);
-		for (int i = start; i < start + limit; i++) {
+		for (int i = offset; i < offset + limit; i++) {
 			JSONObject a = new JSONObject();
 			a.put("id", i);
 			a.put("name", "name" + i);
@@ -74,5 +64,14 @@ public class GridAction extends ActionSupport {
 	@JSON(name = "results")
 	public int getResults() {
 		return results;
+	}
+
+	public void setOffset(int offset) {
+		this.offset = offset;
+	}
+
+	@JSON(serialize = false)
+	public int getOffset() {
+		return offset;
 	}
 }
