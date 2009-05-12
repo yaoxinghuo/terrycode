@@ -10,10 +10,12 @@ import com.extjs.gxt.ui.client.data.ModelType;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.Viewport;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+import com.extjs.gxt.ui.client.widget.layout.MarginData;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -56,7 +58,7 @@ public class Apptest implements EntryPoint {
 	 */
 	@SuppressWarnings("unchecked")
 	public void onModuleLoad() {
-		
+
 		MyConstants constants = GWT.create(MyConstants.class);
 		final Button sendButton = new Button(constants.btSend());
 		final TextBox nameField = new TextBox();
@@ -160,61 +162,63 @@ public class Apptest implements EntryPoint {
 		sendButton.addClickHandler(handler);
 		nameField.addKeyUpHandler(handler);
 
-		
-		
-		
-		List<ColumnConfig> configs = new ArrayList<ColumnConfig>(); 
-		 
-		ColumnConfig column = new ColumnConfig(); 
-		column.setId("name"); 
-		column.setHeader("Company"); 
-		column.setDataIndex("name"); 
-		column.setWidth(200); 
-		configs.add(column); 
-		 
-		column = new ColumnConfig(); 
-		column.setId("symbol"); 
-		column.setHeader("Symbol"); 
-		column.setDataIndex("symbol"); 
-		column.setWidth(100); 
-		configs.add(column); 
-		 
-		column = new ColumnConfig(); 
-		column.setId("id"); 
-		column.setHeader("No"); 
-		column.setDataIndex("id"); 
-		column.setAlignment(HorizontalAlignment.RIGHT); 
-		column.setWidth(75); 
-		 
-		//  create Store // 
-		// data struction // 
-		ModelType mt = new ModelType(); 
-		mt.setRoot("rows"); 
-		mt.setTotalName("results"); 
-		mt.addField("id"); 
-		mt.addField("name"); 
-		mt.addField("symbol"); 
-		 
-		// --------------- // 
-		ListStore<ModelData> store = DataStruction.JsonStoreCreatePaginate("ds01",mt,"/ajax/grid.action","id");    // this will register into ds01 
-		 
-		ColumnModel cm = new ColumnModel(configs); 
-		 
-		ContentPanel cp = new ContentPanel(); 
-		cp.setBodyBorder(false); 
-		cp.setHeading("Basic Grid"); 
-		cp.setButtonAlign(HorizontalAlignment.CENTER); 
-		cp.setLayout(new FitLayout()); 
-		Grid<ModelData> grid = new Grid<ModelData>(store, cm); 
-		grid.setStyleAttribute("borderTop", "none"); 
-		grid.setAutoExpandColumn("name"); 
-		grid.setBorders(true); 
-		cp.add(grid); 
-		PagingToolBar toolBar = new PagingToolBar(20); 
-		toolBar.bind((BasePagingLoader<PagingLoadResult<ModelData>>)store.getLoader()); 
-		cp.setBottomComponent(toolBar); 
+		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
-		RootPanel.get("grid").add(cp);
-		
+		ColumnConfig column = new ColumnConfig();
+		column.setId("name");
+		column.setHeader("Company");
+		column.setDataIndex("name");
+		column.setWidth(200);
+		configs.add(column);
+
+		column = new ColumnConfig();
+		column.setId("symbol");
+		column.setHeader("Symbol");
+		column.setDataIndex("symbol");
+		column.setWidth(100);
+		configs.add(column);
+
+		column = new ColumnConfig();
+		column.setId("id");
+		column.setHeader("No");
+		column.setDataIndex("id");
+		column.setAlignment(HorizontalAlignment.RIGHT);
+		column.setWidth(75);
+
+		// create Store //
+		// data struction //
+		ModelType mt = new ModelType();
+		mt.setRoot("rows");
+		mt.setTotalName("results");
+		mt.addField("id");
+		mt.addField("name");
+		mt.addField("symbol");
+
+		// --------------- //
+		ListStore<ModelData> store = DataStruction.JsonStoreCreatePaginate(
+				"ds01", mt, "/ajax/grid.action", "id"); // this will register
+														// into ds01
+
+		ColumnModel cm = new ColumnModel(configs);
+
+		ContentPanel cp = new ContentPanel();
+		cp.setBodyBorder(false);
+		cp.setHeading("Basic Grid");
+		cp.setButtonAlign(HorizontalAlignment.CENTER);
+		cp.setLayout(new FitLayout());
+		Grid<ModelData> grid = new Grid<ModelData>(store, cm);
+		grid.setStyleAttribute("borderTop", "none");
+		grid.setAutoExpandColumn("name");
+		grid.setBorders(true);
+		cp.add(grid);
+		PagingToolBar toolBar = new PagingToolBar(20);
+		toolBar.bind((BasePagingLoader<PagingLoadResult<ModelData>>) store
+				.getLoader());
+		cp.setBottomComponent(toolBar);
+
+		Viewport viewport = new Viewport();
+		viewport.add(cp, new MarginData(10));
+		RootPanel.get().add(viewport);
+
 	}
 }
