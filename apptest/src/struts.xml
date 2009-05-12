@@ -15,8 +15,14 @@
 	</package>
 
 	<package name="gwt" extends="gwt-default">
-		<action name="gwt-test" class="gwt-testAction" method="test">
+		<action name="gwt-test" class="gwt-testAction">
 			<interceptor-ref name="gwt" />
+		</action>
+	</package>
+	
+	<package name="ajax" extends="json-default" namespace="/ajax">
+		<action name="grid" class="gridAction">
+			<result type="json" />
 		</action>
 	</package>
 

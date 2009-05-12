@@ -4,15 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
+import com.extjs.gxt.ui.client.data.BasePagingLoader;
+import com.extjs.gxt.ui.client.data.ModelData;
+import com.extjs.gxt.ui.client.data.ModelType;
+import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
-import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
-import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-import com.extjs.gxt.ui.client.widget.table.NumberCellRenderer;
+import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -20,8 +22,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
-import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.Button;
@@ -54,7 +54,9 @@ public class Apptest implements EntryPoint {
 	/**
 	 * This is the entry point method.
 	 */
+	@SuppressWarnings("unchecked")
 	public void onModuleLoad() {
+		
 		MyConstants constants = GWT.create(MyConstants.class);
 		final Button sendButton = new Button(constants.btSend());
 		final TextBox nameField = new TextBox();
@@ -157,96 +159,62 @@ public class Apptest implements EntryPoint {
 		MyHandler handler = new MyHandler();
 		sendButton.addClickHandler(handler);
 		nameField.addKeyUpHandler(handler);
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 
-		final NumberFormat currency = NumberFormat.getCurrencyFormat();
-		final NumberFormat number = NumberFormat.getFormat("0.00");
-		final NumberCellRenderer<Grid<Stock>> numberRenderer = new NumberCellRenderer<Grid<Stock>>(
-				currency);
-
-		GridCellRenderer<Stock> change = new GridCellRenderer<Stock>() {
-			public String render(Stock model, String property,
-					ColumnData config, int rowIndex, int colIndex,
-					ListStore<Stock> store) {
-				double val = (Double) model.get(property);
-				String style = val < 0 ? "red" : "green";
-				return "<span style='color:" + style + "'>"
-						+ number.format(val) + "</span>";
-			}
-		};
-
-		GridCellRenderer<Stock> gridNumber = new GridCellRenderer<Stock>() {
-			public String render(Stock model, String property,
-					ColumnData config, int rowIndex, int colIndex,
-					ListStore<Stock> store) {
-				return numberRenderer.render(null, property, model
-						.get(property));
-			}
-		};
-
-		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
-
-		ColumnConfig column = new ColumnConfig();
-		column.setId("name");
-		column.setHeader("Company");
-		column.setWidth(200);
-		configs.add(column);
-
-		column = new ColumnConfig();
-		column.setId("symbol");
-		column.setHeader("Symbol");
-		column.setWidth(100);
-		configs.add(column);
-
-		column = new ColumnConfig();
-		column.setId("last");
-		column.setHeader("Last");
-		column.setAlignment(HorizontalAlignment.RIGHT);
-		column.setWidth(75);
-		column.setRenderer(gridNumber);
-		configs.add(column);
-
-		column = new ColumnConfig("change", "Change", 100);
-		column.setAlignment(HorizontalAlignment.RIGHT);
-		column.setRenderer(change);
-		configs.add(column);
-
-		column = new ColumnConfig("date", "Last Updated", 100);
-		column.setAlignment(HorizontalAlignment.RIGHT);
-		column.setDateTimeFormat(DateTimeFormat.getShortDateFormat());
-		configs.add(column);
-
-		ListStore<Stock> store = new ListStore<Stock>();
-		store.add(TestData.getStocks());
-
-		ColumnModel cm = new ColumnModel(configs);
-
-		ContentPanel cp = new ContentPanel();
-		cp.setBodyBorder(false);
-		cp.setHeading("Basic Grid");
-		cp.setButtonAlign(HorizontalAlignment.CENTER);
-		cp.setLayout(new FitLayout());
-		cp.setSize(600, 300);
-
-		Grid<Stock> grid = new Grid<Stock>(store, cm);
-		grid.setStyleAttribute("borderTop", "none");
-		grid.setAutoExpandColumn("name");
-		grid.setBorders(true);
-		cp.add(grid);
+		
+		
+		
+		List<ColumnConfig> configs = new ArrayList<ColumnConfig>(); 
+		 
+		ColumnConfig column = new ColumnConfig(); 
+		column.setId("name"); 
+		column.setHeader("Company"); 
+		column.setDataIndex("name"); 
+		column.setWidth(200); 
+		configs.add(column); 
+		 
+		column = new ColumnConfig(); 
+		column.setId("symbol"); 
+		column.setHeader("Symbol"); 
+		column.setDataIndex("symbol"); 
+		column.setWidth(100); 
+		configs.add(column); 
+		 
+		column = new ColumnConfig(); 
+		column.setId("id"); 
+		column.setHeader("No"); 
+		column.setDataIndex("id"); 
+		column.setAlignment(HorizontalAlignment.RIGHT); 
+		column.setWidth(75); 
+		 
+		//  create Store // 
+		// data struction // 
+		ModelType mt = new ModelType(); 
+		mt.setRoot("rows"); 
+		mt.setTotalName("results"); 
+		mt.addField("id"); 
+		mt.addField("name"); 
+		mt.addField("symbol"); 
+		 
+		// --------------- // 
+		ListStore<ModelData> store = DataStruction.JsonStoreCreatePaginate("ds01",mt,"/ajax/grid.action","id");    // this will register into ds01 
+		 
+		ColumnModel cm = new ColumnModel(configs); 
+		 
+		ContentPanel cp = new ContentPanel(); 
+		cp.setBodyBorder(false); 
+		cp.setHeading("Basic Grid"); 
+		cp.setButtonAlign(HorizontalAlignment.CENTER); 
+		cp.setLayout(new FitLayout()); 
+		Grid<ModelData> grid = new Grid<ModelData>(store, cm); 
+		grid.setStyleAttribute("borderTop", "none"); 
+		grid.setAutoExpandColumn("name"); 
+		grid.setBorders(true); 
+		cp.add(grid); 
+		PagingToolBar toolBar = new PagingToolBar(20); 
+		toolBar.bind((BasePagingLoader<PagingLoadResult<ModelData>>)store.getLoader()); 
+		cp.setBottomComponent(toolBar); 
 
 		RootPanel.get("grid").add(cp);
+		
 	}
 }
