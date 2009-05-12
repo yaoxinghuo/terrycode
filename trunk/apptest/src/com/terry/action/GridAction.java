@@ -6,15 +6,20 @@ import net.sf.json.JSONObject;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.googlecode.jsonplugin.annotations.JSON;
 import com.opensymphony.xwork2.ActionSupport;
 
 @Scope("prototype")
-@Component("gwt-testAction")
-public class TestAction extends ActionSupport {
+@Component("gridAction")
+public class GridAction extends ActionSupport {
 
 	private int start;
 	private int limit;
 
+	private int results;
+	private JSONArray rows;
+
+	@JSON(serialize = false)
 	public int getStart() {
 		return start;
 	}
@@ -23,6 +28,7 @@ public class TestAction extends ActionSupport {
 		this.start = start;
 	}
 
+	@JSON(serialize = false)
 	public int getLimit() {
 		return limit;
 	}
@@ -36,14 +42,10 @@ public class TestAction extends ActionSupport {
 	 */
 	private static final long serialVersionUID = 1859767044000357740L;
 
-	public String test(String name) {
-		return "Struts2:Hello~" + name;
-	}
-
-	public String grid(int start, int limit) {
-		JSONObject jo = new JSONObject();
-		jo.put("results", 401);
+	@Override
+	public String execute() {
 		JSONArray ja = new JSONArray();
+		System.out.println("Start:" + start + "Limit:" + limit);
 		for (int i = start; i < start + limit; i++) {
 			JSONObject a = new JSONObject();
 			a.put("id", i);
@@ -51,7 +53,26 @@ public class TestAction extends ActionSupport {
 			a.put("symbol", "symbol" + i);
 			ja.add(a);
 		}
-		jo.put("rows", ja);
-		return jo.toString();
+		setRows(ja);
+		setResults(401);
+		return SUCCESS;
+	}
+
+	public void setRows(JSONArray rows) {
+		this.rows = rows;
+	}
+
+	@JSON(name = "rows")
+	public JSONArray getRows() {
+		return rows;
+	}
+
+	public void setResults(int results) {
+		this.results = results;
+	}
+
+	@JSON(name = "results")
+	public int getResults() {
+		return results;
 	}
 }
