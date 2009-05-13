@@ -10,7 +10,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 import org.datanucleus.jpa.annotations.Extension;
@@ -28,9 +27,8 @@ public class Company {
 
 	@Basic
 	private String name;
-	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Employee.class)
-	@JoinColumn(name = "company")
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Employee.class, mappedBy = "company")
 	private List<Employee> employees = new ArrayList<Employee>();
 
 	public String getId() {

@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import org.datanucleus.jpa.annotations.Extension;
@@ -32,6 +33,7 @@ public class Employee {
 	private Date hireDate;
 
 	@ManyToOne
+	@JoinColumn(name="company", nullable=false)
 	private Company company;
 
 	// Accessors for the fields. JPA doesn't use these, but your application
