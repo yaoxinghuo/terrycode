@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import org.datanucleus.jpa.annotations.Extension;
 
@@ -29,6 +30,9 @@ public class Employee {
 
 	@Basic
 	private Date hireDate;
+
+	@ManyToOne
+	private Company company;
 
 	// Accessors for the fields. JPA doesn't use these, but your application
 	// does.
@@ -69,5 +73,13 @@ public class Employee {
 
 	public void setHireDate(Date hireDate) {
 		this.hireDate = hireDate;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
+	public Company getCompany() {
+		return company;
 	}
 }
