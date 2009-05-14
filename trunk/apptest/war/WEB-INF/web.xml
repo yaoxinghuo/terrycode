@@ -18,6 +18,15 @@
 		<servlet-name>test</servlet-name>
 		<url-pattern>/test</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>add</servlet-name>
+		<servlet-class>com.terry.servlet.AddServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>add</servlet-name>
+		<url-pattern>/add</url-pattern>
+	</servlet-mapping>
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
