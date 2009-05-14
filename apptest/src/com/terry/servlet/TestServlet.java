@@ -1,8 +1,6 @@
 package com.terry.servlet;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -11,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.terry.data.model.Company;
 import com.terry.data.model.Employee;
 import com.terry.data.util.EMF;
 
@@ -41,28 +38,20 @@ public class TestServlet extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	private void processRequest(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// Employee employee = new Employee("Alfred", "Smith", new Date());
-
 		EntityManager em = EMF.get().createEntityManager();
-		// Company company = new Company();
-		// company.setName("Google");
 
-		// List<Employee> employees = new ArrayList<Employee>();
-		// employees.add(employee);
-		// company.setEmployees(employees);
 		try {
-			// em.persist(company);
-
 			// request.setAttribute("employee",
 			// employees.get(0).getFirstName());
-			List<Company> companys = (List<Company>) em.createQuery(
-					"SELECT e FROM com.terry.data.model.Company c")
+			List<Employee> employees = (List<Employee>) em.createQuery(
+					"SELECT e FROM com.terry.data.model.Employee e")
 					.getResultList();
 			String s = "null";
-			if (companys != null)
-				s = companys.get(0).getName();
+			if (employees != null && employees.size() != 0)
+				s = employees.get(0).getCompany().getName();
+
 			response.setContentType("text/plain");
-			response.getWriter().println(s);
+			response.getWriter().println("Many-to-one Test Query Result:"+s);
 
 			// request.getRequestDispatcher("/success.jsp").forward(request,
 			// response);
