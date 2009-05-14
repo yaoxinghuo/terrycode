@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.terry.data.model.Department;
 import com.terry.data.model.Employee;
 import com.terry.data.util.EMF;
 
@@ -46,12 +47,26 @@ public class TestServlet extends HttpServlet {
 			List<Employee> employees = (List<Employee>) em.createQuery(
 					"SELECT e FROM com.terry.data.model.Employee e")
 					.getResultList();
-			String s = "null";
-			if (employees != null && employees.size() != 0)
-				s = employees.get(0).getCompany().getName();
 
+			List<Department> departments = (List<Department>) em.createQuery(
+					"SELECT d FROM com.terry.data.model.Department d")
+					.getResultList();
+
+			String company = "null";
+			String password = "null";
+			String dname = "null";
+			if (employees != null && employees.size() != 0) {
+				company = employees.get(0).getCompany().getName();
+				password = employees.get(0).getPassport().getPassword();
+			}
+			if (departments != null && departments.size() != 0) {
+				dname = departments.get(0).getName() + "("
+						+ departments.get(0).getCompany().getName() + ")";
+			}
 			response.setContentType("text/plain");
-			response.getWriter().println("Many-to-one Test Query Result:"+s);
+			response.getWriter().println(
+					"Test Query Result Company:" + company + "\nPassword:"
+							+ password + "\nDepartment:" + dname);
 
 			// request.getRequestDispatcher("/success.jsp").forward(request,
 			// response);
@@ -59,5 +74,4 @@ public class TestServlet extends HttpServlet {
 			em.close();
 		}
 	}
-
 }
