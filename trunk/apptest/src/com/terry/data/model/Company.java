@@ -30,6 +30,9 @@ public class Company {
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Employee.class, mappedBy = "company")
 	private List<Employee> employees = new ArrayList<Employee>();
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Department.class, mappedBy = "company")
+	private List<Department> departments = new ArrayList<Department>();
 
 	public String getId() {
 		return id;
@@ -53,5 +56,13 @@ public class Company {
 
 	public List<Employee> getEmployees() {
 		return employees;
+	}
+
+	public void setDepartments(List<Department> departments) {
+		this.departments = departments;
+	}
+
+	public List<Department> getDepartments() {
+		return departments;
 	}
 }

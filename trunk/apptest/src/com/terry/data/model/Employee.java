@@ -3,12 +3,15 @@ package com.terry.data.model;
 import java.util.Date;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import org.datanucleus.jpa.annotations.Extension;
 
@@ -16,6 +19,7 @@ import org.datanucleus.jpa.annotations.Extension;
  * @author Terry E-mail: yaoxinghuo at 126 dot com
  * @version create：Apr 8, 2009 11:10:25 PM
  */
+
 @Entity
 public class Employee {
 	@Id
@@ -33,8 +37,11 @@ public class Employee {
 	private Date hireDate;
 
 	@ManyToOne
-	@JoinColumn(name="company", nullable=false)
+	@JoinColumn(name = "company", nullable = false)
 	private Company company;
+
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+	private Passport passport;
 
 	// Accessors for the fields. JPA doesn't use these, but your application
 	// does.
@@ -83,5 +90,13 @@ public class Employee {
 
 	public Company getCompany() {
 		return company;
+	}
+
+	public void setPassport(Passport passport) {
+		this.passport = passport;
+	}
+
+	public Passport getPassport() {
+		return passport;
 	}
 }

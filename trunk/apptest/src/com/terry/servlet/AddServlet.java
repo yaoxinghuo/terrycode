@@ -3,7 +3,6 @@ package com.terry.servlet;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
@@ -12,8 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.terry.data.model.Company;
+import com.terry.data.model.Department;
 import com.terry.data.model.Employee;
+import com.terry.data.model.Passport;
 import com.terry.data.util.EMF;
+import com.terry.data.util.MD5;
 
 /**
  * @author Terry E-mail: yaoxinghuo at 126 dot com
@@ -42,17 +44,29 @@ public class AddServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		EntityManager em = EMF.get().createEntityManager();
 
-		Employee employee = new Employee("Alfred", "Smith", new Date());
-
-		Company company = new Company();
-		company.setName("Google");
-
-		List<Employee> employees = new ArrayList<Employee>();
-		employee.setCompany(company);
-		employees.add(employee);
-		company.setEmployees(employees);
 		try {
+			Company company = new Company();
+			company.setName("Google");
+			
+			ArrayList<Employee> employees = new ArrayList<Employee>(); 
+			Employee employee = new Employee("Alfred", "Smith", new Date());
+			employee.setCompany(company);
+			Passport passport = new Passport();
+			passport.setUsername("terry");
+			passport.setPassword(MD5.compute("123456"));
+			employee.setPassport(passport);
+			
+			employees.add(employee);
+			company.setEmployees(employees);
+			
+			ArrayList<Department> departments = new ArrayList<Department>();
+			Department department = new Department();
+			department.setName("IT");
+			departments.add(department);
+			company.setDepartments(departments);
+
 			em.persist(company);
+
 			response.setContentType("text/plain");
 			response.getWriter().println("Success!");
 
