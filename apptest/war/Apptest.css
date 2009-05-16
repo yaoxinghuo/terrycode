@@ -1,5 +1,20 @@
 /** Add css rules here for your application. */
 
+.layout-title {
+	font: normal normal bold 21px verdana;
+	/*background:#dfe8f6;*/
+	padding: 5 5 5 10;
+	color: darkblue;
+}
+.layout-title span {
+	font: normal normal bold 22px verdana;
+	/*color: blue;*/
+}
+
+.feed {
+	background: url(icons/feed.gif ) !important;
+}
+
 
 /** Example rules used by the template application (remove for your app) */
 h1 {
