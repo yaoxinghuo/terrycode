@@ -11,6 +11,8 @@ import com.extjs.gxt.ui.client.data.BasePagingLoader;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.ModelType;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
+import com.extjs.gxt.ui.client.event.MenuEvent;
+import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
@@ -18,6 +20,7 @@ import com.extjs.gxt.ui.client.widget.HtmlContainer;
 import com.extjs.gxt.ui.client.widget.TabItem;
 import com.extjs.gxt.ui.client.widget.TabPanel;
 import com.extjs.gxt.ui.client.widget.Viewport;
+import com.extjs.gxt.ui.client.widget.button.IconButton;
 import com.extjs.gxt.ui.client.widget.button.ToolButton;
 import com.extjs.gxt.ui.client.widget.grid.CheckBoxSelectionModel;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
@@ -35,6 +38,8 @@ import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.extjs.gxt.ui.client.widget.tree.Tree;
 import com.extjs.gxt.ui.client.widget.tree.TreeItem;
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.RootPanel;
 
 public class Apptest implements EntryPoint {
@@ -50,18 +55,19 @@ public class Apptest implements EntryPoint {
 
 		RootPanel.get().add(viewport);
 
+		showPopMessage("Welcome");
+
 	}
 
 	private void createNorth() {
-		StringBuffer sb = new StringBuffer();
-		sb
-				.append("<div id='demo-header' class='x-small-editor'><div id='demo-theme'></div><div id=demo-title>Ext GWT Examples</div></div>");
-
-		HtmlContainer northPanel = new HtmlContainer(sb.toString());
+		HtmlContainer northPanel = new HtmlContainer();
+		Element ele = DOM.getElementById("north");
+		DOM.setStyleAttribute(ele, "visibility", "visible");
+		northPanel.setElement(ele);
 		northPanel.setEnableState(false);
 
 		BorderLayoutData northData = new BorderLayoutData(LayoutRegion.NORTH,
-				33);
+				53);
 		northData.setMargins(new Margins(0, 2, 0, 0));
 		viewport.add(northPanel, northData);
 	}
@@ -82,19 +88,19 @@ public class Apptest implements EntryPoint {
 		Tree tree = new Tree();
 		TreeItem family = new TreeItem("Family");
 		tree.getRootItem().add(family);
-		family.add(newItem("Darrell", "user"));
-		family.add(newItem("Maro", "user-girl"));
-		family.add(newItem("Lia", "user-kid"));
-		family.add(newItem("Alec", "user-kid"));
-		family.add(newItem("Andrew", "user-kid"));
+		family.add(newItem("Darrell", "feed"));
+		family.add(newItem("Maro", "feed"));
+		family.add(newItem("Lia", "feed"));
+		family.add(newItem("Alec", "feed"));
+		family.add(newItem("Andrew", "feed"));
 		family.setExpanded(true);
 
 		TreeItem friends = new TreeItem("Friends");
 		tree.getRootItem().add(friends);
-		friends.add(newItem("Bob", "user"));
-		friends.add(newItem("Mary", "user-girl"));
-		friends.add(newItem("Sally", "user-girl"));
-		friends.add(newItem("Jack", "user"));
+		friends.add(newItem("Bob", "feed"));
+		friends.add(newItem("Mary", "feed"));
+		friends.add(newItem("Sally", "feed"));
+		friends.add(newItem("Jack", "feed"));
 		friends.setExpanded(true);
 
 		cp.add(tree);
@@ -192,11 +198,20 @@ public class Apptest implements EntryPoint {
 		grid.setAutoExpandColumn("name");
 		grid.setHeight(480);
 		Menu menu = new Menu();
-		menu.add(new MenuItem("Test"));
+		MenuItem mi = new MenuItem("Test", "feed", new SelectionListener<MenuEvent>(){
+
+			@Override
+			public void componentSelected(MenuEvent ce) {
+				showPopMessage("You have clicked.");
+			}
+			
+		});
+		menu.add(mi);
 		menu.add(new MenuItem("Test2"));
 		grid.setContextMenu(menu);
 		cp.add(grid);
 		ToolBar tb = new ToolBar();
+		tb.add(new IconButton("feed"));
 		tb.add(new ToolButton("x-tool-gear"));
 		tb.add(new ToolButton("x-tool-close"));
 		cp.setTopComponent(tb);
@@ -213,5 +228,11 @@ public class Apptest implements EntryPoint {
 		tp.add(item);
 
 		viewport.add(tp, new BorderLayoutData(LayoutRegion.CENTER));
+	}
+
+	public static void showPopMessage(String message) {
+		DOM.getElementById("msg_content").setInnerHTML(message);
+		DOM.setStyleAttribute(DOM.getElementById("msg"), "visibility",
+				"visible");
 	}
 }
