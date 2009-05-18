@@ -106,6 +106,7 @@ public class Apptest implements EntryPoint {
 							+ tab_id);
 					tabItem = new TabItem(treeItem.getText());
 					tabItem.setItemId(tab_id);
+					tabItem.setIconStyle("feed");
 					tabItem.setClosable(true);
 					tabItem
 							.addText("Tab Test Content, <br/><font color='red'>TabItem id is: "
@@ -265,6 +266,7 @@ public class Apptest implements EntryPoint {
 
 		TabItem item = new TabItem();
 		item.setId("tab_grid");
+		item.setIconStyle("feed");
 		item.setText("Grid Tab");
 		item.setScrollMode(Scroll.AUTO);
 		item.add(cp);
