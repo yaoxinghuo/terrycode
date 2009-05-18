@@ -11,12 +11,16 @@ import com.extjs.gxt.ui.client.data.BasePagingLoader;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.ModelType;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.event.TreeEvent;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.HtmlContainer;
+import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.TabItem;
 import com.extjs.gxt.ui.client.widget.TabPanel;
 import com.extjs.gxt.ui.client.widget.Viewport;
@@ -44,6 +48,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 public class Apptest implements EntryPoint {
 	private Viewport viewport;
+	private TabPanel tp = new TabPanel();
 
 	public void onModuleLoad() {
 		viewport = new Viewport();
@@ -86,6 +91,34 @@ public class Apptest implements EntryPoint {
 		panel.add(cp);
 
 		Tree tree = new Tree();
+		tree.addListener(Events.SelectionChange, new Listener<TreeEvent>() {
+
+			@Override
+			public void handleEvent(TreeEvent te) {
+				TreeItem treeItem = te.getTree().getSelectedItem();
+				Object object = treeItem.getData("tab_id");
+				if (object == null)
+					return;
+				String tab_id = object.toString();
+				TabItem tabItem = tp.getItemByItemId(tab_id);
+				if (tabItem == null) {
+					showPopMessage("<font color='red'>TabItem is null</font>, create one, TabItem id is: "
+							+ tab_id);
+					tabItem = new TabItem(treeItem.getText());
+					tabItem.setItemId(tab_id);
+					tabItem.setClosable(true);
+					tabItem
+							.addText("Tab Test Content, <br/><font color='red'>TabItem id is: "
+									+ tab_id + "</font>");
+					tp.add(tabItem);
+				} else {
+					showPopMessage("TabItem exist, TabItem id is: " + tab_id);
+					tabItem.show();
+				}
+				tp.setSelection(tabItem);
+			}
+
+		});
 		TreeItem family = new TreeItem("Family");
 		tree.getRootItem().add(family);
 		family.add(newItem("Darrell", "feed"));
@@ -135,6 +168,7 @@ public class Apptest implements EntryPoint {
 
 	private TreeItem newItem(String text, String iconStyle) {
 		TreeItem item = new TreeItem(text);
+		item.setData("tab_id", text + "_id");
 		item.setIconStyle(iconStyle);
 		return item;
 	}
@@ -197,17 +231,26 @@ public class Apptest implements EntryPoint {
 		grid.addPlugin(sm);
 		grid.setAutoExpandColumn("name");
 		grid.setHeight(480);
+		grid.setLoadMask(true);
 		Menu menu = new Menu();
-		MenuItem mi = new MenuItem("Test", "feed", new SelectionListener<MenuEvent>(){
+		MenuItem mi = new MenuItem("Test", "feed",
+				new SelectionListener<MenuEvent>() {
+
+					@Override
+					public void componentSelected(MenuEvent ce) {
+						showPopMessage("You have clicked.");
+					}
+
+				});
+		menu.add(mi);
+		menu.add(new MenuItem("Test2", new SelectionListener<MenuEvent>() {
 
 			@Override
 			public void componentSelected(MenuEvent ce) {
-				showPopMessage("You have clicked.");
+				MessageBox.alert("Test Title", "You have clicked!", null);
 			}
-			
-		});
-		menu.add(mi);
-		menu.add(new MenuItem("Test2"));
+
+		}));
 		grid.setContextMenu(menu);
 		cp.add(grid);
 		ToolBar tb = new ToolBar();
@@ -220,8 +263,8 @@ public class Apptest implements EntryPoint {
 				.getLoader());
 		cp.setBottomComponent(toolBar);
 
-		TabPanel tp = new TabPanel();
 		TabItem item = new TabItem();
+		item.setId("tab_grid");
 		item.setText("Grid Tab");
 		item.setScrollMode(Scroll.AUTO);
 		item.add(cp);
@@ -235,4 +278,5 @@ public class Apptest implements EntryPoint {
 		DOM.setStyleAttribute(DOM.getElementById("msg"), "visibility",
 				"visible");
 	}
+
 }
