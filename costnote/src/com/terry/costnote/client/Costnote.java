@@ -594,8 +594,8 @@ public class Costnote implements EntryPoint {
 						return;
 					JSONObject jo = new JSONObject();
 					jo.put("id", new JSONString(hidden.getValue()));
-					jo.put("date", new JSONString(DateTimeFormat.getFormat(
-							"yyyy-MM-dd").format(date.getValue())));
+					jo.put("date", new JSONString(format
+							.format(date.getValue())));
 					jo.put("name", new JSONString(name.getValue()));
 					jo.put("remark", new JSONString(remark.getValue()));
 					jo
@@ -706,8 +706,8 @@ public class Costnote implements EntryPoint {
 						return;
 					JSONObject jo = new JSONObject();
 					jo.put("id", new JSONString(""));
-					jo.put("date", new JSONString(DateTimeFormat.getFormat(
-							"yyyy-MM-dd").format(date.getValue())));
+					jo.put("date", new JSONString(format
+							.format(date.getValue())));
 					jo.put("name", new JSONString(name.getValue()));
 					jo.put("remark", new JSONString(remark.getValue()));
 					jo
