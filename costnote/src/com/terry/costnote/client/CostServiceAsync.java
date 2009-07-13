@@ -11,4 +11,6 @@ public interface CostServiceAsync {
 
 	void saveCost(String cost, AsyncCallback<Boolean> callback);
 
+	void deleteCost(String costIds, AsyncCallback<Boolean> callback);
+
 }

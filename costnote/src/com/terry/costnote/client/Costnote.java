@@ -21,8 +21,10 @@ import com.extjs.gxt.ui.client.data.ModelType;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.IconButtonEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
+import com.extjs.gxt.ui.client.event.MessageBoxEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -39,14 +41,16 @@ import com.extjs.gxt.ui.client.widget.TabPanel;
 import com.extjs.gxt.ui.client.widget.Viewport;
 import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
-import com.extjs.gxt.ui.client.widget.button.ToolButton;
+import com.extjs.gxt.ui.client.widget.button.IconButton;
 import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.DateTimePropertyEditor;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.HiddenField;
+import com.extjs.gxt.ui.client.widget.form.LabelField;
 import com.extjs.gxt.ui.client.widget.form.NumberField;
 import com.extjs.gxt.ui.client.widget.form.Radio;
 import com.extjs.gxt.ui.client.widget.form.RadioGroup;
+import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.grid.CheckBoxSelectionModel;
@@ -58,7 +62,6 @@ import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.extjs.gxt.ui.client.widget.grid.RowNumberer;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
-import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
@@ -68,6 +71,7 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONBoolean;
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
@@ -83,15 +87,19 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class Costnote implements EntryPoint {
 	private CostServiceAsync costService = GWT.create(CostService.class);
-	private static final String operateFail = "<img src='icons/fail.gif'/>对不起，您的操作未能完成，请稍候再试！";
-	private static final String operateError = "<img src='icons/fail.gif'/>对不起，数据库维护中，请稍候再试！";
-	private static final String operatePass = "<img src='icons/pass.gif'/>您的操作成功完成！";
+	private static final String operateFail = "对不起，您的操作未能完成，请稍候再试！";
+	private static final String operateError = "对不起，数据库维护中，请稍候再试！";
+	private static final String operatePass = "您的操作成功完成！";
+	private DateTimeFormat format = DateTimeFormat.getFormat("yyyy-MM-dd");
 	private Viewport viewport;
 	private TabPanel tp = new TabPanel();
 	private TreePanel<ModelData> tree;
 	private ListStore<ModelData> store;
 
 	public void onModuleLoad() {
+		Element ele = DOM.getElementById("loading_div");
+		DOM.setStyleAttribute(ele, "visibility", "hidden");
+
 		viewport = new Viewport();
 		viewport.setLayout(new BorderLayout());
 
@@ -296,18 +304,22 @@ public class Costnote implements EntryPoint {
 		cp.setBodyBorder(false);
 		cp.setHeaderVisible(false);
 		cp.setButtonAlign(HorizontalAlignment.CENTER);
-		cp.setLayout(new FitLayout());
+		cp.setLayout(new BorderLayout());
 		final Grid<ModelData> grid = new Grid<ModelData>(store, cm);
 		grid.setSelectionModel(sm);
 		grid.addPlugin(sm);
 		grid.setAutoExpandColumn("name");
-		grid.setHeight(480);
+		grid.setAutoHeight(true);
 		grid.setLoadMask(true);
 		Menu menu = new Menu();
 		MenuItem mi = new MenuItem("修改", new SelectionListener<MenuEvent>() {
 
 			@Override
 			public void componentSelected(MenuEvent ce) {
+				if (grid.getSelectionModel().getSelectedItems().size() == 0) {
+					showPopMessage("error", "请至少选择一条记录！");
+					return;
+				}
 				ModelData md = grid.getSelectionModel().getSelectedItem();
 				showNoteWindow((String) md.get("id"), DateTimeFormat.getFormat(
 						"yyyy-MM-dd").parse((String) md.get("date")),
@@ -323,21 +335,101 @@ public class Costnote implements EntryPoint {
 
 					@Override
 					public void componentSelected(MenuEvent ce) {
-						MessageBox.alert("Test Title", "You have clicked!",
-								null);
+						if (grid.getSelectionModel().getSelectedItems().size() == 0) {
+							showPopMessage("error", "请至少选择一条记录！");
+							return;
+						}
+						MessageBox.confirm("确定删除", "您确定要删除选中的记录?",
+								new Listener<MessageBoxEvent>() {
+
+									@Override
+									public void handleEvent(MessageBoxEvent be) {
+										List<ModelData> list = grid
+												.getSelectionModel()
+												.getSelectedItems();
+										JSONArray ja = new JSONArray();
+										for (int i = 0; i < list.size(); i++)
+											ja.set(i, new JSONString(
+													(String) list.get(i).get(
+															"id")));
+										ServiceDefTarget endpoint = (ServiceDefTarget) costService;
+										endpoint
+												.setServiceEntryPoint("gwt-cost!deleteCost.action");
+										costService.deleteCost(ja.toString(),
+												new AsyncCallback<Boolean>() {
+
+													@Override
+													public void onFailure(
+															Throwable caught) {
+														showPopMessage("error",
+																operateError);
+													}
+
+													@Override
+													public void onSuccess(
+															Boolean result) {
+														if (result) {
+															if (store != null)
+																store
+																		.getLoader()
+																		.load();
+															showPopMessage(
+																	"pass",
+																	operatePass);
+														} else {
+															showPopMessage(
+																	"error",
+																	operateFail);
+														}
+													}
+
+												});
+									}
+								});
 					}
 
 				}));
 		grid.setContextMenu(menu);
 		cp.add(grid);
-		ToolBar tb = new ToolBar();
-		tb.add(new ToolButton("x-tool-gear"));
-		tb.add(new ToolButton("x-tool-close"));
-		cp.setTopComponent(tb);
 		PagingToolBar toolBar = createChinesePagingToolBar();
 		toolBar.bind((BasePagingLoader<PagingLoadResult<ModelData>>) store
 				.getLoader());
 		cp.setBottomComponent(toolBar);
+
+		ToolBar tb = new ToolBar();
+		DateField sfrom = new DateField();
+		sfrom.setWidth("100");
+		sfrom.setPropertyEditor(new DateTimePropertyEditor(format));
+		sfrom.setValue(new Date(new Date().getTime() - 30l * 24l * 3600l
+				* 1000l));
+		DateField sto = new DateField();
+		sto.setWidth("100");
+		sto.setValue(new Date());
+		sto.setPropertyEditor(new DateTimePropertyEditor(format));
+		tb.add(new LabelField("&nbsp;搜索日期从"));
+		tb.add(sfrom);
+		tb.add(new LabelField("&nbsp;到"));
+		tb.add(sto);
+		SimpleComboBox<String> combo = new SimpleComboBox();
+		combo.setWidth("80");
+		combo.add("支出");
+		combo.add("收入");
+		combo.add("所有类型");
+		combo.setSimpleValue("支出");
+		tb.add(new LabelField("&nbsp;选择类型"));
+		tb.add(combo);
+		IconButton sbutton = new IconButton("search",
+				new SelectionListener<IconButtonEvent>() {
+
+					@Override
+					public void componentSelected(IconButtonEvent ce) {
+						showPopMessage("info", "对不起，该功能正在实现中，请稍候！");
+					}
+
+				});
+		tb.add(sbutton);
+		cp.setTopComponent(tb);
+
 		return cp;
 	}
 
@@ -387,7 +479,13 @@ public class Costnote implements EntryPoint {
 		viewport.add(tp, new BorderLayoutData(LayoutRegion.CENTER));
 	}
 
-	public static void showPopMessage(String message) {
+	public static void showPopMessage(String type, String message) {
+		if (type.equals("info"))
+			message = "<img src='icons/info.png'/>&nbsp;" + message;
+		else if (type.equals("error"))
+			message = "<img src='icons/fail.gif'/>&nbsp;" + message;
+		else if (message.equals("pass"))
+			message = "<img src='icons/pass.gif'/>&nbsp;" + message;
 		DOM.getElementById("msg_content").setInnerHTML(message);
 		DOM.setStyleAttribute(DOM.getElementById("msg"), "visibility",
 				"visible");
@@ -451,8 +549,7 @@ public class Costnote implements EntryPoint {
 			formPanel.add(hidden);
 
 			date = new DateField();
-			date.setPropertyEditor(new DateTimePropertyEditor(DateTimeFormat
-					.getFormat("yyyy-MM-dd")));
+			date.setPropertyEditor(new DateTimePropertyEditor(format));
 			date.setFieldLabel("日期*");
 			formPanel.add(date);
 
@@ -512,7 +609,7 @@ public class Costnote implements EntryPoint {
 
 								@Override
 								public void onFailure(Throwable caught) {
-									showPopMessage(operateError);
+									showPopMessage("error", operateError);
 								}
 
 								@Override
@@ -521,9 +618,9 @@ public class Costnote implements EntryPoint {
 										window.hide();
 										if (store != null)
 											store.getLoader().load();
-										showPopMessage(operatePass);
+										showPopMessage("pass", operatePass);
 									} else {
-										showPopMessage(operateFail);
+										showPopMessage("error", operateFail);
 									}
 								}
 
@@ -563,8 +660,7 @@ public class Costnote implements EntryPoint {
 			formPanel.setWidth(350);
 
 			final DateField date = new DateField();
-			date.setPropertyEditor(new DateTimePropertyEditor(DateTimeFormat
-					.getFormat("yyyy-MM-dd")));
+			date.setPropertyEditor(new DateTimePropertyEditor(format));
 			date.setValue(new Date());
 			date.setFieldLabel("日期*");
 			formPanel.add(date);
@@ -625,7 +721,7 @@ public class Costnote implements EntryPoint {
 
 								@Override
 								public void onFailure(Throwable caught) {
-									showPopMessage(operateError);
+									showPopMessage("error", operateError);
 								}
 
 								@Override
@@ -635,9 +731,9 @@ public class Costnote implements EntryPoint {
 										newWindow.hide();
 										if (store != null)
 											store.getLoader().load();
-										showPopMessage(operatePass);
+										showPopMessage("pass", operatePass);
 									} else
-										showPopMessage(operateFail);
+										showPopMessage("error", operateFail);
 								}
 
 							});
