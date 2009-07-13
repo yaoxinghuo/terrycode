@@ -40,8 +40,8 @@ public class AccountDaoImpl implements IAccountDao {
 
 	@Override
 	public Account getAccountByEmail(String email) {
-		Query query = em
-				.createQuery("SELECT a FROM com.terry.costnote.data.model.Account a where a.email=:email");
+		Query query = em.createQuery("SELECT a FROM " + Account.class.getName()
+				+ " a where a.email=:email");
 		query.setParameter("email", email);
 		Account account = null;
 		try {
@@ -63,8 +63,8 @@ public class AccountDaoImpl implements IAccountDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Account> getAccounts(int start, int limit) {
-		Query query = em
-				.createQuery("SELECT a FROM com.terry.costnote.data.model.Account a");
+		Query query = em.createQuery("SELECT a FROM " + Account.class.getName()
+				+ " a");
 		query.setFirstResult(start);
 		if (limit != 0)
 			query.setMaxResults(limit);
