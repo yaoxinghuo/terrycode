@@ -51,8 +51,10 @@ import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.grid.CheckBoxSelectionModel;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
+import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
+import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.extjs.gxt.ui.client.widget.grid.RowNumberer;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
@@ -232,8 +234,25 @@ public class Costnote implements EntryPoint {
 		column.setDataIndex("name");
 		column.setWidth(100);
 		configs.add(column);
+		
+		GridCellRenderer<ModelData> render = new GridCellRenderer<ModelData>() {
+
+			@Override
+			public Object render(ModelData model, String property,
+					ColumnData config, int rowIndex, int colIndex,
+					ListStore<ModelData> store, Grid<ModelData> grid) {
+				// return "<div style='background-color:" + "#00FF00" + "'>" +
+				// "."
+				// + "</div>";
+
+				return ((Boolean) store.getAt(rowIndex).get("type")) ? "支出"
+						: "收入";
+			}
+
+		};
 
 		column = new ColumnConfig();
+		column.setRenderer(render);
 		column.setId("type");
 		column.setHeader("类型");
 		column.setDataIndex("type");
