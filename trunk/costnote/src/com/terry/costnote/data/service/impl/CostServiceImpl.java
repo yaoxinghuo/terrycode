@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import com.terry.costnote.data.dao.intf.IAccountDao;
 import com.terry.costnote.data.dao.intf.ICostDao;
-import com.terry.costnote.data.model.Account;
 import com.terry.costnote.data.model.Cost;
 import com.terry.costnote.data.service.intf.ICostService;
 import com.terry.costnote.data.util.EMF;
@@ -36,6 +35,7 @@ public class CostServiceImpl implements ICostService {
 	@Autowired
 	private ICostDao costDao;
 
+	@SuppressWarnings("unused")
 	@Autowired
 	private IAccountDao accountDao;
 
@@ -78,9 +78,9 @@ public class CostServiceImpl implements ICostService {
 
 	@Override
 	public long getCostsCountByEmail(String email) {
-		Account account = accountDao.getAccountByEmail(email);
-		if (account == null)
-			return 0;
+//		Account account = accountDao.getAccountByEmail(email);
+//		if (account == null)
+//			return 0;
 		return costDao.getCostsCountByEmail(email);
 	}
 
