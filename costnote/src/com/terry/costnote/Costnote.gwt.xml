@@ -19,6 +19,4 @@
   <!-- Specify the app entry point class.                         -->
   <entry-point class='com.terry.costnote.client.Costnote'/>
   
-  <!-- remark below the 2 rows when compile to the production environment-->
-	<set-property name="user.agent" value="ie6"/>
 </module>
