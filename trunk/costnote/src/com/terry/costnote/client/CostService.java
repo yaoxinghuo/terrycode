@@ -11,4 +11,6 @@ public interface CostService extends RemoteService {
 
 	boolean saveCost(String cost);
 
+	boolean deleteCost(String costIds);
+
 }

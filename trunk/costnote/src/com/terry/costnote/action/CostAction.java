@@ -26,4 +26,8 @@ public class CostAction extends ActionSupport {
 		return costService.saveCost(cost);
 	}
 
+	public boolean deleteCost(String costIds) {
+		return costService.deleteCost(costIds);
+	}
+
 }

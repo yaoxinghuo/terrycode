@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +75,18 @@ public class CostServiceImpl implements ICostService {
 	@Override
 	public long getCostsCountByEmail(String email) {
 		return costDao.getCostsCountByEmail(email);
+	}
+
+	@Override
+	public boolean deleteCost(String costIds) {
+		JSONArray ja = JSONArray.fromObject(costIds);
+		boolean result = false;
+		for (int i = 0; i < ja.size(); i++) {
+			Cost cost = costDao.getCostById(ja.getString(i));
+			if (costDao.deleteCost(cost))
+				result = true;
+		}
+		return result;
 	}
 
 }

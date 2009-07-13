@@ -1,5 +1,9 @@
 /** Add css rules here for your application. */
 
+.search {
+	background: url(../icons/search.png) no-repeat center left !important;
+}
+
 .layout-title {
 	font: normal normal bold 21px verdana;
 	/*background:#dfe8f6;*/

@@ -11,6 +11,8 @@ import com.terry.costnote.data.model.Cost;
 public interface ICostService {
 	public boolean saveCost(String cost);
 
+	public boolean deleteCost(String costIds);
+
 	public List<Cost> getCostsByEmail(String email, int start, int limit);
 
 	public long getCostsCountByEmail(String email);
