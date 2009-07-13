@@ -433,6 +433,7 @@ public class Costnote implements EntryPoint {
 	DateField date;
 	TextField<String> name;
 	Radio radio;
+	Radio radio2;
 	NumberField amount;
 	TextArea remark;
 
@@ -465,7 +466,7 @@ public class Costnote implements EntryPoint {
 			radio.setBoxLabel("支出");
 			radio.setValue(true);
 
-			Radio radio2 = new Radio();
+			radio2 = new Radio();
 			radio2.setName("type2");
 			radio2.setBoxLabel("收入");
 
@@ -541,7 +542,10 @@ public class Costnote implements EntryPoint {
 		hidden.setValue(id);
 		name.setValue(name1);
 		date.setValue(date1);
-		radio.setValue(type1);
+		if (type1)
+			radio.setValue(true);
+		else
+			radio2.setValue(true);
 		amount.setValue(amount1);
 		remark.setValue(remark1);
 		window.show();
