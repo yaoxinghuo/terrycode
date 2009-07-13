@@ -41,12 +41,11 @@ public class CostDaolmpl implements ICostDao {
 	@Override
 	public List<Cost> getCostsByEmail(String email, int start, int limit) {
 		Query query = em
-				.createQuery("SELECT c FROM com.terry.costnote.data.model.Cost c where c.email = '"
-						+ email + "'");
-		// query.setParameter("email", email);
+				.createQuery("SELECT c FROM com.terry.costnote.data.model.Cost c where c.email = :email");
 		query.setFirstResult(start);
 		if (limit != 0)
 			query.setMaxResults(limit);
+		query.setParameter("email", email);
 		return query.getResultList();
 	}
 
@@ -76,9 +75,8 @@ public class CostDaolmpl implements ICostDao {
 	@Override
 	public long getCostsCountByEmail(String email) {
 		Query query = em
-				.createQuery("SELECT c FROM com.terry.costnote.data.model.Cost c where c.email = '"
-						+ email + "'");
-		// query.setParameter("email", email);
+				.createQuery("SELECT c FROM com.terry.costnote.data.model.Cost c where c.email = ?1");
+		query.setParameter(1, email);
 		query.setHint("datanucleus.query.resultSizeMethod", "count");
 		return query.getResultList().size();
 	}
