@@ -68,19 +68,11 @@ public class CostServiceImpl implements ICostService {
 
 	@Override
 	public List<Cost> getCostsByEmail(String email, int start, int limit) {
-		List<Cost> costs = costDao.getCosts(0, 0);
-		for (Cost cost : costs) {
-			System.out.println(cost.getEmail() + "-" + cost.getName());
-		}
-		System.out.println("Size:" + costs.size());
 		return costDao.getCostsByEmail(email, start, limit);
 	}
 
 	@Override
 	public long getCostsCountByEmail(String email) {
-//		Account account = accountDao.getAccountByEmail(email);
-//		if (account == null)
-//			return 0;
 		return costDao.getCostsCountByEmail(email);
 	}
 

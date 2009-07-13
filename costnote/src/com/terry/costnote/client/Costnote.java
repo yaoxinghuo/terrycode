@@ -234,25 +234,19 @@ public class Costnote implements EntryPoint {
 		column.setDataIndex("name");
 		column.setWidth(100);
 		configs.add(column);
-		
-		GridCellRenderer<ModelData> render = new GridCellRenderer<ModelData>() {
+
+		column = new ColumnConfig();
+		column.setRenderer(new GridCellRenderer<ModelData>() {
 
 			@Override
 			public Object render(ModelData model, String property,
 					ColumnData config, int rowIndex, int colIndex,
 					ListStore<ModelData> store, Grid<ModelData> grid) {
-				// return "<div style='background-color:" + "#00FF00" + "'>" +
-				// "."
-				// + "</div>";
-
-				return ((Boolean) store.getAt(rowIndex).get("type")) ? "支出"
-						: "收入";
+				return ((Boolean) store.getAt(rowIndex).get("type")) ? "<font color='red'>支出</font>"
+						: "<font color='green'>收入</font>";
 			}
 
-		};
-
-		column = new ColumnConfig();
-		column.setRenderer(render);
+		});
 		column.setId("type");
 		column.setHeader("类型");
 		column.setDataIndex("type");
@@ -261,7 +255,7 @@ public class Costnote implements EntryPoint {
 
 		column = new ColumnConfig();
 		column.setId("amount");
-		column.setHeader("数额");
+		column.setHeader("金额");
 		column.setDataIndex("amount");
 		column.setWidth(100);
 		configs.add(column);
@@ -485,7 +479,7 @@ public class Costnote implements EntryPoint {
 			amount.setAllowDecimals(true);
 			amount.setAllowNegative(false);
 			amount.setFormat(NumberFormat.getFormat("0.00"));
-			amount.setFieldLabel("数额*");
+			amount.setFieldLabel("金额*");
 			amount.setAllowBlank(false);
 			formPanel.add(amount);
 
@@ -595,7 +589,7 @@ public class Costnote implements EntryPoint {
 			amount.setAllowDecimals(true);
 			amount.setAllowNegative(false);
 			amount.setFormat(NumberFormat.getFormat("0.00"));
-			amount.setFieldLabel("数额*");
+			amount.setFieldLabel("金额*");
 			amount.setAllowBlank(false);
 			formPanel.add(amount);
 
