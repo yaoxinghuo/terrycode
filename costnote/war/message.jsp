@@ -8,7 +8,7 @@ function clearMsg() {
 }
 </script>
 <div id="msg"
-	style="visibility: hidden; z-index: 1000; position: absolute; left: 300px; top: 20px">
+	style="visibility: hidden; z-index: 1000; position: absolute; left: 300px; top: 30px">
 <table border='0' cellspacing='0' cellpadding='0'>
 	<tr>
 		<td style="padding: 4px; background-color: #fad163;"><font
