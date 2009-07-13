@@ -81,9 +81,13 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class Costnote implements EntryPoint {
 	private CostServiceAsync costService = GWT.create(CostService.class);
+	private static final String operateFail = "<img src='icons/fail.gif'/>对不起，您的操作未能完成，请稍候再试！";
+	private static final String operateError = "<img src='icons/fail.gif'/>对不起，数据库维护中，请稍候再试！";
+	private static final String operatePass = "<img src='icons/pass.gif'/>您的操作成功完成！";
 	private Viewport viewport;
 	private TabPanel tp = new TabPanel();
 	private TreePanel<ModelData> tree;
+	private ListStore<ModelData> store;
 
 	public void onModuleLoad() {
 		viewport = new Viewport();
@@ -155,11 +159,8 @@ public class Costnote implements EntryPoint {
 
 						TabItem tabItem = tp.getItemByItemId(tab_id);
 						if (tabItem == null) {
-							showPopMessage("<font color='red'>TabItem is null</font>, create one, TabItem id is: "
-									+ tab_id);
 							if (tab_id.equals("tab_tree_note")) {
-								showNoteWindow(null, null, null, false, 0d,
-										null);
+								showNewNoteWindow();
 								tree.getSelectionModel().deselectAll();
 								return;
 							}
@@ -190,8 +191,6 @@ public class Costnote implements EntryPoint {
 												+ tab_id + "</font>");
 							tp.add(tabItem);
 						} else {
-							showPopMessage("TabItem exist, TabItem id is: "
-									+ tab_id);
 							tabItem.show();
 						}
 						tp.setSelection(tabItem);
@@ -276,9 +275,8 @@ public class Costnote implements EntryPoint {
 
 		ColumnModel cm = new ColumnModel(configs);
 
-		// --------------- //
-		ListStore<ModelData> store = DataStruction.JsonStoreCreatePaginate(
-				"ds01", mt, "/ajax/costListAction.action", "id");
+		store = DataStruction.JsonStoreCreatePaginate("ds01", mt,
+				"/ajax/costListAction.action", "id");
 		// this will register into ds01
 
 		ContentPanel cp = new ContentPanel();
@@ -297,14 +295,11 @@ public class Costnote implements EntryPoint {
 
 			@Override
 			public void componentSelected(MenuEvent ce) {
-				String name = grid.getSelectionModel().getSelectedItem().get(
-						"id");
 				ModelData md = grid.getSelectionModel().getSelectedItem();
 				showNoteWindow((String) md.get("id"), DateTimeFormat.getFormat(
 						"yyyy-MM-dd").parse((String) md.get("date")),
 						(String) md.get("name"), (Boolean) md.get("type"),
 						(Double) md.get("amount"), (String) md.get("remark"));
-				showPopMessage("You have clicked." + name);
 			}
 
 		});
@@ -427,7 +422,6 @@ public class Costnote implements EntryPoint {
 	Radio radio;
 	NumberField amount;
 	TextArea remark;
-	FormPanel formPanel;
 
 	private void showNoteWindow(String id, Date date1, String name1,
 			boolean type1, double amount1, String remark1) {
@@ -435,7 +429,7 @@ public class Costnote implements EntryPoint {
 			window = new Window();
 			window.setHeading("修改记录");
 			window.setWidth(360);
-			formPanel = new FormPanel();
+			final FormPanel formPanel = new FormPanel();
 			formPanel.setHeaderVisible(true);
 			formPanel.setWidth(350);
 
@@ -445,7 +439,6 @@ public class Costnote implements EntryPoint {
 			date = new DateField();
 			date.setPropertyEditor(new DateTimePropertyEditor(DateTimeFormat
 					.getFormat("yyyy-MM-dd")));
-			date.setValue(new Date());
 			date.setFieldLabel("日期*");
 			formPanel.add(date);
 
@@ -505,13 +498,19 @@ public class Costnote implements EntryPoint {
 
 								@Override
 								public void onFailure(Throwable caught) {
-									showPopMessage("<img src='icons/info.png'/>&nbsp;对不起，出现错误！");
+									showPopMessage(operateError);
 								}
 
 								@Override
 								public void onSuccess(Boolean result) {
-									showPopMessage("<img src='icons/info.png'/>&nbsp;"
-											+ result);
+									if (result) {
+										window.hide();
+										if (store != null)
+											store.getLoader().load();
+										showPopMessage(operatePass);
+									} else {
+										showPopMessage(operateFail);
+									}
 								}
 
 							});
@@ -526,25 +525,117 @@ public class Costnote implements EntryPoint {
 			window.addButton(reset);
 			window.add(formPanel);
 		}
-		if (id != null) {
-			window.setHeading("修改记录");
-			hidden.setValue(id);
-			name.setValue(name1);
-			date.setValue(date1);
-			radio.setValue(type1);
-			amount.setValue(amount1);
-			remark.setValue(remark1);
-		} else {
-			window.setHeading("新增记录");
-			name.setValue("");
-			hidden.setValue("");
-			date.setValue(new Date());
-			radio.setValue(type1);
-			amount.setValue(0.00);
-			remark.setValue("");
-			name.focus();
-		}
+		hidden.setValue(id);
+		name.setValue(name1);
+		date.setValue(date1);
+		radio.setValue(type1);
+		amount.setValue(amount1);
+		remark.setValue(remark1);
 		window.show();
+	}
+
+	private Window newWindow;
+
+	private void showNewNoteWindow() {
+		if (newWindow == null) {
+			newWindow = new Window();
+			newWindow.setHeading("新增记录");
+			newWindow.setWidth(360);
+			final FormPanel formPanel = new FormPanel();
+			formPanel.setHeaderVisible(true);
+			formPanel.setWidth(350);
+
+			final DateField date = new DateField();
+			date.setPropertyEditor(new DateTimePropertyEditor(DateTimeFormat
+					.getFormat("yyyy-MM-dd")));
+			date.setValue(new Date());
+			date.setFieldLabel("日期*");
+			formPanel.add(date);
+
+			final TextField<String> name = new TextField<String>();
+			name.setFieldLabel("名称*");
+			name.setAllowBlank(false);
+			formPanel.add(name);
+
+			final Radio radio = new Radio();
+			radio.setName("type");
+			radio.setBoxLabel("支出");
+			radio.setValue(true);
+
+			Radio radio2 = new Radio();
+			radio2.setName("type2");
+			radio2.setBoxLabel("收入");
+
+			RadioGroup radioGroup = new RadioGroup("type");
+			radioGroup.setFieldLabel("类型*");
+			radioGroup.add(radio);
+			radioGroup.add(radio2);
+			formPanel.add(radioGroup);
+
+			final NumberField amount = new NumberField();
+			amount.setAllowDecimals(true);
+			amount.setAllowNegative(false);
+			amount.setFormat(NumberFormat.getFormat("0.00"));
+			amount.setFieldLabel("数额*");
+			amount.setAllowBlank(false);
+			formPanel.add(amount);
+
+			final TextArea remark = new TextArea();
+			remark.setPreventScrollbars(true);
+			remark.setFieldLabel("备注");
+			formPanel.add(remark);
+
+			Button b = new Button("保存");
+			newWindow.addButton(b);
+			b.addListener(Events.Select, new Listener<ButtonEvent>() {
+				public void handleEvent(ButtonEvent be) {
+					if (!formPanel.isValid())
+						return;
+					JSONObject jo = new JSONObject();
+					jo.put("id", new JSONString(""));
+					jo.put("date", new JSONString(DateTimeFormat.getFormat(
+							"yyyy-MM-dd").format(date.getValue())));
+					jo.put("name", new JSONString(name.getValue()));
+					jo.put("remark", new JSONString(remark.getValue()));
+					jo
+							.put("amount", new JSONNumber((Double) amount
+									.getValue()));
+					jo.put("type", JSONBoolean.getInstance(radio.getValue()));
+					ServiceDefTarget endpoint = (ServiceDefTarget) costService;
+					endpoint.setServiceEntryPoint("gwt-cost!saveCost.action");
+					costService.saveCost(jo.toString(),
+							new AsyncCallback<Boolean>() {
+
+								@Override
+								public void onFailure(Throwable caught) {
+									showPopMessage(operateError);
+								}
+
+								@Override
+								public void onSuccess(Boolean result) {
+									if (result) {
+										formPanel.reset();
+										newWindow.hide();
+										if (store != null)
+											store.getLoader().load();
+										showPopMessage(operatePass);
+									} else
+										showPopMessage(operateFail);
+								}
+
+							});
+				}
+			});
+			Button reset = new Button("重置");
+			reset.addListener(Events.Select, new Listener<ButtonEvent>() {
+				public void handleEvent(ButtonEvent be) {
+					formPanel.reset();
+				}
+			});
+			newWindow.addButton(reset);
+			newWindow.add(formPanel);
+		}
+		newWindow.show();
 	}
 
 }

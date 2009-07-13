@@ -8,16 +8,16 @@ import com.extjs.gxt.ui.client.data.BasePagingLoader;
 import com.extjs.gxt.ui.client.data.HttpProxy;
 import com.extjs.gxt.ui.client.data.JsonLoadResultReader;
 import com.extjs.gxt.ui.client.data.ListLoadResult;
-import com.extjs.gxt.ui.client.data.LoadEvent;
+//import com.extjs.gxt.ui.client.data.LoadEvent;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.ModelType;
 import com.extjs.gxt.ui.client.data.PagingLoadConfig;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
-import com.extjs.gxt.ui.client.event.LoadListener;
+//import com.extjs.gxt.ui.client.event.LoadListener;
 import com.extjs.gxt.ui.client.store.ListStore;
-import com.extjs.gxt.ui.client.widget.Info;
+//import com.extjs.gxt.ui.client.widget.Info;
 import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.user.client.Window;
+//import com.google.gwt.user.client.Window;
 
 public class DataStruction {
 	static public ListStore<ModelData> JsonStoreCreatePaginate(String symbol,
@@ -52,23 +52,24 @@ public class DataStruction {
 		BasePagingLoader<PagingLoadResult<ModelData>> loader = new BasePagingLoader<PagingLoadResult<ModelData>>(
 				proxy, reader);
 
-		loader.addLoadListener(new LoadListener() {
-			@Override
-			public void loaderBeforeLoad(LoadEvent le) {
-				Info.display("JData", "Staring Loading....");
-			}
-
-			@Override
-			public void loaderLoad(LoadEvent le) {
-				Info.display("JData", "Loading complete!");
-			}
-
-			@Override
-			public void loaderLoadException(LoadEvent le) {
-				Info.display("JData", "Loading Error!"+le.exception.getMessage());
-				Window.alert(le.exception.getMessage());
-			}
-		});
+//		loader.addLoadListener(new LoadListener() {
+//			@Override
+//			public void loaderBeforeLoad(LoadEvent le) {
+//				Info.display("JData", "Staring Loading....");
+//			}
+//
+//			@Override
+//			public void loaderLoad(LoadEvent le) {
+//				Info.display("JData", "Loading complete!");
+//			}
+//
+//			@Override
+//			public void loaderLoadException(LoadEvent le) {
+//				Info.display("JData", "Loading Error!"
+//						+ le.exception.getMessage());
+//				Window.alert(le.exception.getMessage());
+//			}
+//		});
 
 		loader.setSortField(sordField);
 		loader.setRemoteSort(true);
