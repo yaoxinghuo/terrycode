@@ -89,17 +89,18 @@ import com.terry.costnote.client.model.Item;
 import com.terry.costnote.client.model.Type;
 
 public class Costnote implements EntryPoint {
-	private CostServiceAsync costService = GWT.create(CostService.class);
+	private static CostServiceAsync costService = GWT.create(CostService.class);
 	private static final String operateFail = "对不起，您的操作未能完成，请稍候再试！";
 	private static final String operateError = "对不起，数据库维护中，请稍候再试！";
 	private static final String operatePass = "您的操作成功完成！";
-	private DateTimeFormat format = DateTimeFormat.getFormat("yyyy-MM-dd");
+	private static DateTimeFormat format = DateTimeFormat.getFormat("yyyy-MM-dd");
 	private Viewport viewport;
 	private TabPanel tp = new TabPanel();
 	private TreePanel<ModelData> tree;
-	private ListStore<ModelData> store;
+	private static ListStore<ModelData> store;
 
 	public void onModuleLoad() {
+		exportJavaMethod();
 		Element ele = DOM.getElementById("loading_div");
 		DOM.setStyleAttribute(ele, "visibility", "hidden");
 
@@ -491,7 +492,7 @@ public class Costnote implements EntryPoint {
 		cm.addChartConfig(bchart);
 
 		chart.setChartModel(cm);
-		item.add(new HTML("<img src='images/stamp.jpg'/>"));
+		item.add(new HTML("<img src='images/stamp.jpg'/>单击这里<a href='#' onclick='showNewNoteWindow();return false;'>记账</a>"));
 		item.add(chart);
 		tp.add(item);
 
@@ -674,9 +675,9 @@ public class Costnote implements EntryPoint {
 		window.show();
 	}
 
-	private Window newWindow;
+	private static Window newWindow;
 
-	private void showNewNoteWindow() {
+	public static void showNewNoteWindow() {
 		if (newWindow == null) {
 			newWindow = new Window();
 			newWindow.setHeading("新增记录");
@@ -783,5 +784,10 @@ public class Costnote implements EntryPoint {
 		}
 		newWindow.show();
 	}
+	
+	public static native void exportJavaMethod() /*-{
+		$wnd.showNewNoteWindow =
+		@com.terry.costnote.client.Costnote::showNewNoteWindow();
+	}-*/;
 
 }
