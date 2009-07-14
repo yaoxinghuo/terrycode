@@ -425,7 +425,7 @@ public class Costnote implements EntryPoint {
 		combo.setStore(states);
 		combo.setTypeAhead(true);
 		combo.setTriggerAction(TriggerAction.ALL);
-		combo.setValue(types.get(1));
+		combo.setValue(types.get(0));
 		tb.add(new LabelField("&nbsp;选择类型"));
 		tb.add(combo);
 		Button sbutton = new Button("搜索");
