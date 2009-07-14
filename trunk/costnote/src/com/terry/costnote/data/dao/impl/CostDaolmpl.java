@@ -1,5 +1,6 @@
 package com.terry.costnote.data.dao.impl;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -46,13 +47,25 @@ public class CostDaolmpl implements ICostDao {
 		StringBuffer sb = new StringBuffer("SELECT c FROM ");
 		sb.append(Cost.class.getName());
 		sb
-				.append(" c where c.email = :email and c.adate>=:sfrom and c.adate<=:sto");
+				.append(" c where c.email = :email and c.adate>=:sfrom and c.adate<:sto");
 		if (stype != 0)
 			sb.append(" and c.type=:type");
+		sb.append(" order by c.adate desc");
 		Query query = em.createQuery(sb.toString());
 		query.setParameter("email", email);
-		query.setParameter("sfrom", sfrom, TemporalType.DATE);
-		query.setParameter("sto", sto, TemporalType.DATE);
+		Calendar c1 = Calendar.getInstance();
+		c1.setTime(sfrom);
+		c1.set(Calendar.HOUR_OF_DAY, 23);
+		c1.set(Calendar.MINUTE, 59);
+		c1.set(Calendar.SECOND, 59);
+		c1.add(Calendar.DAY_OF_MONTH, -1);
+		query.setParameter("sfrom", c1.getTime(), TemporalType.DATE);
+		Calendar c2 = Calendar.getInstance();
+		c2.set(Calendar.HOUR_OF_DAY, 0);
+		c2.set(Calendar.MINUTE, 0);
+		c2.set(Calendar.SECOND, 0);
+		c2.add(Calendar.DAY_OF_MONTH, 1);
+		query.setParameter("sto", c2, TemporalType.DATE);
 		if (stype != 0)
 			query.setParameter("type", stype);
 		query.setFirstResult(start);
@@ -89,13 +102,24 @@ public class CostDaolmpl implements ICostDao {
 		StringBuffer sb = new StringBuffer("SELECT c FROM ");
 		sb.append(Cost.class.getName());
 		sb
-				.append(" c where c.email = :email and c.adate>=:sfrom and c.adate<=:sto");
+				.append(" c where c.email = :email and c.adate>=:sfrom and c.adate<:sto");
 		if (stype != 0)
 			sb.append(" and c.type=:type");
 		Query query = em.createQuery(sb.toString());
 		query.setParameter("email", email);
-		query.setParameter("sfrom", sfrom, TemporalType.DATE);
-		query.setParameter("sto", sto, TemporalType.DATE);
+		Calendar c1 = Calendar.getInstance();
+		c1.setTime(sfrom);
+		c1.set(Calendar.HOUR_OF_DAY, 23);
+		c1.set(Calendar.MINUTE, 59);
+		c1.set(Calendar.SECOND, 59);
+		c1.add(Calendar.DAY_OF_MONTH, -1);
+		query.setParameter("sfrom", c1.getTime(), TemporalType.DATE);
+		Calendar c2 = Calendar.getInstance();
+		c2.set(Calendar.HOUR_OF_DAY, 0);
+		c2.set(Calendar.MINUTE, 0);
+		c2.set(Calendar.SECOND, 0);
+		c2.add(Calendar.DAY_OF_MONTH, 1);
+		query.setParameter("sto", c2, TemporalType.DATE);
 		if (stype != 0)
 			query.setParameter("type", stype);
 		query.setHint("datanucleus.query.resultSizeMethod", "count");
