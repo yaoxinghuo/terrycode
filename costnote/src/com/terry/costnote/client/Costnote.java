@@ -503,7 +503,7 @@ public class Costnote implements EntryPoint {
 			message = "<img src='icons/info.png'/>&nbsp;" + message;
 		else if (type.equals("error"))
 			message = "<img src='icons/fail.gif'/>&nbsp;" + message;
-		else if (message.equals("pass"))
+		else if (type.equals("pass"))
 			message = "<img src='icons/pass.gif'/>&nbsp;" + message;
 		DOM.getElementById("msg_content").setInnerHTML(message);
 		DOM.setStyleAttribute(DOM.getElementById("msg"), "visibility",
