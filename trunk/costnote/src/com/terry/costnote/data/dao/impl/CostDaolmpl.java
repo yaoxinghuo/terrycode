@@ -61,6 +61,7 @@ public class CostDaolmpl implements ICostDao {
 		c1.add(Calendar.DAY_OF_MONTH, -1);
 		query.setParameter("sfrom", c1.getTime(), TemporalType.DATE);
 		Calendar c2 = Calendar.getInstance();
+		c2.setTime(sto);
 		c2.set(Calendar.HOUR_OF_DAY, 0);
 		c2.set(Calendar.MINUTE, 0);
 		c2.set(Calendar.SECOND, 0);
@@ -115,6 +116,7 @@ public class CostDaolmpl implements ICostDao {
 		c1.add(Calendar.DAY_OF_MONTH, -1);
 		query.setParameter("sfrom", c1.getTime(), TemporalType.DATE);
 		Calendar c2 = Calendar.getInstance();
+		c2.setTime(sto);
 		c2.set(Calendar.HOUR_OF_DAY, 0);
 		c2.set(Calendar.MINUTE, 0);
 		c2.set(Calendar.SECOND, 0);
