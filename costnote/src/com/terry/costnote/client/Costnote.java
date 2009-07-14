@@ -81,6 +81,7 @@ import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.terry.costnote.client.model.Folder;
@@ -458,6 +459,7 @@ public class Costnote implements EntryPoint {
 		item.setScrollMode(Scroll.AUTO);
 
 		Chart chart = new Chart("chart/open-flash-chart.swf");
+		chart.setSize(400, 300);
 		chart.setBorders(true);
 
 		ChartModel cm = new ChartModel("前六个月开销情况表",
@@ -489,7 +491,7 @@ public class Costnote implements EntryPoint {
 		cm.addChartConfig(bchart);
 
 		chart.setChartModel(cm);
-
+		item.add(new HTML("<img src='images/stamp.jpg'/>"));
 		item.add(chart);
 		tp.add(item);
 
