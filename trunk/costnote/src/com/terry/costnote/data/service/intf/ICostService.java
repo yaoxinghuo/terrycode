@@ -1,5 +1,6 @@
 package com.terry.costnote.data.service.intf;
 
+import java.util.Date;
 import java.util.List;
 
 import com.terry.costnote.data.model.Cost;
@@ -13,7 +14,9 @@ public interface ICostService {
 
 	public boolean deleteCost(String costIds);
 
-	public List<Cost> getCostsByEmail(String email, int start, int limit);
+	public List<Cost> getCostsByEmail(String email, Date sfrom, Date sto,
+			int stype, int start, int limit);
 
-	public long getCostsCountByEmail(String email);
+	public long getCostsCountByEmail(String email, Date sfrom, Date sto,
+			int stype);
 }

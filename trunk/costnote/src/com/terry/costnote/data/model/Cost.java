@@ -8,6 +8,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.datanucleus.jpa.annotations.Extension;
 
@@ -33,8 +35,10 @@ public class Cost implements Serializable {
 	@Enumerated
 	private String remark;
 	@Enumerated
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date cdate;
 	@Enumerated
+	@Temporal(TemporalType.DATE)
 	private Date adate;
 	@Enumerated
 	private String email;
@@ -50,7 +54,7 @@ public class Cost implements Serializable {
 	@Enumerated
 	private double amount;
 	@Enumerated
-	private boolean type;// true:支出 false:收入
+	private int type;// -1:支出 1:收入
 
 	public String getId() {
 		return id;
@@ -100,11 +104,11 @@ public class Cost implements Serializable {
 		this.amount = amount;
 	}
 
-	public boolean isType() {
+	public int getType() {
 		return type;
 	}
 
-	public void setType(boolean type) {
+	public void setType(int type) {
 		this.type = type;
 	}
 }

@@ -14,6 +14,7 @@ import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
+import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.ModelIconProvider;
@@ -21,7 +22,6 @@ import com.extjs.gxt.ui.client.data.ModelType;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.IconButtonEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.MessageBoxEvent;
@@ -41,7 +41,7 @@ import com.extjs.gxt.ui.client.widget.TabPanel;
 import com.extjs.gxt.ui.client.widget.Viewport;
 import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
-import com.extjs.gxt.ui.client.widget.button.IconButton;
+import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.DateTimePropertyEditor;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
@@ -50,9 +50,9 @@ import com.extjs.gxt.ui.client.widget.form.LabelField;
 import com.extjs.gxt.ui.client.widget.form.NumberField;
 import com.extjs.gxt.ui.client.widget.form.Radio;
 import com.extjs.gxt.ui.client.widget.form.RadioGroup;
-import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 import com.extjs.gxt.ui.client.widget.grid.CheckBoxSelectionModel;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
@@ -72,7 +72,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONBoolean;
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
@@ -84,6 +83,9 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.terry.costnote.client.model.Folder;
+import com.terry.costnote.client.model.Item;
+import com.terry.costnote.client.model.Type;
 
 public class Costnote implements EntryPoint {
 	private CostServiceAsync costService = GWT.create(CostService.class);
@@ -250,7 +252,7 @@ public class Costnote implements EntryPoint {
 			public Object render(ModelData model, String property,
 					ColumnData config, int rowIndex, int colIndex,
 					ListStore<ModelData> store, Grid<ModelData> grid) {
-				return ((Boolean) store.getAt(rowIndex).get("type")) ? "<font color='red'>支出</font>"
+				return (((Double) store.getAt(rowIndex).get("type")).intValue() == -1) ? "<font color='red'>支出</font>"
 						: "<font color='green'>收入</font>";
 			}
 
@@ -323,8 +325,9 @@ public class Costnote implements EntryPoint {
 				ModelData md = grid.getSelectionModel().getSelectedItem();
 				showNoteWindow((String) md.get("id"), DateTimeFormat.getFormat(
 						"yyyy-MM-dd").parse((String) md.get("date")),
-						(String) md.get("name"), (Boolean) md.get("type"),
-						(Double) md.get("amount"), (String) md.get("remark"));
+						(String) md.get("name"), ((Double) md.get("type"))
+								.intValue(), (Double) md.get("amount"),
+						(String) md.get("remark"));
 			}
 
 		});
@@ -397,12 +400,12 @@ public class Costnote implements EntryPoint {
 		cp.setBottomComponent(toolBar);
 
 		ToolBar tb = new ToolBar();
-		DateField sfrom = new DateField();
+		final DateField sfrom = new DateField();
 		sfrom.setWidth("100");
 		sfrom.setPropertyEditor(new DateTimePropertyEditor(format));
 		sfrom.setValue(new Date(new Date().getTime() - 30l * 24l * 3600l
 				* 1000l));
-		DateField sto = new DateField();
+		final DateField sto = new DateField();
 		sto.setWidth("100");
 		sto.setValue(new Date());
 		sto.setPropertyEditor(new DateTimePropertyEditor(format));
@@ -410,23 +413,37 @@ public class Costnote implements EntryPoint {
 		tb.add(sfrom);
 		tb.add(new LabelField("&nbsp;到"));
 		tb.add(sto);
-		SimpleComboBox<String> combo = new SimpleComboBox();
+		final ComboBox<Type> combo = new ComboBox<Type>();
+		List<Type> types = new ArrayList<Type>();
+		types.add(new Type(-1, "支出"));
+		types.add(new Type(0, "所有类型"));
+		types.add(new Type(1, "收入"));
+		ListStore<Type> states = new ListStore<Type>();
+		states.add(types);
 		combo.setWidth("80");
-		combo.add("支出");
-		combo.add("收入");
-		combo.add("所有类型");
-		combo.setSimpleValue("支出");
+		combo.setDisplayField("name");
+		combo.setStore(states);
+		combo.setTypeAhead(true);
+		combo.setTriggerAction(TriggerAction.ALL);
+		combo.setValue(types.get(1));
 		tb.add(new LabelField("&nbsp;选择类型"));
 		tb.add(combo);
-		IconButton sbutton = new IconButton("search",
-				new SelectionListener<IconButtonEvent>() {
+		Button sbutton = new Button("搜索");
+		sbutton.setIcon(getIcon("search.png"));
+		sbutton.addSelectionListener(new SelectionListener<ButtonEvent>() {
 
-					@Override
-					public void componentSelected(IconButtonEvent ce) {
-						showPopMessage("info", "对不起，该功能正在实现中，请稍候！");
-					}
+			@Override
+			public void componentSelected(ButtonEvent ce) {
+				BasePagingLoadConfig config = new BasePagingLoadConfig();
+				config.setOffset(0);
+				config.setLimit(20);
+				config.set("sfrom", format.format(sfrom.getValue()));
+				config.set("sto", format.format(sto.getValue()));
+				config.set("stype", (Integer) combo.getValue().get("type"));
+				store.getLoader().load(config);
+			}
 
-				});
+		});
 		tb.add(sbutton);
 		cp.setTopComponent(tb);
 
@@ -535,8 +552,8 @@ public class Costnote implements EntryPoint {
 	NumberField amount;
 	TextArea remark;
 
-	private void showNoteWindow(String id, Date date1, String name1,
-			boolean type1, double amount1, String remark1) {
+	private void showNoteWindow(String id, Date date1, String name1, int type1,
+			double amount1, String remark1) {
 		if (window == null) {
 			window = new Window();
 			window.setHeading("修改记录");
@@ -601,7 +618,8 @@ public class Costnote implements EntryPoint {
 					jo
 							.put("amount", new JSONNumber((Double) amount
 									.getValue()));
-					jo.put("type", JSONBoolean.getInstance(radio.getValue()));
+					jo.put("type", radio.getValue() ? new JSONNumber(-1)
+							: new JSONNumber(1));
 					ServiceDefTarget endpoint = (ServiceDefTarget) costService;
 					endpoint.setServiceEntryPoint("gwt-cost!saveCost.action");
 					costService.saveCost(jo.toString(),
@@ -639,7 +657,7 @@ public class Costnote implements EntryPoint {
 		hidden.setValue(id);
 		name.setValue(name1);
 		date.setValue(date1);
-		if (type1)
+		if (type1 == -1)
 			radio.setValue(true);
 		else
 			radio2.setValue(true);
@@ -713,7 +731,8 @@ public class Costnote implements EntryPoint {
 					jo
 							.put("amount", new JSONNumber((Double) amount
 									.getValue()));
-					jo.put("type", JSONBoolean.getInstance(radio.getValue()));
+					jo.put("type", radio.getValue() ? new JSONNumber(-1)
+							: new JSONNumber(1));
 					ServiceDefTarget endpoint = (ServiceDefTarget) costService;
 					endpoint.setServiceEntryPoint("gwt-cost!saveCost.action");
 					costService.saveCost(jo.toString(),

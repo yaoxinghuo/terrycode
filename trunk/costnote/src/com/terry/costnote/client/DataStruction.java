@@ -3,6 +3,7 @@ package com.terry.costnote.client;
 import java.util.List;
 
 import com.extjs.gxt.ui.client.Registry;
+import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
 import com.extjs.gxt.ui.client.data.HttpProxy;
@@ -72,10 +73,14 @@ public class DataStruction {
 //		});
 
 		loader.setSortField(sordField);
-		loader.setRemoteSort(true);
+//		loader.setRemoteSort(true);
 		ListStore<ModelData> store = new ListStore<ModelData>(loader);
 		Registry.register(symbol, store);
-		loader.load(0, 20); // load Store
+		BasePagingLoadConfig config = new BasePagingLoadConfig();
+		config.setOffset(0);
+		config.setLimit(20);
+		loader.setReuseLoadConfig(true);
+		loader.load(config);
 		return store;
 	}
 }

@@ -60,7 +60,7 @@ public class CostServiceImpl implements ICostService {
 		cost.setName(jo.getString("name"));
 		cost.setAmount(jo.getDouble("amount"));
 		cost.setRemark(jo.getString("remark"));
-		cost.setType(jo.getBoolean("type"));
+		cost.setType(jo.getInt("type"));
 		if (costDao.saveCost(cost)) {
 			return true;
 		} else
@@ -68,13 +68,15 @@ public class CostServiceImpl implements ICostService {
 	}
 
 	@Override
-	public List<Cost> getCostsByEmail(String email, int start, int limit) {
-		return costDao.getCostsByEmail(email, start, limit);
+	public List<Cost> getCostsByEmail(String email, Date sfrom, Date sto,
+			int stype, int start, int limit) {
+		return costDao.getCostsByEmail(email, sfrom, sto, stype, start, limit);
 	}
 
 	@Override
-	public long getCostsCountByEmail(String email) {
-		return costDao.getCostsCountByEmail(email);
+	public long getCostsCountByEmail(String email, Date sfrom, Date sto,
+			int stype) {
+		return costDao.getCostsCountByEmail(email, sfrom, sto, stype);
 	}
 
 	@Override
