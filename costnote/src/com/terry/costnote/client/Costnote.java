@@ -93,10 +93,11 @@ public class Costnote implements EntryPoint {
 	private static final String operateFail = "对不起，您的操作未能完成，请稍候再试！";
 	private static final String operateError = "对不起，数据库维护中，请稍候再试！";
 	private static final String operatePass = "您的操作成功完成！";
-	private static DateTimeFormat format = DateTimeFormat.getFormat("yyyy-MM-dd");
+	private static DateTimeFormat format = DateTimeFormat
+			.getFormat("yyyy-MM-dd");
 	private Viewport viewport;
-	private TabPanel tp = new TabPanel();
-	private TreePanel<ModelData> tree;
+	private static TabPanel tp = new TabPanel();
+	private static TreePanel<ModelData> tree;
 	private static ListStore<ModelData> store;
 
 	public void onModuleLoad() {
@@ -114,7 +115,6 @@ public class Costnote implements EntryPoint {
 		RootPanel.get().add(viewport);
 		tree.expandAll();
 
-		// showPopMessage("<img src='icons/info.png'/>&nbsp;Welcome");
 	}
 
 	private void createNorth() {
@@ -171,43 +171,7 @@ public class Costnote implements EntryPoint {
 						String name = se.getSelectedItem().get("name");
 						String icon = se.getSelectedItem().get("icon");
 
-						TabItem tabItem = tp.getItemByItemId(tab_id);
-						if (tabItem == null) {
-							if (tab_id.equals("tab_tree_note")) {
-								showNewNoteWindow();
-								tree.getSelectionModel().deselectAll();
-								return;
-							}
-							tabItem = new TabItem(name);
-							tabItem.addListener(Events.Close,
-									new Listener<TabPanelEvent>() {
-
-										@Override
-										public void handleEvent(TabPanelEvent be) {
-											if (tab_id.contains((String) tree
-													.getSelectionModel()
-													.getSelectedItem()
-													.get("id")))
-												tree.getSelectionModel()
-														.deselectAll();
-
-										}
-
-									});
-							tabItem.setItemId(tab_id);
-							tabItem.setIcon(getIcon(icon));
-							tabItem.setClosable(true);
-							if (tab_id.equals("tab_tree_list")) {
-								tabItem.add(createListPanel());
-							} else
-								tabItem
-										.addText("Tab Test Content, <br/><font color='red'>TabItem id is: "
-												+ tab_id + "</font>");
-							tp.add(tabItem);
-						} else {
-							tabItem.show();
-						}
-						tp.setSelection(tabItem);
+						nav(tab_id, name, icon);
 					}
 
 				});
@@ -223,7 +187,7 @@ public class Costnote implements EntryPoint {
 	}
 
 	@SuppressWarnings("unchecked")
-	private Widget createListPanel() {
+	private static Widget createListPanel() {
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
 		RowNumberer r = new RowNumberer();
@@ -454,6 +418,14 @@ public class Costnote implements EntryPoint {
 
 	private void createCenter() {
 		TabItem item = new TabItem();
+		item.addListener(Events.Select, new Listener<TabPanelEvent>() {
+
+			@Override
+			public void handleEvent(TabPanelEvent be) {
+				tree.getSelectionModel().deselectAll();
+			}
+
+		});
 		item.setId("tab_grid");
 		item.setIcon(getIcon("home.png"));
 		item.setText("欢迎");
@@ -492,7 +464,10 @@ public class Costnote implements EntryPoint {
 		cm.addChartConfig(bchart);
 
 		chart.setChartModel(cm);
-		item.add(new HTML("<img src='images/stamp.jpg'/>单击这里<a href='#' onclick='showNewNoteWindow();return false;'>记账</a>"));
+		item
+				.add(new HTML(
+						"<img src='images/stamp.jpg'/>单击这里<a href='#' onclick='showNewNoteWindow();return false;'>记账</a>"
+								+ "&nbsp;单击这里<a href='#' onclick='nav(\"tab_tree_list\",\"查询\",\"list.png\");return false;'>列表</a>"));
 		item.add(chart);
 		tp.add(item);
 
@@ -511,7 +486,7 @@ public class Costnote implements EntryPoint {
 				"visible");
 	}
 
-	private PagingToolBar createChinesePagingToolBar() {
+	private static PagingToolBar createChinesePagingToolBar() {
 		PagingToolBar toolBar = new PagingToolBar(20);
 		PagingToolBar.PagingToolBarMessages messages = toolBar.getMessages();
 		// messages.setAfterPageText("页，共 {0} 页");
@@ -546,17 +521,17 @@ public class Costnote implements EntryPoint {
 		return IconHelper.create("icons/" + icon);
 	}
 
-	private Window window;
-	HiddenField<String> hidden;
-	DateField date;
-	TextField<String> name;
-	Radio radio;
-	Radio radio2;
-	NumberField amount;
-	TextArea remark;
+	private static Window window;
+	static HiddenField<String> hidden;
+	static DateField date;
+	static TextField<String> name;
+	static Radio radio;
+	static Radio radio2;
+	static NumberField amount;
+	static TextArea remark;
 
-	private void showNoteWindow(String id, Date date1, String name1, int type1,
-			double amount1, String remark1) {
+	private static void showNoteWindow(String id, Date date1, String name1,
+			int type1, double amount1, String remark1) {
 		if (window == null) {
 			window = new Window();
 			window.setHeading("修改记录");
@@ -784,10 +759,84 @@ public class Costnote implements EntryPoint {
 		}
 		newWindow.show();
 	}
-	
+
+	public static void nav(final String tab_id, String name, String icon) {
+		TabItem tabItem = tp.getItemByItemId(tab_id);
+		if (tabItem == null) {
+			if (tab_id.equals("tab_tree_note")) {
+				showNewNoteWindow();
+				tree.getSelectionModel().deselectAll();
+				return;
+			}
+			tabItem = new TabItem(name);
+			tabItem.addListener(Events.Select, new Listener<TabPanelEvent>() {
+
+				@Override
+				public void handleEvent(TabPanelEvent be) {
+					tree.getSelectionModel().deselectAll();
+				}
+
+			});
+			tabItem.setItemId(tab_id);
+			tabItem.setIcon(getIcon(icon));
+			tabItem.setClosable(true);
+			if (tab_id.equals("tab_tree_list")) {
+				tabItem.add(createListPanel());
+			} else
+				tabItem
+						.addText("Tab Test Content, <br/><font color='red'>TabItem id is: "
+								+ tab_id + "</font>");
+			tp.add(tabItem);
+		} else {
+			tabItem.show();
+		}
+		tp.setSelection(tabItem);
+	}
+
+	/*
+	 * http://java.sun.com/j2se/1.4.2/docs/guide/jni/spec/types.html#wp16432
+	 * 
+	 * Type Signature
+	 * 
+	 * Java Type
+	 * 
+	 * Z boolean
+	 * 
+	 * B byte
+	 * 
+	 * C char
+	 * 
+	 * S short
+	 * 
+	 * I int
+	 * 
+	 * J long
+	 * 
+	 * F float
+	 * 
+	 * D double
+	 * 
+	 * L fully-qualified-class ; fully-qualified-class
+	 * 
+	 * [ type type[]
+	 * 
+	 * ( arg-types ) ret-type method type
+	 * 
+	 * For example, the Java method:
+	 * 
+	 * long f (int n, String s, int[] arr); has the following type signature:
+	 * 
+	 * (ILjava/lang/String;[I)J
+	 */
 	public static native void exportJavaMethod() /*-{
 		$wnd.showNewNoteWindow =
 		@com.terry.costnote.client.Costnote::showNewNoteWindow();
+
+		$wnd.showPopMessage = 
+		@com.terry.costnote.client.Costnote::showPopMessage(Ljava/lang/String;Ljava/lang/String;);
+
+		$wnd.nav = 
+		@com.terry.costnote.client.Costnote::nav(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);
 	}-*/;
 
 }
