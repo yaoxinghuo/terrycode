@@ -46,7 +46,7 @@ public class CostDaolmpl implements ICostDao {
 		StringBuffer sb = new StringBuffer("SELECT c FROM ");
 		sb.append(Cost.class.getName());
 		sb
-				.append(" c where c.email = :email and c.adate>=:sfrom and c.adate<=:sto ORDER BY c.adate descending");
+				.append(" c where c.email = :email and c.adate>=:sfrom and c.adate<=:sto");
 		if (stype != 0)
 			sb.append(" and c.type=:type");
 		Query query = em.createQuery(sb.toString());
@@ -69,7 +69,6 @@ public class CostDaolmpl implements ICostDao {
 			em.persist(cost);
 			tx.commit();
 		} catch (Exception e) {
-			e.printStackTrace();
 			return false;
 		}
 		return true;

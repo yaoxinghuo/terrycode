@@ -415,8 +415,8 @@ public class Costnote implements EntryPoint {
 		tb.add(sto);
 		final ComboBox<Type> combo = new ComboBox<Type>();
 		List<Type> types = new ArrayList<Type>();
-		types.add(new Type(-1, "支出"));
 		types.add(new Type(0, "所有类型"));
+		types.add(new Type(-1, "支出"));
 		types.add(new Type(1, "收入"));
 		ListStore<Type> states = new ListStore<Type>();
 		states.add(types);
@@ -603,7 +603,7 @@ public class Costnote implements EntryPoint {
 			remark.setFieldLabel("备注");
 			formPanel.add(remark);
 
-			Button b = new Button("保存");
+			final Button b = new Button("保存");
 			window.addButton(b);
 			b.addListener(Events.Select, new Listener<ButtonEvent>() {
 				public void handleEvent(ButtonEvent be) {
@@ -620,6 +620,8 @@ public class Costnote implements EntryPoint {
 									.getValue()));
 					jo.put("type", radio.getValue() ? new JSONNumber(-1)
 							: new JSONNumber(1));
+					b.setEnabled(false);
+					b.setText("请稍候");
 					ServiceDefTarget endpoint = (ServiceDefTarget) costService;
 					endpoint.setServiceEntryPoint("gwt-cost!saveCost.action");
 					costService.saveCost(jo.toString(),
@@ -627,11 +629,15 @@ public class Costnote implements EntryPoint {
 
 								@Override
 								public void onFailure(Throwable caught) {
+									b.setEnabled(true);
+									b.setText("保存");
 									showPopMessage("error", operateError);
 								}
 
 								@Override
 								public void onSuccess(Boolean result) {
+									b.setEnabled(true);
+									b.setText("保存");
 									if (result) {
 										window.hide();
 										if (store != null)
@@ -716,7 +722,7 @@ public class Costnote implements EntryPoint {
 			remark.setFieldLabel("备注");
 			formPanel.add(remark);
 
-			Button b = new Button("保存");
+			final Button b = new Button("保存");
 			newWindow.addButton(b);
 			b.addListener(Events.Select, new Listener<ButtonEvent>() {
 				public void handleEvent(ButtonEvent be) {
@@ -733,6 +739,8 @@ public class Costnote implements EntryPoint {
 									.getValue()));
 					jo.put("type", radio.getValue() ? new JSONNumber(-1)
 							: new JSONNumber(1));
+					b.setEnabled(false);
+					b.setText("请稍候");
 					ServiceDefTarget endpoint = (ServiceDefTarget) costService;
 					endpoint.setServiceEntryPoint("gwt-cost!saveCost.action");
 					costService.saveCost(jo.toString(),
@@ -740,11 +748,15 @@ public class Costnote implements EntryPoint {
 
 								@Override
 								public void onFailure(Throwable caught) {
+									b.setEnabled(true);
+									b.setText("保存");
 									showPopMessage("error", operateError);
 								}
 
 								@Override
 								public void onSuccess(Boolean result) {
+									b.setEnabled(true);
+									b.setText("保存");
 									if (result) {
 										formPanel.reset();
 										newWindow.hide();

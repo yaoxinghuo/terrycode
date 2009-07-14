@@ -1,19 +1,19 @@
 <!-- Indices written at Tue, 14 Jul 2009 05:49:16 UTC -->
 
-<datastore-indexes>
+<datastore-indexes autoGenerate="false">
 
-    <!-- Used 1 time in query history -->
-    <datastore-index kind="Cost" ancestor="false" source="auto">
-        <property name="email" direction="asc"/>
-        <property name="type" direction="asc"/>
-        <property name="adate" direction="desc"/>
-    </datastore-index>
+	<!-- Used 1 time in query history -->
+	<datastore-index kind="Cost" ancestor="false" source="auto">
+		<property name="email" direction="asc"/>
+		<property name="type" direction="asc"/>
+		<property name="adate" direction="desc"/>
+	</datastore-index>
 
-    <!-- Used 1 time in query history -->
-    <datastore-index kind="Cost" ancestor="false" source="auto">
-        <property name="email" direction="asc"/>
-        <property name="type" direction="asc"/>
-        <property name="adate" direction="asc"/>
-    </datastore-index>
+	<!-- Used 1 time in query history -->
+	<datastore-index kind="Cost" ancestor="false" source="auto">
+		<property name="email" direction="asc"/>
+		<property name="type" direction="asc"/>
+		<property name="adate" direction="asc"/>
+	</datastore-index>
 
 </datastore-indexes>
