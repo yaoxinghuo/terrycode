@@ -68,7 +68,7 @@
 
 
 <div id="north-div">
-<div class="layout-title"><img src="images/logo.png" width="80" height="80"/><span>&nbsp;</span>记账系统</div>
+<div class="layout-title"><img src="images/logo.png"/><span>&nbsp;</span>记账系统</div>
 
 </div>
 </div>
