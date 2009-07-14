@@ -1,10 +1,12 @@
 package com.terry.costnote.data.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+import javax.persistence.TemporalType;
 
 import org.springframework.stereotype.Component;
 
@@ -39,13 +41,23 @@ public class CostDaolmpl implements ICostDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Cost> getCostsByEmail(String email, int start, int limit) {
-		Query query = em.createQuery("SELECT c FROM " + Cost.class.getName()
-				+ " c where c.email = :email");
+	public List<Cost> getCostsByEmail(String email, Date sfrom, Date sto,
+			int stype, int start, int limit) {
+		StringBuffer sb = new StringBuffer("SELECT c FROM ");
+		sb.append(Cost.class.getName());
+		sb
+				.append(" c where c.email = :email and c.adate>=:sfrom and c.adate<=:sto ORDER BY c.adate descending");
+		if (stype != 0)
+			sb.append(" and c.type=:type");
+		Query query = em.createQuery(sb.toString());
+		query.setParameter("email", email);
+		query.setParameter("sfrom", sfrom, TemporalType.DATE);
+		query.setParameter("sto", sto, TemporalType.DATE);
+		if (stype != 0)
+			query.setParameter("type", stype);
 		query.setFirstResult(start);
 		if (limit != 0)
 			query.setMaxResults(limit);
-		query.setParameter("email", email);
 		return query.getResultList();
 	}
 
@@ -73,10 +85,20 @@ public class CostDaolmpl implements ICostDao {
 	}
 
 	@Override
-	public long getCostsCountByEmail(String email) {
-		Query query = em.createQuery("SELECT c FROM " + Cost.class.getName()
-				+ " c where c.email = ?1");
-		query.setParameter(1, email);
+	public long getCostsCountByEmail(String email, Date sfrom, Date sto,
+			int stype) {
+		StringBuffer sb = new StringBuffer("SELECT c FROM ");
+		sb.append(Cost.class.getName());
+		sb
+				.append(" c where c.email = :email and c.adate>=:sfrom and c.adate<=:sto");
+		if (stype != 0)
+			sb.append(" and c.type=:type");
+		Query query = em.createQuery(sb.toString());
+		query.setParameter("email", email);
+		query.setParameter("sfrom", sfrom, TemporalType.DATE);
+		query.setParameter("sto", sto, TemporalType.DATE);
+		if (stype != 0)
+			query.setParameter("type", stype);
 		query.setHint("datanucleus.query.resultSizeMethod", "count");
 		return query.getResultList().size();
 	}
@@ -85,7 +107,7 @@ public class CostDaolmpl implements ICostDao {
 	@Override
 	public List<Cost> getCosts(int start, int limit) {
 		Query query = em.createQuery("SELECT c FROM " + Cost.class.getName()
-				+ " c");
+				+ " c ORDER BY c.adate descending");
 		query.setFirstResult(start);
 		if (limit != 0)
 			query.setMaxResults(limit);

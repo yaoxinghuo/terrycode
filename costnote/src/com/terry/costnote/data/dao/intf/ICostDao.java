@@ -1,5 +1,6 @@
 package com.terry.costnote.data.dao.intf;
 
+import java.util.Date;
 import java.util.List;
 
 import com.terry.costnote.data.model.Cost;
@@ -16,9 +17,11 @@ public interface ICostDao {
 
 	public boolean deleteCost(Cost cost);
 
-	public List<Cost> getCostsByEmail(String email, int start, int limit);
+	public List<Cost> getCostsByEmail(String email, Date sfrom, Date sto,
+			int stype, int start, int limit);
 
 	public List<Cost> getCosts(int start, int limit);
 
-	public long getCostsCountByEmail(String email);
+	public long getCostsCountByEmail(String email, Date sfrom, Date sto,
+			int stype);
 }

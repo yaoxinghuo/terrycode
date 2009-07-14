@@ -1,4 +1,4 @@
-package com.terry.costnote.client;
+package com.terry.costnote.client.model;
 
 import com.extjs.gxt.ui.client.data.BaseTreeModel;
 

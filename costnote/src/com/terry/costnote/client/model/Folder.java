@@ -1,4 +1,4 @@
-package com.terry.costnote.client;
+package com.terry.costnote.client.model;
 
 import java.io.Serializable;
 
