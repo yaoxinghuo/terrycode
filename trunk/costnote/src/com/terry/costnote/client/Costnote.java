@@ -394,12 +394,29 @@ public class Costnote implements EntryPoint {
 		combo.setValue(types.get(0));
 		tb.add(new LabelField("&nbsp;选择类型"));
 		tb.add(combo);
+		tb.add(new LabelField("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"));
 		Button sbutton = new Button("搜索");
 		sbutton.setIcon(getIcon("search.png"));
 		sbutton.addSelectionListener(new SelectionListener<ButtonEvent>() {
 
 			@Override
 			public void componentSelected(ButtonEvent ce) {
+				if (sfrom.getValue() == null || !sfrom.isValid()) {
+					sfrom.markInvalid("请输入正确的日期!(yy-MM-dd)");
+					return;
+				}
+				if (sto.getValue() == null || !sto.isValid()) {
+					sto.markInvalid("请输入正确的日期!(yy-MM-dd)");
+					return;
+				}
+				if (sto.getValue().getTime() < sfrom.getValue().getTime()) {
+					sto.markInvalid("该日期应大于起始日期！");
+					return;
+				}
+				if (combo.getValue() == null) {
+					combo.markInvalid("请选择类型！");
+					return;
+				}
 				BasePagingLoadConfig config = new BasePagingLoadConfig();
 				config.setOffset(0);
 				config.setLimit(20);
@@ -466,8 +483,8 @@ public class Costnote implements EntryPoint {
 		chart.setChartModel(cm);
 		item
 				.add(new HTML(
-						"<img src='images/stamp.jpg'/>单击这里<a href='#' onclick='showNewNoteWindow();return false;'>记账</a>"
-								+ "&nbsp;单击这里<a href='#' onclick='nav(\"tab_tree_list\",\"查询\",\"list.png\");return false;'>列表</a>"));
+						"<img src='images/stamp.jpg'/><a href='#' onclick='showNewNoteWindow();return false;'><img src='images/quick_addOne.gif'/>记账</a>"
+								+ "&nbsp;<a href='#' onclick='nav(\"tab_tree_list\",\"查询\",\"list.png\");return false;'><img src='images/quick_blog.gif'/>列表</a>"));
 		item.add(chart);
 		tp.add(item);
 
@@ -592,7 +609,10 @@ public class Costnote implements EntryPoint {
 					jo.put("date", new JSONString(format
 							.format(date.getValue())));
 					jo.put("name", new JSONString(name.getValue()));
-					jo.put("remark", new JSONString(remark.getValue()));
+					jo
+							.put("remark", new JSONString(
+									remark.getValue() == null ? "" : remark
+											.getValue()));
 					jo
 							.put("amount", new JSONNumber((Double) amount
 									.getValue()));
@@ -704,14 +724,18 @@ public class Costnote implements EntryPoint {
 			newWindow.addButton(b);
 			b.addListener(Events.Select, new Listener<ButtonEvent>() {
 				public void handleEvent(ButtonEvent be) {
-					if (!formPanel.isValid())
+					if (!formPanel.isValid()) {
 						return;
+					}
 					JSONObject jo = new JSONObject();
 					jo.put("id", new JSONString(""));
 					jo.put("date", new JSONString(format
 							.format(date.getValue())));
 					jo.put("name", new JSONString(name.getValue()));
-					jo.put("remark", new JSONString(remark.getValue()));
+					jo
+							.put("remark", new JSONString(
+									remark.getValue() == null ? "" : remark
+											.getValue()));
 					jo
 							.put("amount", new JSONNumber((Double) amount
 									.getValue()));
