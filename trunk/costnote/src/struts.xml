@@ -6,22 +6,63 @@
 <struts>
 	<constant name="struts.i18n.encoding" value="UTF-8" />
 
-	<package name="test" extends="struts-default">
+	<package name="costnote" extends="struts-default">
+		<default-action-ref name="default" />
+		<global-results>
+			<result name="error">/error.jsp</result>
+			<result name="index">/index.jsp</result>
+			<result name="input">/error.jsp</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping result="error"
+				exception="java.lang.Exception">
+			</exception-mapping>
+		</global-exception-mappings>
+		<action name="default">
+			<result type="redirectAction">index</result>
+		</action>
 		<action name="index" class="indexAction">
 			<result>/index.jsp</result>
-			<result name="input">/index.jsp</result>
 		</action>
 	</package>
 
 	<package name="gwt" extends="gwt-default">
+		<interceptors>
+			<interceptor name="authority"
+				class="com.terry.costnote.auth.AuthorityInterceptor">
+			</interceptor>
+			<interceptor name="exception"
+				class="com.opensymphony.xwork.interceptor.ExceptionMappingInterceptor">
+			</interceptor>
+		</interceptors>
+		<global-results>
+			<result name="error">/error.jsp</result>
+			<result name="index">/index.jsp</result>
+			<result name="input">/error.jsp</result>
+		</global-results>
 		<action name="gwt-cost" class="gwt-costAction">
 			<interceptor-ref name="gwt" />
+			<interceptor-ref name="authority" />
 		</action>
 	</package>
 	
 	<package name="ajax" extends="json-default" namespace="/ajax">
+		<interceptors>
+			<interceptor name="authority"
+				class="com.terry.costnote.auth.AuthorityInterceptor">
+			</interceptor>
+			<interceptor name="exception"
+				class="com.opensymphony.xwork.interceptor.ExceptionMappingInterceptor">
+			</interceptor>
+		</interceptors>
+		<global-results>
+			<result name="error">/error.jsp</result>
+			<result name="index">/index.jsp</result>
+			<result name="input">/error.jsp</result>
+		</global-results>
 		<action name="costListAction" class="costListAction">
 			<result type="json" />
+			<interceptor-ref name="authority" />
 		</action>
 	</package>
 

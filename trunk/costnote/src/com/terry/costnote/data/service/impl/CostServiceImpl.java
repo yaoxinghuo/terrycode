@@ -5,8 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -18,7 +16,6 @@ import com.terry.costnote.data.dao.intf.IAccountDao;
 import com.terry.costnote.data.dao.intf.ICostDao;
 import com.terry.costnote.data.model.Cost;
 import com.terry.costnote.data.service.intf.ICostService;
-import com.terry.costnote.data.util.EMF;
 
 /**
  * @author Terry E-mail: yaoxinghuo at 126 dot com
@@ -28,8 +25,6 @@ import com.terry.costnote.data.util.EMF;
 @Service("costService")
 @Repository
 public class CostServiceImpl implements ICostService {
-
-	EntityManager em = EMF.get().createEntityManager();
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -41,7 +36,7 @@ public class CostServiceImpl implements ICostService {
 	private IAccountDao accountDao;
 
 	@Override
-	public boolean saveCost(String c) {
+	public boolean saveCost(String email, String c) {
 		JSONObject jo = JSONObject.fromObject(c);
 		Cost cost = null;
 		if (!jo.getString("id").equals(""))
@@ -49,7 +44,7 @@ public class CostServiceImpl implements ICostService {
 		if (cost == null) {
 			cost = new Cost();
 			cost.setCdate(new Date());
-			cost.setEmail("itcontent@gmail.com");
+			cost.setEmail(email);
 		}
 		Date adate = new Date();
 		try {
