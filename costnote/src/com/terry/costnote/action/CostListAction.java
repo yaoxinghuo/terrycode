@@ -23,6 +23,8 @@ public class CostListAction extends GenericAction {
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
+	private long timestamp;
+
 	private int stype;
 	private String sfrom;
 
@@ -143,5 +145,13 @@ public class CostListAction extends GenericAction {
 	@JSON(serialize = false)
 	public int getOffset() {
 		return offset;
+	}
+
+	public void setTimestamp(long timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	public long getTimestamp() {
+		return timestamp;
 	}
 }

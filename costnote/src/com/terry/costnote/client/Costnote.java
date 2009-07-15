@@ -100,6 +100,7 @@ public class Costnote implements EntryPoint {
 	private static TabPanel tp = new TabPanel();
 	private static TreePanel<ModelData> tree;
 	private static ListStore<ModelData> store;
+	private static BasePagingLoadConfig loadConfig = new BasePagingLoadConfig();
 
 	public void onModuleLoad() {
 		exportJavaMethod();
@@ -265,8 +266,11 @@ public class Costnote implements EntryPoint {
 
 		ColumnModel cm = new ColumnModel(configs);
 
+		loadConfig.setOffset(0);
+		loadConfig.setLimit(20);
+		loadConfig.set("timestamp", new Date().getTime());
 		store = DataStruction.JsonStoreCreatePaginate("ds01", mt,
-				"/ajax/costListAction.action", "id");
+				"/ajax/costListAction.action", loadConfig);
 		// this will register into ds01
 
 		ContentPanel cp = new ContentPanel();
@@ -330,6 +334,8 @@ public class Costnote implements EntryPoint {
 											costService
 													.deleteCost(
 															ja.toString(),
+															new Date()
+																	.getTime(),
 															new AsyncCallback<Boolean>() {
 
 																@Override
@@ -344,10 +350,7 @@ public class Costnote implements EntryPoint {
 																public void onSuccess(
 																		Boolean result) {
 																	if (result) {
-																		if (store != null)
-																			store
-																					.getLoader()
-																					.load();
+																		reloadList();
 																		showPopMessage(
 																				"pass",
 																				operatePass);
@@ -424,13 +427,13 @@ public class Costnote implements EntryPoint {
 					combo.markInvalid("请选择类型！");
 					return;
 				}
-				BasePagingLoadConfig config = new BasePagingLoadConfig();
-				config.setOffset(0);
-				config.setLimit(20);
-				config.set("sfrom", format.format(sfrom.getValue()));
-				config.set("sto", format.format(sto.getValue()));
-				config.set("stype", (Integer) combo.getValue().get("type"));
-				store.getLoader().load(config);
+				loadConfig.setOffset(0);
+				loadConfig.setLimit(20);
+				loadConfig.set("sfrom", format.format(sfrom.getValue()));
+				loadConfig.set("sto", format.format(sto.getValue()));
+				loadConfig.set("stype", (Integer) combo.getValue().get("type"));
+				loadConfig.set("timestamp", new Date().getTime());
+				store.getLoader().load(loadConfig);
 			}
 
 		});
@@ -629,7 +632,7 @@ public class Costnote implements EntryPoint {
 					b.setText("请稍候");
 					ServiceDefTarget endpoint = (ServiceDefTarget) costService;
 					endpoint.setServiceEntryPoint("gwt-cost!saveCost.action");
-					costService.saveCost(jo.toString(),
+					costService.saveCost(jo.toString(), new Date().getTime(),
 							new AsyncCallback<Boolean>() {
 
 								@Override
@@ -645,8 +648,7 @@ public class Costnote implements EntryPoint {
 									b.setText("保存");
 									if (result) {
 										window.hide();
-										if (store != null)
-											store.getLoader().load();
+										reloadList();
 										showPopMessage("pass", operatePass);
 									} else {
 										showPopMessage("error", operateFail);
@@ -752,7 +754,7 @@ public class Costnote implements EntryPoint {
 					b.setText("请稍候");
 					ServiceDefTarget endpoint = (ServiceDefTarget) costService;
 					endpoint.setServiceEntryPoint("gwt-cost!saveCost.action");
-					costService.saveCost(jo.toString(),
+					costService.saveCost(jo.toString(), new Date().getTime(),
 							new AsyncCallback<Boolean>() {
 
 								@Override
@@ -769,8 +771,7 @@ public class Costnote implements EntryPoint {
 									if (result) {
 										formPanel.reset();
 										newWindow.hide();
-										if (store != null)
-											store.getLoader().load();
+										reloadList();
 										showPopMessage("pass", operatePass);
 									} else
 										showPopMessage("error", operateFail);
@@ -822,6 +823,13 @@ public class Costnote implements EntryPoint {
 			tabItem.show();
 		}
 		tp.setSelection(tabItem);
+	}
+
+	private static void reloadList() {
+		if (store != null) {
+			loadConfig.set("timestamp", new Date().getTime());
+			store.getLoader().load(loadConfig);
+		}
 	}
 
 	/*

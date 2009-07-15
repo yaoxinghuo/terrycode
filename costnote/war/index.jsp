@@ -8,6 +8,11 @@
 <%@page import="com.google.appengine.api.users.UserServiceFactory"%><html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<%
+	response.setHeader("Pragma","No-cache");
+	response.setDateHeader("Expires",0);
+	response.setHeader("Cache-Control","no-cache"); 
+%>
 <costnote:authority />
 
 <link type="text/css" rel="stylesheet" href="css/Costnote.css">

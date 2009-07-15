@@ -9,8 +9,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public interface CostServiceAsync {
 
-	void saveCost(String cost, AsyncCallback<Boolean> callback);
+	void saveCost(String cost, long timestamp, AsyncCallback<Boolean> callback);
 
-	void deleteCost(String costIds, AsyncCallback<Boolean> callback);
+	void deleteCost(String costIds, long timestamp,
+			AsyncCallback<Boolean> callback);
 
 }
