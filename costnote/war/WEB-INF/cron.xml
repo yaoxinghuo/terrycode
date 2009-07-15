@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cronentries>
+	<cron>
+		<url>/cron/checkSMS</url>
+		<description>Check application alive every day</description>
+		<schedule>every day 12:00</schedule>
+		<timezone>Asia/Shanghai</timezone>
+	</cron>
+</cronentries>
