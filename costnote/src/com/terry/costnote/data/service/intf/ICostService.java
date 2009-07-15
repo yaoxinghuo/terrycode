@@ -10,7 +10,7 @@ import com.terry.costnote.data.model.Cost;
  * @version create：Jul 12, 2009 8:25:53 AM
  */
 public interface ICostService {
-	public boolean saveCost(String cost);
+	public boolean saveCost(String email, String cost);
 
 	public boolean deleteCost(String costIds);
 

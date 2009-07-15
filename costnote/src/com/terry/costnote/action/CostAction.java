@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.opensymphony.xwork2.ActionSupport;
 import com.terry.costnote.data.service.intf.ICostService;
 
 /**
@@ -14,7 +13,7 @@ import com.terry.costnote.data.service.intf.ICostService;
 
 @Scope("prototype")
 @Component("gwt-costAction")
-public class CostAction extends ActionSupport {
+public class CostAction extends GenericAction {
 	/**
 	 * 
 	 */
@@ -23,7 +22,7 @@ public class CostAction extends ActionSupport {
 	private ICostService costService;
 
 	public boolean saveCost(String cost) {
-		return costService.saveCost(cost);
+		return costService.saveCost(getCurrentUserEmail(), cost);
 	}
 
 	public boolean deleteCost(String costIds) {

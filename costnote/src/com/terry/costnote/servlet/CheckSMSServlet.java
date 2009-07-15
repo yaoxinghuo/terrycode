@@ -34,30 +34,36 @@ public class CheckSMSServlet extends HttpServlet {
 	}
 
 	private void processRequest(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		URL postUrl = new URL("https://fetionlib.appspot.com/restlet/fetion");
-		HttpURLConnection connection = (HttpURLConnection) postUrl
-				.openConnection();
-		connection.setDoOutput(true);
-		// Read from the connection. Default is true.
-		// connection.setDoInput(true);
-		connection.setRequestMethod("POST");
-		connection.setUseCaches(false);
-		connection.setInstanceFollowRedirects(true);
-		connection.setRequestProperty("Content-Type",
-				"application/x-www-form-urlencoded");
-		connection.connect();
-		DataOutputStream out = new DataOutputStream(connection
-				.getOutputStream());
-		String content = "mobile=13916416465&password=1qaz2wsx&friend=13916416465&message="
-				+ URLEncoder.encode("App Engine Costnote is alive.", "utf-8");
-		out.writeBytes(content);
+			HttpServletResponse response) throws ServletException {
+		try {
+			URL postUrl = new URL(
+					"https://fetionlib.appspot.com/restlet/fetion");
+			HttpURLConnection connection = (HttpURLConnection) postUrl
+					.openConnection();
+			connection.setDoOutput(true);
+			// Read from the connection. Default is true.
+			// connection.setDoInput(true);
+			connection.setRequestMethod("POST");
+			connection.setUseCaches(false);
+			connection.setInstanceFollowRedirects(true);
+			connection.setRequestProperty("Content-Type",
+					"application/x-www-form-urlencoded");
+			connection.connect();
+			DataOutputStream out = new DataOutputStream(connection
+					.getOutputStream());
+			String content = "mobile=13916416465&password=1qaz2wsx&friend=13916416465&message="
+					+ URLEncoder.encode("App Engine Costnote is alive.",
+							"utf-8");
+			out.writeBytes(content);
 
-		out.flush();
-		out.close();
+			out.flush();
+			out.close();
 
-		connection.getResponseCode();
+			connection.getResponseCode();
 
-		connection.disconnect();
+			connection.disconnect();
+		} catch (Exception e) {
+			// Ignore
+		}
 	}
 }

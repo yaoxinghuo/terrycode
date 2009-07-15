@@ -14,13 +14,12 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.googlecode.jsonplugin.annotations.JSON;
-import com.opensymphony.xwork2.ActionSupport;
 import com.terry.costnote.data.model.Cost;
 import com.terry.costnote.data.service.intf.ICostService;
 
 @Scope("prototype")
 @Component("costListAction")
-public class CostListAction extends ActionSupport {
+public class CostListAction extends GenericAction {
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -101,8 +100,9 @@ public class CostListAction extends ActionSupport {
 				end = new Date();
 			}
 		JSONArray ja = new JSONArray();
-		List<Cost> costs = costService.getCostsByEmail("itcontent@gmail.com",
-				start, end, stype, offset, limit);
+		String email = getCurrentUserEmail();
+		List<Cost> costs = costService.getCostsByEmail(email, start, end,
+				stype, offset, limit);
 		for (Cost cost : costs) {
 			JSONObject a = new JSONObject();
 			a.put("id", cost.getId());
@@ -114,8 +114,7 @@ public class CostListAction extends ActionSupport {
 			ja.add(a);
 		}
 		setRows(ja);
-		setResults(costService.getCostsCountByEmail("itcontent@gmail.com",
-				start, end, stype));
+		setResults(costService.getCostsCountByEmail(email, start, end, stype));
 		return SUCCESS;
 	}
 
