@@ -34,6 +34,7 @@ import com.extjs.gxt.ui.client.store.TreeStore;
 import com.extjs.gxt.ui.client.util.IconHelper;
 import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.HtmlContainer;
 import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.TabItem;
@@ -313,46 +314,52 @@ public class Costnote implements EntryPoint {
 
 									@Override
 									public void handleEvent(MessageBoxEvent be) {
-										List<ModelData> list = grid
-												.getSelectionModel()
-												.getSelectedItems();
-										JSONArray ja = new JSONArray();
-										for (int i = 0; i < list.size(); i++)
-											ja.set(i, new JSONString(
-													(String) list.get(i).get(
-															"id")));
-										ServiceDefTarget endpoint = (ServiceDefTarget) costService;
-										endpoint
-												.setServiceEntryPoint("gwt-cost!deleteCost.action");
-										costService.deleteCost(ja.toString(),
-												new AsyncCallback<Boolean>() {
+										if (be.getButtonClicked().getItemId()
+												.equals(Dialog.YES)) {
+											List<ModelData> list = grid
+													.getSelectionModel()
+													.getSelectedItems();
+											JSONArray ja = new JSONArray();
+											for (int i = 0; i < list.size(); i++)
+												ja.set(i, new JSONString(
+														(String) list.get(i)
+																.get("id")));
+											ServiceDefTarget endpoint = (ServiceDefTarget) costService;
+											endpoint
+													.setServiceEntryPoint("gwt-cost!deleteCost.action");
+											costService
+													.deleteCost(
+															ja.toString(),
+															new AsyncCallback<Boolean>() {
 
-													@Override
-													public void onFailure(
-															Throwable caught) {
-														showPopMessage("error",
-																operateError);
-													}
+																@Override
+																public void onFailure(
+																		Throwable caught) {
+																	showPopMessage(
+																			"error",
+																			operateError);
+																}
 
-													@Override
-													public void onSuccess(
-															Boolean result) {
-														if (result) {
-															if (store != null)
-																store
-																		.getLoader()
-																		.load();
-															showPopMessage(
-																	"pass",
-																	operatePass);
-														} else {
-															showPopMessage(
-																	"error",
-																	operateFail);
-														}
-													}
+																@Override
+																public void onSuccess(
+																		Boolean result) {
+																	if (result) {
+																		if (store != null)
+																			store
+																					.getLoader()
+																					.load();
+																		showPopMessage(
+																				"pass",
+																				operatePass);
+																	} else {
+																		showPopMessage(
+																				"error",
+																				operateFail);
+																	}
+																}
 
-												});
+															});
+										}
 									}
 								});
 					}
