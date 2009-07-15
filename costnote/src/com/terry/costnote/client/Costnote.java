@@ -334,8 +334,6 @@ public class Costnote implements EntryPoint {
 											costService
 													.deleteCost(
 															ja.toString(),
-															new Date()
-																	.getTime(),
 															new AsyncCallback<Boolean>() {
 
 																@Override
@@ -632,7 +630,7 @@ public class Costnote implements EntryPoint {
 					b.setText("请稍候");
 					ServiceDefTarget endpoint = (ServiceDefTarget) costService;
 					endpoint.setServiceEntryPoint("gwt-cost!saveCost.action");
-					costService.saveCost(jo.toString(), new Date().getTime(),
+					costService.saveCost(jo.toString(),
 							new AsyncCallback<Boolean>() {
 
 								@Override
@@ -754,7 +752,7 @@ public class Costnote implements EntryPoint {
 					b.setText("请稍候");
 					ServiceDefTarget endpoint = (ServiceDefTarget) costService;
 					endpoint.setServiceEntryPoint("gwt-cost!saveCost.action");
-					costService.saveCost(jo.toString(), new Date().getTime(),
+					costService.saveCost(jo.toString(),
 							new AsyncCallback<Boolean>() {
 
 								@Override
@@ -827,7 +825,6 @@ public class Costnote implements EntryPoint {
 
 	private static void reloadList() {
 		if (store != null) {
-			loadConfig.set("timestamp", new Date().getTime());
 			store.getLoader().load(loadConfig);
 		}
 	}
