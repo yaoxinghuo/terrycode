@@ -9,8 +9,8 @@ import com.google.gwt.user.client.rpc.RemoteService;
  */
 public interface CostService extends RemoteService {
 
-	boolean saveCost(String cost, long timestamp);
+	boolean saveCost(String cost);
 
-	boolean deleteCost(String costIds, long timestamp);
+	boolean deleteCost(String costIds);
 
 }

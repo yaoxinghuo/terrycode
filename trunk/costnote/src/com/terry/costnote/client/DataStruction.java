@@ -1,5 +1,6 @@
 package com.terry.costnote.client;
 
+import java.util.Date;
 import java.util.List;
 
 import com.extjs.gxt.ui.client.Registry;
@@ -9,10 +10,12 @@ import com.extjs.gxt.ui.client.data.BasePagingLoader;
 import com.extjs.gxt.ui.client.data.HttpProxy;
 import com.extjs.gxt.ui.client.data.JsonLoadResultReader;
 import com.extjs.gxt.ui.client.data.ListLoadResult;
+import com.extjs.gxt.ui.client.data.LoadEvent;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.ModelType;
 import com.extjs.gxt.ui.client.data.PagingLoadConfig;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
+import com.extjs.gxt.ui.client.event.LoadListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.google.gwt.http.client.RequestBuilder;
 
@@ -21,7 +24,7 @@ import com.google.gwt.http.client.RequestBuilder;
 public class DataStruction {
 
 	static public ListStore<ModelData> JsonStoreCreatePaginate(String symbol,
-			ModelType mt, String url, BasePagingLoadConfig config) {
+			ModelType mt, String url, final BasePagingLoadConfig config) {
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
 		HttpProxy<Object> proxy = new HttpProxy<Object>(builder);
 
@@ -52,24 +55,23 @@ public class DataStruction {
 		BasePagingLoader<PagingLoadResult<ModelData>> loader = new BasePagingLoader<PagingLoadResult<ModelData>>(
 				proxy, reader);
 
-		// loader.addLoadListener(new LoadListener() {
-		// @Override
-		// public void loaderBeforeLoad(LoadEvent le) {
-		// Info.display("JData", "Staring Loading....");
-		// }
-		//
-		// @Override
-		// public void loaderLoad(LoadEvent le) {
-		// Info.display("JData", "Loading complete!");
-		// }
-		//
-		// @Override
-		// public void loaderLoadException(LoadEvent le) {
-		// Info.display("JData", "Loading Error!"
-		// + le.exception.getMessage());
-		// Window.alert(le.exception.getMessage());
-		// }
-		// });
+		loader.addLoadListener(new LoadListener() {
+			@Override
+			public void loaderBeforeLoad(LoadEvent le) {
+				config.set("timestamp", new Date().getTime());
+			}
+
+			// @Override
+			// public void loaderLoad(LoadEvent le) {
+			// Info.display("JData", "Loading complete!");
+			// }
+			//
+			// @Override
+			// public void loaderLoadException(LoadEvent le) {
+			// Info.display("JData", "Loading Error!"
+			// + le.exception.getMessage());
+			// }
+		});
 
 		// loader.setRemoteSort(true);
 		ListStore<ModelData> store = new ListStore<ModelData>(loader);
