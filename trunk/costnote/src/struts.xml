@@ -27,42 +27,14 @@
 	</package>
 
 	<package name="gwt" extends="gwt-default">
-		<interceptors>
-			<interceptor name="authority"
-				class="com.terry.costnote.auth.AuthorityInterceptor">
-			</interceptor>
-			<interceptor name="exception"
-				class="com.opensymphony.xwork.interceptor.ExceptionMappingInterceptor">
-			</interceptor>
-		</interceptors>
-		<global-results>
-			<result name="error">/error.jsp</result>
-			<result name="index">/index.jsp</result>
-			<result name="input">/error.jsp</result>
-		</global-results>
 		<action name="gwt-cost" class="gwt-costAction">
 			<interceptor-ref name="gwt" />
-			<interceptor-ref name="authority" />
 		</action>
 	</package>
 	
 	<package name="ajax" extends="json-default" namespace="/ajax">
-		<interceptors>
-			<interceptor name="authority"
-				class="com.terry.costnote.auth.AuthorityInterceptor">
-			</interceptor>
-			<interceptor name="exception"
-				class="com.opensymphony.xwork.interceptor.ExceptionMappingInterceptor">
-			</interceptor>
-		</interceptors>
-		<global-results>
-			<result name="error">/error.jsp</result>
-			<result name="index">/index.jsp</result>
-			<result name="input">/error.jsp</result>
-		</global-results>
 		<action name="costListAction" class="costListAction">
 			<result type="json" />
-			<interceptor-ref name="authority" />
 		</action>
 	</package>
 
