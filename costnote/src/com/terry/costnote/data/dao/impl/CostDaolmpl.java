@@ -50,7 +50,7 @@ public class CostDaolmpl implements ICostDao {
 				.append(" c where c.email = :email and c.adate>=:sfrom and c.adate<:sto");
 		if (stype != 0)
 			sb.append(" and c.type=:type");
-		sb.append(" order by c.adate desc");
+		sb.append(" order by c.adate desc, c.cdate desc");
 		Query query = em.createQuery(sb.toString());
 		query.setParameter("email", email);
 		Calendar c1 = Calendar.getInstance();
