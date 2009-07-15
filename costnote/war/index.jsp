@@ -20,6 +20,11 @@
 </head>
 
 <body>
+
+<%
+UserService userService = UserServiceFactory.getUserService();
+String logoutURL = userService.createLogoutURL("/index.action");
+%>
 <jsp:include page="message.jsp"></jsp:include>
 <div id="loading_div" style="visibility: visible;">
 <table align="center">
@@ -57,7 +62,7 @@
 			<tr>
 				<td align="center"><font size='-1'>&nbsp;<span
 					id="account_content"><s:property value="nickname" />&nbsp;|&nbsp;<a
-					href="logout">退出</a></span></font></td>
+					href="<%=logoutURL %>">退出</a></span></font></td>
 			</tr>
 		</table>
 		</div>

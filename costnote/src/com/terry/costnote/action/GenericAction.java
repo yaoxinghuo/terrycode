@@ -5,12 +5,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.SessionAware;
 
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.opensymphony.xwork2.ActionSupport;
-import com.terry.costnote.constants.Constants;
 
 public class GenericAction extends ActionSupport implements SessionAware,
 		ServletRequestAware {
@@ -36,11 +36,8 @@ public class GenericAction extends ActionSupport implements SessionAware,
 	}
 
 	protected String getCurrentUserEmail() {
-		HttpServletRequest request = ServletActionContext.getRequest();
-		Object obj = request.getSession().getAttribute(Constants.SESSION_EMAIL);
-		if (obj == null)
-			return null;
-		return (String) obj;
+		UserService userService = UserServiceFactory.getUserService();
+		return userService.getCurrentUser().getEmail();
 	}
 
 }
