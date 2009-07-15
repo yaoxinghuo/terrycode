@@ -21,11 +21,11 @@ public class CostAction extends GenericAction {
 	@Autowired
 	private ICostService costService;
 
-	public boolean saveCost(String cost) {
+	public boolean saveCost(String cost, Long timestamp) {
 		return costService.saveCost(getCurrentUserEmail(), cost);
 	}
 
-	public boolean deleteCost(String costIds) {
+	public boolean deleteCost(String costIds, Long timestamp) {
 		return costService.deleteCost(costIds);
 	}
 
