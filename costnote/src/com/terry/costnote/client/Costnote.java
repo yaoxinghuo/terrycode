@@ -121,8 +121,8 @@ public class Costnote implements EntryPoint {
 
 		loadSuggestNames();
 	}
-	
-	private void loadSuggestNames(){
+
+	private void loadSuggestNames() {
 		names.add("用餐");
 		names.add("娱乐");
 		names.add("交通费");
@@ -545,15 +545,15 @@ public class Costnote implements EntryPoint {
 	private static PagingToolBar createChinesePagingToolBar() {
 		PagingToolBar toolBar = new PagingToolBar(20);
 		PagingToolBar.PagingToolBarMessages messages = toolBar.getMessages();
-		// messages.setAfterPageText("页，共 {0} 页");
-		// messages.setBeforePageText("第");
+		messages.setAfterPageText("，共 {0} 页");
+		messages.setBeforePageText("第");
 		messages.setDisplayMsg("显示 {0} - {1} 条，共 {2} 条");
 		messages.setEmptyMsg("<font color=red>没有数据</font>");
-		messages.setFirstText("第一页");
-		messages.setLastText("最后页");
-		messages.setNextText("下一页");
-		messages.setPrevText("前一页");
-		messages.setRefreshText("刷新");
+		// messages.setFirstText("第一页");
+		// messages.setLastText("最后页");
+		// messages.setNextText("下一页");
+		// messages.setPrevText("前一页");
+		// messages.setRefreshText("刷新");
 		return toolBar;
 	}
 
@@ -606,6 +606,7 @@ public class Costnote implements EntryPoint {
 
 			name.setFieldLabel("名称*");
 			name.setEmptyText("请从列表选择或自行输入");
+			name.setMaxLength(50);
 			name.setAllowBlank(false);
 			formPanel.add(name);
 
@@ -630,11 +631,13 @@ public class Costnote implements EntryPoint {
 			amount.setFormat(NumberFormat.getFormat("0.00"));
 			amount.setFieldLabel("金额*");
 			amount.setAllowBlank(false);
+			amount.setMaxValue(1000000);
 			formPanel.add(amount);
 
 			remark = new TextArea();
 			remark.setPreventScrollbars(true);
 			remark.setFieldLabel("备注");
+			remark.setMaxLength(200);
 			formPanel.add(remark);
 
 			final Button b = new Button("保存");
@@ -734,6 +737,7 @@ public class Costnote implements EntryPoint {
 			new_name.setFieldLabel("名称*");
 			new_name.setEmptyText("请从列表选择或自行输入");
 			new_name.setAllowBlank(false);
+			new_name.setMaxLength(50);
 			formPanel.add(new_name);
 
 			final Radio radio = new Radio();
@@ -757,11 +761,13 @@ public class Costnote implements EntryPoint {
 			amount.setFormat(NumberFormat.getFormat("0.00"));
 			amount.setFieldLabel("金额*");
 			amount.setAllowBlank(false);
+			amount.setMaxValue(1000000);
 			formPanel.add(amount);
 
 			final TextArea remark = new TextArea();
 			remark.setPreventScrollbars(true);
 			remark.setFieldLabel("备注");
+			remark.setMaxLength(200);
 			formPanel.add(remark);
 
 			final Button b = new Button("保存");
