@@ -12,5 +12,7 @@
 对不起，程序错误，我们对此非常抱歉，请稍候再试！
 <br>
 <s:property value="exception.message" />
+
+<jsp:include page="analytics.html"></jsp:include>
 </body>
 </html>
