@@ -102,6 +102,7 @@ public class Costnote implements EntryPoint {
 	private static TreePanel<ModelData> tree;
 	private static ListStore<ModelData> store;
 	private static BasePagingLoadConfig loadConfig = new BasePagingLoadConfig();
+	private static ArrayList<String> names = new ArrayList<String>();
 
 	public void onModuleLoad() {
 		exportJavaMethod();
@@ -118,6 +119,13 @@ public class Costnote implements EntryPoint {
 		RootPanel.get().add(viewport);
 		tree.expandAll();
 
+		names.add("用餐");
+		names.add("买衣服");
+		names.add("交通费");
+		for (String s : names) {
+			name.add(s);
+			new_name.add(s);
+		}
 		ServiceDefTarget endpoint = (ServiceDefTarget) costService;
 		endpoint.setServiceEntryPoint("gwt-cost!suggestNames.action");
 		costService.suggestNames(new AsyncCallback<String>() {
@@ -129,8 +137,15 @@ public class Costnote implements EntryPoint {
 			@Override
 			public void onSuccess(String result) {
 				JSONArray ja = (JSONArray) JSONParser.parse(result);
+				if (ja.size() != 0) {
+					name.removeAll();
+					new_name.removeAll();
+					for (int i = 0; i < names.size(); i++)
+						names.remove(i);
+				}
 				for (int i = 0; i < ja.size(); i++) {
 					String s = ((JSONString) ja.get(i)).stringValue();
+					names.add(s);
 					name.add(s);
 					new_name.add(s);
 				}
@@ -666,8 +681,11 @@ public class Costnote implements EntryPoint {
 									b.setEnabled(true);
 									b.setText("保存");
 									if (result) {
-										name.add(name.getSimpleValue());
-										new_name.add(name.getSimpleValue());
+										String s = name.getSimpleValue();
+										if (!names.contains(s)) {
+											name.add(s);
+											new_name.add(s);
+										}
 										window.hide();
 										reloadList();
 										showPopMessage("pass", operatePass);
@@ -791,8 +809,11 @@ public class Costnote implements EntryPoint {
 									b.setEnabled(true);
 									b.setText("保存");
 									if (result) {
-										name.add(new_name.getSimpleValue());
-										new_name.add(new_name.getSimpleValue());
+										String s = new_name.getSimpleValue();
+										if (!names.contains(s)) {
+											name.add(s);
+											new_name.add(s);
+										}
 										formPanel.reset();
 										newWindow.hide();
 										reloadList();

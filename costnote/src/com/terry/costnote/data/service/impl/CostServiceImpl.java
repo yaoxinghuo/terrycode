@@ -135,11 +135,11 @@ public class CostServiceImpl implements ICostService {
 			Stack<String> stack = new Stack<String>();
 			for (Cost cost : costs) {
 				String name = cost.getName();
-				if (stack.contains(name)) {
+				if (!stack.contains(name)) {
 					stack.push(name);
 				}
 			}
-			
+
 			if (stack.size() > 0 && cache != null) {
 				cache.put(email, stack);
 			}
@@ -150,11 +150,6 @@ public class CostServiceImpl implements ICostService {
 					ja.add(stack2.pop());
 			}
 
-			if (ja.size() == 0) {
-				ja.add("用餐");
-				ja.add("买衣服");
-				ja.add("交通费");
-			}
 		}
 		return ja.toString();
 	}
