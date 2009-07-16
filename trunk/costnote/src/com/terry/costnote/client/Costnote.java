@@ -51,8 +51,8 @@ import com.extjs.gxt.ui.client.widget.form.LabelField;
 import com.extjs.gxt.ui.client.widget.form.NumberField;
 import com.extjs.gxt.ui.client.widget.form.Radio;
 import com.extjs.gxt.ui.client.widget.form.RadioGroup;
+import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
-import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 import com.extjs.gxt.ui.client.widget.grid.CheckBoxSelectionModel;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
@@ -75,6 +75,7 @@ import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -116,6 +117,26 @@ public class Costnote implements EntryPoint {
 
 		RootPanel.get().add(viewport);
 		tree.expandAll();
+
+		ServiceDefTarget endpoint = (ServiceDefTarget) costService;
+		endpoint.setServiceEntryPoint("gwt-cost!suggestNames.action");
+		costService.suggestNames(new AsyncCallback<String>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+			}
+
+			@Override
+			public void onSuccess(String result) {
+				JSONArray ja = (JSONArray) JSONParser.parse(result);
+				for (int i = 0; i < ja.size(); i++) {
+					String s = ((JSONString) ja.get(i)).stringValue();
+					name.add(s);
+					new_name.add(s);
+				}
+			}
+
+		});
 
 	}
 
@@ -549,7 +570,7 @@ public class Costnote implements EntryPoint {
 	private static Window window;
 	static HiddenField<String> hidden;
 	static DateField date;
-	static TextField<String> name;
+	static SimpleComboBox<String> name = new SimpleComboBox<String>();
 	static Radio radio;
 	static Radio radio2;
 	static NumberField amount;
@@ -573,8 +594,8 @@ public class Costnote implements EntryPoint {
 			date.setFieldLabel("日期*");
 			formPanel.add(date);
 
-			name = new TextField<String>();
 			name.setFieldLabel("名称*");
+			name.setEmptyText("请从列表选择或自行输入");
 			name.setAllowBlank(false);
 			formPanel.add(name);
 
@@ -616,7 +637,7 @@ public class Costnote implements EntryPoint {
 					jo.put("id", new JSONString(hidden.getValue()));
 					jo.put("date", new JSONString(format
 							.format(date.getValue())));
-					jo.put("name", new JSONString(name.getValue()));
+					jo.put("name", new JSONString(name.getSimpleValue()));
 					jo
 							.put("remark", new JSONString(
 									remark.getValue() == null ? "" : remark
@@ -645,6 +666,8 @@ public class Costnote implements EntryPoint {
 									b.setEnabled(true);
 									b.setText("保存");
 									if (result) {
+										name.add(name.getSimpleValue());
+										new_name.add(name.getSimpleValue());
 										window.hide();
 										reloadList();
 										showPopMessage("pass", operatePass);
@@ -666,7 +689,7 @@ public class Costnote implements EntryPoint {
 			window.add(formPanel);
 		}
 		hidden.setValue(id);
-		name.setValue(name1);
+		name.setSimpleValue(name1);
 		date.setValue(date1);
 		if (type1 == -1)
 			radio.setValue(true);
@@ -678,6 +701,7 @@ public class Costnote implements EntryPoint {
 	}
 
 	private static Window newWindow;
+	private static SimpleComboBox<String> new_name = new SimpleComboBox<String>();
 
 	public static void showNewNoteWindow() {
 		if (newWindow == null) {
@@ -694,10 +718,10 @@ public class Costnote implements EntryPoint {
 			date.setFieldLabel("日期*");
 			formPanel.add(date);
 
-			final TextField<String> name = new TextField<String>();
-			name.setFieldLabel("名称*");
-			name.setAllowBlank(false);
-			formPanel.add(name);
+			new_name.setFieldLabel("名称*");
+			new_name.setEmptyText("请从列表选择或自行输入");
+			new_name.setAllowBlank(false);
+			formPanel.add(new_name);
 
 			final Radio radio = new Radio();
 			radio.setName("type");
@@ -738,7 +762,7 @@ public class Costnote implements EntryPoint {
 					jo.put("id", new JSONString(""));
 					jo.put("date", new JSONString(format
 							.format(date.getValue())));
-					jo.put("name", new JSONString(name.getValue()));
+					jo.put("name", new JSONString(new_name.getSimpleValue()));
 					jo
 							.put("remark", new JSONString(
 									remark.getValue() == null ? "" : remark
@@ -767,6 +791,8 @@ public class Costnote implements EntryPoint {
 									b.setEnabled(true);
 									b.setText("保存");
 									if (result) {
+										name.add(new_name.getSimpleValue());
+										new_name.add(new_name.getSimpleValue());
 										formPanel.reset();
 										newWindow.hide();
 										reloadList();
