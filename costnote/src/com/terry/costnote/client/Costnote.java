@@ -120,7 +120,7 @@ public class Costnote implements EntryPoint {
 		tree.expandAll();
 
 		names.add("用餐");
-		names.add("买衣服");
+		names.add("娱乐");
 		names.add("交通费");
 		for (String s : names) {
 			name.add(s);
