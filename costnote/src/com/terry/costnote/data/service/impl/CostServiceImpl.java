@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 
 import com.terry.costnote.data.dao.intf.IAccountDao;
 import com.terry.costnote.data.dao.intf.ICostDao;
+import com.terry.costnote.data.dao.intf.ITemplateDao;
 import com.terry.costnote.data.model.Cost;
+import com.terry.costnote.data.model.Template;
 import com.terry.costnote.data.service.intf.ICostService;
 
 /**
@@ -30,6 +32,9 @@ public class CostServiceImpl implements ICostService {
 
 	@Autowired
 	private ICostDao costDao;
+
+	@Autowired
+	private ITemplateDao templateDao;
 
 	@SuppressWarnings("unused")
 	@Autowired
@@ -57,6 +62,11 @@ public class CostServiceImpl implements ICostService {
 		cost.setRemark(jo.getString("remark"));
 		cost.setType(jo.getInt("type"));
 		if (costDao.saveCost(cost)) {
+			Template template = new Template();
+			template.setCdate(new Date());
+			template.setEmail(email);
+			template.setName(cost.getName());
+			templateDao.addTemplate(template, 10);
 			return true;
 		} else
 			return false;
