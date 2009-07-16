@@ -119,6 +119,10 @@ public class Costnote implements EntryPoint {
 		RootPanel.get().add(viewport);
 		tree.expandAll();
 
+		loadSuggestNames();
+	}
+	
+	private void loadSuggestNames(){
 		names.add("用餐");
 		names.add("娱乐");
 		names.add("交通费");
@@ -152,7 +156,6 @@ public class Costnote implements EntryPoint {
 			}
 
 		});
-
 	}
 
 	private void createNorth() {
