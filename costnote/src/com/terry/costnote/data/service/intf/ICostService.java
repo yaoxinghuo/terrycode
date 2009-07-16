@@ -19,4 +19,6 @@ public interface ICostService {
 
 	public long getCostsCountByEmail(String email, Date sfrom, Date sto,
 			int stype);
+
+	public String getSuggestNames(String email);
 }

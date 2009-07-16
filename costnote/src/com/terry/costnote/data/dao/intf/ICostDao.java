@@ -20,7 +20,7 @@ public interface ICostDao {
 	public List<Cost> getCostsByEmail(String email, Date sfrom, Date sto,
 			int stype, int start, int limit);
 
-	public List<Cost> getCosts(int start, int limit);
+	public List<Cost> getCostsByEmail(String email, int start, int limit);
 
 	public long getCostsCountByEmail(String email, Date sfrom, Date sto,
 			int stype);

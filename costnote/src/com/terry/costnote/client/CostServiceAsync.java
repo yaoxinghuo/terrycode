@@ -13,4 +13,6 @@ public interface CostServiceAsync {
 
 	void deleteCost(String costIds, AsyncCallback<Boolean> callback);
 
+	void suggestNames(AsyncCallback<String> callback);
+
 }

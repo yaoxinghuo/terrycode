@@ -29,4 +29,8 @@ public class CostAction extends GenericAction {
 		return costService.deleteCost(costIds);
 	}
 
+	public String suggestNames() {
+		return costService.getSuggestNames(getCurrentUserEmail());
+	}
+
 }

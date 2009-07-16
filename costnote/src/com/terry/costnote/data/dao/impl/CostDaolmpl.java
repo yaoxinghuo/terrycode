@@ -130,9 +130,13 @@ public class CostDaolmpl implements ICostDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Cost> getCosts(int start, int limit) {
-		Query query = em.createQuery("SELECT c FROM " + Cost.class.getName()
-				+ " c ORDER BY c.adate descending");
+	public List<Cost> getCostsByEmail(String email, int start, int limit) {
+		StringBuffer sb = new StringBuffer("SELECT c FROM ");
+		sb.append(Cost.class.getName());
+		sb.append(" c where c.email = :email");
+		sb.append(" order by c.adate desc, c.cdate desc");
+		Query query = em.createQuery(sb.toString());
+		query.setParameter("email", email);
 		query.setFirstResult(start);
 		if (limit != 0)
 			query.setMaxResults(limit);
