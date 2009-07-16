@@ -2,8 +2,14 @@ package com.terry.costnote.data.service.impl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Stack;
+
+import javax.cache.Cache;
+import javax.cache.CacheException;
+import javax.cache.CacheManager;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -14,9 +20,7 @@ import org.springframework.stereotype.Service;
 
 import com.terry.costnote.data.dao.intf.IAccountDao;
 import com.terry.costnote.data.dao.intf.ICostDao;
-import com.terry.costnote.data.dao.intf.ITemplateDao;
 import com.terry.costnote.data.model.Cost;
-import com.terry.costnote.data.model.Template;
 import com.terry.costnote.data.service.intf.ICostService;
 
 /**
@@ -30,11 +34,18 @@ public class CostServiceImpl implements ICostService {
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-	@Autowired
-	private ICostDao costDao;
+	private Cache cache;
+
+	public CostServiceImpl() {
+		try {
+			cache = CacheManager.getInstance().getCacheFactory().createCache(
+					Collections.emptyMap());
+		} catch (CacheException e) {
+		}
+	}
 
 	@Autowired
-	private ITemplateDao templateDao;
+	private ICostDao costDao;
 
 	@SuppressWarnings("unused")
 	@Autowired
@@ -43,6 +54,7 @@ public class CostServiceImpl implements ICostService {
 	@Override
 	public boolean saveCost(String email, String c) {
 		JSONObject jo = JSONObject.fromObject(c);
+		String name = jo.getString("name");
 		Cost cost = null;
 		if (!jo.getString("id").equals(""))
 			cost = costDao.getCostById(jo.getString("id"));
@@ -57,16 +69,12 @@ public class CostServiceImpl implements ICostService {
 		} catch (ParseException e) {
 		}
 		cost.setAdate(adate);
-		cost.setName(jo.getString("name"));
+		cost.setName(name);
 		cost.setAmount(jo.getDouble("amount"));
 		cost.setRemark(jo.getString("remark"));
 		cost.setType(jo.getInt("type"));
 		if (costDao.saveCost(cost)) {
-			Template template = new Template();
-			template.setCdate(new Date());
-			template.setEmail(email);
-			template.setName(cost.getName());
-			templateDao.addTemplate(template, 10);
+			addNameToCache(email, name);
 			return true;
 		} else
 			return false;
@@ -94,6 +102,21 @@ public class CostServiceImpl implements ICostService {
 				result = true;
 		}
 		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	private void addNameToCache(String email, String name) {
+		if (cache != null) {
+			Stack<String> stack = (Stack<String>) cache.get(email);
+			if (stack == null)
+				stack = new Stack<String>();
+			if (stack.contains(name))
+				stack.remove(name);
+			stack.push(name);
+			if (stack.size() > 10)
+				stack.remove(0);
+			cache.put(email, stack);
+		}
 	}
 
 }
