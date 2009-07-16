@@ -20,7 +20,7 @@
 
 <%
 UserService userService = UserServiceFactory.getUserService();
-String logoutURL = userService.createLogoutURL("/index.action");
+String logoutURL = userService.createLogoutURL("/");
 String nickname = userService.getCurrentUser().getNickname();
 %>
 <jsp:include page="message.jsp"></jsp:include>
