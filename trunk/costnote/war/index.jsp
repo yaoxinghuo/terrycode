@@ -19,11 +19,11 @@
 <body>
 
 <%
-UserService userService = UserServiceFactory.getUserService();
-String logoutURL = userService.createLogoutURL("/");
-String nickname = userService.getCurrentUser().getNickname();
+	UserService userService = UserServiceFactory.getUserService();
+	String logoutURL = userService.createLogoutURL("/");
+	String nickname = userService.getCurrentUser().getNickname();
 %>
-<jsp:include page="message.jsp"></jsp:include>
+<jsp:include page="message.html"></jsp:include>
 <div id="loading_div" style="visibility: visible;">
 <table align="center">
 	<tr>
@@ -58,8 +58,9 @@ String nickname = userService.getCurrentUser().getNickname();
 			id="account_div">
 		<table align="right" border='0' cellspacing='0' cellpadding='0'>
 			<tr>
-				<td align="center"><font size='-1'>&nbsp;<span id="account_content"><span id="nickname"><%=nickname %></span>&nbsp;|&nbsp;<a
-					href="<%=logoutURL %>">退出</a></span></font></td>
+				<td align="center"><font size='-1'>&nbsp;<span
+					id="account_content"><span id="nickname"><%=nickname%></span>&nbsp;|&nbsp;<a
+					href="<%=logoutURL%>">退出</a></span></font></td>
 			</tr>
 		</table>
 		</div>
@@ -74,6 +75,6 @@ String nickname = userService.getCurrentUser().getNickname();
 
 </div>
 </div>
-
+<jsp:include page="analytics.html"></jsp:include>
 </body>
 </html>
