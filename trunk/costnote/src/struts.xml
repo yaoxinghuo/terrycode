@@ -10,7 +10,6 @@
 		<default-action-ref name="default" />
 		<global-results>
 			<result name="error">/error.jsp</result>
-			<result name="index">/index.jsp</result>
 			<result name="input">/error.jsp</result>
 		</global-results>
 		<global-exception-mappings>
@@ -18,12 +17,6 @@
 				exception="java.lang.Exception">
 			</exception-mapping>
 		</global-exception-mappings>
-		<action name="default">
-			<result type="redirectAction">index</result>
-		</action>
-		<action name="index" class="indexAction">
-			<result>/index.jsp</result>
-		</action>
 	</package>
 
 	<package name="gwt" extends="gwt-default">

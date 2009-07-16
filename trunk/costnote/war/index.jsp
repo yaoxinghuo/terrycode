@@ -1,19 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="/struts-tags" prefix="s"%>
-<%@ taglib uri="/WEB-INF/costnote" prefix="costnote"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
 <%@page import="com.google.appengine.api.users.UserService"%>
 <%@page import="com.google.appengine.api.users.UserServiceFactory"%><html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<%
-	response.setHeader("Pragma","No-cache");
-	response.setDateHeader("Expires",0);
-	response.setHeader("Cache-Control","no-cache"); 
-%>
-<costnote:authority />
 
 <link type="text/css" rel="stylesheet" href="css/Costnote.css">
 <link rel="stylesheet" type="text/css" href="css/gxt-all.css" />
@@ -29,6 +21,7 @@
 <%
 UserService userService = UserServiceFactory.getUserService();
 String logoutURL = userService.createLogoutURL("/index.action");
+String nickname = userService.getCurrentUser().getNickname();
 %>
 <jsp:include page="message.jsp"></jsp:include>
 <div id="loading_div" style="visibility: visible;">
@@ -65,8 +58,7 @@ String logoutURL = userService.createLogoutURL("/index.action");
 			id="account_div">
 		<table align="right" border='0' cellspacing='0' cellpadding='0'>
 			<tr>
-				<td align="center"><font size='-1'>&nbsp;<span
-					id="account_content"><s:property value="nickname" />&nbsp;|&nbsp;<a
+				<td align="center"><font size='-1'>&nbsp;<span id="account_content"><span id="nickname"><%=nickname %></span>&nbsp;|&nbsp;<a
 					href="<%=logoutURL %>">退出</a></span></font></td>
 			</tr>
 		</table>
