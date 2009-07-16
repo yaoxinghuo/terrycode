@@ -535,17 +535,9 @@ public class Costnote implements EntryPoint {
 		viewport.add(tp, new BorderLayoutData(LayoutRegion.CENTER));
 	}
 
-	public static void showPopMessage(String type, String message) {
-		if (type.equals("info"))
-			message = "<img src='icons/info.png'/>&nbsp;" + message;
-		else if (type.equals("error"))
-			message = "<img src='icons/fail.gif'/>&nbsp;" + message;
-		else if (type.equals("pass"))
-			message = "<img src='icons/pass.gif'/>&nbsp;" + message;
-		DOM.getElementById("msg_content").setInnerHTML(message);
-		DOM.setStyleAttribute(DOM.getElementById("msg"), "visibility",
-				"visible");
-	}
+	public static native void showPopMessage(String type, String message) /*-{
+		$wnd.showMsg(type, message);
+	}-*/;
 
 	private static PagingToolBar createChinesePagingToolBar() {
 		PagingToolBar toolBar = new PagingToolBar(20);
@@ -914,9 +906,6 @@ public class Costnote implements EntryPoint {
 	public static native void exportJavaMethod() /*-{
 		$wnd.showNewNoteWindow =
 		@com.terry.costnote.client.Costnote::showNewNoteWindow();
-
-		$wnd.showPopMessage = 
-		@com.terry.costnote.client.Costnote::showPopMessage(Ljava/lang/String;Ljava/lang/String;);
 
 		$wnd.nav = 
 		@com.terry.costnote.client.Costnote::nav(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;);

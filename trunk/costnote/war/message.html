@@ -1,4 +1,20 @@
 <script>
+var timeoutID = null;
+function showMsg(type, msg) {
+	if (!msg||!type)
+		return;
+	if(type=="info")
+		msg = "<img src='icons/info.png'/>&nbsp;" + msg;
+	else if(type=="error")
+		msg = "<img src='icons/fail.gif'/>&nbsp;" + msg;
+	else if(type=="pass")
+		msg = "<img src='icons/pass.gif'/>&nbsp;" + msg;
+	document.getElementById("msg_content").innerHTML = msg;
+	document.getElementById("msg").style.visibility = "visible";
+	if (timeoutID != null)
+		clearTimeout(timeoutID);
+	timeoutID = setTimeout("clearMsg()", 30000);
+}
 function clearMsg() {
 	document.getElementById("msg").style.visibility = "hidden";
 	document.getElementById("msg_content").innerHTML = "";
