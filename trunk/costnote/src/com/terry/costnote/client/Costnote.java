@@ -349,7 +349,7 @@ public class Costnote implements EntryPoint {
 		});
 		mi.setIcon(getIcon("note.png"));
 		menu.add(mi);
-		menu.add(new MenuItem("删除", getIcon("delete.gif"),
+		menu.add(new MenuItem("删除", getIcon("delete.png"),
 				new SelectionListener<MenuEvent>() {
 
 					@Override
@@ -596,6 +596,7 @@ public class Costnote implements EntryPoint {
 			int type1, double amount1, String remark1) {
 		if (window == null) {
 			window = new Window();
+			window.setIcon(getIcon("note.png"));
 			window.setHeading("修改记录");
 			window.setWidth(360);
 			final FormPanel formPanel = new FormPanel();
@@ -638,6 +639,7 @@ public class Costnote implements EntryPoint {
 			amount.setFieldLabel("金额*");
 			amount.setAllowBlank(false);
 			amount.setMaxValue(1000000);
+			amount.setMinValue(0);
 			formPanel.add(amount);
 
 			remark = new TextArea();
@@ -728,6 +730,7 @@ public class Costnote implements EntryPoint {
 	public static void showNewNoteWindow() {
 		if (newWindow == null) {
 			newWindow = new Window();
+			newWindow.setIcon(getIcon("note.png"));
 			newWindow.setHeading("新增记录");
 			newWindow.setWidth(360);
 			final FormPanel formPanel = new FormPanel();
@@ -768,6 +771,7 @@ public class Costnote implements EntryPoint {
 			amount.setFieldLabel("金额*");
 			amount.setAllowBlank(false);
 			amount.setMaxValue(1000000);
+			amount.setMinValue(0);
 			formPanel.add(amount);
 
 			final TextArea remark = new TextArea();
@@ -875,6 +879,7 @@ public class Costnote implements EntryPoint {
 
 	private static void createSettingWindow(JSONObject jo) {
 		settingWindow = new Window();
+		settingWindow.setIcon(getIcon("setting.png"));
 		settingWindow.setHeading("账户设置");
 		settingWindow.setWidth(360);
 
@@ -882,6 +887,7 @@ public class Costnote implements EntryPoint {
 		tp.setHeight(200);
 
 		final FormPanel formPanel = new FormPanel();
+		formPanel.setBodyBorder(false);
 		formPanel.setHeaderVisible(false);
 		formPanel.setWidth(350);
 
@@ -892,6 +898,7 @@ public class Costnote implements EntryPoint {
 
 		final TextField<String> nickname = new TextField<String>();
 		nickname.setFieldLabel("昵称");
+		nickname.setMaxLength(20);
 		nickname.setAllowBlank(false);
 		formPanel.add(nickname);
 
@@ -913,13 +920,20 @@ public class Costnote implements EntryPoint {
 		formPanel.addButton(updateButton);
 
 		TabItem item1 = new TabItem("基本设置");
+		item1.setIcon(getIcon("person.png"));
 		item1.add(formPanel);
 
 		tp.add(item1);
 
 		TabItem item2 = new TabItem("手机验证");
 		final FormPanel formPanel2 = new FormPanel();
+		item2.setIcon(getIcon("phone.png"));
+		formPanel2.setBodyBorder(false);
 		formPanel2.setHeaderVisible(false);
+
+		formPanel2.add(new HTML(
+				"<font color='red'>本站仅使用您的手机号码和飞信密码给您本人发送提醒短信。<br/>"
+						+ "本站承诺不会使用您的号码做其他任何用途！若您对此有任何疑议，请不要使用该功能！"));
 
 		final CheckBox isActivate = new CheckBox();
 		isActivate.setFieldLabel("手机激活");
@@ -930,12 +944,14 @@ public class Costnote implements EntryPoint {
 		final NumberField mobile = new NumberField();
 		mobile.setFormat(NumberFormat.getFormat("0"));
 		mobile.setFieldLabel("手机号");
+		mobile.setMaxLength(11);
 		mobile.setAllowBlank(false);
 		formPanel2.add(mobile);
 
 		final TextField<String> mpassword = new TextField<String>();
 		mpassword.setPassword(true);
 		mpassword.setFieldLabel("飞信密码");
+		mpassword.setMaxLength(50);
 		mpassword.setAllowBlank(false);
 		formPanel2.add(mpassword);
 
@@ -992,6 +1008,7 @@ public class Costnote implements EntryPoint {
 		container.add(new HTML("&nbsp;&nbsp;"));
 		final TextField<String> verifyCode = new TextField<String>();
 		verifyCode.setAllowBlank(false);
+		verifyCode.setMaxLength(6);
 		verifyCode.setEmptyText("输入手机收到的验证码");
 		container.add(verifyCode);
 		container.add(new HTML("&nbsp;&nbsp;"));
@@ -1061,8 +1078,10 @@ public class Costnote implements EntryPoint {
 		tp.add(item2);
 
 		TabItem item3 = new TabItem("短信服务");
+		item3.setIcon(getIcon("phone.png"));
 
 		final FormPanel formPanel3 = new FormPanel();
+		formPanel3.setBodyBorder(false);
 		formPanel3.setHeaderVisible(false);
 
 		final CheckBox sendAlert = new CheckBox();
@@ -1072,6 +1091,8 @@ public class Costnote implements EntryPoint {
 
 		final NumberField alertLimit = new NumberField();
 		alertLimit.setFieldLabel("提醒金额");
+		alertLimit.setMaxValue(1000000);
+		alertLimit.setMinValue(0);
 		formPanel3.add(alertLimit);
 
 		final Button updateButton3 = new Button("更新");
