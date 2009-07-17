@@ -101,11 +101,29 @@ public class Account implements Serializable {
 	public void setLastSendAlert(Date lastSendAlert) {
 		this.lastSendAlert = lastSendAlert;
 	}
+	
+	public boolean isActivate() {
+		return activate;
+	}
+
+	public void setActivate(boolean activate) {
+		this.activate = activate;
+	}
+
+	public String getVerifyCode() {
+		return verifyCode;
+	}
+
+	public void setVerifyCode(String verifyCode) {
+		this.verifyCode = verifyCode;
+	}
 
 	private String mobile;
 	private String mpassword;
 	private double alertLimit;
 	private boolean sendAlert;
+	private boolean activate;
+	private String verifyCode;
 	private Date cdate;
 	private Date lastSendAlert;
 }

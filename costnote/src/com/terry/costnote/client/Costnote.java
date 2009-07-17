@@ -36,15 +36,18 @@ import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.HtmlContainer;
+import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.TabItem;
 import com.extjs.gxt.ui.client.widget.TabPanel;
 import com.extjs.gxt.ui.client.widget.Viewport;
 import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
+import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.DateTimePropertyEditor;
+import com.extjs.gxt.ui.client.widget.form.FieldSet;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.HiddenField;
 import com.extjs.gxt.ui.client.widget.form.LabelField;
@@ -53,6 +56,7 @@ import com.extjs.gxt.ui.client.widget.form.Radio;
 import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
+import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 import com.extjs.gxt.ui.client.widget.grid.CheckBoxSelectionModel;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
@@ -63,6 +67,8 @@ import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.extjs.gxt.ui.client.widget.grid.RowNumberer;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
+import com.extjs.gxt.ui.client.widget.layout.ColumnLayout;
+import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
@@ -593,7 +599,7 @@ public class Costnote implements EntryPoint {
 			window.setHeading("修改记录");
 			window.setWidth(360);
 			final FormPanel formPanel = new FormPanel();
-			formPanel.setHeaderVisible(true);
+			formPanel.setHeaderVisible(false);
 			formPanel.setWidth(350);
 
 			hidden = new HiddenField<String>();
@@ -661,7 +667,7 @@ public class Costnote implements EntryPoint {
 					jo.put("type", radio.getValue() ? new JSONNumber(-1)
 							: new JSONNumber(1));
 					b.setEnabled(false);
-					b.setText("请稍候");
+					b.setText("请稍候...");
 					ServiceDefTarget endpoint = (ServiceDefTarget) costService;
 					endpoint.setServiceEntryPoint("gwt-cost!saveCost.action");
 					costService.saveCost(jo.toString(),
@@ -725,7 +731,7 @@ public class Costnote implements EntryPoint {
 			newWindow.setHeading("新增记录");
 			newWindow.setWidth(360);
 			final FormPanel formPanel = new FormPanel();
-			formPanel.setHeaderVisible(true);
+			formPanel.setHeaderVisible(false);
 			formPanel.setWidth(350);
 
 			final DateField date = new DateField();
@@ -792,7 +798,7 @@ public class Costnote implements EntryPoint {
 					jo.put("type", radio.getValue() ? new JSONNumber(-1)
 							: new JSONNumber(1));
 					b.setEnabled(false);
-					b.setText("请稍候");
+					b.setText("请稍候...");
 					ServiceDefTarget endpoint = (ServiceDefTarget) costService;
 					endpoint.setServiceEntryPoint("gwt-cost!saveCost.action");
 					costService.saveCost(jo.toString(),
@@ -838,11 +844,198 @@ public class Costnote implements EntryPoint {
 		newWindow.show();
 	}
 
+	private static Window settingWindow;
+
+	public static void showSettingWindow() {
+		if (settingWindow == null) {
+			settingWindow = new Window();
+			settingWindow.setHeading("账户设置");
+			settingWindow.setWidth(360);
+
+			final FormPanel formPanel = new FormPanel();
+			formPanel.setHeaderVisible(false);
+			formPanel.setWidth(350);
+
+			final LabelField email = new LabelField();
+			email.setFieldLabel("电子邮件:");
+			email.setValue("yaoxinghuo@msn.com");
+			formPanel.add(email);
+
+			final TextField<String> nickname = new TextField<String>();
+			nickname.setFieldLabel("昵称");
+			formPanel.add(nickname);
+
+			FieldSet alertService = new FieldSet();
+			alertService.setLayout(new FormLayout());
+			alertService.setHeading("短信服务");
+			alertService.setCollapsible(true);
+
+			final NumberField mobile = new NumberField();
+			mobile.setFormat(NumberFormat.getFormat("0"));
+			mobile.setFieldLabel("手机号");
+			mobile.setAllowBlank(false);
+			alertService.add(mobile);
+
+			final TextField<String> mpassword = new TextField<String>();
+			mpassword.setPassword(true);
+			mpassword.setFieldLabel("飞信密码");
+			mpassword.setAllowBlank(false);
+			alertService.add(mpassword);
+
+			LayoutContainer container = new LayoutContainer();
+			container.setLayout(new ColumnLayout());
+
+			final Button validateButton = new Button("发送验证码");
+			validateButton
+					.addSelectionListener(new SelectionListener<ButtonEvent>() {
+
+						@Override
+						public void componentSelected(ButtonEvent ce) {
+							if (mobile.isValid() && mpassword.isValid()) {
+								validateButton.setText("请稍候...");
+								validateButton.setEnabled(false);
+								ServiceDefTarget endpoint = (ServiceDefTarget) costService;
+								endpoint
+										.setServiceEntryPoint("gwt-cost!sendVerifyCode.action");
+								final String m = String.valueOf(mobile
+										.getValue());
+								costService.sendVerifyCode(m, mpassword
+										.getValue(),
+										new AsyncCallback<Boolean>() {
+
+											@Override
+											public void onFailure(
+													Throwable caught) {
+												validateButton.setText("发送验证码");
+												validateButton.setEnabled(true);
+												showPopMessage("error",
+														operateError);
+											}
+
+											@Override
+											public void onSuccess(Boolean result) {
+												validateButton.setText("发送验证码");
+												validateButton.setEnabled(true);
+												if (result)
+													showPopMessage(
+															"pass",
+															"系统已将验证码发送到"
+																	+ m
+																	+ ",请输入后按'验证激活'");
+												else
+													showPopMessage("error",
+															"系统发送验证码时发生错误,请确认您已开通飞信且输入的手机号和飞信密码正确!");
+											}
+
+										});
+							}
+						}
+
+					});
+			container.add(validateButton,
+					new com.extjs.gxt.ui.client.widget.layout.ColumnData(75));
+			container.add(new HTML("&nbsp;&nbsp;"));
+			final TextField<String> verifyCode = new TextField<String>();
+			verifyCode.setAllowBlank(false);
+			verifyCode.setEmptyText("输入手机收到的验证码");
+			container.add(verifyCode);
+			container.add(new HTML("&nbsp;&nbsp;"));
+			final Button activeButton = new Button("验证激活");
+			activeButton
+					.addSelectionListener(new SelectionListener<ButtonEvent>() {
+
+						@Override
+						public void componentSelected(ButtonEvent ce) {
+							if (!verifyCode.isValid())
+								return;
+							ServiceDefTarget endpoint = (ServiceDefTarget) costService;
+							endpoint
+									.setServiceEntryPoint("gwt-cost!verifyCode.action");
+							costService.verifyCode(verifyCode.getValue(),
+									new AsyncCallback<Boolean>() {
+
+										@Override
+										public void onFailure(Throwable caught) {
+											showPopMessage("error",
+													operateError);
+										}
+
+										@Override
+										public void onSuccess(Boolean result) {
+											if (result) {
+												validateButton
+														.setEnabled(false);
+												verifyCode.setEnabled(false);
+												activeButton.setEnabled(false);
+												showPopMessage("pass",
+														"您的手机号已成功验证!");
+											} else {
+												showPopMessage("error",
+														"请输入正确的验证号码!");
+											}
+
+										}
+
+									});
+
+						}
+
+					});
+			container.add(activeButton,
+					new com.extjs.gxt.ui.client.widget.layout.ColumnData(75));
+
+			alertService.add(container);
+
+			final CheckBox sendAlert = new CheckBox();
+			sendAlert.setFieldLabel("短信提醒");
+			sendAlert.setBoxLabel("启用短信提醒");
+			alertService.add(sendAlert);
+
+			final NumberField alertLimit = new NumberField();
+			alertLimit.setFieldLabel("提醒金额");
+			alertService.add(alertLimit);
+
+			formPanel.add(alertService);
+
+			final Button updateButton = new Button("更新");
+			updateButton
+					.addSelectionListener(new SelectionListener<ButtonEvent>() {
+
+						@Override
+						public void componentSelected(ButtonEvent ce) {
+							showPopMessage("info", "此功能正在实现中，敬请期待！");
+						}
+
+					});
+
+			final Button resetButton = new Button("重置");
+			resetButton
+					.addSelectionListener(new SelectionListener<ButtonEvent>() {
+
+						@Override
+						public void componentSelected(ButtonEvent ce) {
+							formPanel.reset();
+						}
+
+					});
+
+			settingWindow.add(formPanel);
+			settingWindow.addButton(updateButton);
+			settingWindow.addButton(resetButton);
+		}
+
+		settingWindow.show();
+	}
+
 	public static void nav(final String tab_id, String name, String icon) {
 		TabItem tabItem = tp.getItemByItemId(tab_id);
 		if (tabItem == null) {
 			if (tab_id.equals("tab_tree_note")) {
 				showNewNoteWindow();
+				tree.getSelectionModel().deselectAll();
+				return;
+			} else if (tab_id.equals("tab_tree_setting")) {
+				showSettingWindow();
 				tree.getSelectionModel().deselectAll();
 				return;
 			}

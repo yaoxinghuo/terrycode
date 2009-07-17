@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.terry.costnote.data.service.intf.IAccountService;
 import com.terry.costnote.data.service.intf.ICostService;
 
 /**
@@ -20,6 +21,8 @@ public class CostAction extends GenericAction {
 	private static final long serialVersionUID = 1503567222310181255L;
 	@Autowired
 	private ICostService costService;
+	@Autowired
+	private IAccountService accountService;
 
 	public boolean saveCost(String cost) {
 		return costService.saveCost(getCurrentUserEmail(), cost);
@@ -31,6 +34,15 @@ public class CostAction extends GenericAction {
 
 	public String suggestNames() {
 		return costService.getSuggestNames(getCurrentUserEmail());
+	}
+
+	public boolean sendVerifyCode(String mobile, String password) {
+		return accountService.sendVerifyCode(getCurrentUserEmail(), mobile,
+				password);
+	}
+
+	public boolean verifyCode(String code) {
+		return accountService.verifyCode(getCurrentUserEmail(), code);
 	}
 
 }
