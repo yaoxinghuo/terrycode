@@ -45,4 +45,18 @@ public class CostAction extends GenericAction {
 		return accountService.verifyCode(getCurrentUserEmail(), code);
 	}
 
+	public boolean updateAccountBasic(String nickname) {
+		return accountService.updateAccountBasic(getCurrentUserEmail(),
+				nickname);
+	}
+
+	public boolean updateAccountSms(Boolean sendAlert, Double alertLimit) {
+		return accountService.updateAccountSms(getCurrentUserEmail(),
+				sendAlert, alertLimit);
+	}
+
+	public String getAccountSettings() {
+		return accountService.getAccountSettings(getCurrentUserEmail());
+	}
+
 }

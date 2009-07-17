@@ -19,4 +19,10 @@ public interface CostService extends RemoteService {
 
 	boolean verifyCode(String code);
 
+	boolean updateAccountBasic(String nickname);
+
+	boolean updateAccountSms(boolean sendAlert, double alertLimit);
+
+	String getAccountSettings();
+
 }
