@@ -15,4 +15,9 @@ public interface CostServiceAsync {
 
 	void suggestNames(AsyncCallback<String> callback);
 
+	void sendVerifyCode(String mobile, String password,
+			AsyncCallback<Boolean> callback);
+
+	void verifyCode(String code, AsyncCallback<Boolean> callback);
+
 }

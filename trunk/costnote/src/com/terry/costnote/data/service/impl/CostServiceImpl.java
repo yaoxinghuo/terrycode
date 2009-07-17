@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import com.terry.costnote.data.dao.intf.IAccountDao;
 import com.terry.costnote.data.dao.intf.ICostDao;
+import com.terry.costnote.data.model.Account;
 import com.terry.costnote.data.model.Cost;
 import com.terry.costnote.data.service.intf.ICostService;
 
@@ -47,7 +48,6 @@ public class CostServiceImpl implements ICostService {
 	@Autowired
 	private ICostDao costDao;
 
-	@SuppressWarnings("unused")
 	@Autowired
 	private IAccountDao accountDao;
 
@@ -122,6 +122,7 @@ public class CostServiceImpl implements ICostService {
 	@SuppressWarnings("unchecked")
 	@Override
 	public String getSuggestNames(String email) {
+		checkAccount(email);
 		JSONArray ja = new JSONArray();
 		if (cache != null) {
 			Stack<String> stack = (Stack<String>) cache.get(email);
@@ -152,6 +153,29 @@ public class CostServiceImpl implements ICostService {
 
 		}
 		return ja.toString();
+	}
+
+	private String checkAccount(String email) {
+		Account account = accountDao.getAccountByEmail(email);
+		if (account == null) {
+			account = new Account();
+			account.setAlertLimit(0);
+			account.setCdate(new Date());
+			account.setEmail(email);
+			account.setLastSendAlert(new Date());
+			account.setMobile("");
+			account.setMpassword("");
+			account.setSendAlert(false);
+			account.setActivate(false);
+			account.setVerifyCode("");
+			account.setNickname(email);
+			if (accountDao.saveAccount(account))
+				return account.getNickname();
+			else
+				return null;
+		} else
+			return account.getNickname();
+
 	}
 
 }

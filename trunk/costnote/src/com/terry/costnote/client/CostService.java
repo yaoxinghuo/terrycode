@@ -15,4 +15,8 @@ public interface CostService extends RemoteService {
 
 	String suggestNames();
 
+	boolean sendVerifyCode(String mobile, String password);
+
+	boolean verifyCode(String code);
+
 }
