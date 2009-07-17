@@ -6,9 +6,9 @@ function showMsg(type, msg) {
 	if(type=="info")
 		msg = "<img src='icons/info.png'/>&nbsp;" + msg;
 	else if(type=="error")
-		msg = "<img src='icons/fail.gif'/>&nbsp;" + msg;
+		msg = "<img src='icons/fail.png'/>&nbsp;" + msg;
 	else if(type=="pass")
-		msg = "<img src='icons/pass.gif'/>&nbsp;" + msg;
+		msg = "<img src='icons/pass.png'/>&nbsp;" + msg;
 	document.getElementById("msg_content").innerHTML = msg;
 	document.getElementById("msg").style.visibility = "visible";
 	if (timeoutID != null)
