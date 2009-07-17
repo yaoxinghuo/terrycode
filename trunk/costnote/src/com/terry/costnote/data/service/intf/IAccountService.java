@@ -7,7 +7,14 @@ package com.terry.costnote.data.service.intf;
 public interface IAccountService {
 	public boolean updateAccount(String email, String account);
 
+	public boolean updateAccountBasic(String email, String nickname);
+
+	public boolean updateAccountSms(String email, boolean sendAlert,
+			double alertLimit);
+
 	public boolean sendVerifyCode(String email, String mobile, String password);
 
 	public boolean verifyCode(String email, String code);
+
+	public String getAccountSettings(String email);
 }

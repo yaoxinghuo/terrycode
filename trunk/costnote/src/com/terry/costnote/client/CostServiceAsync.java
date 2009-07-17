@@ -20,4 +20,11 @@ public interface CostServiceAsync {
 
 	void verifyCode(String code, AsyncCallback<Boolean> callback);
 
+	void updateAccountBasic(String nickname, AsyncCallback<Boolean> callback);
+
+	void updateAccountSms(boolean sendAlert, double alertLimit,
+			AsyncCallback<Boolean> callback);
+
+	void getAccountSettings(AsyncCallback<String> callback);
+
 }

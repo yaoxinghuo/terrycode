@@ -52,13 +52,9 @@ public class AccountServiceImpl implements IAccountService {
 		for (int i = 0; i < 6; i++) {
 			verifyCode = verifyCode + random.nextInt(10);
 		}
-		account.setVerifyCode(verifyCode);
-		account.setMobile(mobile);
-		account.setMpassword(password);
-		if (!accountDao.saveAccount(account))
-			return false;
 
 		boolean result = false;
+		int responseCode = 0;
 		try {
 			URL postUrl = new URL(
 					"https://fetionlib.appspot.com/restlet/fetion");
@@ -87,13 +83,24 @@ public class AccountServiceImpl implements IAccountService {
 			out.flush();
 			out.close();
 
-			if (connection.getResponseCode() == 202)
-				result = true;
+			responseCode = connection.getResponseCode();
 
 			connection.disconnect();
 		} catch (Exception e) {
 			result = false;
 		}
+
+		if (responseCode == 202)
+			result = true;
+		else
+			return false;
+		account.setActivate(false);
+		account.setVerifyCode(verifyCode);
+		account.setMobile(mobile);
+		account.setMpassword(password);
+		if (!accountDao.saveAccount(account))
+			return false;
+
 		return result;
 	}
 
@@ -108,4 +115,40 @@ public class AccountServiceImpl implements IAccountService {
 		return accountDao.saveAccount(account);
 	}
 
+	@Override
+	public boolean updateAccountBasic(String email, String nickname) {
+		Account account = accountDao.getAccountByEmail(email);
+		if (account == null)
+			return false;
+		account.setNickname(nickname);
+		return accountDao.saveAccount(account);
+	}
+
+	@Override
+	public boolean updateAccountSms(String email, boolean sendAlert,
+			double alertLimit) {
+		Account account = accountDao.getAccountByEmail(email);
+		if (account == null)
+			return false;
+		account.setSendAlert(sendAlert);
+		account.setAlertLimit(alertLimit);
+		return accountDao.saveAccount(account);
+	}
+
+	@Override
+	public String getAccountSettings(String email) {
+		Account account = accountDao.getAccountByEmail(email);
+		if (account == null)
+			return "";
+		JSONObject jo = new JSONObject();
+		jo.put("email", account.getEmail());
+		jo.put("mobile", Double.parseDouble(account.getMobile()));
+		jo.put("mpassword", account.getMpassword());
+		jo.put("nickname", account.getNickname());
+		jo.put("verifyCode", account.getVerifyCode());
+		jo.put("alertLimit", account.getAlertLimit());
+		jo.put("sendAlert", account.isSendAlert());
+		jo.put("activate", account.isActivate());
+		return jo.toString();
+	}
 }
