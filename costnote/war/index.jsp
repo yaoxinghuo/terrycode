@@ -61,7 +61,7 @@
 			<tr>
 				<td align="center"><font size='-1'>&nbsp;<span
 					id="account_content"><span id="nickname"></span>&nbsp;|&nbsp;<a
-					href="http://sites.google.com/site/terry/">作者主页</a>&nbsp;|&nbsp;<a
+					href="http://sites.google.com/site/terry/" target="_blank">作者主页</a>&nbsp;|&nbsp;<a
 					href="<%=logoutURL%>">退出</a></span></font></td>
 			</tr>
 		</table>
