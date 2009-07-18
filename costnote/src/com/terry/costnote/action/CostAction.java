@@ -32,8 +32,8 @@ public class CostAction extends GenericAction {
 		return costService.deleteCost(costIds);
 	}
 
-	public String suggestNames() {
-		return costService.getSuggestNames(getCurrentUserEmail());
+	public String getAccountInfo() {
+		return costService.getAccountInfo(getCurrentUserEmail());
 	}
 
 	public boolean sendVerifyCode(String mobile, String password) {

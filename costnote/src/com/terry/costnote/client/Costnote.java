@@ -101,6 +101,7 @@ public class Costnote implements EntryPoint {
 	private static final String operateFail = "对不起，您的操作未能完成，请稍候再试！";
 	private static final String operateError = "对不起，数据库维护中，请稍候再试！";
 	private static final String operatePass = "您的操作成功完成！";
+	private static final String operateWait = "请稍候...";
 	private static DateTimeFormat format = DateTimeFormat
 			.getFormat("yyyy-MM-dd");
 	private Viewport viewport;
@@ -125,10 +126,10 @@ public class Costnote implements EntryPoint {
 		RootPanel.get().add(viewport);
 		tree.expandAll();
 
-		loadSuggestNames();
+		loadAccountInfo();
 	}
 
-	private void loadSuggestNames() {
+	private void loadAccountInfo() {
 		names.add("用餐");
 		names.add("娱乐");
 		names.add("交通费");
@@ -137,8 +138,8 @@ public class Costnote implements EntryPoint {
 			new_name.add(s);
 		}
 		ServiceDefTarget endpoint = (ServiceDefTarget) costService;
-		endpoint.setServiceEntryPoint("gwt-cost!suggestNames.action");
-		costService.suggestNames(new AsyncCallback<String>() {
+		endpoint.setServiceEntryPoint("gwt-cost!getAccountInfo.action");
+		costService.getAccountInfo(new AsyncCallback<String>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -146,7 +147,10 @@ public class Costnote implements EntryPoint {
 
 			@Override
 			public void onSuccess(String result) {
-				JSONArray ja = (JSONArray) JSONParser.parse(result);
+				if (result.equals(""))
+					return;
+				JSONObject jo = (JSONObject) JSONParser.parse(result);
+				JSONArray ja = (JSONArray) jo.get("suggest");
 				if (ja.size() != 0) {
 					name.removeAll();
 					new_name.removeAll();
@@ -159,6 +163,12 @@ public class Costnote implements EntryPoint {
 					name.add(s);
 					new_name.add(s);
 				}
+				DOM
+						.setInnerHTML(
+								DOM.getElementById("nickname"),
+								"欢迎&nbsp;<a href='#' onclick='nav(\"tab_tree_setting\",\"账户设置\",\"setting.png\");return false;'>"
+										+ ((JSONString) jo.get("nickname"))
+												.stringValue() + "</a>");
 			}
 
 		});
@@ -669,7 +679,7 @@ public class Costnote implements EntryPoint {
 					jo.put("type", radio.getValue() ? new JSONNumber(-1)
 							: new JSONNumber(1));
 					b.setEnabled(false);
-					b.setText("请稍候...");
+					b.setText(operateWait);
 					ServiceDefTarget endpoint = (ServiceDefTarget) costService;
 					endpoint.setServiceEntryPoint("gwt-cost!saveCost.action");
 					costService.saveCost(jo.toString(),
@@ -802,7 +812,7 @@ public class Costnote implements EntryPoint {
 					jo.put("type", radio.getValue() ? new JSONNumber(-1)
 							: new JSONNumber(1));
 					b.setEnabled(false);
-					b.setText("请稍候...");
+					b.setText(operateWait);
 					ServiceDefTarget endpoint = (ServiceDefTarget) costService;
 					endpoint.setServiceEntryPoint("gwt-cost!saveCost.action");
 					costService.saveCost(jo.toString(),
@@ -881,7 +891,7 @@ public class Costnote implements EntryPoint {
 		settingWindow = new Window();
 		settingWindow.setIcon(getIcon("setting.png"));
 		settingWindow.setHeading("账户设置");
-		settingWindow.setWidth(360);
+		settingWindow.setWidth(380);
 
 		TabPanel tp = new TabPanel();
 		tp.setHeight(200);
@@ -931,9 +941,11 @@ public class Costnote implements EntryPoint {
 		formPanel2.setBodyBorder(false);
 		formPanel2.setHeaderVisible(false);
 
-		formPanel2.add(new HTML(
-				"<font color='red'>本站仅使用您的手机号码和飞信密码给您本人发送提醒短信。<br/>"
-						+ "本站承诺不会使用您的号码做其他任何用途！若您对此有任何疑议，请不要使用该功能！"));
+		formPanel2
+				.add(new HTML(
+						"<font color='red'>本站仅使用您的手机号和飞信密码给您本人发送免费提醒短信。<br/>"
+								+ "本站承诺不会将使用您的号码用于其他任何用途！若您对此有任何疑议，请不要使用该功能！"
+								+ "<a href='http://sites.google.com/site/it/feedback'>给本站留言</a>"));
 
 		final CheckBox isActivate = new CheckBox();
 		isActivate.setFieldLabel("手机激活");
@@ -965,7 +977,7 @@ public class Costnote implements EntryPoint {
 					@Override
 					public void componentSelected(ButtonEvent ce) {
 						if (mobile.isValid() && mpassword.isValid()) {
-							validateButton.setText("请稍候...");
+							validateButton.setText(operateWait);
 							validateButton.setEnabled(false);
 							ServiceDefTarget endpoint = (ServiceDefTarget) costService;
 							endpoint
