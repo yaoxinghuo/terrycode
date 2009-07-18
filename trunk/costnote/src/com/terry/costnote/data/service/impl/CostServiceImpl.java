@@ -121,8 +121,25 @@ public class CostServiceImpl implements ICostService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public String getSuggestNames(String email) {
-		checkAccount(email);
+	public String getAccountInfo(String email) {
+		Account account = accountDao.getAccountByEmail(email);
+		if (account == null) {
+			account = new Account();
+			account.setAlertLimit(0);
+			account.setCdate(new Date());
+			account.setEmail(email);
+			account.setLastSendAlert(new Date());
+			account.setMobile("");
+			account.setMpassword("");
+			account.setSendAlert(false);
+			account.setActivate(false);
+			account.setVerifyCode("");
+			account.setNickname(email);
+			if (!accountDao.saveAccount(account))
+				return "";
+		}
+
+		JSONObject jo = new JSONObject();
 		JSONArray ja = new JSONArray();
 		if (cache != null) {
 			Stack<String> stack = (Stack<String>) cache.get(email);
@@ -152,30 +169,9 @@ public class CostServiceImpl implements ICostService {
 			}
 
 		}
-		return ja.toString();
-	}
-
-	private String checkAccount(String email) {
-		Account account = accountDao.getAccountByEmail(email);
-		if (account == null) {
-			account = new Account();
-			account.setAlertLimit(0);
-			account.setCdate(new Date());
-			account.setEmail(email);
-			account.setLastSendAlert(new Date());
-			account.setMobile("");
-			account.setMpassword("");
-			account.setSendAlert(false);
-			account.setActivate(false);
-			account.setVerifyCode("");
-			account.setNickname(email);
-			if (accountDao.saveAccount(account))
-				return account.getNickname();
-			else
-				return null;
-		} else
-			return account.getNickname();
-
+		jo.put("suggest", ja);
+		jo.put("nickname", account.getNickname());
+		return jo.toString();
 	}
 
 }

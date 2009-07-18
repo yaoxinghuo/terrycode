@@ -13,7 +13,7 @@ public interface CostServiceAsync {
 
 	void deleteCost(String costIds, AsyncCallback<Boolean> callback);
 
-	void suggestNames(AsyncCallback<String> callback);
+	void getAccountInfo(AsyncCallback<String> callback);
 
 	void sendVerifyCode(String mobile, String password,
 			AsyncCallback<Boolean> callback);

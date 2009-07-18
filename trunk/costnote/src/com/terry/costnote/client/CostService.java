@@ -13,7 +13,7 @@ public interface CostService extends RemoteService {
 
 	boolean deleteCost(String costIds);
 
-	String suggestNames();
+	String getAccountInfo();
 
 	boolean sendVerifyCode(String mobile, String password);
 
