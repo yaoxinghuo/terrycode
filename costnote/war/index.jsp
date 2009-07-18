@@ -11,7 +11,7 @@
 <link type="text/css" rel="stylesheet" href="css/Costnote.css">
 <link rel="stylesheet" type="text/css" href="css/gxt-all.css" />
 
-<title>记账系统</title>
+<title>网络记帐本</title>
 <script language='javascript' src='chart/swfobject.js'></script>
 <script type="text/javascript" language="javascript"
 	src="costnote/costnote.nocache.js"></script>
@@ -73,7 +73,7 @@
 
 
 <div id="north-div">
-<div class="layout-title"><img src="images/logo.png" /><span>&nbsp;</span>记账系统</div>
+<div class="layout-title"><img src="images/logo.png" /><span>&nbsp;</span>网络记帐本</div>
 
 </div>
 </div>
