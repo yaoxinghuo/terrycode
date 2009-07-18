@@ -945,7 +945,7 @@ public class Costnote implements EntryPoint {
 				.add(new HTML(
 						"<font color='red'>本站仅使用您的手机号和飞信密码给您本人发送免费提醒短信。<br/>"
 								+ "本站承诺不会将使用您的号码用于其他任何用途！若您对此有任何疑议，请不要使用该功能！"
-								+ "<a href='http://sites.google.com/site/it/feedback'>给本站留言</a>"));
+								+ "<a href='http://sites.google.com/site/it/feedback' target='_blank'>给本站留言</a>"));
 
 		final CheckBox isActivate = new CheckBox();
 		isActivate.setFieldLabel("手机激活");
