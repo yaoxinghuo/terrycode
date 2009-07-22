@@ -13,6 +13,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.terry.costnote.data.dao.intf.IAccountDao;
 import com.terry.costnote.data.model.Account;
+import com.terry.costnote.data.model.Friend;
 import com.terry.costnote.data.util.EMF;
 
 /**
@@ -77,6 +78,50 @@ public class AccountDaoImpl implements IAccountDao {
 			EntityTransaction tx = em.getTransaction();
 			tx.begin();
 			em.persist(account);
+			tx.commit();
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean deleteFriend(Friend friend) {
+		try {
+			EntityTransaction tx = em.getTransaction();
+			tx.begin();
+			em.remove(friend);
+			tx.commit();
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public Friend getFriendById(String friendId) {
+		Key key = KeyFactory.stringToKey(friendId);
+		if (key == null || !key.isComplete())
+			return null;
+
+		return em.find(Friend.class, key);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Friend> getFriendsByEmail(String email) {
+		Query query = em.createQuery("SELECT f FROM " + Friend.class.getName()
+				+ " f where f.email=:email");
+		query.setParameter("email", email);
+		return query.getResultList();
+	}
+
+	@Override
+	public boolean saveFriend(Friend friend) {
+		try {
+			EntityTransaction tx = em.getTransaction();
+			tx.begin();
+			em.persist(friend);
 			tx.commit();
 		} catch (Exception e) {
 			return false;
