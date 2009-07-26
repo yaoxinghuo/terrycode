@@ -57,6 +57,7 @@ import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.extjs.gxt.ui.client.widget.form.TimeField;
 import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 import com.extjs.gxt.ui.client.widget.grid.CheckBoxSelectionModel;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
@@ -104,6 +105,8 @@ public class Costnote implements EntryPoint {
 	private static final String operateWait = "请稍候...";
 	private static DateTimeFormat format = DateTimeFormat
 			.getFormat("yyyy-MM-dd");
+	private static DateTimeFormat timeFormat = DateTimeFormat
+			.getFormat("HH:mm");
 	private Viewport viewport;
 	private static TabPanel tp = new TabPanel();
 	private static TreePanel<ModelData> tree;
@@ -496,6 +499,207 @@ public class Costnote implements EntryPoint {
 		return cp;
 	}
 
+	@SuppressWarnings("unchecked")
+	private static Widget createScheduleListPanel() {
+		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
+
+		RowNumberer r = new RowNumberer();
+		configs.add(r);
+
+		CheckBoxSelectionModel<ModelData> sm = new CheckBoxSelectionModel<ModelData>();
+		sm.setSelectionMode(SelectionMode.MULTI);
+		configs.add(sm.getColumn());
+
+		ColumnConfig column = new ColumnConfig();
+		column.setId("date");
+		column.setHeader("日期");
+		column.setDataIndex("date");
+		column.setWidth(100);
+		configs.add(column);
+
+		column = new ColumnConfig();
+		column.setRenderer(new GridCellRenderer<ModelData>() {
+
+			@Override
+			public Object render(ModelData model, String property,
+					ColumnData config, int rowIndex, int colIndex,
+					ListStore<ModelData> store, Grid<ModelData> grid) {
+				return (((Double) store.getAt(rowIndex).get("type")).intValue() == -1) ? "<font color='red'>未执行</font>"
+						: "<font color='green'>已执行</font>";
+			}
+
+		});
+		column.setId("type");
+		column.setHeader("类型");
+		column.setDataIndex("type");
+		column.setWidth(100);
+		configs.add(column);
+
+		column = new ColumnConfig();
+		column.setId("message");
+		column.setHeader("消息");
+		column.setDataIndex("message");
+		column.setWidth(200);
+		configs.add(column);
+
+		column = new ColumnConfig();
+		column.setId("id");
+		column.setHeader("No");
+		column.setDataIndex("id");
+		column.setAlignment(HorizontalAlignment.RIGHT);
+		column.setWidth(75);
+
+		// create Store //
+		// data struction //
+		ModelType mt = new ModelType();
+		mt.setRoot("rows");
+		mt.setTotalName("results");
+		mt.addField("id");
+		mt.addField("date");
+		mt.addField("type");
+		mt.addField("name");
+		mt.addField("sid");
+		mt.addField("message");
+
+		ColumnModel cm = new ColumnModel(configs);
+
+		loadConfig.setOffset(0);
+		loadConfig.setLimit(20);
+		loadConfig.set("timestamp", new Date().getTime());
+		store = DataStruction.JsonStoreCreatePaginate("ds02", mt,
+				"/ajax/scheduleListAction.action", loadConfig);
+		// this will register into ds01
+
+		ContentPanel cp = new ContentPanel();
+		cp.setBodyBorder(false);
+		cp.setHeaderVisible(false);
+		cp.setButtonAlign(HorizontalAlignment.CENTER);
+		cp.setLayout(new BorderLayout());
+		final Grid<ModelData> grid = new Grid<ModelData>(store, cm);
+		grid.setSelectionModel(sm);
+		grid.addPlugin(sm);
+		grid.setAutoExpandColumn("name");
+		grid.setAutoHeight(true);
+		grid.setLoadMask(true);
+		Menu menu = new Menu();
+
+		menu.add(new MenuItem("删除", getIcon("delete.png"),
+				new SelectionListener<MenuEvent>() {
+
+					@Override
+					public void componentSelected(MenuEvent ce) {
+						if (grid.getSelectionModel().getSelectedItems().size() == 0) {
+							showPopMessage("error", "请至少选择一条记录！");
+							return;
+						}
+						MessageBox.confirm("确定删除", "您确定要删除选中的记录?",
+								new Listener<MessageBoxEvent>() {
+
+									@Override
+									public void handleEvent(MessageBoxEvent be) {
+										if (be.getButtonClicked().getItemId()
+												.equals(Dialog.YES)) {
+											List<ModelData> list = grid
+													.getSelectionModel()
+													.getSelectedItems();
+											JSONArray ja = new JSONArray();
+											for (int i = 0; i < list.size(); i++)
+												ja.set(i, new JSONString(
+														(String) list.get(i)
+																.get("id")));
+											ServiceDefTarget endpoint = (ServiceDefTarget) costService;
+											endpoint
+													.setServiceEntryPoint("gwt-cost!deleteCost.action");
+											costService
+													.deleteCost(
+															ja.toString(),
+															new AsyncCallback<Boolean>() {
+
+																@Override
+																public void onFailure(
+																		Throwable caught) {
+																	showPopMessage(
+																			"error",
+																			operateError);
+																}
+
+																@Override
+																public void onSuccess(
+																		Boolean result) {
+																	if (result) {
+																		reloadList();
+																		showPopMessage(
+																				"pass",
+																				operatePass);
+																	} else {
+																		showPopMessage(
+																				"error",
+																				operateFail);
+																	}
+																}
+
+															});
+										}
+									}
+								});
+					}
+
+				}));
+		grid.setContextMenu(menu);
+		cp.add(grid);
+		PagingToolBar toolBar = createChinesePagingToolBar();
+		toolBar.bind((BasePagingLoader<PagingLoadResult<ModelData>>) store
+				.getLoader());
+		cp.setBottomComponent(toolBar);
+
+		ToolBar tb = new ToolBar();
+		final DateField sfrom = new DateField();
+		sfrom.setWidth("100");
+		sfrom.setPropertyEditor(new DateTimePropertyEditor(format));
+		sfrom.setValue(new Date(new Date().getTime() - 30l * 24l * 3600l
+				* 1000l));
+		final DateField sto = new DateField();
+		sto.setWidth("100");
+		sto.setValue(new Date());
+		sto.setPropertyEditor(new DateTimePropertyEditor(format));
+		tb.add(new LabelField("&nbsp;搜索日期从"));
+		tb.add(sfrom);
+		tb.add(new LabelField("&nbsp;到"));
+		tb.add(sto);
+		tb.add(new LabelField("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"));
+		Button sbutton = new Button("搜索");
+		sbutton.setIcon(getIcon("search.png"));
+		sbutton.addSelectionListener(new SelectionListener<ButtonEvent>() {
+
+			@Override
+			public void componentSelected(ButtonEvent ce) {
+				if (sfrom.getValue() == null || !sfrom.isValid()) {
+					sfrom.markInvalid("请输入正确的日期!(yy-MM-dd)");
+					return;
+				}
+				if (sto.getValue() == null || !sto.isValid()) {
+					sto.markInvalid("请输入正确的日期!(yy-MM-dd)");
+					return;
+				}
+				if (sto.getValue().getTime() < sfrom.getValue().getTime()) {
+					sto.markInvalid("该日期应大于起始日期！");
+					return;
+				}
+				loadConfig.setOffset(0);
+				loadConfig.setLimit(20);
+				loadConfig.set("sfrom", format.format(sfrom.getValue()));
+				loadConfig.set("sto", format.format(sto.getValue()));
+				loadConfig.set("timestamp", new Date().getTime());
+				store.getLoader().load(loadConfig);
+			}
+
+		});
+		tb.add(sbutton);
+		cp.setTopComponent(tb);
+
+		return cp;
+	}
+
 	private void createCenter() {
 		TabItem item = new TabItem();
 		item.addListener(Events.Select, new Listener<TabPanelEvent>() {
@@ -577,7 +781,9 @@ public class Costnote implements EntryPoint {
 		Folder[] folders = new Folder[] {
 				new Folder("我的帐户", new Item[] {
 						new Item("tree_note", "记账", "note.png"),
-						new Item("tree_list", "查询", "list.png") }),
+						new Item("tree_list", "帐务查询", "list.png"),
+						new Item("tree_note_schedule", "新建提醒", "note.png"),
+						new Item("tree_list_schedule", "提醒查询", "list.png") }),
 				new Folder("设置", new Item[] { new Item("tree_setting", "帐户设置",
 						"setting.png") }) };
 
@@ -858,6 +1064,105 @@ public class Costnote implements EntryPoint {
 		newWindow.show();
 	}
 
+	private static Window newScheduleWindow;
+
+	public static void showNewScheduleWindow() {
+		if (newScheduleWindow == null) {
+			newScheduleWindow = new Window();
+			newScheduleWindow.setIcon(getIcon("note.png"));
+			newScheduleWindow.setHeading("新增记录");
+			newScheduleWindow.setWidth(360);
+			final FormPanel formPanel = new FormPanel();
+			formPanel.setHeaderVisible(false);
+			formPanel.setWidth(350);
+
+			final DateField date = new DateField();
+			date.setMinValue(new Date());
+			date.setPropertyEditor(new DateTimePropertyEditor(format));
+			date.setValue(new Date());
+			date.setFieldLabel("发送日期*");
+			formPanel.add(date);
+
+			final TimeField time = new TimeField();
+			time.setFieldLabel("时间*");
+			time.setDateValue(new Date());
+			time.setFormat(timeFormat);
+			formPanel.add(time);
+
+			date.addListener(Events.Blur, new Listener<FieldEvent>() {
+
+				@Override
+				public void handleEvent(FieldEvent be) {
+					time.setMinValue(new Date());
+
+				}
+			});
+			final TextArea message = new TextArea();
+			message.setPreventScrollbars(true);
+			message.setFieldLabel("消息*");
+			message.setMaxLength(200);
+			formPanel.add(message);
+
+			final Button b = new Button("保存");
+			newScheduleWindow.addButton(b);
+			b.addListener(Events.Select, new Listener<ButtonEvent>() {
+				public void handleEvent(ButtonEvent be) {
+					if (!formPanel.isValid()) {
+						return;
+					}
+					com.google.gwt.user.client.Window.alert(format.format(date
+							.getValue())
+							+ time.getValue().getText());
+					JSONObject jo = new JSONObject();
+					jo.put("id", new JSONString(""));
+					jo.put("date", new JSONString(format
+							.format(date.getValue())));
+					jo.put("message", new JSONString(
+							message.getValue() == null ? "" : message
+									.getValue()));
+					b.setEnabled(false);
+					b.setText(operateWait);
+					ServiceDefTarget endpoint = (ServiceDefTarget) costService;
+					endpoint
+							.setServiceEntryPoint("gwt-cost!saveSchedule.action");
+					costService.saveSchedule(jo.toString(),
+							new AsyncCallback<Boolean>() {
+
+								@Override
+								public void onFailure(Throwable caught) {
+									b.setEnabled(true);
+									b.setText("保存");
+									showPopMessage("error", operateError);
+								}
+
+								@Override
+								public void onSuccess(Boolean result) {
+									b.setEnabled(true);
+									b.setText("保存");
+									if (result) {
+										formPanel.reset();
+										newScheduleWindow.hide();
+										reloadList();
+										showPopMessage("pass", operatePass);
+									} else
+										showPopMessage("error", operateFail);
+								}
+
+							});
+				}
+			});
+			Button reset = new Button("重置");
+			reset.addListener(Events.Select, new Listener<ButtonEvent>() {
+				public void handleEvent(ButtonEvent be) {
+					formPanel.reset();
+				}
+			});
+			newScheduleWindow.addButton(reset);
+			newScheduleWindow.add(formPanel);
+		}
+		newScheduleWindow.show();
+	}
+
 	private static Window settingWindow;
 
 	public static void showSettingWindow() {
@@ -943,7 +1248,7 @@ public class Costnote implements EntryPoint {
 
 		formPanel2
 				.add(new HTML(
-						"<font color='red'>本站仅使用您的手机号和飞信密码给您本人发送免费提醒短信。<br/>"
+						"<font color='red'>发送验证码前，请先将13916416465加为您的好友，本站仅使用您的手机号给您本人发送免费提醒短信。<br/>"
 								+ "本站承诺不会将使用您的号码用于其他任何用途！若您对此有任何疑议，请不要使用该功能！"
 								+ "<a href='http://sites.google.com/site/it/feedback' target='_blank'>给本站留言</a>"));
 
@@ -960,13 +1265,6 @@ public class Costnote implements EntryPoint {
 		mobile.setAllowBlank(false);
 		formPanel2.add(mobile);
 
-		final TextField<String> mpassword = new TextField<String>();
-		mpassword.setPassword(true);
-		mpassword.setFieldLabel("飞信密码");
-		mpassword.setMaxLength(50);
-		mpassword.setAllowBlank(false);
-		formPanel2.add(mpassword);
-
 		LayoutContainer container = new LayoutContainer();
 		container.setLayout(new ColumnLayout());
 
@@ -976,14 +1274,14 @@ public class Costnote implements EntryPoint {
 
 					@Override
 					public void componentSelected(ButtonEvent ce) {
-						if (mobile.isValid() && mpassword.isValid()) {
+						if (mobile.isValid()) {
 							validateButton.setText(operateWait);
 							validateButton.setEnabled(false);
 							ServiceDefTarget endpoint = (ServiceDefTarget) costService;
 							endpoint
 									.setServiceEntryPoint("gwt-cost!sendVerifyCode.action");
 							final String m = String.valueOf(mobile.getValue());
-							costService.sendVerifyCode(m, mpassword.getValue(),
+							costService.sendVerifyCode(m,
 									new AsyncCallback<Boolean>() {
 
 										@Override
@@ -1007,7 +1305,7 @@ public class Costnote implements EntryPoint {
 																+ ",请输入后按'验证激活'");
 											} else
 												showPopMessage("error",
-														"系统发送验证码时发生错误,请确认您已开通飞信且输入的手机号和飞信密码正确!");
+														"系统发送验证码时发生错误,请确认您的手机号码已开通飞信且已加13916416465为飞信好友!");
 										}
 
 									});
@@ -1061,26 +1359,6 @@ public class Costnote implements EntryPoint {
 
 		});
 
-		mobile.addListener(Events.Change, new Listener<FieldEvent>() {
-
-			@Override
-			public void handleEvent(FieldEvent be) {
-				validateButton.setEnabled(true);
-				verifyCode.setEnabled(true);
-				activeButton.setEnabled(true);
-			}
-
-		});
-		mpassword.addListener(Events.Change, new Listener<FieldEvent>() {
-
-			@Override
-			public void handleEvent(FieldEvent be) {
-				validateButton.setEnabled(true);
-				verifyCode.setEnabled(true);
-				activeButton.setEnabled(true);
-			}
-
-		});
 		container.add(activeButton,
 				new com.extjs.gxt.ui.client.widget.layout.ColumnData(75));
 
@@ -1132,7 +1410,6 @@ public class Costnote implements EntryPoint {
 		email.setValue(((JSONString) jo.get("email")).stringValue());
 		nickname.setValue(((JSONString) jo.get("nickname")).stringValue());
 		mobile.setValue(((JSONNumber) jo.get("mobile")).doubleValue());
-		mpassword.setValue(((JSONString) jo.get("mpassword")).stringValue());
 		verifyCode.setValue(((JSONString) jo.get("verifyCode")).stringValue());
 		alertLimit.setValue(((JSONNumber) jo.get("alertLimit")).doubleValue());
 		sendAlert.setValue(((JSONBoolean) jo.get("sendAlert")).booleanValue());
@@ -1154,6 +1431,10 @@ public class Costnote implements EntryPoint {
 				showNewNoteWindow();
 				tree.getSelectionModel().deselectAll();
 				return;
+			} else if (tab_id.equals("tab_tree_note_schedule")) {
+				showNewScheduleWindow();
+				tree.getSelectionModel().deselectAll();
+				return;
 			} else if (tab_id.equals("tab_tree_setting")) {
 				showSettingWindow();
 				tree.getSelectionModel().deselectAll();
@@ -1173,7 +1454,9 @@ public class Costnote implements EntryPoint {
 			tabItem.setClosable(true);
 			if (tab_id.equals("tab_tree_list")) {
 				tabItem.add(createListPanel());
-			} else
+			} else if (tab_id.equals("tab_tree_list_schedule"))
+				tabItem.add(createScheduleListPanel());
+			else
 				tabItem
 						.addText("Tab Test Content, <br/><font color='red'>TabItem id is: "
 								+ tab_id + "</font>");

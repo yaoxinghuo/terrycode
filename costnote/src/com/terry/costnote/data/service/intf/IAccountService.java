@@ -12,7 +12,7 @@ public interface IAccountService {
 	public boolean updateAccountSms(String email, boolean sendAlert,
 			double alertLimit);
 
-	public boolean sendVerifyCode(String email, String mobile, String password);
+	public boolean sendVerifyCode(String email, String mobile);
 
 	public boolean verifyCode(String email, String code);
 

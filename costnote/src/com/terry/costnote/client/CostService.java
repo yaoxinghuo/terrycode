@@ -13,9 +13,13 @@ public interface CostService extends RemoteService {
 
 	boolean deleteCost(String costIds);
 
+	boolean saveSchedule(String schedule);
+
+	boolean deleteSchedule(String scheduleId);
+
 	String getAccountInfo();
 
-	boolean sendVerifyCode(String mobile, String password);
+	boolean sendVerifyCode(String mobile);
 
 	boolean verifyCode(String code);
 

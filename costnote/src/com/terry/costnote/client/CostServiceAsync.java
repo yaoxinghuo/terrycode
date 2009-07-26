@@ -13,10 +13,13 @@ public interface CostServiceAsync {
 
 	void deleteCost(String costIds, AsyncCallback<Boolean> callback);
 
+	void saveSchedule(String schedule, AsyncCallback<Boolean> callback);
+
+	void deleteSchedule(String scheduleId, AsyncCallback<Boolean> callback);
+
 	void getAccountInfo(AsyncCallback<String> callback);
 
-	void sendVerifyCode(String mobile, String password,
-			AsyncCallback<Boolean> callback);
+	void sendVerifyCode(String mobile, AsyncCallback<Boolean> callback);
 
 	void verifyCode(String code, AsyncCallback<Boolean> callback);
 
