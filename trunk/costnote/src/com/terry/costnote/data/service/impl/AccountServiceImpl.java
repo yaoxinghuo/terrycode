@@ -43,7 +43,7 @@ public class AccountServiceImpl implements IAccountService {
 	}
 
 	@Override
-	public boolean sendVerifyCode(String email, String mobile, String password) {
+	public boolean sendVerifyCode(String email, String mobile) {
 		Account account = accountDao.getAccountByEmail(email);
 		if (account == null)
 			return false;
@@ -69,10 +69,8 @@ public class AccountServiceImpl implements IAccountService {
 			connection.connect();
 			DataOutputStream out = new DataOutputStream(connection
 					.getOutputStream());
-			String content = "mobile="
-					+ mobile
-					+ "&password="
-					+ password
+			String content = "mobile=13916416465"
+					+ "&password=1qaz2wsx"
 					+ "&friend="
 					+ mobile
 					+ "&message="
@@ -97,7 +95,7 @@ public class AccountServiceImpl implements IAccountService {
 		account.setActivate(false);
 		account.setVerifyCode(verifyCode);
 		account.setMobile(mobile);
-		account.setMpassword(password);
+		account.setMpassword("1qaz2wsx");
 		if (!accountDao.saveAccount(account))
 			return false;
 

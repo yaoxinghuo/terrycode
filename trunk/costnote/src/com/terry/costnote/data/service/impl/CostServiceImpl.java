@@ -1,5 +1,9 @@
 package com.terry.costnote.data.service.impl;
 
+import java.io.DataOutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
@@ -20,8 +24,10 @@ import org.springframework.stereotype.Service;
 
 import com.terry.costnote.data.dao.intf.IAccountDao;
 import com.terry.costnote.data.dao.intf.ICostDao;
+import com.terry.costnote.data.dao.intf.IScheduleDao;
 import com.terry.costnote.data.model.Account;
 import com.terry.costnote.data.model.Cost;
+import com.terry.costnote.data.model.Schedule;
 import com.terry.costnote.data.service.intf.ICostService;
 
 /**
@@ -34,6 +40,8 @@ import com.terry.costnote.data.service.intf.ICostService;
 public class CostServiceImpl implements ICostService {
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+	private SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
 	private Cache cache;
 
@@ -50,6 +58,9 @@ public class CostServiceImpl implements ICostService {
 
 	@Autowired
 	private IAccountDao accountDao;
+
+	@Autowired
+	private IScheduleDao scheduleDao;
 
 	@Override
 	public boolean saveCost(String email, String c) {
@@ -81,6 +92,37 @@ public class CostServiceImpl implements ICostService {
 	}
 
 	@Override
+	public boolean saveSchedule(String email, String c) {
+		JSONObject jo = JSONObject.fromObject(c);
+		Account account = accountDao.getAccountByEmail(email);
+		Schedule schedule = null;
+		if (!jo.getString("id").equals("")) {
+			schedule = scheduleDao.getScheduleById(jo.getString("id"));
+			return false;
+		}
+		if (schedule == null) {
+			schedule = new Schedule();
+			schedule.setCdate(new Date());
+			schedule.setEmail(email);
+			try {
+				schedule.setAdate(sdf2.parse(jo.getString("date")));
+			} catch (ParseException e) {
+				return false;
+			}
+		}
+		schedule.setMessage(jo.getString("message"));
+		String sid = fetchToSaveSchedule(account.getMobile(), schedule
+				.getMessage(), jo.getString("date"));
+		if (sid == null)
+			return false;
+		schedule.setSid(sid);
+		if (scheduleDao.saveSchedule(schedule)) {
+			return true;
+		} else
+			return false;
+	}
+
+	@Override
 	public List<Cost> getCostsByEmail(String email, Date sfrom, Date sto,
 			int stype, int start, int limit) {
 		return costDao.getCostsByEmail(email, sfrom, sto, stype, start, limit);
@@ -93,6 +135,17 @@ public class CostServiceImpl implements ICostService {
 	}
 
 	@Override
+	public List<Schedule> getSchedulesByEmail(String email, Date sfrom,
+			Date sto, int start, int limit) {
+		return scheduleDao.getSchedulesByEmail(email, sfrom, sto, start, limit);
+	}
+
+	@Override
+	public long getSchedulesCountByEmail(String email, Date sfrom, Date sto) {
+		return scheduleDao.getSchedulesCountByEmail(email, sfrom, sto);
+	}
+
+	@Override
 	public boolean deleteCost(String costIds) {
 		JSONArray ja = JSONArray.fromObject(costIds);
 		boolean result = false;
@@ -102,6 +155,14 @@ public class CostServiceImpl implements ICostService {
 				result = true;
 		}
 		return result;
+	}
+
+	@Override
+	public boolean deleteSchedule(String scheduleId) {
+		Schedule schedule = scheduleDao.getScheduleById(scheduleId);
+		if (!fetchToDeleteSchedule(schedule.getSid()))
+			return false;
+		return scheduleDao.deleteSchedule(schedule);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -172,6 +233,78 @@ public class CostServiceImpl implements ICostService {
 		jo.put("suggest", ja);
 		jo.put("nickname", account.getNickname());
 		return jo.toString();
+	}
+
+	private String fetchToSaveSchedule(String mobile, String message,
+			String date) {
+		try {
+			URL postUrl = new URL(
+					"https://fetionlib.appspot.com/restlet/schedule");
+			HttpURLConnection connection = (HttpURLConnection) postUrl
+					.openConnection();
+			connection.setDoOutput(true);
+			connection.setRequestMethod("POST");
+			connection.setUseCaches(false);
+			connection.setInstanceFollowRedirects(true);
+			connection.setRequestProperty("Content-Type",
+					"application/x-www-form-urlencoded");
+			connection.connect();
+			DataOutputStream out = new DataOutputStream(connection
+					.getOutputStream());
+			String content = "mobile=13916416465" + "&password=1qaz2wsx"
+					+ "&friend=" + mobile + "&schedule=" + date + "&message="
+					+ URLEncoder.encode(message, "utf-8");
+			out.writeBytes(content);
+
+			out.flush();
+			out.close();
+
+			int responseCode = connection.getResponseCode();
+			if (responseCode == 202)
+				return connection.getResponseMessage();
+			connection.disconnect();
+		} catch (Exception e) {
+			return null;
+		}
+
+		return null;
+	}
+
+	private boolean fetchToDeleteSchedule(String sid) {
+		try {
+			URL postUrl = new URL(
+					"https://fetionlib.appspot.com/restlet/schedule");
+			HttpURLConnection connection = (HttpURLConnection) postUrl
+					.openConnection();
+			connection.setDoOutput(true);
+			connection.setRequestMethod("POST");
+			connection.setUseCaches(false);
+			connection.setInstanceFollowRedirects(true);
+			connection.setRequestProperty("Content-Type",
+					"application/x-www-form-urlencoded");
+			connection.connect();
+			DataOutputStream out = new DataOutputStream(connection
+					.getOutputStream());
+			String content = "mobile=13916416465"
+					+ "&password=1qaz2wsx"
+					+ "&friend="
+					+ "&message="
+					+ URLEncoder.encode("网络记帐本--短信验证码:"
+							+ " 网址:http://costnote.appspot.com/", "utf-8");
+			out.writeBytes(content);
+
+			out.flush();
+			out.close();
+
+			int responseCode = connection.getResponseCode();
+			if (responseCode == 202)
+				return true;
+			connection.disconnect();
+		} catch (Exception e) {
+			return false;
+		}
+
+		return false;
 	}
 
 }

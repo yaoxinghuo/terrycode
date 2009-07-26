@@ -29,6 +29,9 @@
 		<action name="costListAction" class="costListAction">
 			<result type="json" />
 		</action>
+		<action name="scheduleListAction" class="scheduleListAction">
+			<result type="json" />
+		</action>
 	</package>
 
 </struts>

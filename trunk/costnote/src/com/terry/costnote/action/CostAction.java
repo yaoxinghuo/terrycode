@@ -32,13 +32,20 @@ public class CostAction extends GenericAction {
 		return costService.deleteCost(costIds);
 	}
 
+	public boolean saveSchedule(String schedule) {
+		return costService.saveSchedule(getCurrentUserEmail(), schedule);
+	}
+
+	public boolean deleteSchedule(String scheduleId) {
+		return costService.deleteSchedule(scheduleId);
+	}
+
 	public String getAccountInfo() {
 		return costService.getAccountInfo(getCurrentUserEmail());
 	}
 
-	public boolean sendVerifyCode(String mobile, String password) {
-		return accountService.sendVerifyCode(getCurrentUserEmail(), mobile,
-				password);
+	public boolean sendVerifyCode(String mobile) {
+		return accountService.sendVerifyCode(getCurrentUserEmail(), mobile);
 	}
 
 	public boolean verifyCode(String code) {

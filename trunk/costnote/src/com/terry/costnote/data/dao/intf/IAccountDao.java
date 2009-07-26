@@ -3,7 +3,6 @@ package com.terry.costnote.data.dao.intf;
 import java.util.List;
 
 import com.terry.costnote.data.model.Account;
-import com.terry.costnote.data.model.Friend;
 
 /**
  * @author Terry E-mail: yaoxinghuo at 126 dot com
@@ -20,11 +19,4 @@ public interface IAccountDao {
 
 	public List<Account> getAccounts(int start, int limit);
 
-	public boolean saveFriend(Friend friend);
-
-	public boolean deleteFriend(Friend friend);
-
-	public Friend getFriendById(String friendId);
-
-	public List<Friend> getFriendsByEmail(String email);
 }
