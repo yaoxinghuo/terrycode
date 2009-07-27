@@ -1,6 +1,8 @@
 package com.terry.costnote.data.service.impl;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -113,13 +115,15 @@ public class CostServiceImpl implements ICostService {
 		schedule.setMessage(jo.getString("message"));
 		String sid = fetchToSaveSchedule(account.getMobile(), schedule
 				.getMessage(), jo.getString("date"));
-		if (sid == null)
+		if (sid == null) {
 			return false;
+		}
 		schedule.setSid(sid);
 		if (scheduleDao.saveSchedule(schedule)) {
 			return true;
-		} else
+		} else {
 			return false;
+		}
 	}
 
 	@Override
@@ -239,7 +243,7 @@ public class CostServiceImpl implements ICostService {
 			String date) {
 		try {
 			URL postUrl = new URL(
-					"https://fetionlib.appspot.com/restlet/schedule");
+					"https://fetionlib.appspot.com/restlet/fetion/schedule");
 			HttpURLConnection connection = (HttpURLConnection) postUrl
 					.openConnection();
 			connection.setDoOutput(true);
@@ -252,7 +256,8 @@ public class CostServiceImpl implements ICostService {
 			DataOutputStream out = new DataOutputStream(connection
 					.getOutputStream());
 			String content = "mobile=13916416465" + "&password=1qaz2wsx"
-					+ "&friend=" + mobile + "&schedule=" + date + "&message="
+					+ "&friend=" + mobile + "&schedule="
+					+ date.replace(" ", "%20") + "&message="
 					+ URLEncoder.encode(message, "utf-8");
 			out.writeBytes(content);
 
@@ -260,8 +265,19 @@ public class CostServiceImpl implements ICostService {
 			out.close();
 
 			int responseCode = connection.getResponseCode();
-			if (responseCode == 202)
-				return connection.getResponseMessage();
+			if (responseCode == 202) {
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(connection.getInputStream())); // 读取结果
+				StringBuffer sb = new StringBuffer();
+				String line;
+				while ((line = reader.readLine()) != null) {
+					sb.append(line);
+				}
+				reader.close();
+				connection.disconnect();
+				JSONObject jo = JSONObject.fromObject(sb.toString());
+				return jo.getString("sid");
+			}
 			connection.disconnect();
 		} catch (Exception e) {
 			return null;
@@ -273,7 +289,7 @@ public class CostServiceImpl implements ICostService {
 	private boolean fetchToDeleteSchedule(String sid) {
 		try {
 			URL postUrl = new URL(
-					"https://fetionlib.appspot.com/restlet/schedule");
+					"https://fetionlib.appspot.com/restlet/fetion/schedule/delete");
 			HttpURLConnection connection = (HttpURLConnection) postUrl
 					.openConnection();
 			connection.setDoOutput(true);
