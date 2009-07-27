@@ -31,8 +31,6 @@ public class Schedule implements Serializable {
 	private String id;
 
 	@Enumerated
-	private String name;
-	@Enumerated
 	private String message;
 	@Enumerated
 	@Temporal(TemporalType.TIMESTAMP)
@@ -63,14 +61,6 @@ public class Schedule implements Serializable {
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getMessage() {

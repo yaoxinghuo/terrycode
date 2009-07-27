@@ -1085,8 +1085,8 @@ public class Costnote implements EntryPoint {
 
 			final TimeField time = new TimeField();
 			time.setFieldLabel("时间*");
-			time.setDateValue(new Date());
 			time.setFormat(timeFormat);
+			time.setDateValue(new Date());
 			formPanel.add(time);
 
 			date.addListener(Events.Blur, new Listener<FieldEvent>() {
@@ -1110,13 +1110,11 @@ public class Costnote implements EntryPoint {
 					if (!formPanel.isValid()) {
 						return;
 					}
-					com.google.gwt.user.client.Window.alert(format.format(date
-							.getValue())
-							+ time.getValue().getText());
 					JSONObject jo = new JSONObject();
 					jo.put("id", new JSONString(""));
-					jo.put("date", new JSONString(format
-							.format(date.getValue())));
+					jo.put("date", new JSONString(format.format(date
+							.getValue())+" "
+							+ time.getValue().getText()));
 					jo.put("message", new JSONString(
 							message.getValue() == null ? "" : message
 									.getValue()));
