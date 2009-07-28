@@ -22,6 +22,7 @@ import com.terry.costnote.data.service.intf.ICostService;
 public class ScheduletListAction extends GenericAction {
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	private SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
 	private String sfrom;
 
@@ -96,10 +97,10 @@ public class ScheduletListAction extends GenericAction {
 		for (Schedule schedule : schedules) {
 			JSONObject a = new JSONObject();
 			a.put("id", schedule.getId());
-			a.put("type", schedule.isType());
+			a.put("type", schedule.getAdate().getTime() > new Date().getTime());
 			a.put("sid", schedule.getSid());
 			a.put("message", schedule.getMessage());
-			a.put("date", sdf.format(schedule.getAdate()));
+			a.put("date", sdf2.format(schedule.getAdate()));
 			ja.add(a);
 		}
 		setRows(ja);

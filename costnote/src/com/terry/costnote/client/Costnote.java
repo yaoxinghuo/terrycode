@@ -22,7 +22,6 @@ import com.extjs.gxt.ui.client.data.ModelType;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.MessageBoxEvent;
@@ -107,6 +106,8 @@ public class Costnote implements EntryPoint {
 			.getFormat("yyyy-MM-dd");
 	private static DateTimeFormat timeFormat = DateTimeFormat
 			.getFormat("HH:mm");
+	private static DateTimeFormat dateTimeFormat = DateTimeFormat
+			.getFormat("yyyy-MM-dd HH:mm");
 	private Viewport viewport;
 	private static TabPanel tp = new TabPanel();
 	private static TreePanel<ModelData> tree;
@@ -526,8 +527,9 @@ public class Costnote implements EntryPoint {
 			public Object render(ModelData model, String property,
 					ColumnData config, int rowIndex, int colIndex,
 					ListStore<ModelData> store, Grid<ModelData> grid) {
-				return (((Boolean) store.getAt(rowIndex).get("type")).booleanValue()) ? "<font color='red'>未执行</font>"
-						: "<font color='green'>已执行</font>";
+				return (((Boolean) store.getAt(rowIndex).get("type"))
+						.booleanValue()) ? "<font color='green'>已执行</font>"
+						: "<font color='red'>未执行</font>";
 			}
 
 		});
@@ -579,6 +581,7 @@ public class Costnote implements EntryPoint {
 		final Grid<ModelData> grid = new Grid<ModelData>(scheduleStore, cm);
 		grid.setSelectionModel(sm);
 		grid.addPlugin(sm);
+		grid.setAutoExpandColumn("message");
 		grid.setAutoHeight(true);
 		grid.setLoadMask(true);
 		Menu menu = new Menu();
@@ -609,9 +612,9 @@ public class Costnote implements EntryPoint {
 																.get("id")));
 											ServiceDefTarget endpoint = (ServiceDefTarget) costService;
 											endpoint
-													.setServiceEntryPoint("gwt-cost!deleteCost.action");
+													.setServiceEntryPoint("gwt-cost!deleteSchedule.action");
 											costService
-													.deleteCost(
+													.deleteSchedule(
 															ja.toString(),
 															new AsyncCallback<Boolean>() {
 
@@ -648,8 +651,9 @@ public class Costnote implements EntryPoint {
 		grid.setContextMenu(menu);
 		cp.add(grid);
 		PagingToolBar toolBar = createChinesePagingToolBar();
-		toolBar.bind((BasePagingLoader<PagingLoadResult<ModelData>>) scheduleStore
-				.getLoader());
+		toolBar
+				.bind((BasePagingLoader<PagingLoadResult<ModelData>>) scheduleStore
+						.getLoader());
 		cp.setBottomComponent(toolBar);
 
 		ToolBar tb = new ToolBar();
@@ -687,7 +691,8 @@ public class Costnote implements EntryPoint {
 				}
 				scheduleLoadConfig.setOffset(0);
 				scheduleLoadConfig.setLimit(20);
-				scheduleLoadConfig.set("sfrom", format.format(sfrom.getValue()));
+				scheduleLoadConfig
+						.set("sfrom", format.format(sfrom.getValue()));
 				scheduleLoadConfig.set("sto", format.format(sto.getValue()));
 				scheduleLoadConfig.set("timestamp", new Date().getTime());
 				scheduleStore.getLoader().load(scheduleLoadConfig);
@@ -1089,14 +1094,14 @@ public class Costnote implements EntryPoint {
 			time.setDateValue(new Date());
 			formPanel.add(time);
 
-			date.addListener(Events.Blur, new Listener<FieldEvent>() {
-
-				@Override
-				public void handleEvent(FieldEvent be) {
-					time.setMinValue(new Date());
-
-				}
-			});
+			// date.addListener(Events.Blur, new Listener<FieldEvent>() {
+			//
+			// @Override
+			// public void handleEvent(FieldEvent be) {
+			// time.setMinValue(new Date());
+			//
+			// }
+			// });
 			final TextArea message = new TextArea();
 			message.setPreventScrollbars(true);
 			message.setFieldLabel("消息*");
@@ -1110,11 +1115,17 @@ public class Costnote implements EntryPoint {
 					if (!formPanel.isValid()) {
 						return;
 					}
+					String s = format.format(date.getValue()) + " "
+							+ time.getValue().getText();
+					if (dateTimeFormat.parse(s).getTime()
+							- new Date().getTime() < 1200000) {
+						showPopMessage("error",
+								"根据中国移动的规定，定时短信的发送日期要超过现在日期20分钟以上！");
+						return;
+					}
 					JSONObject jo = new JSONObject();
 					jo.put("id", new JSONString(""));
-					jo.put("date", new JSONString(format.format(date
-							.getValue())+" "
-							+ time.getValue().getText()));
+					jo.put("date", new JSONString(s));
 					jo.put("message", new JSONString(
 							message.getValue() == null ? "" : message
 									.getValue()));
