@@ -630,7 +630,7 @@ public class Costnote implements EntryPoint {
 																public void onSuccess(
 																		Boolean result) {
 																	if (result) {
-																		reloadList();
+																		reloadScheduleList();
 																		showPopMessage(
 																				"pass",
 																				operatePass);
@@ -1480,6 +1480,11 @@ public class Costnote implements EntryPoint {
 		if (store != null) {
 			store.getLoader().load(loadConfig);
 		}
+	}
+
+	private static void reloadScheduleList() {
+		if (scheduleStore != null)
+			scheduleStore.getLoader().load(scheduleLoadConfig);
 	}
 
 	public static final AsyncCallback<Boolean> booleanAsyncCallback = new AsyncCallback<Boolean>() {
