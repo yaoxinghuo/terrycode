@@ -111,7 +111,9 @@ public class Costnote implements EntryPoint {
 	private static TabPanel tp = new TabPanel();
 	private static TreePanel<ModelData> tree;
 	private static ListStore<ModelData> store;
+	private static ListStore<ModelData> scheduleStore;
 	private static BasePagingLoadConfig loadConfig = new BasePagingLoadConfig();
+	private static BasePagingLoadConfig scheduleLoadConfig = new BasePagingLoadConfig();
 	private static ArrayList<String> names = new ArrayList<String>();
 
 	public void onModuleLoad() {
@@ -524,7 +526,7 @@ public class Costnote implements EntryPoint {
 			public Object render(ModelData model, String property,
 					ColumnData config, int rowIndex, int colIndex,
 					ListStore<ModelData> store, Grid<ModelData> grid) {
-				return (((Double) store.getAt(rowIndex).get("type")).intValue() == -1) ? "<font color='red'>未执行</font>"
+				return (((Boolean) store.getAt(rowIndex).get("type")).booleanValue()) ? "<font color='red'>未执行</font>"
 						: "<font color='green'>已执行</font>";
 			}
 
@@ -557,28 +559,26 @@ public class Costnote implements EntryPoint {
 		mt.addField("id");
 		mt.addField("date");
 		mt.addField("type");
-		mt.addField("name");
 		mt.addField("sid");
 		mt.addField("message");
 
 		ColumnModel cm = new ColumnModel(configs);
 
-		loadConfig.setOffset(0);
-		loadConfig.setLimit(20);
-		loadConfig.set("timestamp", new Date().getTime());
-		store = DataStruction.JsonStoreCreatePaginate("ds02", mt,
-				"/ajax/scheduleListAction.action", loadConfig);
-		// this will register into ds01
+		scheduleLoadConfig.setOffset(0);
+		scheduleLoadConfig.setLimit(20);
+		scheduleLoadConfig.set("timestamp", new Date().getTime());
+		scheduleStore = DataStruction.JsonStoreCreatePaginate("ds02", mt,
+				"/ajax/scheduleListAction.action", scheduleLoadConfig);
+		// this will register into ds02
 
 		ContentPanel cp = new ContentPanel();
 		cp.setBodyBorder(false);
 		cp.setHeaderVisible(false);
 		cp.setButtonAlign(HorizontalAlignment.CENTER);
 		cp.setLayout(new BorderLayout());
-		final Grid<ModelData> grid = new Grid<ModelData>(store, cm);
+		final Grid<ModelData> grid = new Grid<ModelData>(scheduleStore, cm);
 		grid.setSelectionModel(sm);
 		grid.addPlugin(sm);
-		grid.setAutoExpandColumn("name");
 		grid.setAutoHeight(true);
 		grid.setLoadMask(true);
 		Menu menu = new Menu();
@@ -648,7 +648,7 @@ public class Costnote implements EntryPoint {
 		grid.setContextMenu(menu);
 		cp.add(grid);
 		PagingToolBar toolBar = createChinesePagingToolBar();
-		toolBar.bind((BasePagingLoader<PagingLoadResult<ModelData>>) store
+		toolBar.bind((BasePagingLoader<PagingLoadResult<ModelData>>) scheduleStore
 				.getLoader());
 		cp.setBottomComponent(toolBar);
 
@@ -685,12 +685,12 @@ public class Costnote implements EntryPoint {
 					sto.markInvalid("该日期应大于起始日期！");
 					return;
 				}
-				loadConfig.setOffset(0);
-				loadConfig.setLimit(20);
-				loadConfig.set("sfrom", format.format(sfrom.getValue()));
-				loadConfig.set("sto", format.format(sto.getValue()));
-				loadConfig.set("timestamp", new Date().getTime());
-				store.getLoader().load(loadConfig);
+				scheduleLoadConfig.setOffset(0);
+				scheduleLoadConfig.setLimit(20);
+				scheduleLoadConfig.set("sfrom", format.format(sfrom.getValue()));
+				scheduleLoadConfig.set("sto", format.format(sto.getValue()));
+				scheduleLoadConfig.set("timestamp", new Date().getTime());
+				scheduleStore.getLoader().load(scheduleLoadConfig);
 			}
 
 		});

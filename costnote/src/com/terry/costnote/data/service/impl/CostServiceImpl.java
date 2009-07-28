@@ -263,7 +263,6 @@ public class CostServiceImpl implements ICostService {
 
 			out.flush();
 			out.close();
-
 			int responseCode = connection.getResponseCode();
 			if (responseCode == 202) {
 				BufferedReader reader = new BufferedReader(

@@ -16,4 +16,9 @@
 		<property name="adate" direction="asc"/>
 	</datastore-index>
 
+	<datastore-index kind="Schedule" ancestor="false" source="auto">
+		<property name="email" direction="asc"/>
+		<property name="adate" direction="desc"/>
+		<property name="cdate" direction="desc"/>
+	</datastore-index>
 </datastore-indexes>
