@@ -200,61 +200,6 @@ public class CostServiceImpl implements ICostService {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public String getAccountInfo(String email) {
-		Account account = accountDao.getAccountByEmail(email);
-		if (account == null) {
-			account = new Account();
-			account.setAlertLimit(0);
-			account.setCdate(new Date());
-			account.setEmail(email);
-			account.setLastSendAlert(new Date());
-			account.setMobile("");
-			account.setMpassword("");
-			account.setSendAlert(false);
-			account.setActivate(false);
-			account.setVerifyCode("");
-			account.setNickname(email);
-			if (!accountDao.saveAccount(account))
-				return "";
-		}
-
-		JSONObject jo = new JSONObject();
-		JSONArray ja = new JSONArray();
-		if (cache != null) {
-			Stack<String> stack = (Stack<String>) cache.get(email);
-			if (stack != null) {
-				while (!stack.isEmpty())
-					ja.add(stack.pop());
-			}
-		}
-		if (ja.size() == 0) {
-			List<Cost> costs = costDao.getCostsByEmail(email, 0, 10);
-			Stack<String> stack = new Stack<String>();
-			for (Cost cost : costs) {
-				String name = cost.getName();
-				if (!stack.contains(name)) {
-					stack.push(name);
-				}
-			}
-
-			if (stack.size() > 0 && cache != null) {
-				cache.put(email, stack);
-			}
-
-			Stack<String> stack2 = (Stack<String>) cache.get(email);
-			if (stack2 != null) {
-				while (!stack2.isEmpty())
-					ja.add(stack2.pop());
-			}
-
-		}
-		jo.put("suggest", ja);
-		jo.put("nickname", account.getNickname());
-		return jo.toString();
-	}
-
 	private String fetchToSaveSchedule(String mobile, String message,
 			String date) {
 		try {
