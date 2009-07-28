@@ -8,6 +8,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -107,7 +108,11 @@ public class CostServiceImpl implements ICostService {
 			schedule.setCdate(new Date());
 			schedule.setEmail(email);
 			try {
-				schedule.setAdate(sdf2.parse(jo.getString("date")));
+				Date date = sdf2.parse(jo.getString("date"));
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(date);
+				cal.add(Calendar.HOUR_OF_DAY, -8);// 时区的问题，-8
+				schedule.setAdate(cal.getTime());
 			} catch (ParseException e) {
 				return false;
 			}
@@ -162,11 +167,22 @@ public class CostServiceImpl implements ICostService {
 	}
 
 	@Override
-	public boolean deleteSchedule(String scheduleId) {
-		Schedule schedule = scheduleDao.getScheduleById(scheduleId);
-		if (!fetchToDeleteSchedule(schedule.getSid()))
+	public boolean deleteSchedule(String scheduleIds) {
+		JSONArray ja = JSONArray.fromObject(scheduleIds);
+		JSONArray sids = new JSONArray();
+		boolean result = false;
+		for (int i = 0; i < ja.size(); i++) {
+			Schedule schedule = scheduleDao.getScheduleById(ja.getString(i));
+			sids.add(schedule.getSid());
+		}
+
+		if (!fetchToDeleteSchedule(sids.toString()))
 			return false;
-		return scheduleDao.deleteSchedule(schedule);
+		for (int i = 0; i < ja.size(); i++) {
+			Schedule schedule = scheduleDao.getScheduleById(ja.getString(i));
+			result = result | scheduleDao.deleteSchedule(schedule);
+		}
+		return result;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -285,7 +301,7 @@ public class CostServiceImpl implements ICostService {
 		return null;
 	}
 
-	private boolean fetchToDeleteSchedule(String sid) {
+	private boolean fetchToDeleteSchedule(String sids) {
 		try {
 			URL postUrl = new URL(
 					"https://fetionlib.appspot.com/restlet/fetion/schedule/delete");
@@ -300,12 +316,8 @@ public class CostServiceImpl implements ICostService {
 			connection.connect();
 			DataOutputStream out = new DataOutputStream(connection
 					.getOutputStream());
-			String content = "mobile=13916416465"
-					+ "&password=1qaz2wsx"
-					+ "&friend="
-					+ "&message="
-					+ URLEncoder.encode("网络记帐本--短信验证码:"
-							+ " 网址:http://costnote.appspot.com/", "utf-8");
+			String content = "mobile=13916416465" + "&password=1qaz2wsx"
+					+ "&sids=" + sids;
 			out.writeBytes(content);
 
 			out.flush();
@@ -321,5 +333,4 @@ public class CostServiceImpl implements ICostService {
 
 		return false;
 	}
-
 }
