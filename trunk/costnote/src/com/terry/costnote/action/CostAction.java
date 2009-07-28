@@ -41,7 +41,7 @@ public class CostAction extends GenericAction {
 	}
 
 	public String getAccountInfo() {
-		return costService.getAccountInfo(getCurrentUserEmail());
+		return accountService.getAccountInfo(getCurrentUserEmail());
 	}
 
 	public boolean sendVerifyCode(String mobile) {
@@ -60,10 +60,6 @@ public class CostAction extends GenericAction {
 	public boolean updateAccountSms(Boolean sendAlert, Double alertLimit) {
 		return accountService.updateAccountSms(getCurrentUserEmail(),
 				sendAlert, alertLimit);
-	}
-
-	public String getAccountSettings() {
-		return accountService.getAccountSettings(getCurrentUserEmail());
 	}
 
 }

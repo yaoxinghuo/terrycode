@@ -4,8 +4,17 @@ import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 import java.util.Random;
+import java.util.Stack;
 
+import javax.cache.Cache;
+import javax.cache.CacheException;
+import javax.cache.CacheManager;
+
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +22,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import com.terry.costnote.data.dao.intf.IAccountDao;
+import com.terry.costnote.data.dao.intf.ICostDao;
 import com.terry.costnote.data.model.Account;
+import com.terry.costnote.data.model.Cost;
 import com.terry.costnote.data.service.intf.IAccountService;
 
 /**
@@ -26,7 +37,20 @@ import com.terry.costnote.data.service.intf.IAccountService;
 public class AccountServiceImpl implements IAccountService {
 
 	@Autowired
+	private ICostDao costDao;
+
+	@Autowired
 	private IAccountDao accountDao;
+
+	private Cache cache;
+
+	public AccountServiceImpl() {
+		try {
+			cache = CacheManager.getInstance().getCacheFactory().createCache(
+					Collections.emptyMap());
+		} catch (CacheException e) {
+		}
+	}
 
 	@Override
 	public boolean updateAccount(String email, String a) {
@@ -131,6 +155,68 @@ public class AccountServiceImpl implements IAccountService {
 		account.setSendAlert(sendAlert);
 		account.setAlertLimit(alertLimit);
 		return accountDao.saveAccount(account);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public String getAccountInfo(String email) {
+		Account account = accountDao.getAccountByEmail(email);
+		if (account == null) {
+			account = new Account();
+			account.setAlertLimit(0);
+			account.setCdate(new Date());
+			account.setEmail(email);
+			account.setLastSendAlert(new Date());
+			account.setMobile("");
+			account.setMpassword("");
+			account.setSendAlert(false);
+			account.setActivate(false);
+			account.setVerifyCode("");
+			account.setNickname(email);
+			if (!accountDao.saveAccount(account))
+				return "";
+		}
+
+		JSONObject jo = new JSONObject();
+		JSONArray ja = new JSONArray();
+		if (cache != null) {
+			Stack<String> stack = (Stack<String>) cache.get(email);
+			if (stack != null) {
+				while (!stack.isEmpty())
+					ja.add(stack.pop());
+			}
+		}
+		if (ja.size() == 0) {
+			List<Cost> costs = costDao.getCostsByEmail(email, 0, 10);
+			Stack<String> stack = new Stack<String>();
+			for (Cost cost : costs) {
+				String name = cost.getName();
+				if (!stack.contains(name)) {
+					stack.push(name);
+				}
+			}
+
+			if (stack.size() > 0 && cache != null) {
+				cache.put(email, stack);
+			}
+
+			Stack<String> stack2 = (Stack<String>) cache.get(email);
+			if (stack2 != null) {
+				while (!stack2.isEmpty())
+					ja.add(stack2.pop());
+			}
+
+		}
+		jo.put("suggest", ja);
+		jo.put("nickname", account.getNickname());
+		jo.put("email", account.getEmail());
+		jo.put("mobile", Double.parseDouble(account.getMobile()));
+		jo.put("mpassword", account.getMpassword());
+		jo.put("verifyCode", account.getVerifyCode());
+		jo.put("alertLimit", account.getAlertLimit());
+		jo.put("sendAlert", account.isSendAlert());
+		jo.put("activate", account.isActivate());
+		return jo.toString();
 	}
 
 	@Override

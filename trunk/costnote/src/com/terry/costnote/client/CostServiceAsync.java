@@ -27,7 +27,4 @@ public interface CostServiceAsync {
 
 	void updateAccountSms(boolean sendAlert, double alertLimit,
 			AsyncCallback<Boolean> callback);
-
-	void getAccountSettings(AsyncCallback<String> callback);
-
 }
