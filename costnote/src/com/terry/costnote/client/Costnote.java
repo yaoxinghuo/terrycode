@@ -1102,7 +1102,7 @@ public class Costnote implements EntryPoint {
 			time.setFieldLabel("时间*");
 			time.setFormat(timeFormat);
 			time.setIncrement(30);
-			time.setDateValue(new Date());
+			time.setDateValue(new Date(new Date().getTime() + 1800000l));
 			formPanel.add(time);
 
 			// date.addListener(Events.Blur, new Listener<FieldEvent>() {
