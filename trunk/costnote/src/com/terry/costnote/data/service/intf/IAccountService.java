@@ -18,7 +18,5 @@ public interface IAccountService {
 
 	public boolean verifyCode(String email, String code);
 
-	public String getAccountSettings(String email);
-
 	public String getAccountInfo(String email);
 }

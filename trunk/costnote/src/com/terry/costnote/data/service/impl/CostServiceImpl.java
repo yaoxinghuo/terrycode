@@ -281,7 +281,8 @@ public class CostServiceImpl implements ICostService {
 				DataOutputStream out = new DataOutputStream(connection
 						.getOutputStream());
 				String content = "mobile=13916416465" + "&uuid=" + uuid
-						+ "&password=1qaz2wsx" + "&sids=" + sids;
+						+ "&password=1qaz2wsx" + "&sids="
+						+ URLEncoder.encode(sids, "utf-8");
 				out.writeBytes(content);
 
 				out.flush();
