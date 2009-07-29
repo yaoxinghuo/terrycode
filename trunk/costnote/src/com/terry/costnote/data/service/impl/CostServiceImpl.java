@@ -47,7 +47,7 @@ public class CostServiceImpl implements ICostService {
 
 	private static Log log = LogFactory.getLog(CostServiceImpl.class);
 
-	private static final int tryTimes = 10;
+	private static final int tryTimes = 5;
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -177,20 +177,22 @@ public class CostServiceImpl implements ICostService {
 	public boolean deleteSchedule(String scheduleIds) {
 		JSONArray ja = JSONArray.fromObject(scheduleIds);
 		JSONArray sids = new JSONArray();
-		boolean result = false;
 		for (int i = 0; i < ja.size(); i++) {
 			Schedule schedule = scheduleDao.getScheduleById(ja.getString(i));
 			if (schedule.getAdate().getTime() > new Date().getTime())
 				sids.add(schedule.getSid());
 		}
 
-		if (!fetchToDeleteSchedule(sids.toString()))
+		if (!fetchToDeleteSchedule(sids.toString())) {
 			return false;
+		}
+		int count = 0;
 		for (int i = 0; i < ja.size(); i++) {
 			Schedule schedule = scheduleDao.getScheduleById(ja.getString(i));
-			result = result | scheduleDao.deleteSchedule(schedule);
+			if (scheduleDao.deleteSchedule(schedule))
+				count++;
 		}
-		return result;
+		return count != 0;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -266,7 +268,7 @@ public class CostServiceImpl implements ICostService {
 		for (int i = 0; i < tryTimes; i++) {
 			try {
 				URL postUrl = new URL(
-						"https://fetionlib.appspot.com/restlet/fetion/schedule/delete");
+						"https://fetionlib.appspot.com/restlet/fetion/scheduleDelete");
 				HttpURLConnection connection = (HttpURLConnection) postUrl
 						.openConnection();
 				connection.setDoOutput(true);
@@ -294,8 +296,8 @@ public class CostServiceImpl implements ICostService {
 			} catch (Exception e) {
 				log.warn("error fetchToDeleteSchedule, exception:"
 						+ e.getMessage() + ". tried " + i + " times");
-				if (!e.getMessage().contains("Unknown"))
-					return false;
+				if (e.getMessage().contains("Unknown"))
+					return true;
 			}
 		}
 		return false;

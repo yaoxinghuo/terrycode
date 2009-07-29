@@ -43,7 +43,7 @@ public class AccountServiceImpl implements IAccountService {
 
 	private static Log log = LogFactory.getLog(AccountServiceImpl.class);
 	
-	private static final int tryTimes = 10;
+	private static final int tryTimes = 5;
 
 	@Autowired
 	private ICostDao costDao;
