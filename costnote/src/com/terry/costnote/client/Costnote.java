@@ -22,6 +22,7 @@ import com.extjs.gxt.ui.client.data.ModelType;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.MenuEvent;
 import com.extjs.gxt.ui.client.event.MessageBoxEvent;
@@ -1100,6 +1101,7 @@ public class Costnote implements EntryPoint {
 			final TimeField time = new TimeField();
 			time.setFieldLabel("时间*");
 			time.setFormat(timeFormat);
+			time.setIncrement(30);
 			time.setDateValue(new Date());
 			formPanel.add(time);
 
@@ -1158,7 +1160,7 @@ public class Costnote implements EntryPoint {
 									b.setEnabled(true);
 									b.setText("保存");
 									if (result) {
-//										formPanel.reset();
+										// formPanel.reset();
 										message.setValue("");
 										newScheduleWindow.hide();
 										reloadScheduleList();
@@ -1242,7 +1244,7 @@ public class Costnote implements EntryPoint {
 
 			formPanel2
 					.add(new HTML(
-							"<font color='red'>发送验证码前，请先将13916416465加为您的好友，本站仅使用您的手机号给您本人发送免费提醒短信。<br/>"
+							"<font color='red'>发送验证码前，请先按“加为好友”，机器人将自动将您加为好友，本站仅使用您的手机号给您本人发送免费提醒短信。<br/>"
 									+ "本站承诺不会将使用您的号码用于其他任何用途！若您对此有任何疑议，请不要使用该功能！"
 									+ "<a href='http://sites.google.com/site/it/feedback' target='_blank'>给本站留言</a>"));
 
@@ -1261,6 +1263,8 @@ public class Costnote implements EntryPoint {
 
 			LayoutContainer container = new LayoutContainer();
 			container.setLayout(new ColumnLayout());
+
+			final Button addFriendButton = new Button("加为好友");
 
 			final Button validateButton = new Button("发送验证码");
 			validateButton
@@ -1369,6 +1373,97 @@ public class Costnote implements EntryPoint {
 			container.add(activeButton,
 					new com.extjs.gxt.ui.client.widget.layout.ColumnData(75));
 
+			mobile.addListener(Events.Change, new Listener<FieldEvent>() {
+
+				@Override
+				public void handleEvent(FieldEvent be) {
+					addFriendButton.setEnabled(true);
+				}
+
+			});
+
+			addFriendButton
+					.addSelectionListener(new SelectionListener<ButtonEvent>() {
+
+						@Override
+						public void componentSelected(ButtonEvent ce) {
+							// TODO Auto-generated method stub
+							if (mobile.isValid()) {
+								addFriendButton.setEnabled(false);
+								addFriendButton.setEnabled(false);
+								ServiceDefTarget endpoint = (ServiceDefTarget) costService;
+								endpoint
+										.setServiceEntryPoint("gwt-cost!addFriend.action");
+								final String m = String.valueOf(mobile
+										.getValue());
+								costService.addFriend(m,
+										new AsyncCallback<Integer>() {
+
+											@Override
+											public void onFailure(
+													Throwable caught) {
+												addFriendButton
+														.setText("发送验证码");
+												addFriendButton
+														.setEnabled(true);
+												showPopMessage("error",
+														operateError);
+											}
+
+											@Override
+											public void onSuccess(Integer result) {
+												addFriendButton
+														.setText("发送验证码");
+												if (result != -1) {
+													addFriendButton
+															.setEnabled(false);
+													if (result == 1) {
+
+														showPopMessage(
+																"pass",
+																"系统已尝试加"
+																		+ m
+																		+ "为好友,请按提示同意加为好友！");
+													} else if (result == 0) {
+														accountSettings
+																.put(
+																		"activate",
+																		JSONBoolean
+																				.getInstance(false));
+														isActivate
+																.setValue(false);
+														showPopMessage(
+																"pass",
+																"系统已加"
+																		+ m
+																		+ "为好友！");
+													}
+													validateButton
+															.setEnabled(true);
+													verifyCode.setEnabled(true);
+													activeButton
+															.setEnabled(true);
+													accountSettings
+															.put(
+																	"activate",
+																	JSONBoolean
+																			.getInstance(false));
+													isActivate.setValue(false);
+												} else {
+													addFriendButton
+															.setEnabled(true);
+													showPopMessage("error",
+															"系统加您为好友时发生错误,请确认您的手机号码已开通飞信!");
+												}
+
+											}
+
+										});
+							}
+						}
+
+					});
+
 			formPanel2.add(container);
 
 			item2.add(formPanel2);
@@ -1434,6 +1529,7 @@ public class Costnote implements EntryPoint {
 				validateButton.setEnabled(false);
 				verifyCode.setEnabled(false);
 				activeButton.setEnabled(false);
+				addFriendButton.setEnabled(false);
 			}
 
 			settingWindow.add(tp);

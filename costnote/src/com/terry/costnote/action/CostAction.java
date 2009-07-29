@@ -44,6 +44,10 @@ public class CostAction extends GenericAction {
 		return accountService.getAccountInfo(getCurrentUserEmail());
 	}
 
+	public int addFriend(String mobile) {
+		return accountService.addFriend(getCurrentUserEmail(), mobile);
+	}
+
 	public boolean sendVerifyCode(String mobile) {
 		return accountService.sendVerifyCode(getCurrentUserEmail(), mobile);
 	}

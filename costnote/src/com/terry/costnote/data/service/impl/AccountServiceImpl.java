@@ -1,6 +1,8 @@
 package com.terry.costnote.data.service.impl;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -9,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.Stack;
+import java.util.UUID;
 
 import javax.cache.Cache;
 import javax.cache.CacheException;
@@ -17,6 +20,8 @@ import javax.cache.CacheManager;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -35,6 +40,8 @@ import com.terry.costnote.data.service.intf.IAccountService;
 @Service("accountService")
 @Repository
 public class AccountServiceImpl implements IAccountService {
+
+	private static Log log = LogFactory.getLog(AccountServiceImpl.class);
 
 	@Autowired
 	private ICostDao costDao;
@@ -67,6 +74,28 @@ public class AccountServiceImpl implements IAccountService {
 	}
 
 	@Override
+	/*
+	 * -1 错误 0 已加过 1OK
+	 */
+	public int addFriend(String email, String mobile) {
+		Account account = accountDao.getAccountByEmail(email);
+		if (account == null)
+			return -1;
+
+		int action = fetchToAddFriend(mobile);
+		if (action == -1)
+			return -1;
+		account.setActivate(false);
+		account.setVerifyCode("");
+		account.setMobile(mobile);
+		account.setMpassword("1qaz2wsx");
+		if (accountDao.saveAccount(account))
+			return action;
+		else
+			return -1;
+	}
+
+	@Override
 	public boolean sendVerifyCode(String email, String mobile) {
 		Account account = accountDao.getAccountByEmail(email);
 		if (account == null)
@@ -77,53 +106,13 @@ public class AccountServiceImpl implements IAccountService {
 			verifyCode = verifyCode + random.nextInt(10);
 		}
 
-		boolean result = false;
-		int responseCode = 0;
-		try {
-			URL postUrl = new URL(
-					"https://fetionlib.appspot.com/restlet/fetion");
-			HttpURLConnection connection = (HttpURLConnection) postUrl
-					.openConnection();
-			connection.setDoOutput(true);
-			connection.setRequestMethod("POST");
-			connection.setUseCaches(false);
-			connection.setInstanceFollowRedirects(true);
-			connection.setRequestProperty("Content-Type",
-					"application/x-www-form-urlencoded");
-			connection.connect();
-			DataOutputStream out = new DataOutputStream(connection
-					.getOutputStream());
-			String content = "mobile=13916416465"
-					+ "&password=1qaz2wsx"
-					+ "&friend="
-					+ mobile
-					+ "&message="
-					+ URLEncoder.encode("网络记帐本--短信验证码:" + verifyCode
-							+ " 网址:http://costnote.appspot.com/", "utf-8");
-			out.writeBytes(content);
-
-			out.flush();
-			out.close();
-
-			responseCode = connection.getResponseCode();
-
-			connection.disconnect();
-		} catch (Exception e) {
-			result = false;
-		}
-
-		if (responseCode == 202)
-			result = true;
-		else
+		if (!fetchToSendSMS(mobile, verifyCode))
 			return false;
 		account.setActivate(false);
 		account.setVerifyCode(verifyCode);
 		account.setMobile(mobile);
 		account.setMpassword("1qaz2wsx");
-		if (!accountDao.saveAccount(account))
-			return false;
-
-		return result;
+		return accountDao.saveAccount(account);
 	}
 
 	@Override
@@ -234,5 +223,105 @@ public class AccountServiceImpl implements IAccountService {
 		jo.put("sendAlert", account.isSendAlert());
 		jo.put("activate", account.isActivate());
 		return jo.toString();
+	}
+
+	private boolean fetchToSendSMS(String mobile, String verifyCode) {
+		String uuid = UUID.randomUUID().toString();
+		for (int i = 0; i < 5; i++) {
+			int responseCode = 0;
+			try {
+				URL postUrl = new URL(
+						"https://fetionlib.appspot.com/restlet/fetion");
+				HttpURLConnection connection = (HttpURLConnection) postUrl
+						.openConnection();
+				connection.setDoOutput(true);
+				connection.setRequestMethod("POST");
+				connection.setUseCaches(false);
+				connection.setInstanceFollowRedirects(true);
+				connection.setRequestProperty("Content-Type",
+						"application/x-www-form-urlencoded");
+				connection.connect();
+				DataOutputStream out = new DataOutputStream(connection
+						.getOutputStream());
+				String content = "mobile=13916416465"
+						+ "&uuid="
+						+ uuid
+						+ "&password=1qaz2wsx"
+						+ "&friend="
+						+ mobile
+						+ "&message="
+						+ URLEncoder.encode("网络记帐本--短信验证码:" + verifyCode
+								+ " 网址:http://costnote.appspot.com/", "utf-8");
+				out.writeBytes(content);
+
+				out.flush();
+				out.close();
+
+				responseCode = connection.getResponseCode();
+				connection.disconnect();
+				if (responseCode == 202)
+					return true;
+				else
+					return false;
+			} catch (Exception e) {
+				log.warn("error fetchToSendSMS, exception:" + e.getMessage()
+						+ ". tried " + i + " times");
+				if (!e.getMessage().contains("Unknown"))
+					return false;
+			}
+		}
+		return false;
+	}
+
+	private int fetchToAddFriend(String mobile) {
+		String uuid = UUID.randomUUID().toString();
+		for (int i = 0; i < 5; i++) {
+			int responseCode = 0;
+			try {
+				URL postUrl = new URL(
+						"https://fetionlib.appspot.com/restlet/fetion/friend");
+				HttpURLConnection connection = (HttpURLConnection) postUrl
+						.openConnection();
+				connection.setDoOutput(true);
+				connection.setRequestMethod("POST");
+				connection.setUseCaches(false);
+				connection.setInstanceFollowRedirects(true);
+				connection.setRequestProperty("Content-Type",
+						"application/x-www-form-urlencoded");
+				connection.connect();
+				DataOutputStream out = new DataOutputStream(connection
+						.getOutputStream());
+				String content = "mobile=13916416465" + "&uuid=" + uuid
+						+ "&password=1qaz2wsx" + "&friend=" + mobile + "&desc="
+						+ URLEncoder.encode("网络记帐本", "utf-8");
+				out.writeBytes(content);
+
+				out.flush();
+				out.close();
+
+				responseCode = connection.getResponseCode();
+				connection.disconnect();
+				if (responseCode == 202) {
+					BufferedReader reader = new BufferedReader(
+							new InputStreamReader(connection.getInputStream())); // 读取结果
+					StringBuffer sb = new StringBuffer();
+					String line;
+					while ((line = reader.readLine()) != null) {
+						sb.append(line);
+					}
+					reader.close();
+					connection.disconnect();
+					JSONObject jo = JSONObject.fromObject(sb.toString());
+					return jo.getInt("action");
+				} else
+					return -1;
+			} catch (Exception e) {
+				log.warn("error fetchToAddFriend, exception:" + e.getMessage()
+						+ ". tried " + i + " times");
+				if (!e.getMessage().contains("Unknown"))
+					return -1;
+			}
+		}
+		return -1;
 	}
 }

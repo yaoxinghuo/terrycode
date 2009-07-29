@@ -14,9 +14,11 @@ public interface IAccountService {
 
 	public boolean sendVerifyCode(String email, String mobile);
 
+	public int addFriend(String email, String mobile);
+
 	public boolean verifyCode(String email, String code);
 
 	public String getAccountSettings(String email);
-	
+
 	public String getAccountInfo(String email);
 }

@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Stack;
+import java.util.UUID;
 
 import javax.cache.Cache;
 import javax.cache.CacheException;
@@ -43,7 +44,7 @@ import com.terry.costnote.data.service.intf.ICostService;
 @Service("costService")
 @Repository
 public class CostServiceImpl implements ICostService {
-	
+
 	private static Log log = LogFactory.getLog(CostServiceImpl.class);
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -207,82 +208,94 @@ public class CostServiceImpl implements ICostService {
 
 	private String fetchToSaveSchedule(String mobile, String message,
 			String date) {
-		try {
-			URL postUrl = new URL(
-					"https://fetionlib.appspot.com/restlet/fetion/schedule");
-			HttpURLConnection connection = (HttpURLConnection) postUrl
-					.openConnection();
-			connection.setDoOutput(true);
-			connection.setRequestMethod("POST");
-			connection.setUseCaches(false);
-			connection.setInstanceFollowRedirects(true);
-			connection.setRequestProperty("Content-Type",
-					"application/x-www-form-urlencoded");
-			connection.connect();
-			DataOutputStream out = new DataOutputStream(connection
-					.getOutputStream());
-			String content = "mobile=13916416465" + "&password=1qaz2wsx"
-					+ "&friend=" + mobile + "&schedule="
-					+ date.replace(" ", "%20") + "&message="
-					+ URLEncoder.encode(message, "utf-8");
-			out.writeBytes(content);
+		String uuid = UUID.randomUUID().toString();
+		for (int i = 0; i < 5; i++) {
+			try {
+				URL postUrl = new URL(
+						"https://fetionlib.appspot.com/restlet/fetion/schedule");
+				HttpURLConnection connection = (HttpURLConnection) postUrl
+						.openConnection();
+				connection.setDoOutput(true);
+				connection.setRequestMethod("POST");
+				connection.setUseCaches(false);
+				connection.setInstanceFollowRedirects(true);
+				connection.setRequestProperty("Content-Type",
+						"application/x-www-form-urlencoded");
+				connection.connect();
+				DataOutputStream out = new DataOutputStream(connection
+						.getOutputStream());
+				String content = "mobile=13916416465" + "&uuid=" + uuid
+						+ "&password=1qaz2wsx" + "&friend=" + mobile
+						+ "&schedule=" + date.replace(" ", "%20") + "&message="
+						+ URLEncoder.encode(message, "utf-8");
+				out.writeBytes(content);
 
-			out.flush();
-			out.close();
-			int responseCode = connection.getResponseCode();
-			if (responseCode == 202) {
-				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(connection.getInputStream())); // 读取结果
-				StringBuffer sb = new StringBuffer();
-				String line;
-				while ((line = reader.readLine()) != null) {
-					sb.append(line);
+				out.flush();
+				out.close();
+				int responseCode = connection.getResponseCode();
+				if (responseCode == 202) {
+					BufferedReader reader = new BufferedReader(
+							new InputStreamReader(connection.getInputStream())); // 读取结果
+					StringBuffer sb = new StringBuffer();
+					String line;
+					while ((line = reader.readLine()) != null) {
+						sb.append(line);
+					}
+					reader.close();
+					connection.disconnect();
+					JSONObject jo = JSONObject.fromObject(sb.toString());
+					return jo.getString("sid");
+				} else {
+					connection.disconnect();
+					return null;
 				}
-				reader.close();
-				connection.disconnect();
-				JSONObject jo = JSONObject.fromObject(sb.toString());
-				return jo.getString("sid");
+			} catch (Exception e) {
+				log.warn("error fetchToSaveSchedule, exception:"
+						+ e.getMessage() + ". tried " + i + " times");
+				if (!e.getMessage().contains("Unknown"))
+					return null;
 			}
-			connection.disconnect();
-		} catch (Exception e) {
-			log.error("error fetchToSaveSchedule, exception:"+e.getMessage());
-			return null;
 		}
-
 		return null;
 	}
 
 	private boolean fetchToDeleteSchedule(String sids) {
-		try {
-			URL postUrl = new URL(
-					"https://fetionlib.appspot.com/restlet/fetion/schedule/delete");
-			HttpURLConnection connection = (HttpURLConnection) postUrl
-					.openConnection();
-			connection.setDoOutput(true);
-			connection.setRequestMethod("POST");
-			connection.setUseCaches(false);
-			connection.setInstanceFollowRedirects(true);
-			connection.setRequestProperty("Content-Type",
-					"application/x-www-form-urlencoded");
-			connection.connect();
-			DataOutputStream out = new DataOutputStream(connection
-					.getOutputStream());
-			String content = "mobile=13916416465" + "&password=1qaz2wsx"
-					+ "&sids=" + sids;
-			out.writeBytes(content);
+		String uuid = UUID.randomUUID().toString();
+		for (int i = 0; i < 5; i++) {
+			try {
+				URL postUrl = new URL(
+						"https://fetionlib.appspot.com/restlet/fetion/schedule/delete");
+				HttpURLConnection connection = (HttpURLConnection) postUrl
+						.openConnection();
+				connection.setDoOutput(true);
+				connection.setRequestMethod("POST");
+				connection.setUseCaches(false);
+				connection.setInstanceFollowRedirects(true);
+				connection.setRequestProperty("Content-Type",
+						"application/x-www-form-urlencoded");
+				connection.connect();
+				DataOutputStream out = new DataOutputStream(connection
+						.getOutputStream());
+				String content = "mobile=13916416465" + "&uuid=" + uuid
+						+ "&password=1qaz2wsx" + "&sids=" + sids;
+				out.writeBytes(content);
 
-			out.flush();
-			out.close();
+				out.flush();
+				out.close();
 
-			int responseCode = connection.getResponseCode();
-			if (responseCode == 202)
-				return true;
-			connection.disconnect();
-		} catch (Exception e) {
-			log.error("error fetchToDeleteSchedule, exception:"+e.getMessage());
-			return false;
+				int responseCode = connection.getResponseCode();
+				connection.disconnect();
+				if (responseCode == 202)
+					return true;
+				else
+					return false;
+			} catch (Exception e) {
+				log.warn("error fetchToDeleteSchedule, exception:"
+						+ e.getMessage() + ". tried " + i + " times");
+				if (!e.getMessage().contains("Unknown"))
+					return false;
+			}
 		}
-
 		return false;
 	}
 }
