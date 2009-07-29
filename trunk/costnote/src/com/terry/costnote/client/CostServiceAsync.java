@@ -19,6 +19,8 @@ public interface CostServiceAsync {
 
 	void getAccountInfo(AsyncCallback<String> callback);
 
+	void addFriend(String mobile, AsyncCallback<Integer> callback);
+
 	void sendVerifyCode(String mobile, AsyncCallback<Boolean> callback);
 
 	void verifyCode(String code, AsyncCallback<Boolean> callback);
