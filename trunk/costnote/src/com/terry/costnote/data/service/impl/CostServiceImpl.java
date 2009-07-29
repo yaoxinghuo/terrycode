@@ -179,7 +179,8 @@ public class CostServiceImpl implements ICostService {
 		JSONArray sids = new JSONArray();
 		for (int i = 0; i < ja.size(); i++) {
 			Schedule schedule = scheduleDao.getScheduleById(ja.getString(i));
-			if (schedule.getAdate().getTime() > new Date().getTime())
+			if (schedule.getAdate().getTime() - 28800000l > new Date()
+					.getTime())
 				sids.add(schedule.getSid());
 		}
 
@@ -297,8 +298,8 @@ public class CostServiceImpl implements ICostService {
 			} catch (Exception e) {
 				log.warn("error fetchToDeleteSchedule, exception:"
 						+ e.getMessage() + ". tried " + i + " times");
-				if (e.getMessage().contains("Unknown"))
-					return true;
+				if (!e.getMessage().contains("Unknown"))
+					return false;
 			}
 		}
 		return false;

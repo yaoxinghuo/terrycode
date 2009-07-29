@@ -97,7 +97,7 @@ public class ScheduletListAction extends GenericAction {
 		for (Schedule schedule : schedules) {
 			JSONObject a = new JSONObject();
 			a.put("id", schedule.getId());
-			a.put("type", schedule.getAdate().getTime() <= new Date().getTime());
+			a.put("type", schedule.getAdate().getTime()-28800000l <= new Date().getTime());
 			a.put("sid", schedule.getSid());
 			a.put("message", schedule.getMessage());
 			a.put("date", sdf2.format(schedule.getAdate()));
