@@ -1091,6 +1091,9 @@ public class Costnote implements EntryPoint {
 			formPanel.setHeaderVisible(false);
 			formPanel.setWidth(350);
 
+			formPanel.add(new HTML("<b>保存提醒时需要和飞信服务器通讯，可能需要数十秒种。"
+					+ "<br/>请您等待，给您造成的不便，敬请谅解！</b>"));
+
 			final DateField date = new DateField();
 			date.setMinValue(new Date());
 			date.setPropertyEditor(new DateTimePropertyEditor(format));
@@ -1102,7 +1105,7 @@ public class Costnote implements EntryPoint {
 			time.setFieldLabel("时间*");
 			time.setFormat(timeFormat);
 			time.setIncrement(30);
-			time.setDateValue(new Date(new Date().getTime() + 1800000l));
+			time.setDateValue(new Date(new Date().getTime() + 3600000l));
 			formPanel.add(time);
 
 			// date.addListener(Events.Blur, new Listener<FieldEvent>() {
@@ -1261,10 +1264,11 @@ public class Costnote implements EntryPoint {
 			mobile.setAllowBlank(false);
 			formPanel2.add(mobile);
 
+			final Button addFriendButton = new Button("加为好友");
+			formPanel2.add(addFriendButton);
+
 			LayoutContainer container = new LayoutContainer();
 			container.setLayout(new ColumnLayout());
-
-			final Button addFriendButton = new Button("加为好友");
 
 			final Button validateButton = new Button("发送验证码");
 			validateButton
@@ -1387,7 +1391,6 @@ public class Costnote implements EntryPoint {
 
 						@Override
 						public void componentSelected(ButtonEvent ce) {
-							// TODO Auto-generated method stub
 							if (mobile.isValid()) {
 								addFriendButton.setEnabled(false);
 								addFriendButton.setEnabled(false);
