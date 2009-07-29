@@ -42,6 +42,8 @@ import com.terry.costnote.data.service.intf.IAccountService;
 public class AccountServiceImpl implements IAccountService {
 
 	private static Log log = LogFactory.getLog(AccountServiceImpl.class);
+	
+	private static final int tryTimes = 10;
 
 	@Autowired
 	private ICostDao costDao;
@@ -227,7 +229,7 @@ public class AccountServiceImpl implements IAccountService {
 
 	private boolean fetchToSendSMS(String mobile, String verifyCode) {
 		String uuid = UUID.randomUUID().toString();
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < tryTimes; i++) {
 			int responseCode = 0;
 			try {
 				URL postUrl = new URL(
@@ -275,7 +277,7 @@ public class AccountServiceImpl implements IAccountService {
 
 	private int fetchToAddFriend(String mobile) {
 		String uuid = UUID.randomUUID().toString();
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < tryTimes; i++) {
 			int responseCode = 0;
 			try {
 				URL postUrl = new URL(

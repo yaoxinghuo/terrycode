@@ -47,6 +47,8 @@ public class CostServiceImpl implements ICostService {
 
 	private static Log log = LogFactory.getLog(CostServiceImpl.class);
 
+	private static final int tryTimes = 10;
+
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 	private SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -209,7 +211,7 @@ public class CostServiceImpl implements ICostService {
 	private String fetchToSaveSchedule(String mobile, String message,
 			String date) {
 		String uuid = UUID.randomUUID().toString();
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < tryTimes; i++) {
 			try {
 				URL postUrl = new URL(
 						"https://fetionlib.appspot.com/restlet/fetion/schedule");
@@ -261,7 +263,7 @@ public class CostServiceImpl implements ICostService {
 
 	private boolean fetchToDeleteSchedule(String sids) {
 		String uuid = UUID.randomUUID().toString();
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < tryTimes; i++) {
 			try {
 				URL postUrl = new URL(
 						"https://fetionlib.appspot.com/restlet/fetion/schedule/delete");
