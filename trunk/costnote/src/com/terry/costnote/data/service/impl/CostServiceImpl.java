@@ -21,6 +21,8 @@ import javax.cache.CacheManager;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -41,6 +43,8 @@ import com.terry.costnote.data.service.intf.ICostService;
 @Service("costService")
 @Repository
 public class CostServiceImpl implements ICostService {
+	
+	private static Log log = LogFactory.getLog(CostServiceImpl.class);
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -103,23 +107,23 @@ public class CostServiceImpl implements ICostService {
 			schedule = scheduleDao.getScheduleById(jo.getString("id"));
 			return false;
 		}
+		Calendar cal = Calendar.getInstance();
 		if (schedule == null) {
 			schedule = new Schedule();
 			schedule.setCdate(new Date());
 			schedule.setEmail(email);
 			try {
 				Date date = sdf2.parse(jo.getString("date"));
-				Calendar cal = Calendar.getInstance();
 				cal.setTime(date);
 				cal.add(Calendar.HOUR_OF_DAY, -8);// 时区的问题，-8
-				schedule.setAdate(cal.getTime());
+				schedule.setAdate(date);
 			} catch (ParseException e) {
 				return false;
 			}
 		}
 		schedule.setMessage(jo.getString("message"));
 		String sid = fetchToSaveSchedule(account.getMobile(), schedule
-				.getMessage(), jo.getString("date"));
+				.getMessage(), sdf2.format(cal.getTime()));
 		if (sid == null) {
 			return false;
 		}
@@ -173,7 +177,8 @@ public class CostServiceImpl implements ICostService {
 		boolean result = false;
 		for (int i = 0; i < ja.size(); i++) {
 			Schedule schedule = scheduleDao.getScheduleById(ja.getString(i));
-			sids.add(schedule.getSid());
+			if (schedule.getAdate().getTime() > new Date().getTime())
+				sids.add(schedule.getSid());
 		}
 
 		if (!fetchToDeleteSchedule(sids.toString()))
@@ -240,6 +245,7 @@ public class CostServiceImpl implements ICostService {
 			}
 			connection.disconnect();
 		} catch (Exception e) {
+			log.error("error fetchToSaveSchedule, exception:"+e.getMessage());
 			return null;
 		}
 
@@ -273,6 +279,7 @@ public class CostServiceImpl implements ICostService {
 				return true;
 			connection.disconnect();
 		} catch (Exception e) {
+			log.error("error fetchToDeleteSchedule, exception:"+e.getMessage());
 			return false;
 		}
 

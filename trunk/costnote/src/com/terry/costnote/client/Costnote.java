@@ -517,7 +517,7 @@ public class Costnote implements EntryPoint {
 
 		ColumnConfig column = new ColumnConfig();
 		column.setId("date");
-		column.setHeader("日期");
+		column.setHeader("提醒日期");
 		column.setDataIndex("date");
 		column.setWidth(100);
 		configs.add(column);
@@ -543,7 +543,7 @@ public class Costnote implements EntryPoint {
 
 		column = new ColumnConfig();
 		column.setId("message");
-		column.setHeader("消息");
+		column.setHeader("给您发送的消息");
 		column.setDataIndex("message");
 		column.setWidth(200);
 		configs.add(column);
@@ -1094,7 +1094,7 @@ public class Costnote implements EntryPoint {
 			date.setMinValue(new Date());
 			date.setPropertyEditor(new DateTimePropertyEditor(format));
 			date.setValue(new Date());
-			date.setFieldLabel("发送日期*");
+			date.setFieldLabel("提醒日期*");
 			formPanel.add(date);
 
 			final TimeField time = new TimeField();
@@ -1113,7 +1113,7 @@ public class Costnote implements EntryPoint {
 			// });
 			final TextArea message = new TextArea();
 			message.setPreventScrollbars(true);
-			message.setFieldLabel("消息*");
+			message.setFieldLabel("短信消息*");
 			message.setMaxLength(200);
 			formPanel.add(message);
 
@@ -1158,9 +1158,10 @@ public class Costnote implements EntryPoint {
 									b.setEnabled(true);
 									b.setText("保存");
 									if (result) {
-										formPanel.reset();
+//										formPanel.reset();
+										message.setValue("");
 										newScheduleWindow.hide();
-										reloadList();
+										reloadScheduleList();
 										showPopMessage("pass", operatePass);
 									} else
 										showPopMessage("error", operateFail);
