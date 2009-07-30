@@ -64,6 +64,14 @@
 					href="http://sites.google.com/site/terry/" target="_blank">作者主页</a>&nbsp;|&nbsp;<a
 					href="<%=logoutURL%>">退出</a></span></font></td>
 			</tr>
+			<tr>
+				<td align="right" height="40"></td>
+			</tr>
+			<tr>
+				<td align="right"><font size='-1'><img
+					src="http://code.google.com/appengine/images/appengine-silver-120x30.gif"
+					alt="Powered by Google App Engine" /></font></td>
+			</tr>
 		</table>
 		</div>
 		</td>
