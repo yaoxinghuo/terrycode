@@ -1260,6 +1260,7 @@ public class Costnote implements EntryPoint {
 			final NumberField mobile = new NumberField();
 			mobile.setFormat(NumberFormat.getFormat("0"));
 			mobile.setFieldLabel("手机号");
+			mobile.setMinLength(11);
 			mobile.setMaxLength(11);
 			mobile.setAllowBlank(false);
 			formPanel2.add(mobile);
