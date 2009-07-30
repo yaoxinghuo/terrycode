@@ -1406,7 +1406,7 @@ public class Costnote implements EntryPoint {
 											public void onFailure(
 													Throwable caught) {
 												addFriendButton
-														.setText("发送验证码");
+														.setText("加为好友");
 												addFriendButton
 														.setEnabled(true);
 												showPopMessage("error",
@@ -1416,7 +1416,7 @@ public class Costnote implements EntryPoint {
 											@Override
 											public void onSuccess(Integer result) {
 												addFriendButton
-														.setText("发送验证码");
+														.setText("加为好友");
 												if (result != -1) {
 													addFriendButton
 															.setEnabled(false);
@@ -1528,10 +1528,11 @@ public class Costnote implements EntryPoint {
 					.booleanValue());
 			isActivate.setValue(((JSONBoolean) accountSettings.get("activate"))
 					.booleanValue());
+			
+			validateButton.setEnabled(false);
+			verifyCode.setEnabled(false);
+			activeButton.setEnabled(false);
 			if (isActivate.getValue()) {
-				validateButton.setEnabled(false);
-				verifyCode.setEnabled(false);
-				activeButton.setEnabled(false);
 				addFriendButton.setEnabled(false);
 			}
 
