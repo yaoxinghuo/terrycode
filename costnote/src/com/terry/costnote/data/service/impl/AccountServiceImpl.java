@@ -26,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
-import com.google.appengine.repackaged.com.google.common.base.StringUtil;
 import com.terry.costnote.data.dao.intf.IAccountDao;
 import com.terry.costnote.data.dao.intf.ICostDao;
 import com.terry.costnote.data.model.Account;
@@ -202,9 +201,7 @@ public class AccountServiceImpl implements IAccountService {
 		jo.put("suggest", ja);
 		jo.put("nickname", account.getNickname());
 		jo.put("email", account.getEmail());
-		jo.put("mobile",
-				StringUtil.isEmptyOrWhitespace(account.getMobile()) ? 0
-						: Double.parseDouble(account.getMobile()));
+		jo.put("mobile", account.getMobile());
 		jo.put("mpassword", account.getMpassword());
 		jo.put("verifyCode", account.getVerifyCode());
 		jo.put("alertLimit", account.getAlertLimit());

@@ -1257,12 +1257,10 @@ public class Costnote implements EntryPoint {
 			isActivate.setEnabled(false);
 			formPanel2.add(isActivate);
 
-			final NumberField mobile = new NumberField();
-			mobile.setFormat(NumberFormat.getFormat("0"));
+			final TextField<String> mobile = new TextField<String>();
 			mobile.setFieldLabel("手机号");
-			mobile.setMinLength(11);
-			mobile.setMaxLength(11);
 			mobile.setAllowBlank(false);
+			mobile.setValidator(new VTypeValidator(VType.MOBILE));
 			formPanel2.add(mobile);
 
 			final Button addFriendButton = new Button("加为好友");
@@ -1283,8 +1281,7 @@ public class Costnote implements EntryPoint {
 								ServiceDefTarget endpoint = (ServiceDefTarget) costService;
 								endpoint
 										.setServiceEntryPoint("gwt-cost!sendVerifyCode.action");
-								final String m = String.valueOf(mobile
-										.getValue());
+								final String m = mobile.getValue();
 								costService.sendVerifyCode(m,
 										new AsyncCallback<Boolean>() {
 
@@ -1398,16 +1395,14 @@ public class Costnote implements EntryPoint {
 								ServiceDefTarget endpoint = (ServiceDefTarget) costService;
 								endpoint
 										.setServiceEntryPoint("gwt-cost!addFriend.action");
-								final String m = String.valueOf(mobile
-										.getValue());
+								final String m = mobile.getValue();
 								costService.addFriend(m,
 										new AsyncCallback<Integer>() {
 
 											@Override
 											public void onFailure(
 													Throwable caught) {
-												addFriendButton
-														.setText("加为好友");
+												addFriendButton.setText("加为好友");
 												addFriendButton
 														.setEnabled(true);
 												showPopMessage("error",
@@ -1416,8 +1411,7 @@ public class Costnote implements EntryPoint {
 
 											@Override
 											public void onSuccess(Integer result) {
-												addFriendButton
-														.setText("加为好友");
+												addFriendButton.setText("加为好友");
 												if (result != -1) {
 													addFriendButton
 															.setEnabled(false);
@@ -1517,8 +1511,8 @@ public class Costnote implements EntryPoint {
 					.stringValue());
 			nickname.setValue(((JSONString) accountSettings.get("nickname"))
 					.stringValue());
-			mobile.setValue(((JSONNumber) accountSettings.get("mobile"))
-					.doubleValue());
+			mobile.setValue(((JSONString) accountSettings.get("mobile"))
+					.stringValue());
 			verifyCode
 					.setValue(((JSONString) accountSettings.get("verifyCode"))
 							.stringValue());
@@ -1529,7 +1523,7 @@ public class Costnote implements EntryPoint {
 					.booleanValue());
 			isActivate.setValue(((JSONBoolean) accountSettings.get("activate"))
 					.booleanValue());
-			
+
 			validateButton.setEnabled(false);
 			verifyCode.setEnabled(false);
 			activeButton.setEnabled(false);
