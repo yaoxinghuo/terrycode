@@ -1,19 +1,15 @@
 package com.terry.costnote.client;
 
 import java.util.Date;
-import java.util.List;
 
 import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.data.BasePagingLoadConfig;
-import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
 import com.extjs.gxt.ui.client.data.HttpProxy;
-import com.extjs.gxt.ui.client.data.JsonLoadResultReader;
-import com.extjs.gxt.ui.client.data.ListLoadResult;
+import com.extjs.gxt.ui.client.data.JsonPagingLoadResultReader;
 import com.extjs.gxt.ui.client.data.LoadEvent;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.ModelType;
-import com.extjs.gxt.ui.client.data.PagingLoadConfig;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.event.LoadListener;
 import com.extjs.gxt.ui.client.store.ListStore;
@@ -40,18 +36,8 @@ public class DataStruction {
 		 * BaseListLoader<ListLoadResult<ModelData>>(proxy, reader);
 		 */
 		// ------ end json decoder -----------//
-		JsonLoadResultReader<PagingLoadResult<ModelData>> reader = new JsonLoadResultReader<PagingLoadResult<ModelData>>(
-				mt) {
-			@Override
-			protected ListLoadResult<ModelData> newLoadResult(
-					Object loadConfig, List<ModelData> models) {
-				PagingLoadConfig pagingConfig = (PagingLoadConfig) loadConfig;
-				PagingLoadResult<ModelData> result = new BasePagingLoadResult<ModelData>(
-						models, pagingConfig.getOffset(), pagingConfig
-								.getLimit());
-				return result;
-			}
-		};
+		JsonPagingLoadResultReader<ModelData> reader = new JsonPagingLoadResultReader<ModelData>(
+				mt);
 		BasePagingLoader<PagingLoadResult<ModelData>> loader = new BasePagingLoader<PagingLoadResult<ModelData>>(
 				proxy, reader);
 
