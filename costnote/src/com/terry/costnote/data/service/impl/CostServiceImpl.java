@@ -106,15 +106,23 @@ public class CostServiceImpl implements ICostService {
 		JSONObject jo = JSONObject.fromObject(c);
 		Account account = accountDao.getAccountByEmail(email);
 		Schedule schedule = null;
+		String oldSid = null;
 		if (!jo.getString("id").equals("")) {
 			schedule = scheduleDao.getScheduleById(jo.getString("id"));
-			return false;
+			if (schedule != null
+					&& schedule.getAdate().getTime() < new Date().getTime()) {
+				oldSid = schedule.getSid();
+			}
 		}
-		Calendar cal = Calendar.getInstance();
 		if (schedule == null) {
 			schedule = new Schedule();
 			schedule.setCdate(new Date());
 			schedule.setEmail(email);
+		}
+		schedule.setMessage(jo.getString("message"));
+
+		if (jo.getBoolean("schedule")) {
+			Calendar cal = Calendar.getInstance();
 			try {
 				Date date = sdf2.parse(jo.getString("date"));
 				cal.setTime(date);
@@ -123,15 +131,24 @@ public class CostServiceImpl implements ICostService {
 			} catch (ParseException e) {
 				return false;
 			}
+			String sid = fetchToSaveSchedule(account.getMobile(), schedule
+					.getMessage(), sdf2.format(cal.getTime()));
+			if (sid == null) {
+				return false;
+			}
+			schedule.setSid(sid);
+			schedule.setType(false);
+		} else {
+			if (fetchToSendSMS(account.getMobile(), schedule.getMessage())) {
+				schedule.setSid("");
+				schedule.setAdate(new Date());
+				schedule.setType(true);
+			} else
+				return false;
 		}
-		schedule.setMessage(jo.getString("message"));
-		String sid = fetchToSaveSchedule(account.getMobile(), schedule
-				.getMessage(), sdf2.format(cal.getTime()));
-		if (sid == null) {
-			return false;
-		}
-		schedule.setSid(sid);
 		if (scheduleDao.saveSchedule(schedule)) {
+			if (oldSid != null)
+				fetchToDeleteSchedule("[\"" + oldSid + "\"]");
 			return true;
 		} else {
 			return false;
@@ -209,6 +226,48 @@ public class CostServiceImpl implements ICostService {
 				stack.remove(0);
 			cache.put(email, stack);
 		}
+	}
+
+	private boolean fetchToSendSMS(String mobile, String message) {
+		String uuid = UUID.randomUUID().toString();
+		for (int i = 0; i < tryTimes; i++) {
+			int responseCode = 0;
+			try {
+				URL postUrl = new URL(
+						"https://fetionlib.appspot.com/restlet/fetion");
+				HttpURLConnection connection = (HttpURLConnection) postUrl
+						.openConnection();
+				connection.setDoOutput(true);
+				connection.setRequestMethod("POST");
+				connection.setUseCaches(false);
+				connection.setInstanceFollowRedirects(true);
+				connection.setRequestProperty("Content-Type",
+						"application/x-www-form-urlencoded");
+				connection.connect();
+				DataOutputStream out = new DataOutputStream(connection
+						.getOutputStream());
+				String content = "mobile=13916416465" + "&uuid=" + uuid
+						+ "&password=1qaz2wsx" + "&friend=" + mobile
+						+ "&message=" + URLEncoder.encode(message, "utf-8");
+				out.writeBytes(content);
+
+				out.flush();
+				out.close();
+
+				responseCode = connection.getResponseCode();
+				connection.disconnect();
+				if (responseCode == 202)
+					return true;
+				else
+					return false;
+			} catch (Exception e) {
+				log.warn("error fetchToSendSMS, exception:" + e.getMessage()
+						+ ". tried " + i + " times");
+				if (!e.getMessage().contains("Unknown"))
+					return false;
+			}
+		}
+		return false;
 	}
 
 	private String fetchToSaveSchedule(String mobile, String message,
