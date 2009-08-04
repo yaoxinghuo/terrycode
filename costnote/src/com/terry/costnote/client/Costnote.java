@@ -1131,13 +1131,33 @@ public class Costnote implements EntryPoint {
 					}
 					String s = format.format(date.getValue()) + " "
 							+ time.getValue().getText();
+					final JSONObject jo = new JSONObject();
+					jo.put("schedule", JSONBoolean.getInstance(true));
 					if (dateTimeFormat.parse(s).getTime()
 							- new Date().getTime() < 1200000) {
-						showPopMessage("error",
-								"根据中国移动的规定，定时短信的发送日期要超过现在日期20分钟以上！");
-						return;
+						MessageBox
+								.confirm(
+										"确定立即发送",
+										"根据中国移动的规定，定时短信的发送日期要超过现在日期20分钟以上！<br/>是否立即发送短信到您的手机?",
+										new Listener<MessageBoxEvent>() {
+
+											@Override
+											public void handleEvent(
+													MessageBoxEvent be) {
+												if (!be.getButtonClicked()
+														.getItemId().equals(
+																Dialog.YES)) {
+													return;
+												} else
+													jo
+															.put(
+																	"schedule",
+																	JSONBoolean
+																			.getInstance(false));
+											}
+										});
 					}
-					JSONObject jo = new JSONObject();
+
 					jo.put("id", new JSONString(""));
 					jo.put("date", new JSONString(s));
 					jo.put("message", new JSONString(
