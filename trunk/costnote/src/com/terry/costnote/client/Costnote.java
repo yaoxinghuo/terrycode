@@ -1148,7 +1148,11 @@ public class Costnote implements EntryPoint {
 					String s = format.format(scheduleDate.getValue()) + " "
 							+ scheduleTime.getValue().getText();
 					final JSONObject jo = new JSONObject();
-					jo.put("schedule", JSONBoolean.getInstance(true));
+					jo.put("id", new JSONString(scheduleHidden.getValue()));
+					jo.put("date", new JSONString(s));
+					jo.put("message", new JSONString(
+							scheduleMessage.getValue() == null ? ""
+									: scheduleMessage.getValue()));
 					if (dateTimeFormat.parse(s).getTime()
 							- new Date().getTime() < 1200000) {
 						MessageBox
@@ -1160,53 +1164,93 @@ public class Costnote implements EntryPoint {
 											@Override
 											public void handleEvent(
 													MessageBoxEvent be) {
-												if (!be.getButtonClicked()
+												if (be.getButtonClicked()
 														.getItemId().equals(
 																Dialog.YES)) {
-													return;
-												} else
 													jo
 															.put(
 																	"schedule",
 																	JSONBoolean
 																			.getInstance(false));
+													b.setEnabled(false);
+													b.setText(operateWait);
+													ServiceDefTarget endpoint = (ServiceDefTarget) costService;
+													endpoint
+															.setServiceEntryPoint("gwt-cost!saveSchedule.action");
+													costService
+															.saveSchedule(
+																	jo
+																			.toString(),
+																	new AsyncCallback<Boolean>() {
+
+																		@Override
+																		public void onFailure(
+																				Throwable caught) {
+																			b
+																					.setEnabled(true);
+																			b
+																					.setText("保存");
+																			showPopMessage(
+																					"error",
+																					operateError);
+																		}
+
+																		@Override
+																		public void onSuccess(
+																				Boolean result) {
+																			b
+																					.setEnabled(true);
+																			b
+																					.setText("保存");
+																			if (result) {
+																				scheduleWindow
+																						.hide();
+																				reloadScheduleList();
+																				showPopMessage(
+																						"pass",
+																						operatePass);
+																			} else
+																				showPopMessage(
+																						"error",
+																						operateFail);
+																		}
+
+																	});
+												} else
+													return;
 											}
 										});
+					} else {
+						jo.put("schedule", JSONBoolean.getInstance(true));
+						b.setEnabled(false);
+						b.setText(operateWait);
+						ServiceDefTarget endpoint = (ServiceDefTarget) costService;
+						endpoint
+								.setServiceEntryPoint("gwt-cost!saveSchedule.action");
+						costService.saveSchedule(jo.toString(),
+								new AsyncCallback<Boolean>() {
+
+									@Override
+									public void onFailure(Throwable caught) {
+										b.setEnabled(true);
+										b.setText("保存");
+										showPopMessage("error", operateError);
+									}
+
+									@Override
+									public void onSuccess(Boolean result) {
+										b.setEnabled(true);
+										b.setText("保存");
+										if (result) {
+											scheduleWindow.hide();
+											reloadScheduleList();
+											showPopMessage("pass", operatePass);
+										} else
+											showPopMessage("error", operateFail);
+									}
+
+								});
 					}
-
-					jo.put("id", new JSONString(scheduleHidden.getValue()));
-					jo.put("date", new JSONString(s));
-					jo.put("message", new JSONString(
-							scheduleMessage.getValue() == null ? ""
-									: scheduleMessage.getValue()));
-					b.setEnabled(false);
-					b.setText(operateWait);
-					ServiceDefTarget endpoint = (ServiceDefTarget) costService;
-					endpoint
-							.setServiceEntryPoint("gwt-cost!saveSchedule.action");
-					costService.saveSchedule(jo.toString(),
-							new AsyncCallback<Boolean>() {
-
-								@Override
-								public void onFailure(Throwable caught) {
-									b.setEnabled(true);
-									b.setText("保存");
-									showPopMessage("error", operateError);
-								}
-
-								@Override
-								public void onSuccess(Boolean result) {
-									b.setEnabled(true);
-									b.setText("保存");
-									if (result) {
-										scheduleWindow.hide();
-										reloadScheduleList();
-										showPopMessage("pass", operatePass);
-									} else
-										showPopMessage("error", operateFail);
-								}
-
-							});
 				}
 			});
 			Button reset = new Button("重置");
@@ -1285,7 +1329,11 @@ public class Costnote implements EntryPoint {
 					String s = format.format(date.getValue()) + " "
 							+ time.getValue().getText();
 					final JSONObject jo = new JSONObject();
-					jo.put("schedule", JSONBoolean.getInstance(true));
+					jo.put("id", new JSONString(""));
+					jo.put("date", new JSONString(s));
+					jo.put("message", new JSONString(
+							message.getValue() == null ? "" : message
+									.getValue()));
 					if (dateTimeFormat.parse(s).getTime()
 							- new Date().getTime() < 1200000) {
 						MessageBox
@@ -1297,55 +1345,98 @@ public class Costnote implements EntryPoint {
 											@Override
 											public void handleEvent(
 													MessageBoxEvent be) {
-												if (!be.getButtonClicked()
+												if (be.getButtonClicked()
 														.getItemId().equals(
 																Dialog.YES)) {
-													return;
-												} else
 													jo
 															.put(
 																	"schedule",
 																	JSONBoolean
 																			.getInstance(false));
+													b.setEnabled(false);
+													b.setText(operateWait);
+													ServiceDefTarget endpoint = (ServiceDefTarget) costService;
+													endpoint
+															.setServiceEntryPoint("gwt-cost!saveSchedule.action");
+													costService
+															.saveSchedule(
+																	jo
+																			.toString(),
+																	new AsyncCallback<Boolean>() {
+
+																		@Override
+																		public void onFailure(
+																				Throwable caught) {
+																			b
+																					.setEnabled(true);
+																			b
+																					.setText("保存");
+																			showPopMessage(
+																					"error",
+																					operateError);
+																		}
+
+																		@Override
+																		public void onSuccess(
+																				Boolean result) {
+																			b
+																					.setEnabled(true);
+																			b
+																					.setText("保存");
+																			if (result) {
+																				// formPanel.reset();
+																				message
+																						.setValue("");
+																				newScheduleWindow
+																						.hide();
+																				reloadScheduleList();
+																				showPopMessage(
+																						"pass",
+																						operatePass);
+																			} else
+																				showPopMessage(
+																						"error",
+																						operateFail);
+																		}
+
+																	});
+												} else
+													return;
 											}
 										});
+					} else {
+						jo.put("schedule", JSONBoolean.getInstance(true));
+						b.setEnabled(false);
+						b.setText(operateWait);
+						ServiceDefTarget endpoint = (ServiceDefTarget) costService;
+						endpoint
+								.setServiceEntryPoint("gwt-cost!saveSchedule.action");
+						costService.saveSchedule(jo.toString(),
+								new AsyncCallback<Boolean>() {
+
+									@Override
+									public void onFailure(Throwable caught) {
+										b.setEnabled(true);
+										b.setText("保存");
+										showPopMessage("error", operateError);
+									}
+
+									@Override
+									public void onSuccess(Boolean result) {
+										b.setEnabled(true);
+										b.setText("保存");
+										if (result) {
+											// formPanel.reset();
+											message.setValue("");
+											newScheduleWindow.hide();
+											reloadScheduleList();
+											showPopMessage("pass", operatePass);
+										} else
+											showPopMessage("error", operateFail);
+									}
+
+								});
 					}
-
-					jo.put("id", new JSONString(""));
-					jo.put("date", new JSONString(s));
-					jo.put("message", new JSONString(
-							message.getValue() == null ? "" : message
-									.getValue()));
-					b.setEnabled(false);
-					b.setText(operateWait);
-					ServiceDefTarget endpoint = (ServiceDefTarget) costService;
-					endpoint
-							.setServiceEntryPoint("gwt-cost!saveSchedule.action");
-					costService.saveSchedule(jo.toString(),
-							new AsyncCallback<Boolean>() {
-
-								@Override
-								public void onFailure(Throwable caught) {
-									b.setEnabled(true);
-									b.setText("保存");
-									showPopMessage("error", operateError);
-								}
-
-								@Override
-								public void onSuccess(Boolean result) {
-									b.setEnabled(true);
-									b.setText("保存");
-									if (result) {
-										// formPanel.reset();
-										message.setValue("");
-										newScheduleWindow.hide();
-										reloadScheduleList();
-										showPopMessage("pass", operatePass);
-									} else
-										showPopMessage("error", operateFail);
-								}
-
-							});
 				}
 			});
 			Button reset = new Button("重置");
