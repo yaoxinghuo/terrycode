@@ -110,7 +110,7 @@ public class CostServiceImpl implements ICostService {
 		if (!jo.getString("id").equals("")) {
 			schedule = scheduleDao.getScheduleById(jo.getString("id"));
 			if (schedule != null
-					&& schedule.getAdate().getTime() < new Date().getTime()) {
+					&& schedule.getAdate().getTime() > new Date().getTime()) {
 				oldSid = schedule.getSid();
 			}
 		}
@@ -147,7 +147,7 @@ public class CostServiceImpl implements ICostService {
 				return false;
 		}
 		if (scheduleDao.saveSchedule(schedule)) {
-			if (oldSid != null)
+			if (oldSid != null && !oldSid.equals(""))
 				fetchToDeleteSchedule("[\"" + oldSid + "\"]");
 			return true;
 		} else {
