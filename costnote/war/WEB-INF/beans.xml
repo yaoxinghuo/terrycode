@@ -8,17 +8,4 @@
 	<context:annotation-config />
 	<context:component-scan base-package="com.terry.costnote" />
 	
-	<bean id="entityManagerFactory"
-        class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean" lazy-init="true">
-        <property name="persistenceUnitName" value="transactions-optional" />
-    </bean>
-    
-    <bean name="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="entityManagerFactory" ref="entityManagerFactory" />
-    </bean>
-
-    <tx:annotation-driven />
-
-    <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
-	
 </beans>
