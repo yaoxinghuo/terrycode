@@ -25,10 +25,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/asm-3.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/cglib-2.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/json-lib-2.2.3-jdk15.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-tx-2.5.6.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/aopalliance-1.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-orm-2.5.6.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-jdbc-2.5.6.jar"/>
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
