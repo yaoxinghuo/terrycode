@@ -1170,7 +1170,8 @@ public class Costnote implements EntryPoint {
 					if (m == null || m.trim().equals("")
 							|| m.trim().length() > 200 || d1 == null
 							|| d2 == null) {
-						showPopMessage("error", "请检查您的输入（短消息确保在200字以内）！");
+						showPopMessage("error",
+								"请检查您的输入！(短消息确保在200字以内，日期格式:yyyy-MM-dd HH:mm)");
 						return;
 					}
 					String s = format.format(scheduleDate.getValue()) + " "
@@ -1181,7 +1182,8 @@ public class Costnote implements EntryPoint {
 					} catch (IllegalArgumentException e) {
 					}
 					if (d == null) {
-						showPopMessage("error", "请检查您的输入（短消息确保在200字以内）！");
+						showPopMessage("error",
+								"请检查您的输入！(短消息确保在200字以内，日期格式:yyyy-MM-dd HH:mm)");
 						return;
 					}
 
