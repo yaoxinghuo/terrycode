@@ -57,7 +57,6 @@ import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
-import com.extjs.gxt.ui.client.widget.form.TimeField;
 import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 import com.extjs.gxt.ui.client.widget.grid.CheckBoxSelectionModel;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
@@ -90,9 +89,15 @@ import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
+import com.gwtincubator.widgets.client.timepicker.TimePicker;
 import com.terry.costnote.client.model.Folder;
 import com.terry.costnote.client.model.Item;
 import com.terry.costnote.client.model.Type;
@@ -102,7 +107,7 @@ public class Costnote implements EntryPoint {
 	private static final String operateFail = "对不起，您的操作未能完成，请稍候再试！";
 	private static final String operateError = "对不起，数据库维护中，请稍候再试！";
 	private static final String operatePass = "您的操作成功完成！";
-	private static final String operateWait = "请稍候...";
+	public static final String operateWait = "请稍候...";
 	private static DateTimeFormat format = DateTimeFormat
 			.getFormat("yyyy-MM-dd");
 	private static DateTimeFormat timeFormat = DateTimeFormat
@@ -447,7 +452,16 @@ public class Costnote implements EntryPoint {
 		sto.setWidth("100");
 		sto.setValue(new Date());
 		sto.setPropertyEditor(new DateTimePropertyEditor(format));
-		tb.add(new LabelField("&nbsp;搜索日期从"));
+
+		tb.add(new Button("记账", getIcon("note.png"),
+				new SelectionListener<ButtonEvent>() {
+
+					@Override
+					public void componentSelected(ButtonEvent ce) {
+						showNewNoteWindow();
+					}
+				}));
+		tb.add(new LabelField("&nbsp;&nbsp;搜索日期从"));
 		tb.add(sfrom);
 		tb.add(new LabelField("&nbsp;到"));
 		tb.add(sto);
@@ -688,6 +702,14 @@ public class Costnote implements EntryPoint {
 		sto.setWidth("100");
 		sto.setValue(new Date());
 		sto.setPropertyEditor(new DateTimePropertyEditor(format));
+		tb.add(new Button("新建提醒", getIcon("note.png"),
+				new SelectionListener<ButtonEvent>() {
+
+					@Override
+					public void componentSelected(ButtonEvent ce) {
+						showScheduleWindow(null, null, null);
+					}
+				}));
 		tb.add(new LabelField("&nbsp;搜索日期从"));
 		tb.add(sfrom);
 		tb.add(new LabelField("&nbsp;到"));
@@ -1076,9 +1098,9 @@ public class Costnote implements EntryPoint {
 		newWindow.show();
 	}
 
-	private static Window scheduleWindow;
+	private static DialogBox scheduleWindow;
 	private static DateField scheduleDate;
-	private static TimeField scheduleTime;
+	private static TimePicker scheduleTime;
 	private static TextArea scheduleMessage;
 	private static HiddenField<String> scheduleHidden;
 
@@ -1091,204 +1113,32 @@ public class Costnote implements EntryPoint {
 			return;
 		}
 		if (scheduleWindow == null) {
-			scheduleWindow = new Window();
-			scheduleWindow.setIcon(getIcon("note.png"));
-			scheduleWindow.setHeading("修改记录");
-			scheduleWindow.setWidth(360);
-			final FormPanel formPanel = new FormPanel();
-			formPanel.setHeaderVisible(false);
-			formPanel.setWidth(350);
+			scheduleWindow = new DialogBox();
+			scheduleWindow.setHTML("<img src='/icons/note.png' />新建提醒");
 
-			formPanel.add(new HTML("<b>保存提醒时需要和飞信服务器通讯，可能需要数十秒种。"
-					+ "<br/>请您等待，给您造成的不便，敬请谅解！</b><br/>"));
+			FlexTable layout = new FlexTable();
+			layout.setCellSpacing(6);
+			FlexCellFormatter cellFormatter = layout.getFlexCellFormatter();
 
-			scheduleHidden = new HiddenField<String>();
-			formPanel.add(scheduleHidden);
+			layout.setWidget(0, 0, new LabelField("提醒日期*"));
 
+			HorizontalPanel hp = new HorizontalPanel();
 			scheduleDate = new DateField();
 			scheduleDate.setMinValue(new Date());
 			scheduleDate.setPropertyEditor(new DateTimePropertyEditor(format));
-			scheduleDate.setFieldLabel("提醒日期*");
-			formPanel.add(scheduleDate);
+			scheduleDate.setValue(new Date());
+			hp.add(scheduleDate);
 
-			scheduleTime = new TimeField();
-			scheduleTime.setFieldLabel("时间*");
-			scheduleTime.setFormat(timeFormat);
-			scheduleTime.setIncrement(30);
-			formPanel.add(scheduleTime);
+			scheduleTime = new TimePicker();
+			scheduleTime.setTime(0, 59);
+			scheduleTime.setAmPmLabel("上午", "下午");
+			scheduleTime.setLabelSeparator("&nbsp;");
+			scheduleTime.setWidth("85px");
+			scheduleTime.setTooltip("选择一个时间...");
+			scheduleTime.setAccessKey('t');
+			hp.add(scheduleTime);
 
-			scheduleMessage = new TextArea();
-			scheduleMessage.setPreventScrollbars(true);
-			scheduleMessage.setFieldLabel("短信消息*");
-			scheduleMessage.setMaxLength(200);
-			formPanel.add(scheduleMessage);
-
-			final Button b = new Button("保存");
-			scheduleWindow.addButton(b);
-			b.addListener(Events.Select, new Listener<ButtonEvent>() {
-				public void handleEvent(ButtonEvent be) {
-					if (!formPanel.isValid()) {
-						return;
-					}
-					String s = format.format(scheduleDate.getValue()) + " "
-							+ scheduleTime.getValue().getText();
-					final JSONObject jo = new JSONObject();
-					jo.put("id", new JSONString(scheduleHidden.getValue()));
-					jo.put("date", new JSONString(s));
-					jo.put("message", new JSONString(
-							scheduleMessage.getValue() == null ? ""
-									: scheduleMessage.getValue()));
-					if (dateTimeFormat.parse(s).getTime()
-							- new Date().getTime() < 1200000) {
-						MessageBox
-								.confirm(
-										"确定立即发送",
-										"根据中国移动的规定，定时短信的发送日期要超过现在日期20分钟以上！<br/>是否立即发送短信到您的手机?",
-										new Listener<MessageBoxEvent>() {
-
-											@Override
-											public void handleEvent(
-													MessageBoxEvent be) {
-												if (be.getButtonClicked()
-														.getItemId().equals(
-																Dialog.YES)) {
-													jo
-															.put(
-																	"schedule",
-																	JSONBoolean
-																			.getInstance(false));
-													b.setEnabled(false);
-													b.setText(operateWait);
-													ServiceDefTarget endpoint = (ServiceDefTarget) costService;
-													endpoint
-															.setServiceEntryPoint("gwt-cost!saveSchedule.action");
-													costService
-															.saveSchedule(
-																	jo
-																			.toString(),
-																	new AsyncCallback<Boolean>() {
-
-																		@Override
-																		public void onFailure(
-																				Throwable caught) {
-																			b
-																					.setEnabled(true);
-																			b
-																					.setText("保存");
-																			showPopMessage(
-																					"error",
-																					operateError);
-																		}
-
-																		@Override
-																		public void onSuccess(
-																				Boolean result) {
-																			b
-																					.setEnabled(true);
-																			b
-																					.setText("保存");
-																			if (result) {
-																				scheduleWindow
-																						.hide();
-																				reloadScheduleList();
-																				showPopMessage(
-																						"pass",
-																						operatePass);
-																			} else
-																				showPopMessage(
-																						"error",
-																						operateFail);
-																		}
-
-																	});
-												} else
-													return;
-											}
-										});
-					} else {
-						jo.put("schedule", JSONBoolean.getInstance(true));
-						b.setEnabled(false);
-						b.setText(operateWait);
-						ServiceDefTarget endpoint = (ServiceDefTarget) costService;
-						endpoint
-								.setServiceEntryPoint("gwt-cost!saveSchedule.action");
-						costService.saveSchedule(jo.toString(),
-								new AsyncCallback<Boolean>() {
-
-									@Override
-									public void onFailure(Throwable caught) {
-										b.setEnabled(true);
-										b.setText("保存");
-										showPopMessage("error", operateError);
-									}
-
-									@Override
-									public void onSuccess(Boolean result) {
-										b.setEnabled(true);
-										b.setText("保存");
-										if (result) {
-											scheduleWindow.hide();
-											reloadScheduleList();
-											showPopMessage("pass", operatePass);
-										} else
-											showPopMessage("error", operateFail);
-									}
-
-								});
-					}
-				}
-			});
-			Button reset = new Button("重置");
-			reset.addListener(Events.Select, new Listener<ButtonEvent>() {
-				public void handleEvent(ButtonEvent be) {
-					formPanel.reset();
-				}
-			});
-			scheduleWindow.addButton(reset);
-			scheduleWindow.add(formPanel);
-		}
-		scheduleWindow.show();
-		scheduleHidden.setValue(id);
-		scheduleDate.setValue(date);
-		scheduleTime.setDateValue(date);
-		scheduleMessage.setValue(message);
-	}
-
-	private static Window newScheduleWindow;
-
-	public static void showNewScheduleWindow() {
-		if (!((JSONBoolean) accountSettings.get("activate")).booleanValue()) {
-			showPopMessage(
-					"error",
-					"您还没有登记激活您的手机号，不能使用短信提醒功能！&nbsp;<a href='#' onclick='nav(\"tab_tree_setting\",\"账户设置\",\"setting.png\");return false;'>"
-							+ "设置手机</a>");
-			return;
-		}
-		if (newScheduleWindow == null) {
-			newScheduleWindow = new Window();
-			newScheduleWindow.setIcon(getIcon("note.png"));
-			newScheduleWindow.setHeading("新增记录");
-			newScheduleWindow.setWidth(360);
-			final FormPanel formPanel = new FormPanel();
-			formPanel.setHeaderVisible(false);
-			formPanel.setWidth(350);
-
-			formPanel.add(new HTML("<b>保存提醒时需要和飞信服务器通讯，可能需要数十秒种。"
-					+ "<br/>请您等待，给您造成的不便，敬请谅解！</b><br/>"));
-
-			final DateField date = new DateField();
-			date.setMinValue(new Date());
-			date.setPropertyEditor(new DateTimePropertyEditor(format));
-			date.setValue(new Date());
-			date.setFieldLabel("提醒日期*");
-			formPanel.add(date);
-
-			final TimeField time = new TimeField();
-			time.setFieldLabel("时间*");
-			time.setFormat(timeFormat);
-			time.setIncrement(30);
-			time.setDateValue(new Date(new Date().getTime() + 3600000l));
-			formPanel.add(time);
+			layout.setWidget(0, 1, hp);
 
 			// date.addListener(Events.Blur, new Listener<FieldEvent>() {
 			//
@@ -1298,29 +1148,37 @@ public class Costnote implements EntryPoint {
 			//
 			// }
 			// });
-			final TextArea message = new TextArea();
-			message.setPreventScrollbars(true);
-			message.setFieldLabel("短信消息*");
-			message.setMaxLength(200);
-			formPanel.add(message);
+			scheduleMessage = new TextArea();
+			scheduleMessage.setPreventScrollbars(true);
+			scheduleMessage.setWidth(300);
+			scheduleMessage.setMaxLength(200);
+			layout.setWidget(1, 0, new LabelField("短信消息*"));
+			layout.setWidget(1, 1, scheduleMessage);
 
+			HorizontalPanel hp1 = new HorizontalPanel();
 			final Button b = new Button("保存");
-			newScheduleWindow.addButton(b);
+			hp1.add(b);
 			b.addListener(Events.Select, new Listener<ButtonEvent>() {
 				public void handleEvent(ButtonEvent be) {
-					if (!formPanel.isValid()) {
+					String s = format.format(scheduleDate.getValue()) + " "
+							+ scheduleTime.getValue();
+					Date d = null;
+					try {
+						d = dateTimeFormat.parse(s);
+					} catch (IllegalArgumentException e) {
+					}
+					String m = scheduleMessage.getValue();
+					if (m == null || m.trim().equals("")
+							|| m.trim().length() > 200 || d == null) {
+						showPopMessage("error", "请检查您的输入（短消息确保在200字以内）！");
 						return;
 					}
-					String s = format.format(date.getValue()) + " "
-							+ time.getValue().getText();
+
 					final JSONObject jo = new JSONObject();
-					jo.put("id", new JSONString(""));
+					jo.put("id", new JSONString(scheduleHidden.getValue()));
 					jo.put("date", new JSONString(s));
-					jo.put("message", new JSONString(
-							message.getValue() == null ? "" : message
-									.getValue()));
-					if (dateTimeFormat.parse(s).getTime()
-							- new Date().getTime() < 1200000) {
+					jo.put("message", new JSONString(m));
+					if (d.getTime() - new Date().getTime() < 1200000) {
 						MessageBox
 								.confirm(
 										"确定立即发送",
@@ -1370,9 +1228,9 @@ public class Costnote implements EntryPoint {
 																					.setText("保存");
 																			if (result) {
 																				// formPanel.reset();
-																				message
+																				scheduleMessage
 																						.setValue("");
-																				newScheduleWindow
+																				scheduleWindow
 																						.hide();
 																				reloadScheduleList();
 																				showPopMessage(
@@ -1412,8 +1270,8 @@ public class Costnote implements EntryPoint {
 										b.setText("保存");
 										if (result) {
 											// formPanel.reset();
-											message.setValue("");
-											newScheduleWindow.hide();
+											scheduleMessage.setValue("");
+											scheduleWindow.hide();
 											reloadScheduleList();
 											showPopMessage("pass", operatePass);
 										} else
@@ -1424,16 +1282,39 @@ public class Costnote implements EntryPoint {
 					}
 				}
 			});
-			Button reset = new Button("重置");
+			Button reset = new Button("关闭");
 			reset.addListener(Events.Select, new Listener<ButtonEvent>() {
 				public void handleEvent(ButtonEvent be) {
-					formPanel.reset();
+					scheduleWindow.hide();
 				}
 			});
-			newScheduleWindow.addButton(reset);
-			newScheduleWindow.add(formPanel);
+			hp1.add(new HTML("&nbsp;&nbsp;"));
+			hp1.add(reset);
+			cellFormatter.setHorizontalAlignment(2, 1,
+					HasHorizontalAlignment.ALIGN_RIGHT);
+			layout.setWidget(2, 1, hp1);
+
+			scheduleHidden = new HiddenField<String>();
+			layout.setWidget(3, 1, scheduleHidden);
+			scheduleWindow.setWidget(layout);
 		}
-		newScheduleWindow.show();
+		scheduleWindow.show();
+		scheduleWindow.center();
+		if (id != null) {
+			scheduleHidden.setValue(id);
+			scheduleDate.setValue(date);
+			scheduleTime.setValue(timeFormat.format(date));
+			scheduleMessage.setValue(message);
+			scheduleWindow.setHTML("<img src='/icons/note.png' />修改提醒");
+
+		} else {
+			Date d = new Date(new Date().getTime() + 3600000l);
+			scheduleHidden.setValue("");
+			scheduleDate.setValue(d);
+			scheduleTime.setValue(timeFormat.format(d));
+			scheduleMessage.setValue("");
+			scheduleWindow.setHTML("<img src='/icons/note.png' />新建提醒");
+		}
 	}
 
 	private static Window settingWindow;
@@ -1793,7 +1674,7 @@ public class Costnote implements EntryPoint {
 				tree.getSelectionModel().deselectAll();
 				return;
 			} else if (tab_id.equals("tab_tree_note_schedule")) {
-				showNewScheduleWindow();
+				showScheduleWindow(null, null, null);
 				tree.getSelectionModel().deselectAll();
 				return;
 			} else if (tab_id.equals("tab_tree_setting")) {
