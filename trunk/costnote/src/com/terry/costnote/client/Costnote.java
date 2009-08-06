@@ -432,7 +432,7 @@ public class Costnote implements EntryPoint {
 				}));
 		grid.setContextMenu(menu);
 		cp.add(grid);
-		PagingToolBar toolBar = createChinesePagingToolBar();
+		PagingToolBar toolBar = new PagingToolBar(20);
 		toolBar.bind((BasePagingLoader<PagingLoadResult<ModelData>>) store
 				.getLoader());
 		cp.setBottomComponent(toolBar);
@@ -672,7 +672,7 @@ public class Costnote implements EntryPoint {
 				}));
 		grid.setContextMenu(menu);
 		cp.add(grid);
-		PagingToolBar toolBar = createChinesePagingToolBar();
+		PagingToolBar toolBar = new PagingToolBar(20);
 		toolBar
 				.bind((BasePagingLoader<PagingLoadResult<ModelData>>) scheduleStore
 						.getLoader());
@@ -788,21 +788,6 @@ public class Costnote implements EntryPoint {
 	public static native void showPopMessage(String type, String message) /*-{
 		$wnd.showMsg(type, message);
 	}-*/;
-
-	private static PagingToolBar createChinesePagingToolBar() {
-		PagingToolBar toolBar = new PagingToolBar(20);
-		PagingToolBar.PagingToolBarMessages messages = toolBar.getMessages();
-		messages.setAfterPageText("，共 {0} 页");
-		messages.setBeforePageText("第");
-		messages.setDisplayMsg("显示 {0} - {1} 条，共 {2} 条");
-		messages.setEmptyMsg("<font color=red>没有数据</font>");
-		// messages.setFirstText("第一页");
-		// messages.setLastText("最后页");
-		// messages.setNextText("下一页");
-		// messages.setPrevText("前一页");
-		// messages.setRefreshText("刷新");
-		return toolBar;
-	}
 
 	public static Folder getTreeModel() {
 		Folder[] folders = new Folder[] {
