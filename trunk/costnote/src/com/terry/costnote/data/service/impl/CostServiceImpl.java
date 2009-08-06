@@ -112,7 +112,8 @@ public class CostServiceImpl implements ICostService {
 		if (!jo.getString("id").equals("")) {
 			schedule = scheduleDao.getScheduleById(jo.getString("id"));
 			if (schedule != null
-					&& schedule.getAdate().getTime() > new Date().getTime()) {
+					&& schedule.getAdate().getTime() > new Date().getTime()
+					&& !schedule.isType()) {
 				oldSid = schedule.getSid();
 			}
 		}
@@ -198,8 +199,9 @@ public class CostServiceImpl implements ICostService {
 		JSONArray sids = new JSONArray();
 		for (int i = 0; i < ja.size(); i++) {
 			Schedule schedule = scheduleDao.getScheduleById(ja.getString(i));
-			if (schedule.getAdate().getTime() - 28800000l > new Date()
-					.getTime())
+			if (!schedule.isType()
+					&& schedule.getAdate().getTime() - 28800000l > new Date()
+							.getTime())
 				sids.add(schedule.getSid());
 		}
 
