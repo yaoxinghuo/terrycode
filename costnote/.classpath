@@ -31,5 +31,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/org.springframework.web-3.0.0.CI-353.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/aopalliance-1.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/struts2-core-2.1.6.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-incubator-timepicker-1.0.1-modified-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
