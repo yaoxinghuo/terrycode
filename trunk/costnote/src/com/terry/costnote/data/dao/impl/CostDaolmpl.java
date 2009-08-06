@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
 
@@ -15,7 +15,6 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.terry.costnote.data.dao.intf.ICostDao;
 import com.terry.costnote.data.model.Cost;
-import com.terry.costnote.data.util.EMF;
 
 /**
  * @author Terry E-mail: yaoxinghuo at 126 dot com
@@ -25,15 +24,13 @@ import com.terry.costnote.data.util.EMF;
 @Component("costDao")
 public class CostDaolmpl implements ICostDao {
 
-	EntityManager em = EMF.get().createEntityManager();
+	@PersistenceContext
+	private EntityManager em;
 
 	@Override
 	public boolean deleteCost(Cost cost) {
 		try {
-			EntityTransaction tx = em.getTransaction();
-			tx.begin();
 			em.remove(cost);
-			tx.commit();
 		} catch (Exception e) {
 			return false;
 		}
@@ -78,10 +75,7 @@ public class CostDaolmpl implements ICostDao {
 	@Override
 	public boolean saveCost(Cost cost) {
 		try {
-			EntityTransaction tx = em.getTransaction();
-			tx.begin();
 			em.persist(cost);
-			tx.commit();
 		} catch (Exception e) {
 			return false;
 		}
