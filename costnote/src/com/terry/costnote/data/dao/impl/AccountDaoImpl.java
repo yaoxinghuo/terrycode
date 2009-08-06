@@ -3,8 +3,8 @@ package com.terry.costnote.data.dao.impl;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.springframework.stereotype.Component;
@@ -13,7 +13,6 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.terry.costnote.data.dao.intf.IAccountDao;
 import com.terry.costnote.data.model.Account;
-import com.terry.costnote.data.util.EMF;
 
 /**
  * @author Terry E-mail: yaoxinghuo at 126 dot com
@@ -23,15 +22,13 @@ import com.terry.costnote.data.util.EMF;
 @Component("accountDao")
 public class AccountDaoImpl implements IAccountDao {
 
-	EntityManager em = EMF.get().createEntityManager();
+	@PersistenceContext
+	private EntityManager em;
 
 	@Override
 	public boolean deleteAccount(Account account) {
 		try {
-			EntityTransaction tx = em.getTransaction();
-			tx.begin();
 			em.remove(account);
-			tx.commit();
 		} catch (Exception e) {
 			return false;
 		}
@@ -74,10 +71,7 @@ public class AccountDaoImpl implements IAccountDao {
 	@Override
 	public boolean saveAccount(Account account) {
 		try {
-			EntityTransaction tx = em.getTransaction();
-			tx.begin();
 			em.persist(account);
-			tx.commit();
 		} catch (Exception e) {
 			return false;
 		}

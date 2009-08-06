@@ -25,6 +25,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.terry.costnote.data.dao.intf.IAccountDao;
 import com.terry.costnote.data.dao.intf.ICostDao;
@@ -38,6 +39,7 @@ import com.terry.costnote.data.service.intf.IAccountService;
  */
 
 @Service("accountService")
+@Transactional
 @Repository
 public class AccountServiceImpl implements IAccountService {
 

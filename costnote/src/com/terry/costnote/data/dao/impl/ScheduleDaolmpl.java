@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
 
@@ -15,7 +15,6 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.terry.costnote.data.dao.intf.IScheduleDao;
 import com.terry.costnote.data.model.Schedule;
-import com.terry.costnote.data.util.EMF;
 
 /**
  * @author Terry E-mail: yaoxinghuo at 126 dot com
@@ -25,15 +24,13 @@ import com.terry.costnote.data.util.EMF;
 @Component("scheduleDao")
 public class ScheduleDaolmpl implements IScheduleDao {
 
-	EntityManager em = EMF.get().createEntityManager();
+	@PersistenceContext
+	private EntityManager em;
 
 	@Override
 	public boolean deleteSchedule(Schedule schedule) {
 		try {
-			EntityTransaction tx = em.getTransaction();
-			tx.begin();
 			em.remove(schedule);
-			tx.commit();
 		} catch (Exception e) {
 			return false;
 		}
@@ -74,10 +71,7 @@ public class ScheduleDaolmpl implements IScheduleDao {
 	@Override
 	public boolean saveSchedule(Schedule schedule) {
 		try {
-			EntityTransaction tx = em.getTransaction();
-			tx.begin();
 			em.persist(schedule);
-			tx.commit();
 		} catch (Exception e) {
 			return false;
 		}
