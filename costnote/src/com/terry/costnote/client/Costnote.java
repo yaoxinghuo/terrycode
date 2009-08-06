@@ -1164,16 +1164,23 @@ public class Costnote implements EntryPoint {
 			hp1.add(b);
 			b.addListener(Events.Select, new Listener<ButtonEvent>() {
 				public void handleEvent(ButtonEvent be) {
+					Date d1 = scheduleDate.getValue();
+					Date d2 = scheduleTime.getValue();
+					String m = scheduleMessage.getValue();
+					if (m == null || m.trim().equals("")
+							|| m.trim().length() > 200 || d1 == null
+							|| d2 == null) {
+						showPopMessage("error", "请检查您的输入（短消息确保在200字以内）！");
+						return;
+					}
 					String s = format.format(scheduleDate.getValue()) + " "
-							+ scheduleTime.getValue();
+							+ timeFormat.format(scheduleTime.getValue());
 					Date d = null;
 					try {
 						d = dateTimeFormat.parse(s);
 					} catch (IllegalArgumentException e) {
 					}
-					String m = scheduleMessage.getValue();
-					if (m == null || m.trim().equals("")
-							|| m.trim().length() > 200 || d == null) {
+					if (d == null) {
 						showPopMessage("error", "请检查您的输入（短消息确保在200字以内）！");
 						return;
 					}
