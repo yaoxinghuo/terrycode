@@ -1120,7 +1120,11 @@ public class Costnote implements EntryPoint {
 			layout.setCellSpacing(6);
 			FlexCellFormatter cellFormatter = layout.getFlexCellFormatter();
 
-			layout.setWidget(0, 0, new LabelField("提醒日期*"));
+			scheduleHidden = new HiddenField<String>();
+			scheduleHidden.setValue("");
+			layout.setWidget(0, 0, scheduleHidden);
+
+			layout.setWidget(1, 0, new LabelField("提醒日期*"));
 
 			HorizontalPanel hp = new HorizontalPanel();
 			scheduleDate = new DateField();
@@ -1138,7 +1142,7 @@ public class Costnote implements EntryPoint {
 			scheduleTime.setAccessKey('t');
 			hp.add(scheduleTime);
 
-			layout.setWidget(0, 1, hp);
+			layout.setWidget(1, 1, hp);
 
 			// date.addListener(Events.Blur, new Listener<FieldEvent>() {
 			//
@@ -1152,8 +1156,8 @@ public class Costnote implements EntryPoint {
 			scheduleMessage.setPreventScrollbars(true);
 			scheduleMessage.setWidth(300);
 			scheduleMessage.setMaxLength(200);
-			layout.setWidget(1, 0, new LabelField("短信消息*"));
-			layout.setWidget(1, 1, scheduleMessage);
+			layout.setWidget(2, 0, new LabelField("短信消息*"));
+			layout.setWidget(2, 1, scheduleMessage);
 
 			HorizontalPanel hp1 = new HorizontalPanel();
 			final Button b = new Button("保存");
@@ -1175,78 +1179,58 @@ public class Costnote implements EntryPoint {
 					}
 
 					final JSONObject jo = new JSONObject();
-					jo.put("id", new JSONString(scheduleHidden.getValue()));
+					jo.put("id", new JSONString(
+							scheduleHidden.getValue() == null ? ""
+									: scheduleHidden.getValue()));
 					jo.put("date", new JSONString(s));
 					jo.put("message", new JSONString(m));
 					if (d.getTime() - new Date().getTime() < 1200000) {
-						MessageBox
-								.confirm(
-										"确定立即发送",
-										"根据中国移动的规定，定时短信的发送日期要超过现在日期20分钟以上！<br/>是否立即发送短信到您的手机?",
-										new Listener<MessageBoxEvent>() {
+						new ConfirmDialog(
+								"确定立即发送",
+								"根据中国移动的规定，定时短信的发送日期要超过现在日期20分钟以上！<br/>是否立即发送短信到您的手机?",
+								"确定", "取消") {
+							@Override
+							public void onOK() {
+								super.onOK();
+								jo.put("schedule", JSONBoolean
+										.getInstance(false));
+								b.setEnabled(false);
+								b.setText(operateWait);
+								ServiceDefTarget endpoint = (ServiceDefTarget) costService;
+								endpoint
+										.setServiceEntryPoint("gwt-cost!saveSchedule.action");
+								costService.saveSchedule(jo.toString(),
+										new AsyncCallback<Boolean>() {
 
 											@Override
-											public void handleEvent(
-													MessageBoxEvent be) {
-												if (be.getButtonClicked()
-														.getItemId().equals(
-																Dialog.YES)) {
-													jo
-															.put(
-																	"schedule",
-																	JSONBoolean
-																			.getInstance(false));
-													b.setEnabled(false);
-													b.setText(operateWait);
-													ServiceDefTarget endpoint = (ServiceDefTarget) costService;
-													endpoint
-															.setServiceEntryPoint("gwt-cost!saveSchedule.action");
-													costService
-															.saveSchedule(
-																	jo
-																			.toString(),
-																	new AsyncCallback<Boolean>() {
-
-																		@Override
-																		public void onFailure(
-																				Throwable caught) {
-																			b
-																					.setEnabled(true);
-																			b
-																					.setText("保存");
-																			showPopMessage(
-																					"error",
-																					operateError);
-																		}
-
-																		@Override
-																		public void onSuccess(
-																				Boolean result) {
-																			b
-																					.setEnabled(true);
-																			b
-																					.setText("保存");
-																			if (result) {
-																				// formPanel.reset();
-																				scheduleMessage
-																						.setValue("");
-																				scheduleWindow
-																						.hide();
-																				reloadScheduleList();
-																				showPopMessage(
-																						"pass",
-																						operatePass);
-																			} else
-																				showPopMessage(
-																						"error",
-																						operateFail);
-																		}
-
-																	});
-												} else
-													return;
+											public void onFailure(
+													Throwable caught) {
+												b.setEnabled(true);
+												b.setText("保存");
+												showPopMessage("error",
+														operateError);
 											}
+
+											@Override
+											public void onSuccess(Boolean result) {
+												b.setEnabled(true);
+												b.setText("保存");
+												if (result) {
+													// formPanel.reset();
+													scheduleMessage
+															.setValue("");
+													scheduleWindow.hide();
+													reloadScheduleList();
+													showPopMessage("pass",
+															operatePass);
+												} else
+													showPopMessage("error",
+															operateFail);
+											}
+
 										});
+							}
+						}.center();
 					} else {
 						jo.put("schedule", JSONBoolean.getInstance(true));
 						b.setEnabled(false);
@@ -1290,16 +1274,14 @@ public class Costnote implements EntryPoint {
 			});
 			hp1.add(new HTML("&nbsp;&nbsp;"));
 			hp1.add(reset);
-			cellFormatter.setHorizontalAlignment(2, 1,
+			cellFormatter.setHorizontalAlignment(3, 1,
 					HasHorizontalAlignment.ALIGN_RIGHT);
-			layout.setWidget(2, 1, hp1);
+			layout.setWidget(3, 1, hp1);
 
-			scheduleHidden = new HiddenField<String>();
-			layout.setWidget(3, 1, scheduleHidden);
 			scheduleWindow.setWidget(layout);
 		}
-		scheduleWindow.show();
 		scheduleWindow.center();
+		scheduleWindow.show();
 		if (id != null) {
 			scheduleHidden.setValue(id);
 			scheduleDate.setValue(date);
