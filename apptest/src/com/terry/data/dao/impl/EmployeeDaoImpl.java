@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.springframework.stereotype.Component;
@@ -12,12 +13,12 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.terry.data.dao.intf.IEmployeeDao;
 import com.terry.data.model.Employee;
-import com.terry.data.util.EMF;
 
 @Component("employeeDao")
 public class EmployeeDaoImpl implements IEmployeeDao {
 
-	EntityManager em = EMF.get().createEntityManager();
+	@PersistenceContext
+	private EntityManager em;
 
 	@Override
 	public Employee getEmplyeeById(String id) {

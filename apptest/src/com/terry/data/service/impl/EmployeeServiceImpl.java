@@ -6,12 +6,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.terry.data.dao.intf.IEmployeeDao;
 import com.terry.data.model.Employee;
 import com.terry.data.service.intf.IEmployeeService;
 
 @Service("employeeService")
+@Transactional
 @Repository
 public class EmployeeServiceImpl implements IEmployeeService {
 
