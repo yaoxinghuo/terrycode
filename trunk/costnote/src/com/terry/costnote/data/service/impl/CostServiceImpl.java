@@ -144,7 +144,9 @@ public class CostServiceImpl implements ICostService {
 		} else {
 			if (fetchToSendSMS(account.getMobile(), schedule.getMessage())) {
 				schedule.setSid("");
-				schedule.setAdate(new Date());
+				Calendar cal = Calendar.getInstance();
+				cal.add(Calendar.HOUR_OF_DAY, 8);// 时区的问题，+8
+				schedule.setAdate(cal.getTime());
 				schedule.setType(true);
 			} else
 				return false;
