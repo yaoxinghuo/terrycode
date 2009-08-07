@@ -71,6 +71,7 @@ import com.extjs.gxt.ui.client.widget.layout.ColumnLayout;
 import com.extjs.gxt.ui.client.widget.menu.Menu;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
+import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.extjs.gxt.ui.client.widget.treepanel.TreePanel;
 import com.google.gwt.core.client.EntryPoint;
@@ -461,6 +462,7 @@ public class Costnote implements EntryPoint {
 						showNewNoteWindow();
 					}
 				}));
+		tb.add(new SeparatorToolItem());
 		tb.add(new LabelField("&nbsp;&nbsp;搜索日期从"));
 		tb.add(sfrom);
 		tb.add(new LabelField("&nbsp;到"));
@@ -710,7 +712,8 @@ public class Costnote implements EntryPoint {
 						showScheduleWindow(null, null, null);
 					}
 				}));
-		tb.add(new LabelField("&nbsp;搜索日期从"));
+		tb.add(new SeparatorToolItem());
+		tb.add(new LabelField("&nbsp;&nbsp;搜索日期从"));
 		tb.add(sfrom);
 		tb.add(new LabelField("&nbsp;到"));
 		tb.add(sto);
