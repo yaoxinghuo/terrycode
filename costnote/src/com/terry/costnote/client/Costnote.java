@@ -1155,7 +1155,7 @@ public class Costnote implements EntryPoint {
 			scheduleMessage = new TextArea();
 			scheduleMessage.setPreventScrollbars(true);
 			scheduleMessage.setWidth(300);
-			scheduleMessage.setMaxLength(200);
+			scheduleMessage.setMaxLength(180);
 			layout.setWidget(2, 0, new LabelField("短信消息*"));
 			layout.setWidget(2, 1, scheduleMessage);
 
@@ -1168,10 +1168,10 @@ public class Costnote implements EntryPoint {
 					Date d2 = scheduleTime.getValue();
 					String m = scheduleMessage.getValue();
 					if (m == null || m.trim().equals("")
-							|| m.trim().length() > 200 || d1 == null
+							|| m.trim().length() > 180 || d1 == null
 							|| d2 == null) {
 						showPopMessage("error",
-								"请检查您的输入！(短消息确保在200字以内，日期格式:yyyy-MM-dd HH:mm)");
+								"请检查您的输入！(短消息确保在180字以内，日期格式:yyyy-MM-dd HH:mm)");
 						return;
 					}
 					String s = format.format(scheduleDate.getValue()) + " "
@@ -1183,7 +1183,7 @@ public class Costnote implements EntryPoint {
 					}
 					if (d == null) {
 						showPopMessage("error",
-								"请检查您的输入！(短消息确保在200字以内，日期格式:yyyy-MM-dd HH:mm)");
+								"请检查您的输入！(短消息确保在180字以内，日期格式:yyyy-MM-dd HH:mm)");
 						return;
 					}
 
