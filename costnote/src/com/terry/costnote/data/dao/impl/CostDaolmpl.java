@@ -94,7 +94,7 @@ public class CostDaolmpl implements ICostDao {
 	@Override
 	public long getCostsCountByEmail(String email, Date sfrom, Date sto,
 			int stype) {
-		StringBuffer sb = new StringBuffer("SELECT c FROM ");
+		StringBuffer sb = new StringBuffer("SELECT count(c) FROM ");
 		sb.append(Cost.class.getName());
 		sb
 				.append(" c where c.email = :email and c.adate>=:sfrom and c.adate<:sto");
@@ -119,7 +119,16 @@ public class CostDaolmpl implements ICostDao {
 		if (stype != 0)
 			query.setParameter("type", stype);
 		query.setHint("datanucleus.query.resultSizeMethod", "count");
-		return query.getResultList().size();
+		return (Integer) query.getSingleResult();
+	}
+
+	@Override
+	public long getCostsCountByEmail(String email) {
+		Query query = em.createQuery("SELECT count(c) FROM "
+				+ Cost.class.getName() + " c where c.email=:email");
+		query.setParameter("email", email);
+		query.setHint("datanucleus.query.resultSizeMethod", "count");
+		return (Integer) query.getSingleResult();
 	}
 
 	@SuppressWarnings("unchecked")

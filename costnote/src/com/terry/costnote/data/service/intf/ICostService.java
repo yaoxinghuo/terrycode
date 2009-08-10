@@ -24,6 +24,8 @@ public interface ICostService {
 
 	public long getCostsCountByEmail(String email, Date sfrom, Date sto,
 			int stype);
+	
+	public long getCostsCountByEmail(String email);
 
 	public List<Schedule> getSchedulesByEmail(String email, Date sfrom,
 			Date sto, int start, int limit);

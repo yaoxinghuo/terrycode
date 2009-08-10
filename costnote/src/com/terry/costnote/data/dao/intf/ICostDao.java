@@ -24,4 +24,6 @@ public interface ICostDao {
 
 	public long getCostsCountByEmail(String email, Date sfrom, Date sto,
 			int stype);
+
+	public long getCostsCountByEmail(String email);
 }

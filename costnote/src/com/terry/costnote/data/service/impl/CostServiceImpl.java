@@ -173,6 +173,11 @@ public class CostServiceImpl implements ICostService {
 	}
 
 	@Override
+	public long getCostsCountByEmail(String email) {
+		return costDao.getCostsCountByEmail(email);
+	}
+
+	@Override
 	public List<Schedule> getSchedulesByEmail(String email, Date sfrom,
 			Date sto, int start, int limit) {
 		return scheduleDao.getSchedulesByEmail(email, sfrom, sto, start, limit);
