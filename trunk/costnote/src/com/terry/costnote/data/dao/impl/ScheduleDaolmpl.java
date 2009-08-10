@@ -89,7 +89,7 @@ public class ScheduleDaolmpl implements IScheduleDao {
 
 	@Override
 	public long getSchedulesCountByEmail(String email, Date sfrom, Date sto) {
-		StringBuffer sb = new StringBuffer("SELECT s FROM ");
+		StringBuffer sb = new StringBuffer("SELECT count(s) FROM ");
 		sb.append(Schedule.class.getName());
 		sb
 				.append(" s where s.email = :email and s.adate>=:sfrom and s.adate<:sto");
@@ -110,7 +110,7 @@ public class ScheduleDaolmpl implements IScheduleDao {
 		c2.add(Calendar.DAY_OF_MONTH, 1);
 		query.setParameter("sto", c2, TemporalType.DATE);
 		query.setHint("datanucleus.query.resultSizeMethod", "count");
-		return query.getResultList().size();
+		return (Integer) query.getSingleResult();
 	}
 
 	@SuppressWarnings("unchecked")
