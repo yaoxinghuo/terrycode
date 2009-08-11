@@ -41,6 +41,7 @@ public class Gfwout implements EntryPoint {
 	public void onModuleLoad() {
 		final Button sendButton = new Button("Send");
 		final TextBox nameField = new TextBox();
+		nameField.setWidth("380px");
 		nameField.setText("http://www.google.com/");
 
 		// We can add style names to widgets
