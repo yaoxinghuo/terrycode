@@ -27,7 +27,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		try {
 			if (s.startsWith("/"))
 				s = s.substring(1);
-			if (!s.startsWith("http://") || !s.startsWith("https://"))
+			if (!s.startsWith("http://") && !s.startsWith("https://"))
 				s = "http://" + s;
 			URL url = new URL(s);
 
