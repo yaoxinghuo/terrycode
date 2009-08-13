@@ -84,7 +84,7 @@ public class Segment {
 					AtomSeg as = new AtomSeg(sen.getContent());
 					ArrayList<Atom> atoms = as.getAtoms();
 					mr.setAtoms(atoms);
-					System.err.println("[atom time]:" + (System.currentTimeMillis() - start));
+					logger.info("[atom time]:" + (System.currentTimeMillis() - start));
 					start = System.currentTimeMillis();
 
 					// 生成分词图表,先进行初步分词，然后进行优化，最后进行词性标记
@@ -93,14 +93,14 @@ public class Segment {
 					// 生成二叉分词图表
 					SegGraph biSegGraph = GraphGenerate.biGenerate(segGraph, coreDict, bigramDict);
 					mr.setBiSegGraph(biSegGraph.getSnList());
-					System.err.println("[graph time]:" + (System.currentTimeMillis() - start));
+					logger.info("[graph time]:" + (System.currentTimeMillis() - start));
 					start = System.currentTimeMillis();
 
 					// 求N最短路径
 					NShortPath nsp = new NShortPath(biSegGraph, segPathCount);
 					ArrayList<ArrayList<Integer>> bipath = nsp.getPaths();
 					mr.setBipath(bipath);
-					System.err.println("[NSP time]:" + (System.currentTimeMillis() - start));
+					logger.info("[NSP time]:" + (System.currentTimeMillis() - start));
 					start = System.currentTimeMillis();
 
 					for (ArrayList<Integer> onePath : bipath) {
@@ -109,7 +109,7 @@ public class Segment {
 						ArrayList<SegNode> firstPath = AdjustSeg.firstAdjust(segPath);
 						String firstResult = outputResult(firstPath);
 						mr.addFirstResult(firstResult);
-						System.err.println("[first time]:" + (System.currentTimeMillis() - start));
+						logger.info("[first time]:" + (System.currentTimeMillis() - start));
 						start = System.currentTimeMillis();
 
 						// 处理未登陆词，进对初次分词结果进行优化
@@ -119,7 +119,7 @@ public class Segment {
 						transPersonTagger.recognition(optSegGraph, sns);
 						placeTagger.recognition(optSegGraph, sns);
 						mr.setOptSegGraph(optSegGraph.getSnList());
-						System.err.println("[unknown time]:" + (System.currentTimeMillis() - start));
+						logger.info("[unknown time]:" + (System.currentTimeMillis() - start));
 						start = System.currentTimeMillis();
 
 						// 根据优化后的结果，重新进行生成二叉分词图表
@@ -140,7 +140,7 @@ public class Segment {
 							mr.addOptResult(optResult);
 							adjResult = AdjustSeg.finaAdjust(optSegPath, personTagger, placeTagger);
 							String adjrs = outputResult(adjResult);
-							System.err.println("[last time]:" + (System.currentTimeMillis() - start));
+							logger.info("[last time]:" + (System.currentTimeMillis() - start));
 							start = System.currentTimeMillis();
 							if (midResult == null)
 								midResult = adjrs;
