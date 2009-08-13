@@ -11,7 +11,7 @@ public class Test {
 	public static void main(String[] args) {
 		Segment segTag = Segment.getInstance(1);
 		try {
-			SegResult seg_res = segTag.split("我购买了道具和服装");
+			SegResult seg_res = segTag.split("今天的天氣好極了");
 			String segString = seg_res.getFinalResult();
 			System.out.println(segString);
 		} catch (Throwable t) {
