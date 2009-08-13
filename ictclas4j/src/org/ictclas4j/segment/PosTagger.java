@@ -507,9 +507,10 @@ public class PosTagger {
 						// Get the possible person name
 						while (nPos < j + patterns[k].length()) {
 							SegNode sn = sns.get(nPos);
-							if (sn.getPos() < 4
-									&& unknownDict.getFreq(sn.getWord(), sn.getPos()) < Utility.LITTLE_FREQUENCY)
-								personName += sn.getWord();
+//							if (sn.getPos() < 4
+//									&& unknownDict.getFreq(sn.getWord(), sn.getPos()) < Utility.LITTLE_FREQUENCY)
+//								personName += sn.getWord();
+								personName += sn.getSrcWord();
 							nPos += 1;
 						}
 						if ("CDCD".equals(patterns[k])) {

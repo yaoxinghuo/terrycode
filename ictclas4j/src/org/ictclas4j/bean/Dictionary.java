@@ -11,10 +11,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
+import org.ictclas4j.segment.Segment;
 import org.ictclas4j.utility.GFCommon;
 import org.ictclas4j.utility.GFString;
 import org.ictclas4j.utility.Utility;
-
 
 public class Dictionary {
 	/**
@@ -416,7 +416,7 @@ public class Dictionary {
 	public int findInOriginalTable(int index, String res, int handle) {
 		int result = -1;
 
-		if (res != null && wts != null) {
+		if (res != null && wts != null && index >= 0 && index < wts.size()) {
 			WordTable wt = wts.get(index);
 			if (wt != null && wt.getCount() > 0) {
 				int start = 0;
@@ -571,13 +571,14 @@ public class Dictionary {
 				int found = findInOriginalTable(pw.getIndex(), pw.getRes(), -1);
 				if (found == -1) {
 					ArrayList<WordItem> wis = wts.get(pw.getIndex()).getWords();
-					for (int j = 0; j < wis.size(); j++) {
-						int compValue = GFString.compareTo(wis.get(j).getWord(), pw.getRes());
-						if (compValue == 1) {
-							found = j;
-							break;
+					if (wis != null)
+						for (int j = 0; j < wis.size(); j++) {
+							int compValue = GFString.compareTo(wis.get(j).getWord(), pw.getRes());
+							if (compValue == 1) {
+								found = j;
+								break;
+							}
 						}
-					}
 				}
 				// 从源词典表中找出去掉第一个开头的字之后相等的词
 				if (found >= 0 && wts != null && wts.get(pw.getIndex()) != null) {

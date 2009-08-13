@@ -25,53 +25,53 @@ public class DebugUtil {
 	 * @param snList
 	 */
 	public static void output2html(SegResult sr) {
-		if (sr != null) {
-			try {
-				String html = "<html><head><title>ictclas4j分词结果</title></head>";
-				html += "<body bgcolor=\"#CCFF99\">";
-				html += sr.toHTML();
-				html += "</body></html>"; 
-				writeTxtFile("output\\sr.html", html, false);
-			} catch (IOException e) {
-			}
-
-		}
+//		if (sr != null) {
+//			try {
+//				String html = "<html><head><title>ictclas4j分词结果</title></head>";
+//				html += "<body bgcolor=\"#CCFF99\">";
+//				html += sr.toHTML();
+//				html += "</body></html>"; 
+//				writeTxtFile("output\\sr.html", html, false);
+//			} catch (IOException e) {
+//			}
+//
+//		}
 	}
 
 	public static void outputPostag(ArrayList<SegNode> sns) {
-		if (sns != null) {
-			try {
-				StringBuffer html = new StringBuffer();
-				html.append("<html><head><title>ictclas4j分词结果</title></head>");
-				html.append("<body bgcolor=\"#CCFF99\">");
-				html.append("<p>进行原子分词后的结果：");
-				html.append("<table border=\"1\" width=\"100%\">");
-				for (SegNode sn : sns) {
-					html.append("<tr>");
-					html.append("<td width=\"10%\" bgcolor=\"#99CCFF\"  rowspan=\"" + sn.getPosSize() + "\">"
-							+ sn.getWord() + "</td>");
-					ArrayList<POS> allPos = sn.getAllPos();
-					boolean flag = false;
-					for (POS pos : allPos) {
-						if (flag)
-							html.append("<tr>");
-						html.append("<td width=\"20%\" >" + pos.getTag() + "</td>");
-						html.append("<td width=\"20%\" >" + pos.getFreq() + "</td>");
-						html.append("<td width=\"20%\" >" + pos.getPrev() + "</td>");
-						String sBest=pos.isBest()?"true":"&nbsp";
-						html.append("<td width=\"20%\" >" + sBest + "</td>");
-						html.append("</tr>");
-						if (!flag)
-							flag = true;
-					}
-				}
-				html.append("</table>");
-				html.append("</body></html>");
-				writeTxtFile("output\\postag.html", html.toString(), false);
-			} catch (IOException e) {
-			}
-
-		}
+//		if (sns != null) {
+//			try {
+//				StringBuffer html = new StringBuffer();
+//				html.append("<html><head><title>ictclas4j分词结果</title></head>");
+//				html.append("<body bgcolor=\"#CCFF99\">");
+//				html.append("<p>进行原子分词后的结果：");
+//				html.append("<table border=\"1\" width=\"100%\">");
+//				for (SegNode sn : sns) {
+//					html.append("<tr>");
+//					html.append("<td width=\"10%\" bgcolor=\"#99CCFF\"  rowspan=\"" + sn.getPosSize() + "\">"
+//							+ sn.getWord() + "</td>");
+//					ArrayList<POS> allPos = sn.getAllPos();
+//					boolean flag = false;
+//					for (POS pos : allPos) {
+//						if (flag)
+//							html.append("<tr>");
+//						html.append("<td width=\"20%\" >" + pos.getTag() + "</td>");
+//						html.append("<td width=\"20%\" >" + pos.getFreq() + "</td>");
+//						html.append("<td width=\"20%\" >" + pos.getPrev() + "</td>");
+//						String sBest=pos.isBest()?"true":"&nbsp";
+//						html.append("<td width=\"20%\" >" + sBest + "</td>");
+//						html.append("</tr>");
+//						if (!flag)
+//							flag = true;
+//					}
+//				}
+//				html.append("</table>");
+//				html.append("</body></html>");
+//				writeTxtFile("output\\postag.html", html.toString(), false);
+//			} catch (IOException e) {
+//			}
+//
+//		}
 	}
 
 	/**
@@ -80,9 +80,9 @@ public class DebugUtil {
 	 * @param snList
 	 */
 	public static void output2gui(SegResult sr) {
-		if (sr != null) {
-
-		}
+//		if (sr != null) {
+//
+//		}
 	}
 
 	/**
@@ -98,42 +98,42 @@ public class DebugUtil {
 	 * @throws IOException
 	 */
 	public static boolean writeTxtFile(String fileName, String txt, boolean isAppend) throws IOException {
-		FileWriter fw = null;
-		PrintWriter out = null;
-
-		if (fileName != null && txt != null)
-			try {
-				String parent;
-				File fp;
-
-				File file = new File(fileName);
-				// 如果文件不存在，就创建一个，如果目录也不存在，也创建一个
-				if (!file.exists()) {
-					parent = file.getParent();
-					if (parent != null) {
-						fp = new File(parent);
-
-						if (!fp.isDirectory())
-							fp.mkdirs();
-					}
-
-				}
-
-				String[] msgs = txt.split("\n");
-				fw = new FileWriter(file, isAppend);
-				out = new PrintWriter(fw);
-				for (int i = 0; i < msgs.length; i++) {
-					out.println(msgs[i]);
-				}
-				out.flush();
-				out.close();
-				return true;
-			} catch (IOException e) {
-				throw new IOException();
-			} finally {
-				if (out != null)
-					out.close();
-			}
+//		FileWriter fw = null;
+//		PrintWriter out = null;
+//
+//		if (fileName != null && txt != null)
+//			try {
+//				String parent;
+//				File fp;
+//
+//				File file = new File(fileName);
+//				// 如果文件不存在，就创建一个，如果目录也不存在，也创建一个
+//				if (!file.exists()) {
+//					parent = file.getParent();
+//					if (parent != null) {
+//						fp = new File(parent);
+//
+//						if (!fp.isDirectory())
+//							fp.mkdirs();
+//					}
+//
+//				}
+//
+//				String[] msgs = txt.split("\n");
+//				fw = new FileWriter(file, isAppend);
+//				out = new PrintWriter(fw);
+//				for (int i = 0; i < msgs.length; i++) {
+//					out.println(msgs[i]);
+//				}
+//				out.flush();
+//				out.close();
+//				return true;
+//			} catch (IOException e) {
+//				throw new IOException();
+//			} finally {
+//				if (out != null)
+//					out.close();
+//			}
 		return false;
 	}
 }
