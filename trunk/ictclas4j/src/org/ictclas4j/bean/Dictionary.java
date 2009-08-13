@@ -35,7 +35,7 @@ public class Dictionary {
 
 	public Dictionary(String filename) {
 		init();
-		load(filename);
+		System.out.println(load(filename));
 	}
 
 	public void init() {
@@ -67,6 +67,7 @@ public class Dictionary {
 		int[] nBuffer = new int[3];
 
 		file = new File(filename);
+		System.out.println("exist?"+file.exists()+"filename:"+file.getAbsolutePath());
 		if (!file.canRead())
 			return false;// fail while opening the file
 

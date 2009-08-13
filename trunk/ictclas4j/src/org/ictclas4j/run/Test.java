@@ -9,7 +9,7 @@ import org.ictclas4j.segment.Segment;
  */
 public class Test {
 	public static void main(String[] args) {
-		Segment segTag = new Segment(1);
+		Segment segTag = Segment.getInstance(1);
 		try {
 			SegResult seg_res = segTag.split("我购买了道具和服装");
 			String segString = seg_res.getFinalResult();

@@ -27,15 +27,24 @@ public class Segment {
 
 	private PosTagger lexTagger;
 
-	private int segPathCount = 1;// 分词路径的数目
+	private static int segPathCount = 1;// 分词路径的数目
 
 	static Logger logger = Logger.getLogger(Segment.class);
 
-	public Segment(int segPathCount) {
+	private static Segment instance = null;
+
+	public static Segment getInstance(int segPathCount) {
+		Segment.segPathCount = segPathCount;
+		if (instance == null) {
+			instance = new Segment();
+		}
+		return instance;
+	}
+
+	private Segment() {
 		String path = Constants.DATA_PATH != null && !Constants.DATA_PATH.equals("") ? Constants.DATA_PATH : "./data/";
 		if (!path.endsWith("/"))
 			path = path + "/";
-		this.segPathCount = segPathCount;
 
 		logger.info("Load coreDict  ...");
 		coreDict = new Dictionary(path + "coreDict.dct");
@@ -204,7 +213,7 @@ public class Segment {
 	}
 
 	public void setSegPathCount(int segPathCount) {
-		this.segPathCount = segPathCount;
+		Segment.segPathCount = segPathCount;
 	}
 
 }

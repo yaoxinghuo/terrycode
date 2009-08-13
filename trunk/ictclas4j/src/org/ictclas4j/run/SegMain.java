@@ -23,13 +23,12 @@ import org.ictclas4j.segment.Segment;
  */
 
 public class SegMain {
-	public static Segment seg;
+	public static Segment seg = Segment.getInstance(1);
 
 	static Logger logger = Logger.getLogger(SegMain.class);
 
 	public static void main(String[] args) {
 		SegMain sm = new SegMain();
-		seg = new Segment(1);
 		sm.initFrm();
 		// String[] source = {
 		// "2006年德国世界杯八分之一决赛马上要开始",

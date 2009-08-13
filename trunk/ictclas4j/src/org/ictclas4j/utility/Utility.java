@@ -684,8 +684,9 @@ public class Utility {
 		if (in != null && len > 0) {
 			byte[] b = new byte[len];
 			try {
-				for (int i = 0; i < len; i++)
-					b[i] = in.readByte();
+//				for (int i = 0; i < len; i++)
+//					b[i] = in.readByte();
+				in.read(b);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
