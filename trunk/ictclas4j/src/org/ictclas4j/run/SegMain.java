@@ -36,7 +36,7 @@ public class SegMain {
 	public static void main(String[] args) {
 		SegMain sm = new SegMain();
 		seg = new Segment(1);
-		 sm.initFrm();
+		sm.initFrm();
 		// String[] source = {
 		// "2006年德国世界杯八分之一决赛马上要开始",
 		// "广州：网络警察“巡逻”BBS和博客",
@@ -52,28 +52,31 @@ public class SegMain {
 		// sr.getFinalResult());
 		// }
 
-//		try {
-//			int count = 0;
-//			long times = 0;
-//			long bytes = 0;
-//			int segPathCount = 1;
-//			int forCount = 1;
-//			seg.setSegPathCount(segPathCount);
-//			ArrayList<String> testCases = GFString.readTxtFile2("test\\case1.txt");
-//			for (int i = 0; i < forCount; i++) {
-//				for (String src : testCases) {
-//					SegResult sr = SegMain.seg.split(src);
-//					count++;
-//					bytes += src.getBytes().length;
-//					times += sr.getSpendTime();
-//					logger.info("[time:" + sr.getSpendTime() + "ms]:\n" + sr.getFinalResult());
-//				}
-//				logger.info("i:"+i+"\ntotal_count:" + count + "\ntotal_time:" + times + "\ntotal_bytes:" + bytes + "\navg_time:"
-//						+ (times / count) + "\navg_bytes:" + (bytes / times) + "b/ms");
-//			}
-//		} catch (IOException e1) {
-//			e1.printStackTrace();
-//		}
+		// try {
+		// int count = 0;
+		// long times = 0;
+		// long bytes = 0;
+		// int segPathCount = 1;
+		// int forCount = 1;
+		// seg.setSegPathCount(segPathCount);
+		// ArrayList<String> testCases =
+		// GFString.readTxtFile2("test\\case1.txt");
+		// for (int i = 0; i < forCount; i++) {
+		// for (String src : testCases) {
+		// SegResult sr = SegMain.seg.split(src);
+		// count++;
+		// bytes += src.getBytes().length;
+		// times += sr.getSpendTime();
+		// logger.info("[time:" + sr.getSpendTime() + "ms]:\n" +
+		// sr.getFinalResult());
+		// }
+		// logger.info("i:"+i+"\ntotal_count:" + count + "\ntotal_time:" + times
+		// + "\ntotal_bytes:" + bytes + "\navg_time:"
+		// + (times / count) + "\navg_bytes:" + (bytes / times) + "b/ms");
+		// }
+		// } catch (IOException e1) {
+		// e1.printStackTrace();
+		// }
 	}
 
 	private void initFrm() {
