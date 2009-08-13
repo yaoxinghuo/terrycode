@@ -47,6 +47,7 @@ public class WordTable {
 		}
 	}
 
+	@Override
 	public String toString() {
 
 		return ReflectionToStringBuilder.toString(this);

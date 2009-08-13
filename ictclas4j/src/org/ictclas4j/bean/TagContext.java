@@ -43,6 +43,7 @@ public class TagContext {
 	public void setTotalFreq(int totalFreq) {
 		this.totalFreq = totalFreq;
 	}
+	@Override
 	public String toString() {
 
 		return ReflectionToStringBuilder.toString(this);

@@ -48,6 +48,7 @@ public class QueueNode {
 		this.weight = weight;
 	}
 	
+	@Override
 	public String toString() {
 
 		return ReflectionToStringBuilder.toString(this);

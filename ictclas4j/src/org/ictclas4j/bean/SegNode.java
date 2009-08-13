@@ -122,12 +122,14 @@ public class SegNode implements Cloneable {
 		this.value = value;
 	}
 
+	@Override
 	public String toString() {
 
 		return ReflectionToStringBuilder.toString(this);
 
 	}
 
+	@Override
 	public SegNode clone() {
 		SegNode result = null;
 		try {

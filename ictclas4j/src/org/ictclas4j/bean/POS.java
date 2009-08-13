@@ -60,6 +60,7 @@ public class POS {
 		this.isBest = isBest;
 	}
 
+	@Override
 	public String toString() {
 
 		return ReflectionToStringBuilder.toString(this);
