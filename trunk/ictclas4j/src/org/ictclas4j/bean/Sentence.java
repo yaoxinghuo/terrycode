@@ -34,6 +34,7 @@ public class Sentence {
 	public void setSeg(boolean isSeg) {
 		this.isSeg = isSeg;
 	}
+	@Override
 	public String toString() {
 
 		return ReflectionToStringBuilder.toString(this);

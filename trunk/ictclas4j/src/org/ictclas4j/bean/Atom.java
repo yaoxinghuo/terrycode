@@ -47,6 +47,7 @@ public class Atom {
 	public void setWord(String word) {
 		this.word = word;
 	}
+	@Override
 	public String toString() {
 
 		return ReflectionToStringBuilder.toString(this);

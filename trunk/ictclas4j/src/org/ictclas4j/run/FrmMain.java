@@ -222,6 +222,7 @@ public class FrmMain {
 			jFrame.setTitle("ICTCLAS4JÑÝÊ¾ÏµÍ³");
 			jFrame.setContentPane(getJContentPane());
 			jFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+				@Override
 				public void windowClosing(java.awt.event.WindowEvent e) {
 					System.exit(0);
 				}

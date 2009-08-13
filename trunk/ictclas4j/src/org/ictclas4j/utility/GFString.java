@@ -1638,6 +1638,7 @@ public class GFString {
 	 * @param cstr
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public static String getBopomofo(String cstr) {
 		String bopomofo = null;
 

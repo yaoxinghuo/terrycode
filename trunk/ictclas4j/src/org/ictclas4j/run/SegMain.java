@@ -1,15 +1,9 @@
 package org.ictclas4j.run;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
 import javax.swing.JFrame;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
-import org.ictclas4j.bean.SegResult;
 import org.ictclas4j.segment.Segment;
-import org.ictclas4j.utility.GFString;
 
 /**
  * Copyright 2007.6.1 ÕÅÐÂ²¨£¨sinboy£©

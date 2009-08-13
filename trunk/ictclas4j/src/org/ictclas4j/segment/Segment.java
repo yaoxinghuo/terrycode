@@ -1,7 +1,5 @@
 package org.ictclas4j.segment;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;

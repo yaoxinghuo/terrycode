@@ -53,6 +53,7 @@ public class WordItem {
 	}
 	
 	
+	@Override
 	public String toString() {
 
 		return ReflectionToStringBuilder.toString(this);

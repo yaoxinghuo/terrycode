@@ -1,12 +1,8 @@
 package org.ictclas4j.utility;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 
-import org.ictclas4j.bean.POS;
 import org.ictclas4j.bean.SegNode;
 import org.ictclas4j.bean.SegResult;
 
