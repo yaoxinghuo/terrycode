@@ -212,6 +212,8 @@ public class Segment {
 					temp = "" + pos[0];
 					if (pos[1] > 0)
 						temp += "" + pos[1];
+					if (tag == 17)// 发现有些词语识别不出来就出现符号，索性变成?
+						temp = "?";
 					result += sn.getSrcWord() + "/" + temp + " ";
 					if (results != null) {
 						WordResultBean r = new WordResultBean();
