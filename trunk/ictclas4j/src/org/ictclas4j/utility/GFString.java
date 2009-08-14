@@ -1248,9 +1248,6 @@ public class GFString {
 		return false;
 	}
 
-	 
-	 
-	 
 	/**
 	 * <pre>
 	 *                               得到指定位置前的非空格字符
@@ -1452,8 +1449,6 @@ public class GFString {
 		return rs;
 	}
 
- 
-
 	/**
 	 * 是否是联通手机号码
 	 * 
@@ -1464,7 +1459,8 @@ public class GFString {
 		boolean result = false;
 		if (sim != null && sim.length() == 11) {
 			String part = sim.substring(0, 3);
-			if (part.equals("130") || part.equals("131") || part.equals("132") || part.equals("133") || part.equals("153") || part.equals("156"))
+			if (part.equals("130") || part.equals("131") || part.equals("132") || part.equals("133")
+					|| part.equals("153") || part.equals("156"))
 				result = true;
 		}
 		return result;
@@ -1480,8 +1476,8 @@ public class GFString {
 		boolean result = false;
 		if (sim != null && sim.length() == 11) {
 			String part = sim.substring(0, 3);
-			if (part.equals("134") || part.equals("135") || part.equals("136") || part.equals("137") || part.equals("138") || part.equals("139")
-					|| part.equals("159") || part.equals("158"))
+			if (part.equals("134") || part.equals("135") || part.equals("136") || part.equals("137")
+					|| part.equals("138") || part.equals("139") || part.equals("159") || part.equals("158"))
 				result = true;
 		}
 		return result;
@@ -1569,7 +1565,8 @@ public class GFString {
 		if (str != null && pos != null) {
 			for (int i = 0; i < str.length(); i++) {
 				int index = str.indexOf(pos, i);
-				if (index + pos.length() == str.length() || (index != -1 && str.substring(index + pos.length()).indexOf(" ") == 0)) {
+				if (index + pos.length() == str.length()
+						|| (index != -1 && str.substring(index + pos.length()).indexOf(" ") == 0)) {
 					result = index;
 					break;
 				}
@@ -2165,8 +2162,6 @@ public class GFString {
 		return result;
 	}
 
-	 
-
 	public static String getTelcode(String telno) {
 		String head = null;
 		if (isTelNo(telno) && telno.length() > 7) {
@@ -2182,9 +2177,10 @@ public class GFString {
 					head = telno.substring(0, 4);
 				break;
 			case 12:
-				if (telno.indexOf("098") == 0 || telno.indexOf("094") == 0 && telno.indexOf("0943") == -1 || telno.indexOf("092") == 0
-						|| telno.indexOf("086") == 0 || telno.indexOf("084") == 0 || telno.indexOf("0827") == 0 || telno.indexOf("0829") == 0
-						|| telno.indexOf("0822") == 0 || telno.indexOf("0824") == 0 || telno.indexOf("080") == 0 || telno.indexOf("07437") == 0
+				if (telno.indexOf("098") == 0 || telno.indexOf("094") == 0 && telno.indexOf("0943") == -1
+						|| telno.indexOf("092") == 0 || telno.indexOf("086") == 0 || telno.indexOf("084") == 0
+						|| telno.indexOf("0827") == 0 || telno.indexOf("0829") == 0 || telno.indexOf("0822") == 0
+						|| telno.indexOf("0824") == 0 || telno.indexOf("080") == 0 || telno.indexOf("07437") == 0
 						|| telno.indexOf("0483") == 0 || telno.indexOf("0788") == 0)
 					head = telno.substring(0, 5);
 				else
@@ -2222,7 +2218,6 @@ public class GFString {
 
 		return result;
 	}
- 
 
 	/**
 	 * 取得字符串中第一次出现的整数
@@ -2269,8 +2264,8 @@ public class GFString {
 					if (bs[0] < 32 || bs[0] > 126)
 						return true;
 				} else if (bs.length == 2) {
-					if (GFCommon.getUnsigned(bs[0]) < 0x81 || GFCommon.getUnsigned(bs[0]) > 0xFE || GFCommon.getUnsigned(bs[1]) < 40
-							|| GFCommon.getUnsigned(bs[1]) > 0xFE)
+					if (GFCommon.getUnsigned(bs[0]) < 0x81 || GFCommon.getUnsigned(bs[0]) > 0xFE
+							|| GFCommon.getUnsigned(bs[1]) < 40 || GFCommon.getUnsigned(bs[1]) > 0xFE)
 						return true;
 				}
 
@@ -2298,6 +2293,7 @@ public class GFString {
 		sb.append("秒");
 		return sb.toString();
 	}
+
 	public static ArrayList<String> readTxtFile2(String fileName) throws IOException {
 		ArrayList<String> result = null;
 		FileInputStream fin = null;

@@ -1,8 +1,8 @@
 package org.ictclas4j.bean;
 
 public class Context {
-	//¹Ø¼ü´Ê
-	private int key; 
+	// ¹Ø¼ü´Ê
+	private int key;
 
 	private int[][] contextArray;// The context array
 
@@ -41,8 +41,4 @@ public class Context {
 	public void setTotalFreq(int totalFreq) {
 		this.totalFreq = totalFreq;
 	}
- 
-
-	 
-
 }

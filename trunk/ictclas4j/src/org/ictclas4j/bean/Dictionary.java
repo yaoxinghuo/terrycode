@@ -74,8 +74,7 @@ public class Dictionary {
 		try {
 			delModified();
 
-			DataInputStream in = new DataInputStream(new BufferedInputStream(
-					new FileInputStream(file)));
+			DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)));
 			for (int i = 0; i < Utility.CC_NUM; i++) {
 				// logger.debug("块" + i);
 				// 词典库在写二进制数据时采用低位优先(小头在前)方式,需要转换一下
@@ -87,12 +86,9 @@ public class Dictionary {
 
 				WordItem[] wis = new WordItem[count];
 				for (int j = 0; j < count; j++) {
-					nBuffer[0] = GFCommon.bytes2int(Utility.readBytes(in, 4),
-							false);
-					nBuffer[1] = GFCommon.bytes2int(Utility.readBytes(in, 4),
-							false);
-					nBuffer[2] = GFCommon.bytes2int(Utility.readBytes(in, 4),
-							false);
+					nBuffer[0] = GFCommon.bytes2int(Utility.readBytes(in, 4), false);
+					nBuffer[1] = GFCommon.bytes2int(Utility.readBytes(in, 4), false);
+					nBuffer[2] = GFCommon.bytes2int(Utility.readBytes(in, 4), false);
 
 					// String print = " wordLen:" + nBuffer[1] + " frequency:" +
 					// nBuffer[0] + " handle:" + nBuffer[2];
@@ -143,24 +139,20 @@ public class Dictionary {
 
 		file = new File(filename);
 		try {
-			DataOutputStream out = new DataOutputStream(new FileOutputStream(
-					file));
+			DataOutputStream out = new DataOutputStream(new FileOutputStream(file));
 			for (int i = 0; i < Utility.CC_NUM; i++) {
 				if (mts != null) {// Modification made
-					int nCount = wts.get(i).getCount() + mts.get(i).getCount()
-							- mts.get(i).getDelete();
+					int nCount = wts.get(i).getCount() + mts.get(i).getCount() - mts.get(i).getDelete();
 					out.write(GFCommon.int2bytes(nCount, false));
 
 					j = 0;
 					k = 0;
 					// Output to the file after comparision
-					for (; j < mts.get(i).getCount()
-							&& k < wts.get(i).getCount();) {
+					for (; j < mts.get(i).getCount() && k < wts.get(i).getCount();) {
 						WordItem mwi = mts.get(i).getWords().get(j);
 						WordItem wi = wts.get(i).getWords().get(k);
 
-						if (mwi.getLen() < wi.getLen()
-								|| (strEqual(mwi.getWord(), wi.getWord()))
+						if (mwi.getLen() < wi.getLen() || (strEqual(mwi.getWord(), wi.getWord()))
 								&& mwi.getHandle() < wi.getHandle()) {
 							// Output the modified data to the file
 							nBuffer[0] = mwi.getFreq();
@@ -175,8 +167,7 @@ public class Dictionary {
 						} else if (mwi.getFreq() == -1) {
 							// The item has been removed,so skip it
 							k++;
-						} else if (mwi.getLen() > wi.getLen()
-								|| strEqual(mwi.getWord(), wi.getWord())
+						} else if (mwi.getLen() > wi.getLen() || strEqual(mwi.getWord(), wi.getWord())
 								&& mwi.getHandle() > wi.getHandle()) {
 							// Output the index table data to the file
 							nBuffer[0] = wi.getFreq();
@@ -268,8 +259,7 @@ public class Dictionary {
 					if (mts == null)
 						mts = new ArrayList<ModifyTable>(Utility.CC_NUM);
 
-					mts.get(pw.getIndex()).setDelete(
-							mts.get(pw.getIndex()).getDelete() - 1);
+					mts.get(pw.getIndex()).setDelete(mts.get(pw.getIndex()).getDelete() - 1);
 				} else
 					wi.setFreq(wi.getFreq() + frequency);
 				return true;
@@ -313,9 +303,7 @@ public class Dictionary {
 				mt.setCount(mt.getDelete() + 1);
 
 				if (handle == -1) {
-					for (int i = found; i < mt.getCount()
-							&& strEqual(mt.getWords().get(i).getWord(), pw
-									.getRes()); i++) {
+					for (int i = found; i < mt.getCount() && strEqual(mt.getWords().get(i).getWord(), pw.getRes()); i++) {
 						WordItem wi2 = mt.getWords().get(i);
 						wi2.setFreq(-1);
 						mt.setDelete(mt.getDelete() + 1);
@@ -333,8 +321,7 @@ public class Dictionary {
 				ArrayList<WordItem> wis = mt.getWords();
 				for (int i = found2; i < wis.size(); i++) {
 					WordItem wi = wis.get(i);
-					if (strEqual(wi.getWord(), pw.getRes())
-							&& (wi.getHandle() == handle || handle < 0)) {
+					if (strEqual(wi.getWord(), pw.getRes()) && (wi.getHandle() == handle || handle < 0)) {
 						wis.remove(wi);
 						mt.setCount(mt.getCount() - 1);
 						i--;
@@ -384,9 +371,7 @@ public class Dictionary {
 
 					int temp = found + 1;
 					WordTable wt = wts.get(pw.getIndex());
-					while (temp < wt.getCount()
-							&& strEqual(wt.getWords().get(temp).getWord(), pw
-									.getRes())) {
+					while (temp < wt.getCount() && strEqual(wt.getWords().get(temp).getWord(), pw.getRes())) {
 						wi = new WordItem();
 						wi.setHandle(wt.getWords().get(temp).getHandle());
 						wi.setFreq(wt.getWords().get(temp).getFreq());
@@ -441,26 +426,21 @@ public class Dictionary {
 				while (start <= end) {
 					WordItem wi = wis.get(mid);
 					int cmpValue = GFString.compareTo(wi.getWord(), res);
-					if (cmpValue == 0
-							&& (wi.getHandle() == handle || handle == -1)) {
+					if (cmpValue == 0 && (wi.getHandle() == handle || handle == -1)) {
 						if (handle == -1) {
-							while (mid >= 0
-									&& res.compareTo(wis.get(mid).getWord()) == 0) {
+							while (mid >= 0 && res.compareTo(wis.get(mid).getWord()) == 0) {
 								mid--;
 							}
-							if (mid < 0
-									|| res.compareTo(wis.get(mid).getWord()) != 0)
+							if (mid < 0 || res.compareTo(wis.get(mid).getWord()) != 0)
 								mid++;
 						}
 
 						result = mid;
 						return result;
 
-					} else if (cmpValue < 0 || cmpValue == 0
-							&& wi.getHandle() < handle && handle != -1)
+					} else if (cmpValue < 0 || cmpValue == 0 && wi.getHandle() < handle && handle != -1)
 						start = mid + 1;
-					else if (cmpValue > 0 || cmpValue == 0
-							&& wi.getHandle() > handle && handle != -1)
+					else if (cmpValue > 0 || cmpValue == 0 && wi.getHandle() > handle && handle != -1)
 						end = mid - 1;
 
 					mid = (start + end) / 2;
@@ -488,8 +468,7 @@ public class Dictionary {
 				for (; i < wis.size(); i++) {
 					WordItem wi = wis.get(i);
 					if (wi.getWord().length() < res.length()
-							|| (wi.getWord().length() == res.length() && wi
-									.getHandle() < handle))
+							|| (wi.getWord().length() == res.length() && wi.getHandle() < handle))
 						continue;
 				}
 				if (i < wis.size() && strEqual(wis.get(i).getWord(), res)
@@ -515,8 +494,7 @@ public class Dictionary {
 			int type = Utility.charType(word);
 			int len = word.length();
 
-			if (len > 0 && type == Utility.CT_CHINESE
-					&& GFString.isAllChinese(word))
+			if (len > 0 && type == Utility.CT_CHINESE && GFString.isAllChinese(word))
 				return Utility.WT_CHINESE;
 			else if (len > 0 && type == Utility.CT_DELIMITER)
 				return Utility.WT_DELIMITER;
@@ -595,8 +573,7 @@ public class Dictionary {
 					ArrayList<WordItem> wis = wts.get(pw.getIndex()).getWords();
 					if (wis != null)
 						for (int j = 0; j < wis.size(); j++) {
-							int compValue = GFString.compareTo(wis.get(j)
-									.getWord(), pw.getRes());
+							int compValue = GFString.compareTo(wis.get(j).getWord(), pw.getRes());
 							if (compValue == 1) {
 								found = j;
 								break;
@@ -627,8 +604,7 @@ public class Dictionary {
 
 					if (wis != null)
 						for (WordItem wi : wis) {
-							if (pw.getRes() != null
-									&& pw.getRes().equals(wi.getWord())) {
+							if (pw.getRes() != null && pw.getRes().equals(wi.getWord())) {
 								result = new WordItem();
 								String wordRet = firstChar + wi.getWord();
 								result.setWord(wordRet);
@@ -649,16 +625,14 @@ public class Dictionary {
 		if (word != null && word.length() > 0) {
 			Preword pw = preProcessing(word);
 			if (pw != null) {
-				int found = findInOriginalTable(pw.getIndex(), pw.getRes(),
-						handle);
+				int found = findInOriginalTable(pw.getIndex(), pw.getRes(), handle);
 				if (found >= 0 && wts != null) {
 					WordTable wt = wts.get(pw.getIndex());
 					WordItem wi = wt.getWords().get(found);
 					return wi.getFreq();
 				}
 
-				int found2 = findInModifyTable(pw.getIndex(), pw.getRes(),
-						handle);
+				int found2 = findInModifyTable(pw.getIndex(), pw.getRes(), handle);
 				if (found2 >= 0 && mts != null) {
 					ModifyTable mt = mts.get(pw.getIndex());
 					WordItem wi = mt.getWords().get(found);

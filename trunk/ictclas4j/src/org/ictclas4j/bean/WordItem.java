@@ -1,6 +1,5 @@
 package org.ictclas4j.bean;
 
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 /**
  * 词条.包括词内容、长度、句柄及频度
@@ -9,7 +8,7 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
  * 
  */
 public class WordItem {
-  
+
 	private String word;
 
 	private int len;
@@ -51,14 +50,5 @@ public class WordItem {
 	public void setWord(String word) {
 		this.word = word;
 	}
-	
-	
-	@Override
-	public String toString() {
-
-		return ReflectionToStringBuilder.toString(this);
-
-	}
-	 
 
 }

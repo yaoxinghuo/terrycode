@@ -7,7 +7,6 @@ import org.ictclas4j.bean.POS;
 import org.ictclas4j.bean.SegNode;
 import org.ictclas4j.utility.Utility;
 
-
 /**
  * 分词图表，即二维表
  * 
@@ -30,7 +29,7 @@ public class SegGraph {
 
 	public SegNode getElement(int row, int col) {
 		SegNode result = new SegNode();
-		result.setValue(  Utility.INFINITE_VALUE );
+		result.setValue(Utility.INFINITE_VALUE);
 		// if (row > m_nRow || col > m_nCol)
 		// return null;
 
@@ -177,7 +176,7 @@ public class SegGraph {
 					if (graph.getRow() > sg.getRow() || (graph.getRow() == sg.getRow() && graph.getCol() > sg.getCol()))
 						continue;
 					else {
-						if (graph.getRow()==sg.getRow() && graph.getCol() == sg.getCol()) {
+						if (graph.getRow() == sg.getRow() && graph.getCol() == sg.getCol()) {
 							snList.set(i, graph);
 						} else
 							snList.add(i, graph);
@@ -191,7 +190,7 @@ public class SegGraph {
 								|| (graph.getCol() == sg.getCol() && graph.getRow() > sg.getRow()))
 							snList.add(graph);
 						else {
-							if (graph.getRow()==sg.getRow() && graph.getCol() == sg.getCol()) {
+							if (graph.getRow() == sg.getRow() && graph.getCol() == sg.getCol()) {
 								snList.set(i, graph);
 							} else
 								snList.add(i, graph);
@@ -321,8 +320,7 @@ public class SegGraph {
 					SegNode psn = snList.get(i - 1);
 					ArrayList<POS> pposList = psn.getAllPos();
 					for (int k = 0; pposList != null && k < pposList.size(); k++) {
-						double temp = -Math.log(context
-								.getPossibility(0, pposList.get(k).getTag(), pos.getTag()));
+						double temp = -Math.log(context.getPossibility(0, pposList.get(k).getTag(), pos.getTag()));
 						temp += pposList.get(k).getFreq();// Add the fees
 						if (temp < minFee) {
 							minFee = temp;

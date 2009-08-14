@@ -8,6 +8,7 @@ import org.ictclas4j.utility.Utility;
 
 /**
  * 原子分词
+ * 
  * @author sinboy
  * @since 2007.6.1
  */
@@ -67,7 +68,7 @@ public class AtomSeg {
 				int curType = Utility.charType(s);
 				if (".".equals(s)
 						&& (i + 1 < ss.length && (Utility.charType(ss[i + 1]) == Utility.CT_NUM || GFString
-								.isNumeric(ss[i+1]))))
+								.isNumeric(ss[i + 1]))))
 					curType = Utility.CT_NUM;
 
 				// 如果是汉字、分隔符等

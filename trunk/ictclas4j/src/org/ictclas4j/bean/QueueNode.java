@@ -1,18 +1,18 @@
 package org.ictclas4j.bean;
 
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 /**
  * 队列节点
+ * 
  * @author sinboy
- *
+ * 
  */
 public class QueueNode {
-	private int parent;//父节点的位置
+	private int parent;// 父节点的位置
 
-	private int index;//分词路径的编号,即第几条分词路径
+	private int index;// 分词路径的编号,即第几条分词路径
 
-	private double weight;//权重
+	private double weight;// 权重
 
 	public QueueNode() {
 
@@ -47,11 +47,5 @@ public class QueueNode {
 	public void setWeight(double weight) {
 		this.weight = weight;
 	}
-	
-	@Override
-	public String toString() {
 
-		return ReflectionToStringBuilder.toString(this);
-
-	}
 }

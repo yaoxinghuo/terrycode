@@ -11,7 +11,6 @@ import org.apache.log4j.Logger;
 import org.ictclas4j.utility.GFCommon;
 import org.ictclas4j.utility.Utility;
 
-
 public class ContextStat {
 	private int tableLen;
 
@@ -21,7 +20,7 @@ public class ContextStat {
 
 	static Logger logger = Logger.getLogger(ContextStat.class);
 
-	public ContextStat() { 
+	public ContextStat() {
 		tcList = new ArrayList<TagContext>();
 	}
 
@@ -132,11 +131,10 @@ public class ContextStat {
 		TagContext tc = getItem(key);
 
 		// return a lower value, not 0 to prevent data sparse
-		if (tc == null || curIndex == -1 || prevIndex == -1
-				|| tc.getContextArray()[prevIndex][curIndex] == 0
+		if (tc == null || curIndex == -1 || prevIndex == -1 || tc.getContextArray()[prevIndex][curIndex] == 0
 				|| tc.getTagFreq()[prevIndex] == 0)
 			return 0.000001;
-		
+
 		int prevCurConFreq = tc.getContextArray()[prevIndex][curIndex];
 		int prevFreq = tc.getTagFreq()[prevIndex];
 
@@ -149,21 +147,22 @@ public class ContextStat {
 	}
 
 	public TagContext getItem(int key) {
-		TagContext result = null; 
-		
-		if(tcList==null||tcList.size()==0)
+		TagContext result = null;
+
+		if (tcList == null || tcList.size() == 0)
 			return null;
-		if (key == 0  )
+		if (key == 0)
 			result = tcList.get(0);
-		else   {
-			int i=0;
-			for ( ; i < tcList.size() && tcList.get(i).getKey()<key; i++);
-			if(i<tcList.size() && tcList.get(i).getKey()==key)
-				result=tcList.get(i);
-			else if(i-1<tcList.size())
-				result=tcList.get(i-1);
+		else {
+			int i = 0;
+			for (; i < tcList.size() && tcList.get(i).getKey() < key; i++)
+				;
+			if (i < tcList.size() && tcList.get(i).getKey() == key)
+				result = tcList.get(i);
+			else if (i - 1 < tcList.size())
+				result = tcList.get(i - 1);
 		}
-		
+
 		return result;
 	}
 

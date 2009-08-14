@@ -2,7 +2,6 @@ package org.ictclas4j.bean;
 
 import java.util.ArrayList;
 
-
 public class ModifyTable {
 	// 同一开头词条的数目在修改表中
 	private int count;
@@ -10,7 +9,7 @@ public class ModifyTable {
 	// 在原字典表中删除的词条的数目
 	private int delete;
 
-	private  ArrayList<WordItem> words;
+	private ArrayList<WordItem> words;
 
 	public int getCount() {
 		return count;
@@ -35,7 +34,4 @@ public class ModifyTable {
 	public void setWords(ArrayList<WordItem> words) {
 		this.words = words;
 	}
- 
-	 
-
 }

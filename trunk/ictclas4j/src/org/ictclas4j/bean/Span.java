@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.ictclas4j.utility.Utility;
 import org.ictclas4j.utility.Utility.TAG_TYPE;
 
-
 public class Span {
 
 	public ContextStat context;
@@ -178,6 +177,7 @@ public class Span {
 
 	/**
 	 * 取得没有在dictUnknown中出现过的词的下一个位置
+	 * 
 	 * @param wrList
 	 * @param index
 	 * @param coreDict
@@ -192,7 +192,7 @@ public class Span {
 		boolean bSplit = false;// Need to split in Transliteration recognition
 		int i = 1, nPOSCount;
 		String sCurWord;// Current word
-		nWordsIndex = index ;
+		nWordsIndex = index;
 
 		for (; i < Utility.MAX_WORDS_PER_SENTENCE && nWordsIndex < wrList.size(); i++) {
 			WordResult wr = wrList.get(nWordsIndex);
@@ -201,8 +201,8 @@ public class Span {
 				// current word
 				m_sWords[i] = word;// store
 				m_nWordPosition[i + 1] = m_nWordPosition[i] + m_sWords[i].getBytes().length;
-			}  
-			
+			}
+
 			// Record the position of current word
 			m_nStartPos = m_nWordPosition[i + 1];
 			// Move the Start POS to the ending
@@ -325,7 +325,7 @@ public class Span {
 
 	/**
 	 * <pre>
-	 *          
+	 * 
 	 *          BBCD 343 0.003606 
 	 *          BBC 2 0.000021 
 	 *          BBE 125 0.001314 

@@ -9,10 +9,7 @@ import org.ictclas4j.bean.WordItem;
 import org.ictclas4j.utility.POSTag;
 import org.ictclas4j.utility.Utility;
 
-
 public class GraphGenerate {
- 
- 
 
 	/**
 	 * 全切分,生成切分图.即找出所有可能的词组
@@ -20,8 +17,8 @@ public class GraphGenerate {
 	 * @param atoms
 	 * @return
 	 */
-	public static SegGraph generate(ArrayList<Atom> atoms,Dictionary dict) {
-		SegGraph segGraph = null; 
+	public static SegGraph generate(ArrayList<Atom> atoms, Dictionary dict) {
+		SegGraph segGraph = null;
 		SegNode sn = null;
 		Atom atom = null;
 
@@ -31,7 +28,7 @@ public class GraphGenerate {
 				atom = atoms.get(i);
 				String word = atom.getWord();
 				if (atom.getPos() == Utility.CT_CHINESE)
-					sn = new SegNode(i, i + 1, 0,0, atom.getWord());
+					sn = new SegNode(i, i + 1, 0, 0, atom.getWord());
 				else {
 					double value = Utility.MAX_FREQUENCE;
 					int pos = 0;
@@ -66,7 +63,7 @@ public class GraphGenerate {
 						break;
 					}
 
-					sn = new SegNode(i, i + 1,pos, value , word);
+					sn = new SegNode(i, i + 1, pos, value, word);
 				}
 
 				sn.setSrcWord(atom.getWord());
@@ -114,16 +111,16 @@ public class GraphGenerate {
 							// 只有一个性词，存贮它
 							SegNode sg = null;
 							if (wis.size() == 1)
-								sg = new SegNode(i, j,wis.get(0).getHandle(),totalFreq , word);
+								sg = new SegNode(i, j, wis.get(0).getHandle(), totalFreq, word);
 							else
-								sg = new SegNode(i, j, 0,totalFreq , word);
-						
+								sg = new SegNode(i, j, 0, totalFreq, word);
+
 							segGraph.insert(sg, true);
 
 						}
 						if (flag)
 							i++;
-						if (j < atoms.size()) { 
+						if (j < atoms.size()) {
 							String word2 = atoms.get(j).getWord();
 							word += word2;
 						} else
@@ -142,7 +139,7 @@ public class GraphGenerate {
 	 * 
 	 * @param sgs
 	 */
-	public static SegGraph biGenerate(SegGraph seg,Dictionary dict,Dictionary biDict) {
+	public static SegGraph biGenerate(SegGraph seg, Dictionary dict, Dictionary biDict) {
 		SegGraph segGraph = null;
 		final double smoothParam = 0.1;
 		double curFreq;
@@ -186,7 +183,7 @@ public class GraphGenerate {
 					sg2.setCol(wordIndex);
 					sg2.setWord(twoWords);
 					sg2.setPos(sg.getPos());
-					sg2.setValue(value); 
+					sg2.setValue(value);
 					segGraph.insert(sg2, false);
 				}
 			}

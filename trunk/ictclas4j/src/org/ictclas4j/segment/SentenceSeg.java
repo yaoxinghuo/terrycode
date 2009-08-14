@@ -6,22 +6,23 @@ import org.ictclas4j.bean.Sentence;
 import org.ictclas4j.utility.GFString;
 import org.ictclas4j.utility.Utility;
 
-
 public class SentenceSeg {
 	private String src;
+
 	private ArrayList<Sentence> sens;
-	
-	public SentenceSeg(String src){
-		this.src=src;
-		sens=split();
+
+	public SentenceSeg(String src) {
+		this.src = src;
+		sens = split();
 	}
+
 	/**
 	 * 进行句子分隔
 	 * 
 	 * @param src
 	 * @return
 	 */
-	private ArrayList<Sentence> split( ) {
+	private ArrayList<Sentence> split() {
 		ArrayList<Sentence> result = null;
 
 		if (src != null) {
@@ -31,8 +32,7 @@ public class SentenceSeg {
 
 			for (int i = 0; i < ss.length; i++) {
 				// 如果是分隔符，比如回车换行/逗号等
-				if (Utility.SEPERATOR_C_SENTENCE.indexOf(ss[i]) != -1
-						|| Utility.SEPERATOR_LINK.indexOf(ss[i]) != -1
+				if (Utility.SEPERATOR_C_SENTENCE.indexOf(ss[i]) != -1 || Utility.SEPERATOR_LINK.indexOf(ss[i]) != -1
 						|| Utility.SEPERATOR_C_SUB_SENTENCE.indexOf(ss[i]) != -1
 						|| Utility.SEPERATOR_E_SUB_SENTENCE.indexOf(ss[i]) != -1) {
 					// 如果不是回车换行和空格
@@ -41,8 +41,7 @@ public class SentenceSeg {
 					// 断句
 					if (s1.length() > 0 && !Utility.SENTENCE_BEGIN.equals(s1)) {
 						if (Utility.SEPERATOR_C_SUB_SENTENCE.indexOf(ss[i]) == -1
-								&& Utility.SEPERATOR_E_SUB_SENTENCE
-										.indexOf(ss[i]) == -1)
+								&& Utility.SEPERATOR_E_SUB_SENTENCE.indexOf(ss[i]) == -1)
 							s1 += Utility.SENTENCE_END;
 
 						result.add(new Sentence(s1, true));
@@ -57,8 +56,9 @@ public class SentenceSeg {
 					} else if (Utility.SEPERATOR_C_SENTENCE.indexOf(ss[i]) != -1
 							|| Utility.SEPERATOR_E_SENTENCE.indexOf(ss[i]) != -1)
 						s1 = Utility.SENTENCE_BEGIN;
-					else s1 = Utility.SENTENCE_BEGIN;
-//						s1 = ss[i];
+					else
+						s1 = Utility.SENTENCE_BEGIN;
+					// s1 = ss[i];
 
 				} else
 					s1 += ss[i];
@@ -71,9 +71,9 @@ public class SentenceSeg {
 		}
 		return result;
 	}
+
 	public ArrayList<Sentence> getSens() {
 		return sens;
 	}
-	
-	
+
 }

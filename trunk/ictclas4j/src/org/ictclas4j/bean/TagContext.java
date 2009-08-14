@@ -1,6 +1,5 @@
 package org.ictclas4j.bean;
 
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 public class TagContext {
 	private int key;// The key word
@@ -19,7 +18,6 @@ public class TagContext {
 		this.contextArray = contextArray;
 	}
 
- 
 	public int getKey() {
 		return key;
 	}
@@ -42,11 +40,5 @@ public class TagContext {
 
 	public void setTotalFreq(int totalFreq) {
 		this.totalFreq = totalFreq;
-	}
-	@Override
-	public String toString() {
-
-		return ReflectionToStringBuilder.toString(this);
-
 	}
 }

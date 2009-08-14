@@ -42,8 +42,7 @@ public class GFCommon {
 					}
 				}
 			} else if (from < 0 && maxlen > 0) {
-				for (int i = d.length + from, j = 0; i > 0
-						&& j < (s.length > maxlen ? maxlen : s.length); i--, j++) {
+				for (int i = d.length + from, j = 0; i > 0 && j < (s.length > maxlen ? maxlen : s.length); i--, j++) {
 					d[i] = s[j];
 					end = i;
 				}
@@ -172,12 +171,12 @@ public class GFCommon {
 			if (isHighFirst) {
 				for (int i = b.length - 1, j = 0; i >= 0; i--, j++) {
 					value = (long) (b[i] & 0xFF);
-					result += value << (j <<3);
+					result += value << (j << 3);
 				}
 			} else {
 				for (int i = 0, j = 0; i < b.length - 1; i++, j++) {
 					value = (long) (b[i] & 0xFF);
-					result += value << (j <<3);
+					result += value << (j << 3);
 				}
 			}
 		}
@@ -309,14 +308,11 @@ public class GFCommon {
 	 * @return
 	 */
 	public static String getSystemInfo() {
-		String result = "os.name:" + System.getProperty("os.name") + "\n"
-				+ "os.arch:" + System.getProperty("os.arch") + "\n\n"
-				+ "java.vendor:" + System.getProperty("java.vendor") + "\n"
-				+ "java.home:" + System.getProperty("java.home") + "\n"
-				+ "java.version:" + System.getProperty("java.version") + "\n"
-				+ "java.vm.version:" + System.getProperty("java.vm.version")
-				+ "\n\n" + "user.name:" + System.getProperty("user.name")
-				+ "\n" + "user.dir:" + System.getProperty("user.dir");
+		String result = "os.name:" + System.getProperty("os.name") + "\n" + "os.arch:" + System.getProperty("os.arch")
+				+ "\n\n" + "java.vendor:" + System.getProperty("java.vendor") + "\n" + "java.home:"
+				+ System.getProperty("java.home") + "\n" + "java.version:" + System.getProperty("java.version") + "\n"
+				+ "java.vm.version:" + System.getProperty("java.vm.version") + "\n\n" + "user.name:"
+				+ System.getProperty("user.name") + "\n" + "user.dir:" + System.getProperty("user.dir");
 
 		return result;
 	}
@@ -336,8 +332,7 @@ public class GFCommon {
 	 *            数据库连接
 	 * @return 数据库连接
 	 */
-	public static Connection getConn(String driver, String url,
-			String userName, String pwd) {
+	public static Connection getConn(String driver, String url, String userName, String pwd) {
 		Connection conn = null;
 
 		if (driver != null && url != null && userName != null && pwd != null) {
@@ -362,14 +357,15 @@ public class GFCommon {
 	 * 
 	 * @param className
 	 *            类名
-	 * @return Class文件所在的路径，不包括Class文件本身的包路径。比如：com.gftech.web.Test,返回的路径格式如下/E:/gftech/project/web/bin/
+	 * @return 
+	 *         Class文件所在的路径，不包括Class文件本身的包路径。比如：com.gftech.web.Test,返回的路径格式如下/E:/
+	 *         gftech/project/web/bin/
 	 * 
 	 */
 	public static String getClassPath(String className) {
 
 		try {
-			return Class.forName(className).getClassLoader().getResource("")
-					.getPath();
+			return Class.forName(className).getClassLoader().getResource("").getPath();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -382,7 +378,9 @@ public class GFCommon {
 	 * 
 	 * @param objName
 	 *            对象名称
-	 * @return Class文件所在的路径，不包括Class文件本身的包路径。比如：com.gftech.web.Test,返回的路径格式如下/E:/gftech/project/web/bin/
+	 * @return 
+	 *         Class文件所在的路径，不包括Class文件本身的包路径。比如：com.gftech.web.Test,返回的路径格式如下/E:/
+	 *         gftech/project/web/bin/
 	 * 
 	 */
 	public static String getClassPath(Object objName) {
@@ -485,12 +483,10 @@ public class GFCommon {
 		return false;
 	}
 
-	 
-
 	public static int getUnsigned(byte b) {
 		if (b > 0)
 			return (int) b;
 		else
-			return (b & 0x7F+128);
+			return (b & 0x7F + 128);
 	}
 }
