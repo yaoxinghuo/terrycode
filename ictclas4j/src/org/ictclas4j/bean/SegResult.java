@@ -11,6 +11,16 @@ public class SegResult {
 	private ArrayList<MidResult> mrList;// 中间结果
 
 	private String finalResult;// 最终分词结果
+	
+	private ArrayList<WordResultBean> result = new ArrayList<WordResultBean>();
+	
+	public void setResult(ArrayList<WordResultBean> result) {
+		this.result = result;
+	}
+
+	public ArrayList<WordResultBean> getResult() {
+		return result;
+	}
 
 	public SegResult(String rawContent) {
 		this.rawContent = rawContent;

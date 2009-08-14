@@ -33,6 +33,10 @@ public class MidResult {
 	private ArrayList<String> optResult;// 优化后的分词结果
  
 
+	public ArrayList<String> getOptResult() {
+		return optResult;
+	}
+
 	public void setIndex(int index) {
 		this.index = index;
 	}
