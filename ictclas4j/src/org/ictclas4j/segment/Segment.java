@@ -139,10 +139,10 @@ public class Segment {
 						for (ArrayList<Integer> optOnePath : optBipath) {
 							ArrayList<SegNode> optSegPath = getSegPath(optSegGraph, optOnePath);
 							lexTagger.recognition(optSegPath);
-							String optResult = outputResult(optSegPath, words);
+							String optResult = outputResult(optSegPath);
 							mr.addOptResult(optResult);
 							adjResult = AdjustSeg.finaAdjust(optSegPath, personTagger, placeTagger);
-							String adjrs = outputResult(adjResult);
+							String adjrs = outputResult(adjResult, words);
 							logger.info("[last time]:" + (System.currentTimeMillis() - start));
 							start = System.currentTimeMillis();
 							if (midResult == null)
