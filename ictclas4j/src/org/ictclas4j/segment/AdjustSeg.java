@@ -7,7 +7,6 @@ import org.ictclas4j.utility.NumUtil;
 import org.ictclas4j.utility.POSTag;
 import org.ictclas4j.utility.Utility;
 
-
 /**
  * 分词调整
  * 
@@ -296,7 +295,7 @@ public class AdjustSeg {
 						isBeProcess = true;
 						result.add(wr2);
 					}
-				} else if (wr.getPos() == POSTag.VERB  || wr.getPos() == POSTag.VERB_NOUN  ||wr.getPos() == POSTag.NOUN)// v
+				} else if (wr.getPos() == POSTag.VERB || wr.getPos() == POSTag.VERB_NOUN || wr.getPos() == POSTag.NOUN)// v
 				{
 					if (i + 1 < optSegPath.size() && "员".equals(optSegPath.get(i + 1).getSrcWord())) {
 						SegNode wr2 = new SegNode();

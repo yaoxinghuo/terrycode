@@ -2,9 +2,6 @@ package org.ictclas4j.bean;
 
 import java.util.ArrayList;
 
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-
-
 /**
  * 相同开头的词组表.
  * 
@@ -16,9 +13,9 @@ public class WordTable {
 	private int count;
 
 	private ArrayList<WordItem> words;
-	
-	public WordTable(){
-		
+
+	public WordTable() {
+
 	}
 
 	public int getCount() {
@@ -36,21 +33,15 @@ public class WordTable {
 	public void setWords(ArrayList<WordItem> words) {
 		this.words = words;
 	}
-	
-	public void setWords(WordItem[] wis){
-		if(wis!=null){
-			if(words==null)
-				words=new ArrayList<WordItem>();
-			for(WordItem wi:wis) 
+
+	public void setWords(WordItem[] wis) {
+		if (wis != null) {
+			if (words == null)
+				words = new ArrayList<WordItem>();
+			for (WordItem wi : wis)
 				words.add(wi);
-		 
+
 		}
 	}
 
-	@Override
-	public String toString() {
-
-		return ReflectionToStringBuilder.toString(this);
-
-	}
 }

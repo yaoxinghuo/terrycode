@@ -1,6 +1,5 @@
 package org.ictclas4j.bean;
 
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 /**
  * </pre>
@@ -47,11 +46,5 @@ public class Atom {
 	public void setWord(String word) {
 		this.word = word;
 	}
-	@Override
-	public String toString() {
 
-		return ReflectionToStringBuilder.toString(this);
-
-	}
-	 
 }

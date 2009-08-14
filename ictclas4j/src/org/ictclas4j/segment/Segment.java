@@ -12,7 +12,6 @@ import org.ictclas4j.bean.SegResult;
 import org.ictclas4j.bean.Sentence;
 import org.ictclas4j.bean.WordResultBean;
 import org.ictclas4j.utility.Chineses;
-import org.ictclas4j.utility.DebugUtil;
 import org.ictclas4j.utility.POSTag;
 import org.ictclas4j.utility.Utility;
 
@@ -160,7 +159,6 @@ public class Segment {
 
 			sr.setFinalResult(finalResult);
 			sr.setResult(words);
-			DebugUtil.output2html(sr);
 			logger.info(finalResult);
 		}
 

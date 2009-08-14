@@ -7,11 +7,9 @@ import org.ictclas4j.bean.Dictionary;
 import org.ictclas4j.bean.POS;
 import org.ictclas4j.bean.SegNode;
 import org.ictclas4j.bean.WordItem;
-import org.ictclas4j.utility.DebugUtil;
 import org.ictclas4j.utility.POSTag;
 import org.ictclas4j.utility.Utility;
 import org.ictclas4j.utility.Utility.TAG_TYPE;
-
 
 /**
  * 未登录词的处理
@@ -78,7 +76,7 @@ public class PosTagger {
 		if (segGraph != null && sns != null && coreDict != null && unknownDict != null && context != null) {
 			posTag(sns);
 			getBestPos(sns);
-//			DebugUtil.outputPostag(sns);
+			// DebugUtil.outputPostag(sns);
 			switch (tagType) {
 			case TT_PERSON:// Person recognition
 				personRecognize(segGraph, sns);
@@ -98,7 +96,6 @@ public class PosTagger {
 		if (sns != null && unknownDict != null && context != null) {
 			posTag(sns);
 			getBestPos(sns);
-			DebugUtil.outputPostag(sns);
 			switch (tagType) {
 			case TT_NORMAL:
 				for (SegNode sn : sns) {
@@ -209,7 +206,7 @@ public class PosTagger {
 
 				if (sn.getAllPos() == null)
 					guessPos(tagType, sn);
-				
+
 				// 如果一个词节点对应的allPos为null，则说明它无法单独成词
 				// 它的词性随下一个词的词性
 				if (i - 1 >= 0 && sns.get(i - 1).getPosSize() == -1) {
@@ -251,24 +248,24 @@ public class PosTagger {
 				} else {
 					prevAllPos = sns.get(i - 1).getAllPos();
 				}
-				allPos = sns.get(i).getAllPos(); 
-				if(allPos!=null)
-				for (POS pos : allPos) {
-					int minPrev = 0;
-					double minFreq = 1000;
-					for (int k = 0;prevAllPos!=null &&  k < prevAllPos.size(); k++) {
-						POS prevPos = prevAllPos.get(k);
-						double temp = context.getPossibility(0, prevPos.getTag(), pos.getTag());
-						temp = -Math.log(temp) + prevPos.getFreq();
-						if (temp < minFreq) {
-							minFreq = temp;
-							minPrev = k;
+				allPos = sns.get(i).getAllPos();
+				if (allPos != null)
+					for (POS pos : allPos) {
+						int minPrev = 0;
+						double minFreq = 1000;
+						for (int k = 0; prevAllPos != null && k < prevAllPos.size(); k++) {
+							POS prevPos = prevAllPos.get(k);
+							double temp = context.getPossibility(0, prevPos.getTag(), pos.getTag());
+							temp = -Math.log(temp) + prevPos.getFreq();
+							if (temp < minFreq) {
+								minFreq = temp;
+								minPrev = k;
+							}
 						}
-					}
 
-					pos.setPrev(minPrev);
-					pos.setFreq(pos.getFreq() + minFreq);
-				}
+						pos.setPrev(minPrev);
+						pos.setFreq(pos.getFreq() + minFreq);
+					}
 			}
 
 			tagBest(sns);
@@ -437,7 +434,7 @@ public class PosTagger {
 	 * 人名模式匹配
 	 * 
 	 * <pre>
-	 *          
+	 * 
 	 *          BBCD 343 0.003606 
 	 *          BBC 2 0.000021 
 	 *          BBE 125 0.001314 
@@ -507,10 +504,11 @@ public class PosTagger {
 						// Get the possible person name
 						while (nPos < j + patterns[k].length()) {
 							SegNode sn = sns.get(nPos);
-//							if (sn.getPos() < 4
-//									&& unknownDict.getFreq(sn.getWord(), sn.getPos()) < Utility.LITTLE_FREQUENCY)
-//								personName += sn.getWord();
-								personName += sn.getSrcWord();
+							// if (sn.getPos() < 4
+							// && unknownDict.getFreq(sn.getWord(), sn.getPos())
+							// < Utility.LITTLE_FREQUENCY)
+							// personName += sn.getWord();
+							personName += sn.getSrcWord();
 							nPos += 1;
 						}
 						if ("CDCD".equals(patterns[k])) {
@@ -687,7 +685,7 @@ public class PosTagger {
 		}
 		return result;
 	}
- 
+
 	/**
 	 * 标记出最佳词性
 	 * 

@@ -2,9 +2,7 @@ package org.ictclas4j.bean;
 
 import java.util.ArrayList;
 
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.ictclas4j.utility.Utility;
-
 
 /**
  * 分词图表中的节点，实际表示图中的一条边
@@ -120,13 +118,6 @@ public class SegNode implements Cloneable {
 
 	public void setValue(double value) {
 		this.value = value;
-	}
-
-	@Override
-	public String toString() {
-
-		return ReflectionToStringBuilder.toString(this);
-
 	}
 
 	@Override
