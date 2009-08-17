@@ -1,5 +1,9 @@
 package com.terry.gfwout.util;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,6 +25,7 @@ import org.htmlparser.util.ParserException;
  * @version create：Aug 15, 2009 6:16:25 PM
  */
 public class StringUtil {
+
 	public static String readLink(String result) {
 		Parser parser = Parser.createParser(result, "utf8");
 
@@ -39,29 +44,6 @@ public class StringUtil {
 			if (node instanceof LinkTag) {
 				LinkTag link = (LinkTag) node;
 				return link.getLink();
-			}
-		}
-		return result;
-	}
-
-	public static String readImage(String result) {
-		Parser parser = Parser.createParser(result, "utf8");
-
-		NodeFilter imageFilter = new NodeClassFilter(ImageTag.class);
-		OrFilter lastFilter = new OrFilter();
-		lastFilter.setPredicates(new NodeFilter[] { imageFilter });
-		NodeList nodelist = null;
-		try {
-			nodelist = parser.parse(lastFilter);
-		} catch (ParserException e) {
-			return result;
-		}
-		Node[] nodes = nodelist.toNodeArray();
-		for (int i = 0; i < nodes.length; i++) {
-			Node node = nodes[i];
-			if (node instanceof ImageTag) {
-				ImageTag link = (ImageTag) node;
-				return link.getImageURL();
 			}
 		}
 		return result;
@@ -106,6 +88,39 @@ public class StringUtil {
 		return result;
 	}
 
+	public static String replace(String html, String baseUrl, String url) {
+		int index = url.lastIndexOf("/");
+		String basePath = baseUrl + url;
+		if (index != -1 && index >= 7)
+			basePath = baseUrl + url.substring(0, index);
+		StringBuffer sb = new StringBuffer("");
+		Pattern pattern = Pattern
+				.compile(
+						"(<\\s*a\\s+(?:[^\\s>]\\s*){0,})href\\s*=\\s*(\"|'|)((?:\\s*[^\\s>]){0,}\\s*>)"// <a
+						// href...
+								+ "|"// <img src...
+								+ "(<\\s*img\\s+(?:[^\\s>]\\s*){0,})src\\s*=\\s*(\"|'|)((?:\\s*[^\\s>]){0,}\\s*>)"
+								+ "|"// <link href...
+								+ "(<\\s*link\\s+(?:[^\\s>]\\s*){0,})href\\s*=\\s*(\"|'|)((?:\\s*[^\\s>]){0,}\\s*>)"
+								+ "|"// <script src...
+								+ "(<\\s*script\\s+(?:[^\\s>]\\s*){0,})src\\s*=\\s*(\"|'|)((?:\\s*[^\\s>]){0,}\\s*>)",
+						Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(html);
+		while (matcher.find()) {
+			String findStr = matcher.group();
+			String link = readByParser(findStr);
+			String replaceLink = link;
+			if (!replaceLink.startsWith("http")) {
+				replaceLink = replaceLink.startsWith("/") ? basePath
+						+ replaceLink : basePath + "/" + replaceLink;
+			}
+			String mStr = findStr.replace(link, replaceLink);
+			matcher.appendReplacement(sb, mStr);
+		}
+		matcher.appendTail(sb);
+		return sb.toString();
+	}
+
 	public static String replaceLink(String html, String basePath) {
 		StringBuffer sb = new StringBuffer("");
 		Pattern pattern = Pattern
@@ -122,28 +137,6 @@ public class StringUtil {
 						+ replaceLink : basePath + "/" + replaceLink;
 			}
 			String mStr = findStr.replace(link, replaceLink);
-			matcher.appendReplacement(sb, mStr);
-		}
-		matcher.appendTail(sb);
-		return sb.toString();
-	}
-
-	public static String replaceImage(String html, String basePath) {
-		StringBuffer sb = new StringBuffer("");
-		Pattern pattern = Pattern
-				.compile(
-						"(<\\s*img\\s+(?:[^\\s>]\\s*){0,})src\\s*=\\s*(\"|'|)((?:\\s*[^\\s>]){0,}\\s*>)",
-						Pattern.CASE_INSENSITIVE);
-		Matcher matcher = pattern.matcher(html);
-		while (matcher.find()) {
-			String findStr = matcher.group();
-			String image = readImage(findStr);
-			String replaceImage = image;
-			if (!replaceImage.startsWith("http")) {
-				replaceImage = replaceImage.startsWith("/") ? basePath
-						+ replaceImage : basePath + "/" + replaceImage;
-			}
-			String mStr = findStr.replace(image, replaceImage);
 			matcher.appendReplacement(sb, mStr);
 		}
 		matcher.appendTail(sb);
@@ -169,12 +162,54 @@ public class StringUtil {
 		}
 	}
 
+	public static boolean isImage(String url) {
+		String[] ext = { ".png", ".gif", ".jpg", ".bmp", ".ico" };
+		if (url.length() < 4)
+			return false;
+		String fext = url.substring(url.length() - 4);
+		for (String s : ext) {
+			if (fext.equalsIgnoreCase(s))
+				return true;
+		}
+		return false;
+	}
+
+	public static String getContentType(String html) {
+		if (html != null && !html.equals("")) {
+			int pos = html.indexOf("=");
+			if (pos != -1)
+				return html.substring(pos + 1);
+		}
+		return "UTF-8";
+	}
+
 	public static void main(String[] args) throws Exception {
-		 regexpTest();
-//		System.out.println(readByParser("<img src=xxx.css />"));
-		// String s = "Teat<img src=abc.jpg/><a href=www.google.com>Google</a>";
-		// System.out.println(replaceImage(s,
-		// "http://gfwout.appspot.com/www.google.com"));
+		// regexpTest();
+		// System.out.println(readByParser("<img src=xxx.css />"));
+		// String s =
+		// "Teat<img src=abc.jpg/><a href=a.html>Google</a>xxxx<script src=xxx.js />bbb<link href=xxx.css />";
+		// System.out.println(replace(s, "http://gfwout.appspot.com/",
+		// "http://www.google.com"));
+
+		String s = "http://www.google.cn";
+		URL url = new URL(s);
+		HttpURLConnection con = (HttpURLConnection) url.openConnection();
+		con.setDoOutput(true);
+		con.setRequestMethod("GET");
+		String contentType = con.getContentType();
+		if (contentType == null)
+			contentType = "text/html; charset=UTF-8";
+		BufferedReader reader = new BufferedReader(new InputStreamReader(con
+				.getInputStream(), StringUtil.getContentType(contentType))); // 读取结果
+		StringBuffer sb = new StringBuffer();
+		String line;
+		while ((line = reader.readLine()) != null) {
+			sb.append(line);
+		}
+		reader.close();
+		con.disconnect();
+		System.out.println(StringUtil.replace(sb.toString(),
+				"http://gfwout.appspot.com/", "http://www.google.cn"));
 	}
 
 	static class StyleLinkTag extends CompositeTag {

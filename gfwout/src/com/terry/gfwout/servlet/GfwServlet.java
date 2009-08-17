@@ -2,15 +2,19 @@ package com.terry.gfwout.servlet;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.terry.gfwout.util.StringUtil;
 
 /**
  * @author Terry E-mail: yaoxinghuo at 126 dot com
@@ -42,21 +46,48 @@ public class GfwServlet extends HttpServlet {
 			con = (HttpURLConnection) url.openConnection();
 			con.setDoOutput(true);
 			con.setRequestMethod("GET");
+
 			if (con.getResponseCode() == 200) {
-				PrintWriter pw = resp.getWriter();
-				resp.setContentType("text/html");
-				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(con.getInputStream())); // 读取结果
-				StringBuffer sb = new StringBuffer();
-				String line;
-				while ((line = reader.readLine()) != null) {
-					sb.append(line);
+
+				if (StringUtil.isImage(s)) {
+					ServletOutputStream responseOutputStream = resp
+							.getOutputStream();
+					InputStream in = con.getInputStream();
+					byte[] data = new byte[1024];
+					while (true) {
+						int pos = in.read(data);
+						if (pos == -1)
+							break;
+						responseOutputStream.write(data, 0, pos);
+					}
+					responseOutputStream.flush();
+					responseOutputStream.close();
+					in.close();
+				} else {
+					String contentType = con.getContentType();
+					if (contentType == null)
+						contentType = "text/html; charset=UTF-8";
+					BufferedReader reader = new BufferedReader(
+							new InputStreamReader(con.getInputStream(),
+									StringUtil.getContentType(contentType))); // 读取结果
+					StringBuffer sb = new StringBuffer();
+					String line;
+					while ((line = reader.readLine()) != null) {
+						sb.append(line);
+					}
+					reader.close();
+					con.disconnect();
+
+					String html = sb.toString();
+					resp.setCharacterEncoding(StringUtil.getContentType(contentType));
+					resp.setContentType(contentType);
+					
+					PrintWriter pw = resp.getWriter();
+					pw.write(StringUtil.replace(html,
+							"http://gfwout.appspot.com/", s));
+					pw.flush();
+					pw.close();
 				}
-				reader.close();
-				con.disconnect();
-				pw.write(sb.toString());
-				pw.flush();
-				pw.close();
 			} else {
 				resp.sendRedirect("/Gfwout.html");
 			}
