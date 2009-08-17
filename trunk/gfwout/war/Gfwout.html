@@ -1,53 +1,142 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<!-- The HTML 4.01 Transitional DOCTYPE declaration-->
-<!-- above set at the top of the file will set     -->
-<!-- the browser's rendering engine into           -->
-<!-- "Quirks Mode". Replacing this declaration     -->
-<!-- with a "Standards Mode" doctype is supported, -->
-<!-- but may lead to some differences in layout.   -->
-
 <html>
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Gfwout</title>
+<style>
+input {
+	font-size: 14px;
+	height: 28px
+}
 
-    <!--                                                               -->
-    <!-- Consider inlining CSS to reduce the number of requested files -->
-    <!--                                                               -->
-    <link type="text/css" rel="stylesheet" href="Gfwout.css">
+body,td,a,p,.h {
+	font-family: arial, sans-serif
+}
 
-    <!--                                           -->
-    <!-- Any title is fine                         -->
-    <!--                                           -->
-    <title>Help you get out of Great Firewall!</title>
-    
-    <!--                                           -->
-    <!-- This script loads your compiled module.   -->
-    <!-- If you add any GWT meta tags, they must   -->
-    <!-- be added before this line.                -->
-    <!--                                           -->
-    <script type="text/javascript" language="javascript" src="gfwout/gfwout.nocache.js"></script>
-  </head>
+.h {
+	color: #36c;
+	font-size: 20px
+}
 
-  <!--                                           -->
-  <!-- The body can have arbitrary html, or      -->
-  <!-- you can leave the body empty if you want  -->
-  <!-- to create a completely dynamic UI.        -->
-  <!--                                           -->
-  <body>
+.q {
+	color: #00c
+}
 
-    <!-- OPTIONAL: include this if you want history support -->
-    <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"></iframe>
+.ts td {
+	padding: 0
+}
 
-    <h1>Help you get out of Great Firewall!</h1>
+.ts {
+	border-collapse: collapse
+}
 
-    <table align="center">
-      <tr>
-        <td colspan="2" style="font-weight:bold;">Please enter your website:</td>        
-      </tr>
-      <tr>
-        <td id="nameFieldContainer"></td>
-        <td id="sendButtonContainer"></td>
-      </tr>
-    </table>
-  </body>
+#gbar {
+	height: 22px
+}
+
+.gbh,.gbd {
+	border-top: 1px solid #c9d7f1;
+	font-size: 1px
+}
+
+.gbh {
+	height: 0;
+	position: absolute;
+	top: 24px;
+	width: 100%
+}
+
+#gbi,#gbs {
+	background: #fff;
+	left: 0;
+	position: absolute;
+	top: 24px;
+	visibility: hidden;
+	z-index: 1000
+}
+
+#gbi {
+	border: 1px solid;
+	border-color: #c9d7f1 #36c #36c #a2bae7;
+	z-index: 1001
+}
+
+#guser {
+	padding-bottom: 7px !important;
+	text-align: right
+}
+
+#gbar,#guser {
+	font-size: 13px;
+	padding-top: 1px !important
+}
+
+@media all {
+	.gb1,.gb3 {
+		height: 22px;
+		margin-right: .5em;
+		vertical-align: top
+	}
+	#gbar {
+		float: left
+	}
+}
+
+.gb2 {
+	display: block;
+	padding: .2em .5em
+}
+
+a.gb1,a.gb2,a.gb3 {
+	color: #00c !important
+}
+
+.gb2,.gb3 {
+	text-decoration: none
+}
+
+a.gb2:hover {
+	background: #36c;
+	color: #fff !important
+}
+</style>
+</head>
+<body bgcolor=#ffffff text=#000000 link=#0000cc vlink=#551a8b
+	alink=#ff0000 onload="document.getElementById('gfw_url').focus();"
+	topmargin=3 marginheight=3>
+<textarea id=csi style="display: none"></textarea>
+<div id=gbar><nobr><b class=gb1>Gfwout</b> <a
+	href="https://fetionlib.appspot.com" onclick=gbar.qs(this) class=gb1>网页飞信</a>
+<a href="http://costnote.appspot.com/" onclick=gbar.qs(this) class=gb1>网络账本</a>
+<a href="http://sites.google.com/site/terry/" onclick=gbar.qs(this)
+	class=gb1>个人主页</a> </nobr></div>
+<div id=guser width=100%><nobr><a
+	href="http://www.google.cn/">Google</a></nobr></div>
+<div class=gbh style="left: 0"></div>
+<div class=gbh style="right: 0"></div>
+<center><br clear=all id=lgpd>
+<img src=/logo.png border=0 alt="Gfwout" title="Gfwout" id=logo><br>
+<br>
+<table cellpadding=0 cellspacing=0>
+	<tr valign=top>
+		<td width=25%>&nbsp;</td>
+		<td align=center nowrap><input maxlength=2048 size=55
+			id="gfw_url"
+			style="height: 28px; padding-top: 4px; font-size: 16px; margin-bottom: 2px; width: 28em"
+			title="Gfw 代理上网" value=""><br>
+		<input type=submit value="Gfw 代理上网" onclick="gfw();return false;" /></td>
+		<td nowrap width=25% align=left><span style="font-size: 13px">&nbsp;&nbsp;<a
+			href=/gfwout.html>郑重声明</a><br>
+		&nbsp;&nbsp;<a href=/gfwout.html>使用说明</a><br>
+		</span></td>
+	</tr>
+</table>
+<br>
+<br>
+<font size=-1></font>
+<p><span style="font-size: 13px">&copy;2009 - <a
+	href="/gfwout.html">隐私权政策</a> - <a
+	href="https://sites.google.com/site/it/feedback">意见反映</a></span></p>
+</center>
+<script language='javascript' src='Gfwout.js'></script>
+</body>
 </html>
