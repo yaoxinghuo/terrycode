@@ -1,6 +1,12 @@
 package org.ictclas4j.segment;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.ictclas4j.bean.Atom;
@@ -10,6 +16,7 @@ import org.ictclas4j.bean.MidResult;
 import org.ictclas4j.bean.SegNode;
 import org.ictclas4j.bean.SegResult;
 import org.ictclas4j.bean.Sentence;
+import org.ictclas4j.bean.StopWordDictionary;
 import org.ictclas4j.bean.WordResultBean;
 import org.ictclas4j.utility.Chineses;
 import org.ictclas4j.utility.POSTag;
@@ -19,6 +26,8 @@ public class Segment {
 	private Dictionary coreDict;
 
 	private Dictionary bigramDict;
+
+	private StopWordDictionary stopWordDictionary;
 
 	private PosTagger personTagger;
 
@@ -52,6 +61,9 @@ public class Segment {
 
 		logger.info("Load bigramDict ...");
 		bigramDict = new Dictionary(path + "bigramDict.dct");
+
+		logger.info("Load stopwords ...");
+		stopWordDictionary = new StopWordDictionary(path + "stopwords.txt");
 
 		logger.info("Load tagger dict ...");
 		personTagger = new PosTagger(Utility.TAG_TYPE.TT_PERSON, path + "nr", coreDict);
@@ -219,6 +231,8 @@ public class Segment {
 						WordResultBean r = new WordResultBean();
 						r.setProperty(temp);
 						r.setWord(sn.getSrcWord());
+						if (stopWordDictionary != null && stopWordDictionary.words.contains(sn.getSrcWord()))
+							r.setStopWord(true);
 						results.add(r);
 					}
 				}
@@ -230,6 +244,26 @@ public class Segment {
 
 	public void setSegPathCount(int segPathCount) {
 		Segment.segPathCount = segPathCount;
+	}
+
+	public static Set<String> loadStopWords(InputStream input) {
+		String line;
+		Set<String> stopWords = new HashSet<String>();
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(input, "UTF-8"));
+			while ((line = br.readLine()) != null) {
+				if (line.indexOf("//") != -1) {
+					line = line.substring(0, line.indexOf("//"));
+				}
+				line = line.trim();
+				if (line.length() != 0)
+					stopWords.add(line.toLowerCase());
+			}
+			br.close();
+		} catch (IOException e) {
+			logger.error("WARNING: cannot open stop words list!");
+		}
+		return stopWords;
 	}
 
 }
