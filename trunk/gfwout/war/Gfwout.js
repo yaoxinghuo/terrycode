@@ -1,10 +1,13 @@
 function gfw() {
-	var str = document.getElementById('gfw_url').value;
+	var form = document.f;
+	var str = form.r.value;
 	if (!IsURL(str)) {
 		alert("请输入一个有效的网址！");
 		document.getElementById('gfw_url').focus();
 	} else {
-		window.location.href = "http://gfwout.appspot.com/" + str;
+		form.action = "router";
+		form.method = "post";
+		form.submit();
 	}
 }
 function IsURL(str_url) {
