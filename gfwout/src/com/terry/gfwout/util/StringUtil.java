@@ -4,8 +4,15 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.cache.Cache;
+import javax.cache.CacheException;
+import javax.cache.CacheManager;
 
 import org.htmlparser.Node;
 import org.htmlparser.NodeFilter;
@@ -20,11 +27,25 @@ import org.htmlparser.tags.ScriptTag;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 
+import com.google.appengine.api.memcache.stdimpl.GCacheFactory;
+
 /**
  * @author Terry E-mail: yaoxinghuo at 126 dot com
  * @version create：Aug 15, 2009 6:16:25 PM
  */
 public class StringUtil {
+
+	private static Cache cache;
+
+	static {
+		Map<Integer, Integer> props = new HashMap<Integer, Integer>();
+		props.put(GCacheFactory.EXPIRATION_DELTA, 3600 * 24);
+		try {
+			cache = CacheManager.getInstance().getCacheFactory().createCache(
+					props);
+		} catch (CacheException e) {
+		}
+	}
 
 	public static String readLink(String result) {
 		Parser parser = Parser.createParser(result, "utf8");
@@ -88,11 +109,11 @@ public class StringUtil {
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static String replace(String html, String baseUrl, String url) {
 		int index = url.lastIndexOf("/");
-		String basePath = baseUrl + url;
 		if (index != -1 && index >= 7)
-			basePath = baseUrl + url.substring(0, index);
+			url = url.substring(0, index);
 		StringBuffer sb = new StringBuffer("");
 		Pattern pattern = Pattern
 				.compile(
@@ -110,9 +131,13 @@ public class StringUtil {
 			String findStr = matcher.group();
 			String link = readByParser(findStr);
 			String replaceLink = link;
+			String replacedUrl = url;
 			if (!replaceLink.startsWith("http")) {
-				replaceLink = replaceLink.startsWith("/") ? basePath
-						+ replaceLink : basePath + "/" + replaceLink;
+				String uuid = generateUUID();
+				replacedUrl = url.endsWith("/") ? url + replaceLink : url + "/"
+						+ replaceLink;
+				replaceLink = baseUrl + "gfw?go=" + uuid;
+				cache.put(uuid, replacedUrl);
 			}
 			String mStr = findStr.replace(link, replaceLink);
 			matcher.appendReplacement(sb, mStr);
@@ -181,6 +206,11 @@ public class StringUtil {
 				return html.substring(pos + 1);
 		}
 		return "UTF-8";
+	}
+
+	public static String generateUUID() {
+		String uuid = UUID.randomUUID().toString();
+		return uuid.replaceAll("-", "");
 	}
 
 	public static void main(String[] args) throws Exception {

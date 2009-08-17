@@ -12,7 +12,17 @@
 	
 	<servlet-mapping>
 		<servlet-name>gfw</servlet-name>
-		<url-pattern>/</url-pattern>
+		<url-pattern>/gfw</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>router</servlet-name>
+		<servlet-class>com.terry.gfwout.servlet.RouterServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>router</servlet-name>
+		<url-pattern>/router</url-pattern>
 	</servlet-mapping>
   
 	<!-- Default page to serve -->

@@ -7,13 +7,19 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.cache.Cache;
+import javax.cache.CacheException;
+import javax.cache.CacheManager;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.memcache.stdimpl.GCacheFactory;
 import com.terry.gfwout.util.StringUtil;
 
 /**
@@ -26,15 +32,31 @@ public class GfwServlet extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = -3212155045844726975L;
+	
+	private Cache cache;
+	
+	@Override
+	public void init() {
+		Map<Integer, Integer> props = new HashMap<Integer, Integer>();
+		props.put(GCacheFactory.EXPIRATION_DELTA, 3600 * 24);
+		try {
+			cache = CacheManager.getInstance().getCacheFactory().createCache(
+					props);
+		} catch (CacheException e) {
+		}
+	}
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		String s = req.getRequestURI();
+		String uuid = req.getParameter("go");
+		if (uuid == null || uuid.trim().equals(""))
+			resp.sendRedirect("/Gfwout.html");
+		String s = (String)cache.get(uuid);
 		if (s == null || s.trim().equals("") || s.trim().equals("/Gfwout.html")) {
 			resp.sendRedirect("/Gfwout.html");
 			return;
-		}
+		} 
 
 		HttpURLConnection con = null;
 		try {
