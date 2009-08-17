@@ -8,7 +8,9 @@ public class WordResultBean {
 	private String word;
 
 	private String property;
-
+	
+	private boolean stopWord = false;
+	
 	public String getWord() {
 		return word;
 	}
@@ -23,5 +25,13 @@ public class WordResultBean {
 
 	public void setProperty(String property) {
 		this.property = property;
+	}
+
+	public void setStopWord(boolean stopWord) {
+		this.stopWord = stopWord;
+	}
+
+	public boolean isStopWord() {
+		return stopWord;
 	}
 }

@@ -23,7 +23,10 @@ public class Test {
 				sb.append(Chineses.toFan(result.getWord()));
 			else
 				sb.append(result.getWord());
-			sb.append("/" + result.getProperty()).append(" ");
+			sb.append("/" + result.getProperty());
+			if (result.isStopWord())
+				sb.append("[s]");
+			sb.append(" ");
 		}
 
 		String segString = seg_res.getFinalResult();
