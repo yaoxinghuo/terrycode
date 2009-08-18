@@ -72,7 +72,7 @@ public class GfwServlet extends HttpServlet {
 			if (con.getResponseCode() == 200) {
 				String contentType = con.getContentType();
 				if (contentType == null)
-					contentType = "text/html; charset=UTF-8";
+					contentType = "text/html; charset=GBK";
 				resp.setContentType(contentType);
 
 				if (contentType.contains("image") || StringUtil.isBinary(s)
