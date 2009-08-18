@@ -2,15 +2,29 @@ function gfw() {
 	var form = document.f;
 	var str = form.r.value;
 	if (!IsURL(str)) {
-		alert("请输入一个有效的网址！");
-		form.r.focus();
+		google(str);
 	} else {
 		form.action = "router";
 		form.method = "post";
 		form.submit();
 	}
 }
+
+function google(str) {
+	var form = document.f;
+	if (!str)
+		str = form.r.value;
+	form.r.value = "http://www.google.com/search?hl=en&q="
+			+ str.replace(/ /g, "+") + "&aq=f&oq=&aqi=";
+	form.action = "router";
+	form.method = "post";
+	form.submit();
+	form.r.value = str;
+}
+
 function IsURL(str_url) {
+	if (str_url.indexOf(" ") != -1)
+		return false;
 	var strRegex = "^((https|http)?://)" // |ftp|rtsp|mms
 			+ "?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?" // ftp的user@
 			+ "(([0-9]{1,3}\.){3}[0-9]{1,3}" // IP形式的URL- 199.194.52.184
@@ -23,9 +37,9 @@ function IsURL(str_url) {
 			+ "(/[0-9a-z_!~*'().;?:@&=+$,%#-]+)+/?)$";
 	var re = new RegExp(strRegex);
 	// re.test()
-	if (re.test(str_url)) {
-		return (true);
-	} else {
-		return (false);
-	}
+	if (re.test(str_url))
+		return true;
+	else
+		return false;
+
 }
