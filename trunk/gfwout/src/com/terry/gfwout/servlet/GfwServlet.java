@@ -50,9 +50,6 @@ public class GfwServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		String uuid = req.getParameter("go");
-		String all = req.getParameter("all");
-		if (all == null || all.equals(""))
-			all = "false";
 		if (uuid == null || uuid.trim().equals(""))
 			resp.sendRedirect("/Gfwout.html");
 		String s = (String) cache.get(uuid);
@@ -73,8 +70,13 @@ public class GfwServlet extends HttpServlet {
 			con.setRequestMethod("GET");
 
 			if (con.getResponseCode() == 200) {
+				String contentType = con.getContentType();
+				if (contentType == null)
+					contentType = "text/html; charset=UTF-8";
+				resp.setContentType(contentType);
 
-				if (StringUtil.isImage(s)) {
+				if (contentType.contains("image") || StringUtil.isBinary(s)
+						|| StringUtil.isImage(s)) {
 					ServletOutputStream responseOutputStream = resp
 							.getOutputStream();
 					InputStream in = con.getInputStream();
@@ -89,9 +91,6 @@ public class GfwServlet extends HttpServlet {
 					responseOutputStream.close();
 					in.close();
 				} else {
-					String contentType = con.getContentType();
-					if (contentType == null)
-						contentType = "text/html; charset=UTF-8";
 					BufferedReader reader = new BufferedReader(
 							new InputStreamReader(con.getInputStream(),
 									StringUtil.getContentType(contentType))); // 读取结果
@@ -106,12 +105,10 @@ public class GfwServlet extends HttpServlet {
 					String html = sb.toString();
 					resp.setCharacterEncoding(StringUtil
 							.getContentType(contentType));
-					resp.setContentType(contentType);
 
 					PrintWriter pw = resp.getWriter();
 					pw.write(StringUtil.replace(html,
-							"http://gfwout.appspot.com/", s, all
-									.equals("false") ? false : true));
+							"http://gfwout.appspot.com/", s));
 					pw.flush();
 					pw.close();
 				}

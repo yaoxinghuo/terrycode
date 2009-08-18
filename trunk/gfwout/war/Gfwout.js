@@ -11,7 +11,6 @@ function gfw() {
 	} else {
 		form.action = "router";
 		form.method = "post";
-		form.all.value = "false";
 		form.submit();
 	}
 }
@@ -27,7 +26,6 @@ function google(str) {
 	}
 	form.r.value = "http://www.google.com/search?hl=en&q="
 			+ str.replace(/ /g, "+") + "&aq=f&oq=&aqi=";
-	form.all.value = "true";
 	form.action = "router";
 	form.method = "post";
 	form.submit();

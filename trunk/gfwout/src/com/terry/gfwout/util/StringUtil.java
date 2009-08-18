@@ -110,8 +110,7 @@ public class StringUtil {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static String replace(String html, String baseUrl, String url,
-			boolean all) {
+	public static String replace(String html, String baseUrl, String url) {
 		int index = url.lastIndexOf("/");
 		if (index != -1 && index >= 7)
 			url = url.substring(0, index);
@@ -138,15 +137,13 @@ public class StringUtil {
 			if (!replaceLink.startsWith("http")) {
 				replacedUrl = url.endsWith("/") ? url + replaceLink : url + "/"
 						+ replaceLink;
-				replaceLink = baseUrl + "gfw?go=" + uuid + "&all="
-						+ (all ? "true" : "false");
+				replaceLink = baseUrl + "gfw?go=" + uuid;
 				cache.put(uuid, replacedUrl);
 			} else {
-				if (all) {
-					replaceLink = baseUrl + "gfw?go=" + uuid + "&all="
-							+ (all ? "true" : "false");
-					cache.put(uuid, link);
-				}
+
+				replaceLink = baseUrl + "gfw?go=" + uuid;
+				cache.put(uuid, link);
+
 			}
 			String mStr = findStr.replace(link, replaceLink);
 			matcher.appendReplacement(sb, mStr);
@@ -208,6 +205,20 @@ public class StringUtil {
 		return false;
 	}
 
+	public static boolean isBinary(String url) {
+		String[] ext = { ".exe", ".js", ".zip", ".doc", ".docx", ".xls",
+				".xlsx", ".ppt", ".pptx", ".txt", ".rar", ".chm", ".jar",
+				".java" };
+		if (url.length() < 4)
+			return false;
+		String fext = url.substring(url.length() - 4);
+		for (String s : ext) {
+			if (fext.equalsIgnoreCase(s))
+				return true;
+		}
+		return false;
+	}
+
 	public static String getContentType(String html) {
 		if (html != null && !html.equals("")) {
 			int pos = html.indexOf("=");
@@ -248,7 +259,7 @@ public class StringUtil {
 		reader.close();
 		con.disconnect();
 		System.out.println(StringUtil.replace(sb.toString(),
-				"http://gfwout.appspot.com/", "http://www.google.cn", false));
+				"http://gfwout.appspot.com/", "http://www.google.cn"));
 	}
 
 	static class StyleLinkTag extends CompositeTag {
