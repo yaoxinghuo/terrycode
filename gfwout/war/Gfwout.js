@@ -2,7 +2,7 @@ function gfw() {
 	var form = document.f;
 	var str = form.r.value;
 	if (str == "") {
-		alert("请输入正确的网址或Google搜索的关键词！");
+		showMsg("请输入正确的网址或Google搜索的关键词！");
 		document.f.r.focus();
 		return;
 	}
@@ -20,12 +20,13 @@ function google(str) {
 	if (!str)
 		str = form.r.value;
 	if (str == "") {
-		alert("请输入正确的网址或Google搜索的关键词！");
+		showMsg("请输入正确的网址或Google搜索的关键词！");
 		document.f.r.focus();
 		return;
 	}
 	form.r.value = "http://www.google.com/search?hl=en&q="
-			+ str.replace(/ /g, "+") + "&aq=f&oq=&aqi=";//在Google搜索后面加 &btnI=745 表示手气不错
+			+ str.replace(/ /g, "+") + "&aq=f&oq=&aqi=";// 在Google搜索后面加
+														// &btnI=745 表示手气不错
 	form.action = "router";
 	form.method = "post";
 	form.submit();
@@ -33,7 +34,7 @@ function google(str) {
 }
 
 function IsURL(str_url) {
-	if (str_url.indexOf(" ") != -1)
+	if (str_url.indexOf(" ") != -1 || str_url.indexOf(".") == -1)
 		return false;
 	var strRegex = "^((https|http)?://)" // |ftp|rtsp|mms
 			+ "?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?" // ftp的user@
@@ -52,4 +53,20 @@ function IsURL(str_url) {
 	else
 		return false;
 
+}
+
+var timeoutID = null;
+function showMsg(msg) {
+	if (!msg)
+		return;
+	document.getElementById("msg_content").innerHTML = msg;
+	document.getElementById("msg").style.left = (document.body.clientWidth-msg.length*10)/2 +"px";
+	document.getElementById("msg").style.visibility = "visible";
+	if (timeoutID != null)
+		clearTimeout(timeoutID);
+	timeoutID = setTimeout("clearMsg()", 30000);
+}
+function clearMsg() {
+	document.getElementById("msg").style.visibility = "hidden";
+	document.getElementById("msg_content").innerHTML = "";
 }
