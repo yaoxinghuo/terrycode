@@ -25,7 +25,7 @@ function google(str) {
 		return;
 	}
 	form.r.value = "http://www.google.com/search?hl=en&q="
-			+ str.replace(/ /g, "+") + "&aq=f&oq=&aqi=";
+			+ str.replace(/ /g, "+") + "&aq=f&oq=&aqi=";//在Google搜索后面加 &btnI=745 表示手气不错
 	form.action = "router";
 	form.method = "post";
 	form.submit();
