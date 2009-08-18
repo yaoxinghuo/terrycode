@@ -3,7 +3,7 @@ function gfw() {
 	var str = form.r.value;
 	if (!IsURL(str)) {
 		alert("请输入一个有效的网址！");
-		document.getElementById('gfw_url').focus();
+		form.r.focus();
 	} else {
 		form.action = "router";
 		form.method = "post";
