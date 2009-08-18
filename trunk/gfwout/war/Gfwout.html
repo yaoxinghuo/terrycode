@@ -102,6 +102,17 @@ a.gb2:hover {
 </head>
 <body bgcolor=#ffffff text=#000000 link=#0000cc vlink=#551a8b
 	alink=#ff0000 onload="document.f.r.focus();" topmargin=3 marginheight=3>
+<div id="msg"
+	style="visibility: hidden; z-index: 1000; position: absolute; left: 300px;">
+<table border='0' cellspacing='0' cellpadding='0'>
+	<tr>
+		<td style="padding: 4px; background-color: #fad163;"><font
+			size="-1"><span id="msg_content"></span>&nbsp;<a href="#"
+			onclick="clearMsg();return false;"><img id="close"
+			src='close.gif' /></a></font></td>
+	</tr>
+</table>
+</div>
 <textarea id=csi style="display: none"></textarea>
 <div id=gbar><nobr><b class=gb1>Gfwout</b> <a
 	href="https://fetionlib.appspot.com" onclick=gbar.qs(this) class=gb1>网页飞信</a>
