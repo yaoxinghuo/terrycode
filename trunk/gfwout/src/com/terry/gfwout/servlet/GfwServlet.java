@@ -32,9 +32,9 @@ public class GfwServlet extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = -3212155045844726975L;
-	
+
 	private Cache cache;
-	
+
 	@Override
 	public void init() {
 		Map<Integer, Integer> props = new HashMap<Integer, Integer>();
@@ -50,13 +50,16 @@ public class GfwServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		String uuid = req.getParameter("go");
+		String all = req.getParameter("all");
+		if (all == null || all.equals(""))
+			all = "false";
 		if (uuid == null || uuid.trim().equals(""))
 			resp.sendRedirect("/Gfwout.html");
-		String s = (String)cache.get(uuid);
+		String s = (String) cache.get(uuid);
 		if (s == null || s.trim().equals("") || s.trim().equals("/Gfwout.html")) {
 			resp.sendRedirect("/Gfwout.html");
 			return;
-		} 
+		}
 
 		HttpURLConnection con = null;
 		try {
@@ -101,12 +104,14 @@ public class GfwServlet extends HttpServlet {
 					con.disconnect();
 
 					String html = sb.toString();
-					resp.setCharacterEncoding(StringUtil.getContentType(contentType));
+					resp.setCharacterEncoding(StringUtil
+							.getContentType(contentType));
 					resp.setContentType(contentType);
-					
+
 					PrintWriter pw = resp.getWriter();
 					pw.write(StringUtil.replace(html,
-							"http://gfwout.appspot.com/", s));
+							"http://gfwout.appspot.com/", s, all
+									.equals("false") ? false : true));
 					pw.flush();
 					pw.close();
 				}
