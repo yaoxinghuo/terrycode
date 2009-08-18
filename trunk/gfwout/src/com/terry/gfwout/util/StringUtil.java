@@ -166,9 +166,9 @@ public class StringUtil {
 								"<div id='gfwout-h' style='filter:alpha(opacity=80);-moz-opacity:0.8;"
 										+ "font-family: arial, sans-serif; font-size: 13px;"
 										+ "padding: 4px; background-color: #fad163;z-index: 2000;"
-										+ " position: absolute;visibility: visible;'>"
-										+ "<a href='http://gfwout.appspot.com/'>"
-										+ "<img style='border:none;' src='/home.png'/>Back To GFWout Home</a>"
+										+ " position: absolute;visibility: visible;'><a href='"
+										+ baseUrl
+										+ "'><img style='border:none;' src='/home.png'/>Back To GFWout Home</a>"
 										+ "&nbsp;<a href='#' "
 										+ "onclick=\"document.getElementById('gfwout-h').style.visibility = 'hidden';return false;\">"
 										+ "<img src='/close.gif' /></a></div>");
@@ -251,9 +251,9 @@ public class StringUtil {
 		if (html != null && !html.equals("")) {
 			int pos = html.indexOf("=");
 			if (pos != -1)
-				return html.substring(pos + 1);
+				return html.substring(pos + 1).toUpperCase();
 		}
-		return "UTF-8";
+		return "GB2312";
 	}
 
 	public static String generateUUID() {
