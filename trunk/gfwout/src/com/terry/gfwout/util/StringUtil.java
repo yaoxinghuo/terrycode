@@ -166,7 +166,7 @@ public class StringUtil {
 								"<div id='gfwout-h' style='filter:alpha(opacity=80);-moz-opacity:0.8;"
 										+ "font-family: arial, sans-serif; font-size: 13px;"
 										+ "padding: 4px; background-color: #fad163;z-index: 2000;"
-										+ " position: absolute; left: 10px; top: 10px;visibility: visible;'>"
+										+ " position: absolute;visibility: visible;'>"
 										+ "<a href='http://gfwout.appspot.com/'>"
 										+ "<img style='border:none;' src='/home.png'/>Back To GFWout Home</a>"
 										+ "&nbsp;<a href='#' "
