@@ -149,6 +149,34 @@ public class StringUtil {
 			matcher.appendReplacement(sb, mStr);
 		}
 		matcher.appendTail(sb);
+
+		Pattern pattern2 = Pattern
+				.compile(
+						"(<\\s*body\\s+(?:[^\\s>]\\s*){0,})\\s*=\\s*(\"|'|)((?:\\s*[^\\s>]){0,}\\s*>)",
+						Pattern.CASE_INSENSITIVE);
+		Matcher matcher2 = pattern2.matcher(sb.toString());
+		sb = new StringBuffer("");
+		if (matcher2.find()) {
+			StringBuffer sb2 = new StringBuffer(matcher2.group());
+			int p = sb2.indexOf(">");
+			if (p != -1) {
+				sb2
+						.insert(
+								p + 1,
+								"<div id='gfwout-h' style='filter:alpha(opacity=80);-moz-opacity:0.8;"
+										+ "font-family: arial, sans-serif; font-size: 13px;"
+										+ "padding: 4px; background-color: #fad163;z-index: 2000;"
+										+ " position: absolute; left: 10px; top: 10px;visibility: visible;'>"
+										+ "<a href='http://gfwout.appspot.com/'>"
+										+ "<img style='border:none;' src='/home.png'/>Back To GFWout Home</a>"
+										+ "&nbsp;<a href='#' "
+										+ "onclick=\"document.getElementById('gfwout-h').style.visibility = 'hidden';return false;\">"
+										+ "<img src='/close.gif' /></a></div>");
+			}
+			matcher2.appendReplacement(sb, sb2.toString());
+		}
+		matcher2.appendTail(sb);
+
 		return sb.toString();
 	}
 
