@@ -110,7 +110,8 @@ public class StringUtil {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static String replace(String html, String baseUrl, String url) {
+	public static String replace(String html, String baseUrl, String url,
+			boolean all) {
 		int index = url.lastIndexOf("/");
 		if (index != -1 && index >= 7)
 			url = url.substring(0, index);
@@ -132,12 +133,20 @@ public class StringUtil {
 			String link = readByParser(findStr);
 			String replaceLink = link;
 			String replacedUrl = url;
+
+			String uuid = generateUUID();
 			if (!replaceLink.startsWith("http")) {
-				String uuid = generateUUID();
 				replacedUrl = url.endsWith("/") ? url + replaceLink : url + "/"
 						+ replaceLink;
-				replaceLink = baseUrl + "gfw?go=" + uuid;
+				replaceLink = baseUrl + "gfw?go=" + uuid + "&all="
+						+ (all ? "true" : "false");
 				cache.put(uuid, replacedUrl);
+			} else {
+				if (all) {
+					replaceLink = baseUrl + "gfw?go=" + uuid + "&all="
+							+ (all ? "true" : "false");
+					cache.put(uuid, link);
+				}
 			}
 			String mStr = findStr.replace(link, replaceLink);
 			matcher.appendReplacement(sb, mStr);
@@ -239,7 +248,7 @@ public class StringUtil {
 		reader.close();
 		con.disconnect();
 		System.out.println(StringUtil.replace(sb.toString(),
-				"http://gfwout.appspot.com/", "http://www.google.cn"));
+				"http://gfwout.appspot.com/", "http://www.google.cn", false));
 	}
 
 	static class StyleLinkTag extends CompositeTag {

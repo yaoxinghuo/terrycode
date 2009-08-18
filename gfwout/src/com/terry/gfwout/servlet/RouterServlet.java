@@ -46,9 +46,12 @@ public class RouterServlet extends HttpServlet {
 		String url = req.getParameter("r");
 		if (url == null || url.trim().equals(""))
 			resp.sendRedirect("/Gfwout.html");
+		String all = req.getParameter("all");
+		if (all == null || all.equals(""))
+			all = "false";
 		String uuid = StringUtil.generateUUID();
 		cache.put(uuid, url);
-		resp.sendRedirect("/gfw?go=" + uuid);
+		resp.sendRedirect("/gfw?go=" + uuid + "&all=" + all);
 	}
 
 	@Override

@@ -1,11 +1,17 @@
 function gfw() {
 	var form = document.f;
 	var str = form.r.value;
+	if (str == "") {
+		alert("请输入正确的网址或Google搜索的关键词！");
+		document.f.r.focus();
+		return;
+	}
 	if (!IsURL(str)) {
 		google(str);
 	} else {
 		form.action = "router";
 		form.method = "post";
+		form.all.value = "false";
 		form.submit();
 	}
 }
@@ -14,8 +20,14 @@ function google(str) {
 	var form = document.f;
 	if (!str)
 		str = form.r.value;
+	if (str == "") {
+		alert("请输入正确的网址或Google搜索的关键词！");
+		document.f.r.focus();
+		return;
+	}
 	form.r.value = "http://www.google.com/search?hl=en&q="
 			+ str.replace(/ /g, "+") + "&aq=f&oq=&aqi=";
+	form.all.value = "true";
 	form.action = "router";
 	form.method = "post";
 	form.submit();
