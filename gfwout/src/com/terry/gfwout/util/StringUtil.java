@@ -21,6 +21,7 @@ import org.htmlparser.PrototypicalNodeFactory;
 import org.htmlparser.filters.NodeClassFilter;
 import org.htmlparser.filters.OrFilter;
 import org.htmlparser.tags.CompositeTag;
+import org.htmlparser.tags.FormTag;
 import org.htmlparser.tags.ImageTag;
 import org.htmlparser.tags.LinkTag;
 import org.htmlparser.tags.ScriptTag;
@@ -80,9 +81,10 @@ public class StringUtil {
 		NodeFilter imageFilter = new NodeClassFilter(ImageTag.class);
 		NodeFilter scriptFilter = new NodeClassFilter(ScriptTag.class);
 		NodeFilter styleFilter = new NodeClassFilter(StyleLinkTag.class);
+		NodeFilter formFilter = new NodeClassFilter(FormTag.class);
 		OrFilter lastFilter = new OrFilter();
 		lastFilter.setPredicates(new NodeFilter[] { linkFilter, imageFilter,
-				scriptFilter, styleFilter });
+				scriptFilter, styleFilter, formFilter });
 		NodeList nodelist = null;
 		try {
 			nodelist = parser.parse(lastFilter);
@@ -104,6 +106,9 @@ public class StringUtil {
 			} else if (node instanceof StyleLinkTag) {
 				StyleLinkTag style = (StyleLinkTag) node;
 				return style.getLink();
+			} else if(node instanceof FormTag) {
+				FormTag form = (FormTag) node;
+				return form.getAttribute("action");
 			}
 		}
 		return result;
@@ -123,6 +128,8 @@ public class StringUtil {
 								+ "(<\\s*img\\s+(?:[^\\s>]\\s*){0,})src\\s*=\\s*(\"|'|)((?:\\s*[^\\s>]){0,}\\s*>)"
 								+ "|"// <link href...
 								+ "(<\\s*link\\s+(?:[^\\s>]\\s*){0,})href\\s*=\\s*(\"|'|)((?:\\s*[^\\s>]){0,}\\s*>)"
+								+ "|"// <form action...
+								+ "(<\\s*form\\s+(?:[^\\s>]\\s*){0,})action\\s*=\\s*(\"|'|)((?:\\s*[^\\s>]){0,}\\s*>)"
 								+ "|"// <script src...
 								+ "(<\\s*script\\s+(?:[^\\s>]\\s*){0,})src\\s*=\\s*(\"|'|)((?:\\s*[^\\s>]){0,}\\s*>)",
 						Pattern.CASE_INSENSITIVE);
@@ -176,7 +183,29 @@ public class StringUtil {
 			matcher2.appendReplacement(sb, sb2.toString());
 		}
 		matcher2.appendTail(sb);
-
+		System.out.println(sb.toString());
+		return sb.toString();
+	}
+	
+	public static String replaceForm(String html, String basePath) {
+		StringBuffer sb = new StringBuffer("");
+		Pattern pattern = Pattern
+				.compile(
+						"(<\\s*a\\s+(?:[^\\s>]\\s*){0,})href\\s*=\\s*(\"|'|)((?:\\s*[^\\s>]){0,}\\s*>)",
+						Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(html);
+		while (matcher.find()) {
+			String findStr = matcher.group();
+			String link = readLink(findStr);
+			String replaceLink = link;
+			if (!replaceLink.startsWith("http")) {
+				replaceLink = replaceLink.startsWith("/") ? basePath
+						+ replaceLink : basePath + "/" + replaceLink;
+			}
+			String mStr = findStr.replace(link, replaceLink);
+			matcher.appendReplacement(sb, mStr);
+		}
+		matcher.appendTail(sb);
 		return sb.toString();
 	}
 

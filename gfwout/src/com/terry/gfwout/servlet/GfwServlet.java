@@ -50,11 +50,14 @@ public class GfwServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		String uuid = req.getParameter("go");
-		if (uuid == null || uuid.trim().equals(""))
-			resp.sendRedirect("/Gfwout.html");
+		if (uuid == null || uuid.trim().equals("")) {
+			req.setAttribute("message", "对不起，改操作暂时无法在GFWout代理上支持！");
+			req.getRequestDispatcher("/index.jsp").forward(req, resp);
+			return;
+		}
 		String s = (String) cache.get(uuid);
-		if (s == null || s.trim().equals("") || s.trim().equals("/Gfwout.html")) {
-			resp.sendRedirect("/Gfwout.html");
+		if (s == null || s.trim().equals("") || s.trim().equals("/index.jsp")) {
+			resp.sendRedirect("/index.jsp");
 			return;
 		}
 
@@ -69,7 +72,8 @@ public class GfwServlet extends HttpServlet {
 			con.setDoOutput(true);
 			con.setRequestMethod("GET");
 
-			if (con.getResponseCode() == 200) {
+			int code = con.getResponseCode();
+			if (code == 200) {
 				String contentType = con.getContentType();
 				if (contentType == null)
 					contentType = "text/html; charset=GBK";
@@ -113,11 +117,14 @@ public class GfwServlet extends HttpServlet {
 					pw.close();
 				}
 			} else {
-				resp.sendRedirect("/Gfwout.html");
+				req.setAttribute("message", "对不起，无法连接至指定的网站，请稍候再试！Error Code:"
+						+ code);
+				req.getRequestDispatcher("/index.jsp").forward(req, resp);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			resp.sendRedirect("/Gfwout.html");
+			req.setAttribute("message", "对不起，无法连接至指定的网站，请稍候再试！"
+					+ e.getMessage());
+			req.getRequestDispatcher("/index.jsp").forward(req, resp);
 		} finally {
 			if (con != null)
 				try {
