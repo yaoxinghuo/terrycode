@@ -45,7 +45,7 @@ public class RouterServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String url = req.getParameter("r");
 		if (url == null || url.trim().equals(""))
-			resp.sendRedirect("/Gfwout.html");
+			resp.sendRedirect("/index.jsp");
 		String uuid = StringUtil.generateUUID();
 		cache.put(uuid, url);
 		resp.sendRedirect("/gfw?go=" + uuid);
