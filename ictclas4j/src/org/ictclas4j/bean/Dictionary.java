@@ -672,11 +672,13 @@ public class Dictionary {
 
 	public static void main(String[] args) {
 		Dictionary coreDict = new Dictionary("E:\\workspace\\ictclas4j\\data\\coreDict.dct");
-		for (WordTable wt : coreDict.wts) {
-			if (wt.getWords() == null)
-				continue;
-			for (WordItem wi : wt.getWords()) {
-				if (wi.getWord().startsWith("µç")) {
+		Preword pw = coreDict.preProcessing("µçÂ·");
+		if (pw != null & pw.getWord() != null) {
+			System.out.println("index:" + pw.getIndex() + "\tRes:" + pw.getRes() + "\tWord:" + pw.getWord());
+			System.out.println("--------------------");
+			if (pw.getIndex() >= 0 && pw.getIndex() < coreDict.wts.size()) {
+				WordTable wt = coreDict.wts.get(pw.getIndex());
+				for (WordItem wi : wt.getWords()) {
 					String p = "?";
 					int handle = wi.getHandle();
 					if (handle != POSTag.SEN_BEGIN && handle != POSTag.SEN_END) {
@@ -694,6 +696,7 @@ public class Dictionary {
 					}
 					System.out.println("Len:" + wi.getLen() + "\tFreq:" + wi.getFreq() + "\tHandle:" + wi.getHandle()
 							+ "(" + p + ")" + "\tWord:" + wi.getWord());
+
 				}
 			}
 		}
