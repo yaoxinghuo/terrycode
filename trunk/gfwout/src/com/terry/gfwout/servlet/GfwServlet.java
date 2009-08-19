@@ -51,7 +51,11 @@ public class GfwServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String uuid = req.getParameter("go");
 		if (uuid == null || uuid.trim().equals("")) {
-			req.setAttribute("message", "对不起，改操作暂时无法在GFWout代理上支持！");
+			req
+					.setAttribute(
+							"message",
+							"对不起，改操作暂时无法在GFWout代理上支持！"
+									+ "&nbsp;<a href='#' onclick='javascript:history.go(-1);return false;'>后退</a>");
 			req.getRequestDispatcher("/index.jsp").forward(req, resp);
 			return;
 		}
@@ -117,13 +121,21 @@ public class GfwServlet extends HttpServlet {
 					pw.close();
 				}
 			} else {
-				req.setAttribute("message", "对不起，无法连接至指定的网站，请稍候再试！Error Code:"
-						+ code);
+				req
+						.setAttribute(
+								"message",
+								"对不起，无法连接至指定的网站，请稍候再试！Error Code:"
+										+ code
+										+ "&nbsp;<a href='#' onclick='javascript:history.go(-1);return false;'>后退</a>");
 				req.getRequestDispatcher("/index.jsp").forward(req, resp);
 			}
 		} catch (Exception e) {
-			req.setAttribute("message", "对不起，无法连接至指定的网站，请稍候再试！"
-					+ e.getMessage());
+			req
+					.setAttribute(
+							"message",
+							"对不起，无法连接至指定的网站，请稍候再试！"
+									+ e.getMessage()
+									+ "&nbsp;<a href='#' onclick='javascript:history.go(-1);return false;'>后退</a>");
 			req.getRequestDispatcher("/index.jsp").forward(req, resp);
 		} finally {
 			if (con != null)
