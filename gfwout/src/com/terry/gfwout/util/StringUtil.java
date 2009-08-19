@@ -171,9 +171,9 @@ public class StringUtil {
 						.insert(
 								p + 1,
 								"<div id='gfwout-h' style='filter:alpha(opacity=80);-moz-opacity:0.8;"
-										+ "font-family: arial, sans-serif; font-size: 13px;"
+										+ "font-family: arial, sans-serif; font-size: 13px;left:0px;"
 										+ "padding: 4px; background-color: #fad163;z-index: 2000;"
-										+ " position: absolute;visibility: visible;'><a href='"
+										+ " position: absolute;visibility: visible;top:0px;'><a href='"
 										+ baseUrl
 										+ "'><img style='border:none;' src='/home.png'/>Back To GFWout Home</a>"
 										+ "&nbsp;<a href='#' "

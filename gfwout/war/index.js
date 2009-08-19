@@ -60,7 +60,7 @@ function showMsg(msg) {
 	if (!msg)
 		return;
 	document.getElementById("msg_content").innerHTML = msg;
-	document.getElementById("msg").style.left = (document.body.clientWidth-msg.length*10)/2 +"px";
+	document.getElementById("msg").style.left = (document.body.clientWidth-(msg.length-47)*10)/2 +"px";
 	document.getElementById("msg").style.visibility = "visible";
 	if (timeoutID != null)
 		clearTimeout(timeoutID);

@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<html>
+
+<%@page import="java.util.Calendar"%><html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<title>GFWout</title>
+<title>GFWout 代理上网</title>
 <style>
 input {
 	font-size: 14px;
@@ -116,7 +117,7 @@ a.gb2:hover {
 </table>
 </div>
 <textarea id=csi style="display: none"></textarea>
-<div id=gbar><nobr><b class=gb1>Gfwout</b> <a
+<div id=gbar><nobr><b class=gb1>GFWout</b> <a
 	href="https://fetionlib.appspot.com" onclick=gbar.qs(this) class=gb1>网页飞信</a>
 <a href="http://costnote.appspot.com/" onclick=gbar.qs(this) class=gb1>网络账本</a>
 <a href="http://sites.google.com/site/terry/" onclick=gbar.qs(this)
@@ -134,12 +135,12 @@ a.gb2:hover {
 		<td width=25%>&nbsp;</td>
 		<td align=center nowrap><input maxlength=2048 size=55 name="r"
 			style="height: 28px; padding-top: 4px; font-size: 16px; margin-bottom: 2px; width: 28em"
-			title="Gfw 代理上网" value=""><br>
-		<input type=submit value="Gfw 代理上网" onclick="gfw();return false;" />
+			title="GFW 代理上网" value=""><br>
+		<input type=submit value="GFW 代理上网" onclick="gfw();return false;" />
 		<input type=submit value="Google 搜索" onclick="google();return false;" /></td>
 		<td nowrap width=25% align=left><span style="font-size: 13px">&nbsp;&nbsp;<a
-			href=/gfwout.html>郑重声明</a><br>
-		&nbsp;&nbsp;<a href=/gfwout.html>使用说明</a><br>
+			href=/help.html>郑重声明</a><br>
+		&nbsp;&nbsp;<a href=/help.html>使用说明</a><br>
 		</span></td>
 	</tr>
 </table>
@@ -147,8 +148,8 @@ a.gb2:hover {
 <br>
 <br>
 <font size=-1></font>
-<p><span style="font-size: 13px">&copy;2009 - <a
-	href="/gfwout.html">隐私权政策</a> - <a
+<p><span style="font-size: 13px">&copy;<%=Calendar.getInstance().get(Calendar.YEAR) %> - <a
+	href="/help.html">隐私权政策</a> - <a
 	href="https://sites.google.com/site/it/feedback">意见反映</a></span></p>
 </center>
 <script language='javascript' src='index.js'></script>
