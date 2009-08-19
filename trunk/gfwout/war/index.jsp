@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -149,6 +151,12 @@ a.gb2:hover {
 	href="/gfwout.html">隐私权政策</a> - <a
 	href="https://sites.google.com/site/it/feedback">意见反映</a></span></p>
 </center>
-<script language='javascript' src='Gfwout.js'></script>
+<script language='javascript' src='index.js'></script>
+<script type="text/javascript">
+	var message='<%=request.getAttribute("message")%>';
+	if(message!=null&&message!="null"){
+		showMsg(message);
+	}
+</script>
 </body>
 </html>
