@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import org.apache.log4j.Logger;
 import org.ictclas4j.utility.GFCommon;
 import org.ictclas4j.utility.GFString;
+import org.ictclas4j.utility.POSTag;
 import org.ictclas4j.utility.Utility;
 
 public class Dictionary {
@@ -675,9 +676,25 @@ public class Dictionary {
 			if (wt.getWords() == null)
 				continue;
 			for (WordItem wi : wt.getWords()) {
-				if (wi.getWord().startsWith("µç"))
+				if (wi.getWord().startsWith("µç")) {
+					String p = "?";
+					int handle = wi.getHandle();
+					if (handle != POSTag.SEN_BEGIN && handle != POSTag.SEN_END) {
+						char[] pos = new char[2];
+						String temp = null;
+						int tag = Math.abs(handle);
+						pos[0] = (char) (tag / 256);
+						pos[1] = (char) (tag % 256);
+						temp = "" + pos[0];
+						if (pos[1] > 0)
+							temp += "" + pos[1];
+						if (tag == 17)
+							temp = "?";
+						p = temp;
+					}
 					System.out.println("Len:" + wi.getLen() + "\tFreq:" + wi.getFreq() + "\tHandle:" + wi.getHandle()
-							+ "\tWord:" + wi.getWord());
+							+ "(" + p + ")" + "\tWord:" + wi.getWord());
+				}
 			}
 		}
 	}
