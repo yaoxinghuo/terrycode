@@ -51,7 +51,7 @@ public class GfwServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String uuid = req.getParameter("go");
 		if (uuid == null || uuid.equals("")) {
-			req.setAttribute("message", "对不起，改操作暂时无法在GFWout代理上支持！"
+			req.setAttribute("message", "对不起，该操作暂时无法在GFWout代理上支持！"
 					+ "&nbsp;<a href=\"javascript:history.go(-1);\">返回</a>");
 			req.getRequestDispatcher("/index.jsp").forward(req, resp);
 			return;
