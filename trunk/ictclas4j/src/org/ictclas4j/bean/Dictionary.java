@@ -669,4 +669,17 @@ public class Dictionary {
 		return 0;
 	}
 
+	public static void main(String[] args) {
+		Dictionary coreDict = new Dictionary("E:\\workspace\\ictclas4j\\data\\coreDict.dct");
+		for (WordTable wt : coreDict.wts) {
+			if (wt.getWords() == null)
+				continue;
+			for (WordItem wi : wt.getWords()) {
+				if (wi.getWord().startsWith("µç"))
+					System.out.println("Len:" + wi.getLen() + "\tFreq:" + wi.getFreq() + "\tHandle:" + wi.getHandle()
+							+ "\tWord:" + wi.getWord());
+			}
+		}
+	}
+
 }
