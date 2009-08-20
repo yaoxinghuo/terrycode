@@ -127,7 +127,7 @@ a.gb2:hover {
 <div class=gbh style="left: 0"></div>
 <div class=gbh style="right: 0"></div>
 <center><br clear=all id=lgpd>
-<img src=/logo.png border=0 alt="Gfwout" title="Gfwout" id=logo><br>
+<img src=/logo.png border=0 alt="GFW 代理上网" title="GFW 代理上网" id=logo><br>
 <br>
 <form name="f" method="post">
 <table cellpadding=0 cellspacing=0>
