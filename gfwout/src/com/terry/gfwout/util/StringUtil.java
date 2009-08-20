@@ -243,6 +243,7 @@ public class StringUtil {
 		String[] ext = { ".png", ".gif", ".jpg", ".bmp", ".ico" };
 		if (url.length() < 4)
 			return false;
+		url = removeQueryAndHash(url);
 		String fext = url.substring(url.length() - 4);
 		for (String s : ext) {
 			if (fext.equalsIgnoreCase(s))
@@ -257,12 +258,26 @@ public class StringUtil {
 				".java" };
 		if (url.length() < 4)
 			return false;
+		url = removeQueryAndHash(url);
 		String fext = url.substring(url.length() - 4);
 		for (String s : ext) {
 			if (fext.equalsIgnoreCase(s))
 				return true;
 		}
 		return false;
+	}
+
+	private static String removeQueryAndHash(String url) {
+		// Pull off any hash.
+		int i = url.indexOf('#');
+		if (i != -1)
+			url = url.substring(0, i);
+
+		// Pull off any query string.
+		i = url.indexOf('?');
+		if (i != -1)
+			url = url.substring(0, i);
+		return url;
 	}
 
 	public static String getContentType(String html) {
