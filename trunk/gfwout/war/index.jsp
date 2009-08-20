@@ -123,7 +123,7 @@ a.gb2:hover {
 <a href="http://sites.google.com/site/terry/" onclick=gbar.qs(this)
 	class=gb1>个人主页</a> </nobr></div>
 <div id=guser width=100%><nobr><a
-	href="http://www.google.cn/">Google</a></nobr></div>
+	href="http://www.google.cn/">Google 中国</a></nobr></div>
 <div class=gbh style="left: 0"></div>
 <div class=gbh style="right: 0"></div>
 <center><br clear=all id=lgpd>
@@ -151,6 +151,8 @@ a.gb2:hover {
 <p><span style="font-size: 13px">&copy;<%=Calendar.getInstance().get(Calendar.YEAR) %> - <a
 	href="/help.html">隐私权政策</a> - <a
 	href="https://sites.google.com/site/it/feedback">意见反映</a></span></p>
+<p><img src="http://code.google.com/appengine/images/appengine-noborder-120x30.gif" 
+alt="Powered by Google App Engine" /></p>
 </center>
 <script language='javascript' src='index.js'></script>
 <script type="text/javascript">
