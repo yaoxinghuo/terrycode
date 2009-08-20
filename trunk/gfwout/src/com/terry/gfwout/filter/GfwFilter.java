@@ -39,7 +39,7 @@ public class GfwFilter implements Filter {
 	private boolean isAvaliable(String uri) {
 		if (uri == null || uri.equals(""))
 			return false;
-		String[] as = { "/", "/router", "/gfw" };
+		String[] as = { "/", "/router", "/gfw", "/index.jsp" };
 		for (String a : as) {
 			if (uri.equals(a))
 				return true;

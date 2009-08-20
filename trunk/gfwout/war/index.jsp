@@ -111,7 +111,7 @@ a.gb2:hover {
 	<tr>
 		<td style="padding: 4px; background-color: #fad163;"><font
 			size="-1"><span id="msg_content"></span>&nbsp;<a href="#"
-			onclick="clearMsg();return false;"><img id="close"
+			onclick="clearMsg();return false;"><img id="close" alt="关闭" title="关闭" style="border:none;"
 			src='close.gif' /></a></font></td>
 	</tr>
 </table>
