@@ -159,7 +159,7 @@ public class StringUtil {
 
 		Pattern pattern2 = Pattern
 				.compile(
-						"(<\\s*body\\s+(?:[^\\s>]\\s*){0,})\\s*=\\s*(\"|'|)((?:\\s*[^\\s>]){0,}\\s*>)",
+						"(<\\s*body\\s*(?:[^\\s>]\\s*){0,})\\s*(\"|'|)((?:\\s*[^\\s>]){0,}\\s*>)",
 						Pattern.CASE_INSENSITIVE);
 		Matcher matcher2 = pattern2.matcher(sb.toString());
 		sb = new StringBuffer("");
