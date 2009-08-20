@@ -8,4 +8,6 @@ public class Constants {
 	public static String BACK_HOME_HTML;
 
 	public static String ANALYTICS_HTML = "";
+	
+	public static final String BASE_URL = "http://gfwout.appspot.com/";
 }

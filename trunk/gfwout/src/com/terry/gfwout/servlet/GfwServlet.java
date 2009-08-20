@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.appengine.api.memcache.stdimpl.GCacheFactory;
+import com.terry.gfwout.util.Constants;
 import com.terry.gfwout.util.StringUtil;
 
 /**
@@ -112,8 +113,7 @@ public class GfwServlet extends HttpServlet {
 							.getContentType(contentType));
 
 					PrintWriter pw = resp.getWriter();
-					pw.write(StringUtil.replace(html,
-							"http://gfwout.appspot.com/", s));
+					pw.write(StringUtil.replace(html, Constants.BASE_URL, s));
 					pw.flush();
 					pw.close();
 				}

@@ -173,7 +173,6 @@ public class StringUtil {
 			matcher2.appendReplacement(sb, sb2.toString());
 		}
 		matcher2.appendTail(sb);
-		System.out.println(sb.toString());
 		return sb.toString();
 	}
 

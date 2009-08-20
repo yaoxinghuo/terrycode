@@ -6,7 +6,9 @@ import java.io.FileReader;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import com.terry.gfwout.util.Constants;
+import static com.terry.gfwout.util.Constants.BACK_HOME_HTML;
+import static com.terry.gfwout.util.Constants.ANALYTICS_HTML;
+import static com.terry.gfwout.util.Constants.BASE_URL;
 
 /**
  * @author xinghuo.yao E-mail: yaoxinghuo at 126 dot com
@@ -33,18 +35,20 @@ public class InitListener implements ServletContextListener {
 				sb.append(line).append("\r\n");
 			}
 			if (sb.length() != 0)
-				Constants.ANALYTICS_HTML = sb.toString();
+				ANALYTICS_HTML = sb.toString();
 		} catch (Exception e) {
 		}
 
-		Constants.BACK_HOME_HTML = "<div id='gfwout-h' style='filter:alpha(opacity=80);-moz-opacity:0.8;"
+		BACK_HOME_HTML = "<div id='gfwout-h' style='filter:alpha(opacity=80);-moz-opacity:0.8;"
 				+ "font-family: arial, sans-serif; font-size: 13px;left:0px;"
 				+ "padding: 4px; background-color: #fad163;z-index: 2000;"
 				+ " position: absolute;visibility: visible;top:0px;'><a href='"
-				+ "http://gfwout.appspot.com/"
-				+ "'><img style='border:none;' src='/home.png'/>Back To GFWout Home</a>"
+				+ BASE_URL
+				+ "'><img style='border:none;' src='"
+				+ BASE_URL
+				+ "home.png'/>Back To GFWout Home</a>"
 				+ "&nbsp;<a href='#' "
 				+ "onclick=\"document.getElementById('gfwout-h').style.visibility = 'hidden';return false;\">"
-				+ "<img src='/close.gif' /></a></div>";
+				+ "<img src='" + BASE_URL + "close.gif' /></a></div>";
 	}
 }
