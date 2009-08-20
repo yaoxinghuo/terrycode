@@ -24,6 +24,10 @@
 		<servlet-name>router</servlet-name>
 		<url-pattern>/router</url-pattern>
 	</servlet-mapping>
+	
+	<listener>
+		<listener-class>com.terry.gfwout.listener.InitListener</listener-class>
+	</listener>
   
 	<!-- Default page to serve -->
 	<welcome-file-list>

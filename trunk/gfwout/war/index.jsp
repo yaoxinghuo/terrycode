@@ -159,5 +159,6 @@ a.gb2:hover {
 		showMsg(message);
 	}
 </script>
+<jsp:include page="analytics.html"></jsp:include>
 </body>
 </html>
