@@ -106,7 +106,7 @@ public class StringUtil {
 			} else if (node instanceof StyleLinkTag) {
 				StyleLinkTag style = (StyleLinkTag) node;
 				return style.getLink();
-			} else if(node instanceof FormTag) {
+			} else if (node instanceof FormTag) {
 				FormTag form = (FormTag) node;
 				return form.getAttribute("action");
 			}
@@ -167,18 +167,8 @@ public class StringUtil {
 			StringBuffer sb2 = new StringBuffer(matcher2.group());
 			int p = sb2.indexOf(">");
 			if (p != -1) {
-				sb2
-						.insert(
-								p + 1,
-								"<div id='gfwout-h' style='filter:alpha(opacity=80);-moz-opacity:0.8;"
-										+ "font-family: arial, sans-serif; font-size: 13px;left:0px;"
-										+ "padding: 4px; background-color: #fad163;z-index: 2000;"
-										+ " position: absolute;visibility: visible;top:0px;'><a href='"
-										+ baseUrl
-										+ "'><img style='border:none;' src='/home.png'/>Back To GFWout Home</a>"
-										+ "&nbsp;<a href='#' "
-										+ "onclick=\"document.getElementById('gfwout-h').style.visibility = 'hidden';return false;\">"
-										+ "<img src='/close.gif' /></a></div>");
+				sb2.insert(p + 1, Constants.ANALYTICS_HTML
+						+ Constants.BACK_HOME_HTML);
 			}
 			matcher2.appendReplacement(sb, sb2.toString());
 		}
@@ -186,7 +176,7 @@ public class StringUtil {
 		System.out.println(sb.toString());
 		return sb.toString();
 	}
-	
+
 	public static String replaceForm(String html, String basePath) {
 		StringBuffer sb = new StringBuffer("");
 		Pattern pattern = Pattern
