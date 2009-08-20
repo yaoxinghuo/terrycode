@@ -150,9 +150,8 @@ a.gb2:hover {
 <font size=-1></font>
 <p><span style="font-size: 13px">&copy;<%=Calendar.getInstance().get(Calendar.YEAR) %> - <a
 	href="/help.html">隐私权政策</a> - <a
-	href="https://sites.google.com/site/it/feedback">意见反映</a></span></p>
-<p><img src="http://code.google.com/appengine/images/appengine-noborder-120x30.gif" 
-alt="Powered by Google App Engine" /></p>
+	href="https://sites.google.com/site/it/feedback">意见反映</a> - <img style="vertical-align:middle;align:left;border:none" src="http://code.google.com/appengine/images/appengine-noborder-120x30.gif" 
+alt="Powered by Google App Engine" /></span></p>
 </center>
 <script language='javascript' src='index.js'></script>
 <script type="text/javascript">
