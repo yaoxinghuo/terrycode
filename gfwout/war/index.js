@@ -26,7 +26,7 @@ function google(str) {
 	}
 	form.r.value = "http://www.google.com/search?hl=en&q="
 			+ str.replace(/ /g, "+") + "&aq=f&oq=&aqi=";// 在Google搜索后面加
-														// &btnI=745 表示手气不错
+	// &btnI=745 表示手气不错
 	form.action = "router";
 	form.method = "post";
 	form.submit();
@@ -60,7 +60,11 @@ function showMsg(msg) {
 	if (!msg)
 		return;
 	document.getElementById("msg_content").innerHTML = msg;
-	document.getElementById("msg").style.left = (document.body.clientWidth-(msg.length-47)*10)/2 +"px";
+	var l = msg.length;
+	if (msg.indexOf("<a") != -1)
+		l = l - 47;
+	document.getElementById("msg").style.left = (document.body.clientWidth - l * 10)
+			/ 2 + "px";
 	document.getElementById("msg").style.visibility = "visible";
 	if (timeoutID != null)
 		clearTimeout(timeoutID);
