@@ -7,12 +7,4 @@ try {
 var pageTracker_gfwout = _gat._getTracker("UA-2005896-9");
 pageTracker_gfwout._trackPageview();
 } catch(err) {}
-window.onscroll=function(){
-	var h = document.getElementById('gfwout-h');
-	if(h!=null){
-		h.style.top = document.body.scrollTop;
-		h.style.left = document.body.scrollLeft;
-	}
-}
-window.onresize = window.onscroll;
 </script>
