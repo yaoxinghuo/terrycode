@@ -4,10 +4,20 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
 
+import org.htmlparser.Node;
+import org.htmlparser.NodeFilter;
+import org.htmlparser.Parser;
+import org.htmlparser.PrototypicalNodeFactory;
+import org.htmlparser.filters.NodeClassFilter;
+import org.htmlparser.filters.OrFilter;
+import org.htmlparser.tags.CompositeTag;
+import org.htmlparser.util.NodeList;
+import org.htmlparser.util.ParserException;
 import org.ictclas4j.bean.SegResult;
 import org.ictclas4j.bean.WordResultBean;
 import org.ictclas4j.segment.Segment;
@@ -21,7 +31,7 @@ public class Test {
 	public static void main(String[] args) throws Exception {
 		Segment segTag = Segment.getInstance(1);
 		StringBuffer sb = new StringBuffer("");
-		String input = "最近金山云安全中心截获了一个很牛X的病毒";
+		String input = "狗蛋打来倒插着头掉入卫生间的一个大铁桶内，因溺水时间过长死亡";
 		SegResult seg_res = segTag.split(input);
 
 		ArrayList<SingleWords> sws = new ArrayList<SingleWords>();
@@ -60,8 +70,38 @@ public class Test {
 		System.out.println(sb.toString());
 		System.out.println("----------------------");
 		for (SingleWords sw1 : sws) {
-			System.out.println(getGoogleSearchResult(sw1.toString()));
+			String googleResult = getGoogleSearchResult(sw1.toString());
+			System.out.println(getEmString(googleResult));
 		}
+	}
+
+	public static String getEmString(String result) {
+		Parser parser = Parser.createParser(result, "utf8");
+		PrototypicalNodeFactory factory = new PrototypicalNodeFactory();
+		factory.registerTag(new EmTag());
+		parser.setNodeFactory(factory);
+
+		NodeFilter emFilter = new NodeClassFilter(EmTag.class);
+		OrFilter lastFilter = new OrFilter();
+		lastFilter.setPredicates(new NodeFilter[] { emFilter });
+		NodeList nodelist = null;
+		try {
+			nodelist = parser.parse(lastFilter);
+		} catch (ParserException e) {
+			return "";
+		}
+		Node[] nodes = nodelist.toNodeArray();
+
+		StringBuffer sb = new StringBuffer("");
+
+		for (int i = 0; i < nodes.length; i++) {
+			Node node = nodes[i];
+			if (node instanceof EmTag) {
+				EmTag em = (EmTag) node;
+				sb.append(em.getContent()).append("\r\n");
+			}
+		}
+		return sb.toString();
 	}
 
 	public static class SingleWords {
@@ -87,15 +127,17 @@ public class Test {
 	}
 
 	public static String getGoogleSearchResult(String keyword) {
+		System.out.println("Try to search '"+keyword+" ' using google...");
 		try {
-			keyword = "java";
-			String s = "http://www.google.com/search?hl=en&source=hp&q=" + keyword + "&aq=f&oq=&aqi=";
-			s = "http://www.google.com/search?hl=en&q=java&&aq=f&oq=&aqi=";
+			String s = "http://www.google.cn/search?hl=zh-CN&source=hp&q=" + URLEncoder.encode(keyword, "UTF-8")
+					+ "&btnG=Google+%E6%90%9C%E7%B4%A2&aq=f&oq=";
 			URL url = new URL(s);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setRequestProperty("User-Agent", "IIC2.0/PC 2.1.0.0");
+			con.setRequestProperty("connection", "Close");
 			con.setDoOutput(true);
 			con.setRequestMethod("GET");
-			BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream(), "GBK"));
 			StringBuffer sb = new StringBuffer();
 			String line;
 			while ((line = reader.readLine()) != null) {
@@ -108,5 +150,29 @@ public class Test {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	static class EmTag extends CompositeTag {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 3262862026166805969L;
+
+		private static final String[] mIds = new String[] { "EM" };
+
+		@Override
+		public String[] getIds() {
+			return (mIds);
+		}
+
+		@Override
+		public String[] getEnders() {
+			return (mIds);
+		}
+
+		public String getContent() {
+			return super.getStringText();
+		}
+
 	}
 }
