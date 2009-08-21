@@ -167,7 +167,7 @@ public class StringUtil {
 			StringBuffer sb2 = new StringBuffer(matcher2.group());
 			int p = sb2.indexOf(">");
 			if (p != -1) {
-				sb2.insert(p + 1, Constants.ANALYTICS_HTML
+				sb2.insert(p + 1, Constants.OTHER_HTML
 						+ Constants.BACK_HOME_HTML);
 			}
 			matcher2.appendReplacement(sb, sb2.toString());
