@@ -68,15 +68,15 @@ public class InitListener implements ServletContextListener {
 			BASE_URL = "http://gfwout.appspot.com/";
 
 		BACK_HOME_HTML = "<!-- Injected by http://gfwout.appspot.com/ -->"
-				+ "<div id='gfwout-h' style='filter:alpha(opacity=80);-moz-opacity:0.8;"
+				+ "<div style='opacity:0.8;filter:alpha(opacity=80);-moz-opacity:0.8;"
 				+ "font-family: arial, sans-serif; font-size: 13px;left:0px;"
 				+ "padding: 4px; background-color: #caff70;z-index: 2000;"
-				+ " position: absolute;visibility: visible;top:0px;'>"
+				+ " position: absolute;visibility: visible;top:0px;' id='gfwout-h'>"
 				+ "<img style='border:none;' src='"
 				+ BASE_URL
 				+ "home.png'/><a href='"
 				+ BASE_URL
-				+ "'><i>Back To GFWout Home</i></a>"
+				+ "'><b><font color='black'>Back To GFWout Home</font></b></a>"
 				+ "&nbsp;<a href='#' "
 				+ "onclick=\"document.getElementById('gfwout-h').style.visibility = 'hidden';return false;\">"
 				+ "<img src='"
