@@ -8,7 +8,8 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import static com.terry.gfwout.util.Constants.BACK_HOME_HTML;
-import static com.terry.gfwout.util.Constants.OTHER_HTML;
+import static com.terry.gfwout.util.Constants.ANALYTICS_HTML;
+import static com.terry.gfwout.util.Constants.SCRIPT_HTML;
 import static com.terry.gfwout.util.Constants.BASE_URL;
 
 /**
@@ -37,8 +38,12 @@ public class InitListener implements ServletContextListener {
 				sb.append(line).append("\r\n");
 			}
 
+			if (sb.length() != 0)
+				ANALYTICS_HTML = sb.toString();
+
 			br = new BufferedReader(new FileReader(arg0.getServletContext()
 					.getRealPath("/script.html")));
+			sb = new StringBuffer("");
 			while (true) {
 				line = br.readLine();
 				if (line == null)
@@ -47,7 +52,7 @@ public class InitListener implements ServletContextListener {
 			}
 
 			if (sb.length() != 0)
-				OTHER_HTML = sb.toString();
+				SCRIPT_HTML = sb.toString();
 		} catch (Exception e) {
 		} finally {
 			if (br != null)

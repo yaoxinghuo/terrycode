@@ -7,7 +7,9 @@ package com.terry.gfwout.util;
 public class Constants {
 	public static String BACK_HOME_HTML;
 
-	public static String OTHER_HTML = "";// script html and analytics html
+	public static String ANALYTICS_HTML = "";
+
+	public static String SCRIPT_HTML = "";
 
 	public static String BASE_URL = "http://localhost:8080/";
 }
