@@ -55,6 +55,14 @@ function IsURL(str_url) {
 
 }
 
+document.onkeydown = keydown;
+function keydown(ev) {
+	ev = ev || window.event;
+	if (ev.keyCode == 13) {
+		gfw();
+	}
+}
+
 var timeoutID = null;
 function showMsg(msg) {
 	if (!msg)
