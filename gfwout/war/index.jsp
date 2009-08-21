@@ -129,7 +129,7 @@ a.gb2:hover {
 <center><br clear=all id=lgpd>
 <img src=/logo.png border=0 alt="GFW 代理上网" title="GFW 代理上网" id=logo><br>
 <br>
-<form name="f" method="post">
+<form name="f" method="post" onkeydown="if(event.keyCode==13){return false;}">
 <table cellpadding=0 cellspacing=0>
 	<tr valign=top>
 		<td width=25%>&nbsp;</td>
