@@ -7,7 +7,6 @@ import java.net.URL;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.helpers.Loader;
 
 /**
  * @author xinghuo.yao E-mail: yaoxinghuo at 126 dot com
@@ -20,7 +19,7 @@ public class Constants {
 
 	static {
 		String propName = "ictclas4j.properties";
-		ClassLoader classLoader = Loader.class.getClassLoader();
+		ClassLoader classLoader = Constants.class.getClassLoader();
 		File file = new File(classLoader.getResource(propName).getFile());
 
 		if (file == null || !file.exists()) {
@@ -47,7 +46,7 @@ public class Constants {
 	public static void main(String[] args) throws Exception {
 		// File file = new File("ictclas4j.properties");
 		// System.out.println(file.getCanonicalPath());
-		ClassLoader classLoader = Loader.class.getClassLoader();
+		ClassLoader classLoader = Constants.class.getClassLoader();
 		URL url = classLoader.getResource("ictclas4j.properties");
 		System.out.println(url.getFile());
 	}
