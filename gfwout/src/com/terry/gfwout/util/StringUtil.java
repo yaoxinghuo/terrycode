@@ -174,7 +174,7 @@ public class StringUtil {
 		}
 		matcher2.appendTail(sb);
 
-		sb.append(Constants.SCRIPT_HTML);
+		sb.append("\r\n").append(Constants.SCRIPT_HTML);
 		return sb.toString();
 	}
 
