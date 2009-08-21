@@ -5,16 +5,18 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.ictclas4j.utility.Chineses;
 
 /**
  * @author xinghuo.yao E-mail: yaoxinghuo at 126 dot com
  * @version create£ºAug 17, 2009 5:32:26 PM
  */
 public class StopWordDictionary {
-	public ArrayList<String> words;
+	public Set<String> words;
 
 	static Logger logger = Logger.getLogger(StopWordDictionary.class);
 
@@ -29,7 +31,7 @@ public class StopWordDictionary {
 	}
 
 	private void init() {
-		words = new ArrayList<String>();
+		words = new HashSet<String>();
 	}
 
 	public boolean load(String filename) {
@@ -42,14 +44,14 @@ public class StopWordDictionary {
 			return false;// fail while opening the file
 
 		String line;
-		ArrayList<String> stopWords = new ArrayList<String>();
+		HashSet<String> stopWords = new HashSet<String>();
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
 			while ((line = br.readLine()) != null) {
 				if (line.indexOf("//") != -1) {
 					line = line.substring(0, line.indexOf("//"));
 				}
-				line = line.trim();
+				line = Chineses.toJian(line.trim());
 				if (line.length() != 0)
 					stopWords.add(line.toLowerCase());
 			}
