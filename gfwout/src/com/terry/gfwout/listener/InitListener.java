@@ -52,9 +52,6 @@ public class InitListener implements ServletContextListener {
 				+ "onclick=\"document.getElementById('gfwout-h').style.visibility = 'hidden';return false;\">"
 				+ "<img src='"
 				+ BASE_URL
-				+ "close.gif' alt='Close' title='Close' style='border:none;'/></a></div>"
-				+ "<script type=\"text/javascript\">window.onscroll=function(){"
-				+ "document.getElementById('gfwout-h').style.top = document.body.scrollTop;"
-				+ "}window.onresize = window.onscroll;</script>";
+				+ "close.gif' alt='Close' title='Close' style='border:none;'/></a></div>";
 	}
 }
