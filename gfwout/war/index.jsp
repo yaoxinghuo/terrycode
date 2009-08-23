@@ -111,8 +111,8 @@ a.gb2:hover {
 	<tr>
 		<td style="padding: 4px; background-color: #fad163;"><font
 			size="-1"><span id="msg_content"></span>&nbsp;<a href="#"
-			onclick="clearMsg();return false;"><img id="close" alt="关闭" title="关闭" style="border:none;"
-			src='close.gif' /></a></font></td>
+			onclick="clearMsg();return false;"><img id="close" alt="关闭"
+			title="关闭" style="border: none;" src='close.gif' /></a></font></td>
 	</tr>
 </table>
 </div>
@@ -129,7 +129,8 @@ a.gb2:hover {
 <center><br clear=all id=lgpd>
 <img src=/logo.png border=0 alt="GFW 代理上网" title="GFW 代理上网" id=logo><br>
 <br>
-<form name="f" method="post" onkeydown="if(event.keyCode==13){return false;}">
+<form name="f" method="post"
+	onkeydown="if(event.keyCode==13){return false;}">
 <table cellpadding=0 cellspacing=0>
 	<tr valign=top>
 		<td width=25%>&nbsp;</td>
@@ -154,6 +155,7 @@ a.gb2:hover {
 	style="vertical-align: middle; align: left; border: none"
 	src="http://code.google.com/appengine/images/appengine-noborder-120x30.gif"
 	alt="Powered by Google App Engine" /></span></p>
+<p><jsp:include page="ads.html"></jsp:include></p>
 </center>
 <script language='javascript' src='index.js'></script>
 <script type="text/javascript">
