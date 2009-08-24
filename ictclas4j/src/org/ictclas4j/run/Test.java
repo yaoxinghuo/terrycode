@@ -14,8 +14,8 @@ import org.htmlparser.NodeFilter;
 import org.htmlparser.Parser;
 import org.htmlparser.PrototypicalNodeFactory;
 import org.htmlparser.filters.NodeClassFilter;
-import org.htmlparser.filters.OrFilter;
 import org.htmlparser.tags.CompositeTag;
+import org.htmlparser.tags.Div;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import org.ictclas4j.bean.SegResult;
@@ -31,7 +31,7 @@ public class Test {
 	public static void main(String[] args) throws Exception {
 		Segment segTag = Segment.getInstance(1);
 		StringBuffer sb = new StringBuffer("");
-		String input = "狗蛋打来倒插着头掉入卫生间的一个大铁桶内，因溺水时间过长死亡";
+		String input = "狗蛋打来 倒插着头掉入卫生间的一个大铁桶内，因溺水时间过长死亡";
 		SegResult seg_res = segTag.split(input);
 
 		ArrayList<SingleWords> sws = new ArrayList<SingleWords>();
@@ -82,14 +82,13 @@ public class Test {
 		parser.setNodeFactory(factory);
 
 		NodeFilter emFilter = new NodeClassFilter(EmTag.class);
-		OrFilter lastFilter = new OrFilter();
-		lastFilter.setPredicates(new NodeFilter[] { emFilter });
-		NodeList nodelist = null;
+		NodeList nodelist;
 		try {
-			nodelist = parser.parse(lastFilter);
+			nodelist = parser.extractAllNodesThatMatch(emFilter);
 		} catch (ParserException e) {
 			return "";
 		}
+
 		Node[] nodes = nodelist.toNodeArray();
 
 		StringBuffer sb = new StringBuffer("");
@@ -98,7 +97,12 @@ public class Test {
 			Node node = nodes[i];
 			if (node instanceof EmTag) {
 				EmTag em = (EmTag) node;
-				sb.append(em.getContent()).append("\r\n");
+				Node parent = em.getParent();
+				if (parent instanceof Div) {
+					Div div = (Div) parent;
+					if (div.getAttribute("class") != null && div.getAttribute("class").equals("s"))
+						sb.append(em.getContent()).append("\r\n");
+				}
 			}
 		}
 		return sb.toString();
@@ -127,7 +131,7 @@ public class Test {
 	}
 
 	public static String getGoogleSearchResult(String keyword) {
-		System.out.println("Try to search '"+keyword+" ' using google...");
+		System.out.println("Try to search '" + keyword + " ' using google...");
 		try {
 			String s = "http://www.google.cn/search?hl=zh-CN&source=hp&q=" + URLEncoder.encode(keyword, "UTF-8")
 					+ "&btnG=Google+%E6%90%9C%E7%B4%A2&aq=f&oq=";
@@ -160,6 +164,8 @@ public class Test {
 
 		private static final String[] mIds = new String[] { "EM" };
 
+		private static final String[] mEndTagEnders = new String[] { "DIV" };
+
 		@Override
 		public String[] getIds() {
 			return (mIds);
@@ -168,6 +174,11 @@ public class Test {
 		@Override
 		public String[] getEnders() {
 			return (mIds);
+		}
+
+		@Override
+		public String[] getEndTagEnders() {
+			return (mEndTagEnders);
 		}
 
 		public String getContent() {
