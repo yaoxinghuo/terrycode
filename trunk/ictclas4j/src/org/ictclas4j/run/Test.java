@@ -8,13 +8,14 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
+import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.htmlparser.Node;
 import org.htmlparser.NodeFilter;
 import org.htmlparser.Parser;
-import org.htmlparser.PrototypicalNodeFactory;
 import org.htmlparser.filters.NodeClassFilter;
-import org.htmlparser.tags.CompositeTag;
 import org.htmlparser.tags.Div;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
@@ -45,88 +46,206 @@ public class Test {
 			else
 				sb.append(result.getWord());
 			sb.append("/" + result.getProperty());
-			if (result.isStopWord())
-				sb.append("[s]");
-			else {
-				if (result.getWord().length() == 1) {
-					if (sw == null)
-						sw = new SingleWords();
-					sw.addWord(i, result.getWord());
-				} else {
-					if (sw != null && sw.getWordsCount() > 1) {
-						sws.add(sw);
+
+			if (result.getWord().length() == 1) {
+				if (sw == null)
+					sw = new SingleWords();
+				if (sw.getSingleWordsCount() == 0) {
+					if (i > 0)
+						sw.addWord(i - 1, results.get(i - 1).getWord(), result.isStopWord());
+				}
+				sw.addWord(i, result.getWord(), result.isStopWord());
+				if (i != results.size() - 1) {
+					WordResultBean nextResult = results.get(i + 1);
+					if (nextResult.getWord().length() > 1) {
+						sw.addWord(i + 1, nextResult.getWord(), result.isStopWord());
+						if (sw.getQualifiedWordsCount() >= 2)
+							sws.add(sw);
+						sw = null;
 					}
+				} else {
+					if (sw.getQualifiedWordsCount() >= 2)
+						sws.add(sw);
 					sw = null;
 				}
 			}
+
+			if (result.isStopWord())
+				sb.append("[s]");
 			sb.append(" ");
 		}
 
-		if (sw != null && sw.getWordsCount() > 1) {
-			sws.add(sw);
-		}
-		sw = null;
-
 		System.out.println(sb.toString());
-		System.out.println("----------------------");
 		for (SingleWords sw1 : sws) {
+			System.out.println("----------------------");
 			String googleResult = getGoogleSearchResult(sw1.toString());
-			System.out.println(getEmString(googleResult));
+			ArrayList<MatcherWord> mws = getEmTags(googleResult, sw1);
+			for (MatcherWord mw : mws) {
+				System.out.println((mw.getPrefix() == null ? "[null]" : "[" + mw.getPrefix() + "]") + mw.toString()
+						+ (mw.getSuffix() == null ? "[null]" : "[" + mw.getSuffix() + "]") + "\t\tTimes:"
+						+ mw.getCount());
+			}
 		}
 	}
 
-	public static String getEmString(String result) {
+	public static ArrayList<MatcherWord> getEmTags(String result, SingleWords sw) {
 		Parser parser = Parser.createParser(result, "utf8");
-		PrototypicalNodeFactory factory = new PrototypicalNodeFactory();
-		factory.registerTag(new EmTag());
-		parser.setNodeFactory(factory);
 
-		NodeFilter emFilter = new NodeClassFilter(EmTag.class);
+		NodeFilter emFilter = new NodeClassFilter(Div.class);
 		NodeList nodelist;
 		try {
 			nodelist = parser.extractAllNodesThatMatch(emFilter);
 		} catch (ParserException e) {
-			return "";
+			return null;
 		}
 
 		Node[] nodes = nodelist.toNodeArray();
+
+		ArrayList<MatcherWord> results = new ArrayList<MatcherWord>();
 
 		StringBuffer sb = new StringBuffer("");
 
 		for (int i = 0; i < nodes.length; i++) {
 			Node node = nodes[i];
-			if (node instanceof EmTag) {
-				EmTag em = (EmTag) node;
-				Node parent = em.getParent();
-				if (parent instanceof Div) {
-					Div div = (Div) parent;
-					if (div.getAttribute("class") != null && div.getAttribute("class").equals("s"))
-						sb.append(em.getContent()).append("\r\n");
+			if (node instanceof Div) {
+				Div div = (Div) node;
+				if (div.getAttribute("class") != null && div.getAttribute("class").equals("s")) {
+					sb.append(div.getStringText()).append("\r\n");
 				}
 			}
 		}
-		return sb.toString();
+
+		String s = Chineses.toJian(sb.toString());
+		ArrayList<MatcherWord> mws = sw.getMatcherWords();
+		for (MatcherWord mw : mws) {
+			Pattern pattern = Pattern.compile(mw.toString(), Pattern.CASE_INSENSITIVE);
+			Matcher matcher = pattern.matcher(s);
+			while (matcher.find()) {
+				// String word = matcher.group();
+				boolean ok = true;
+				if (mw.getPrefix() != null) {
+					int spos = matcher.start();
+					if (s.lastIndexOf(mw.getPrefix(), spos) == (spos - mw.getPrefix().length()))
+						ok = false;
+
+				}
+				if (mw.getSuffix() != null) {
+					int epos = matcher.end();
+					if (s.indexOf(mw.getSuffix(), epos) == epos)
+						ok = false;
+				}
+				if (ok)
+					mw.setCount(mw.getCount() + 1);
+
+			}
+			results.add(mw);
+		}
+
+		return results;
 	}
 
 	public static class SingleWords {
+		private Hashtable<Integer, String> words = new Hashtable<Integer, String>();
+
+		private int singleWordsCount = 0;
+
+		private int qualifiedWordsCount = 0;
+
+		public void addWord(int pos, String s, boolean stopWord) {
+			words.put(pos, s);
+			if (s.length() == 1) {
+				singleWordsCount++;
+				if (!stopWord)
+					qualifiedWordsCount++;
+			}
+		}
+
+		public ArrayList<MatcherWord> getMatcherWords() {
+			ArrayList<MatcherWord> mws = new ArrayList<MatcherWord>();
+			Collection<Integer> keys = new TreeSet<Integer>(words.keySet());
+			ArrayList<Integer> akeys = new ArrayList<Integer>();
+			for (Integer key : keys) {
+				akeys.add(key);
+			}
+			for (int i = 0; i < akeys.size(); i++) {
+				for (int j = akeys.size() - 1; j >= i; j--) {
+					MatcherWord mw = new MatcherWord();
+					for (int k = i; k <= j; k++) {
+						mw.addWord(k, words.get(akeys.get(k)));
+					}
+					mw.setPrefix(i != 0 ? words.get(akeys.get(i - 1)) : null);
+					mw.setSuffix(j != akeys.size() - 1 ? words.get(akeys.get(j + 1)) : null);
+					mws.add(mw);
+				}
+			}
+			return mws;
+		}
+
+		public int getSingleWordsCount() {
+			return singleWordsCount;
+		}
+
+		@Override
+		public String toString() {
+			Collection<Integer> keys = new TreeSet<Integer>(words.keySet());
+			StringBuffer sb = new StringBuffer("");
+			for (Integer key : keys) {
+				sb.append(words.get(key));
+			}
+			return sb.toString();
+		}
+
+		public int getQualifiedWordsCount() {
+			return qualifiedWordsCount;
+		}
+
+	}
+
+	public static class MatcherWord {
 		private Hashtable<Integer, String> words = new Hashtable<Integer, String>();
 
 		public void addWord(int pos, String s) {
 			words.put(pos, s);
 		}
 
-		public int getWordsCount() {
-			return words.size();
+		private String prefix;
+
+		public String getPrefix() {
+			return prefix;
 		}
+
+		public void setPrefix(String prefix) {
+			this.prefix = prefix;
+		}
+
+		public String getSuffix() {
+			return suffix;
+		}
+
+		public void setSuffix(String suffix) {
+			this.suffix = suffix;
+		}
+
+		public int getCount() {
+			return count;
+		}
+
+		public void setCount(int count) {
+			this.count = count;
+		}
+
+		private String suffix;
+
+		private int count;
 
 		@Override
 		public String toString() {
-			Collection<String> ws = words.values();
+			Collection<Integer> keys = new TreeSet<Integer>(words.keySet());
 			StringBuffer sb = new StringBuffer("");
-			for (String w : ws) {
-				sb.append(w);
+			for (Integer key : keys) {
+				sb.append(words.get(key));
 			}
-			return sb.reverse().toString();
+			return sb.toString();
 		}
 	}
 
@@ -154,36 +273,5 @@ public class Test {
 			e.printStackTrace();
 			return null;
 		}
-	}
-
-	static class EmTag extends CompositeTag {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 3262862026166805969L;
-
-		private static final String[] mIds = new String[] { "EM" };
-
-		private static final String[] mEndTagEnders = new String[] { "DIV" };
-
-		@Override
-		public String[] getIds() {
-			return (mIds);
-		}
-
-		@Override
-		public String[] getEnders() {
-			return (mIds);
-		}
-
-		@Override
-		public String[] getEndTagEnders() {
-			return (mEndTagEnders);
-		}
-
-		public String getContent() {
-			return super.getStringText();
-		}
-
 	}
 }
