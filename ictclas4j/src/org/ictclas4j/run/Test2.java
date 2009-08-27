@@ -30,7 +30,7 @@ import org.ictclas4j.utility.Chineses;
  * @author xinghuo.yao E-mail: yaoxinghuo at 126 dot com
  * @version create£ºAug 13, 2009 2:47:40 PM
  */
-public class Test {
+public class Test2 {
 	public static void main(String[] args) throws Exception {
 		Segment segTag = Segment.getInstance(1);
 		StringBuffer sb = new StringBuffer("");
@@ -59,31 +59,36 @@ public class Test {
 				sb.append(result.getWord());
 			sb.append("/" + result.getProperty());
 
-			if (result.getWord().length() == 1) {
-				if (sw == null)
-					sw = new SingleWords();
-				if (sw.getSingleWordsCount() == 0) {
-					if (i > 0)
-						sw.addWord(i - 1, results.get(i - 1).getWord(), result.isStopWord());
-				}
-				sw.addWord(i, result.getWord(), result.isStopWord());
-				if (i != results.size() - 1) {
-					WordResultBean nextResult = results.get(i + 1);
-					if (nextResult.getWord().length() > 1) {
-						sw.addWord(i + 1, nextResult.getWord(), result.isStopWord());
-						if (sw.getQualifiedWordsCount() >= 2)
+			if (result.isStopWord()) {
+				sb.append("[s]");
+				sw = null;
+			} else {
+				if (result.getWord().length() == 1) {
+					if (sw == null)
+						sw = new SingleWords();
+					if (sw.getSingleWordsCount() == 0) {
+						if (i > 0 && !results.get(i - 1).isStopWord())
+							sw.addWord(i - 1, results.get(i - 1).getWord());
+					}
+					sw.addWord(i, result.getWord());
+					if (i != results.size() - 1) {
+						WordResultBean nextResult = results.get(i + 1);
+						if (nextResult.isStopWord() || nextResult.getWord().length() > 1) {
+							if (!nextResult.isStopWord())
+								sw.addWord(i + 1, nextResult.getWord());
+							if (sw.getSingleWordsCount() >= 2)
+								sws.add(sw);
+							sw = null;
+						}
+					} else {
+						if (sw.getSingleWordsCount() >= 2)
 							sws.add(sw);
 						sw = null;
 					}
 				} else {
-					if (sw.getQualifiedWordsCount() >= 2)
-						sws.add(sw);
 					sw = null;
 				}
 			}
-
-			if (result.isStopWord())
-				sb.append("[s]");
 			sb.append(" ");
 		}
 
@@ -161,14 +166,10 @@ public class Test {
 
 		private int singleWordsCount = 0;
 
-		private int qualifiedWordsCount = 0;
-
-		public void addWord(int pos, String s, boolean stopWord) {
+		public void addWord(int pos, String s) {
 			words.put(pos, s);
 			if (s.length() == 1) {
 				singleWordsCount++;
-				if (!stopWord)
-					qualifiedWordsCount++;
 			}
 		}
 
@@ -205,10 +206,6 @@ public class Test {
 				sb.append(words.get(key));
 			}
 			return sb.toString();
-		}
-
-		public int getQualifiedWordsCount() {
-			return qualifiedWordsCount;
 		}
 
 	}
