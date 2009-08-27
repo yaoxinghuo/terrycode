@@ -98,6 +98,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
+import com.google.gwt.user.datepicker.client.DateBox;
 import com.gwtincubator.widgets.client.timepicker.TimePicker;
 import com.terry.costnote.client.model.Folder;
 import com.terry.costnote.client.model.Item;
@@ -1102,19 +1103,20 @@ public class Costnote implements EntryPoint {
 	}
 
 	private static DialogBox scheduleWindow;
-	private static DateField scheduleDate;
+	private static DateBox scheduleDate;
 	private static TimePicker scheduleTime;
 	private static TextArea scheduleMessage;
 	private static HiddenField<String> scheduleHidden;
 
 	public static void showScheduleWindow(String id, Date date, String message) {
-		if (!((JSONBoolean) accountSettings.get("activate")).booleanValue()) {
-			showPopMessage(
-					"error",
-					"您还没有登记激活您的手机号，不能使用短信提醒功能！&nbsp;<a href='#' onclick='nav(\"tab_tree_setting\",\"账户设置\",\"setting.png\");return false;'>"
-							+ "设置手机</a>");
-			return;
-		}
+		// if (!((JSONBoolean) accountSettings.get("activate")).booleanValue())
+		// {
+		// showPopMessage(
+		// "error",
+		// "您还没有登记激活您的手机号，不能使用短信提醒功能！&nbsp;<a href='#' onclick='nav(\"tab_tree_setting\",\"账户设置\",\"setting.png\");return false;'>"
+		// + "设置手机</a>");
+		// return;
+		// }
 		if (scheduleWindow == null) {
 			scheduleWindow = new DialogBox();
 			scheduleWindow.setHTML("<img src='/icons/note.png' />新建提醒");
@@ -1130,18 +1132,17 @@ public class Costnote implements EntryPoint {
 			layout.setWidget(1, 0, new LabelField("提醒日期*"));
 
 			HorizontalPanel hp = new HorizontalPanel();
-			scheduleDate = new DateField();
-			scheduleDate.setMinValue(new Date());
-			scheduleDate.setPropertyEditor(new DateTimePropertyEditor(format));
+			scheduleDate = new DateBox();
+			scheduleDate.setFormat(new DateBox.DefaultFormat(DateTimeFormat
+					.getFormat("yyyy-MM-dd")));
 			scheduleDate.setValue(new Date());
 			hp.add(scheduleDate);
 
-			scheduleTime = new TimePicker();
+			scheduleTime = new TimePicker("", "上午", "下午", "时", "分");
 			scheduleTime.setTime(0, 59);
-			scheduleTime.setAmPmLabel("上午", "下午");
 			scheduleTime.setLabelSeparator("&nbsp;");
 			scheduleTime.setWidth("85px");
-			scheduleTime.setTooltip("选择一个时间...");
+			scheduleTime.setTooltip("选择或输入具体时间...");
 			scheduleTime.setAccessKey('t');
 			hp.add(scheduleTime);
 
