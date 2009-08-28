@@ -149,6 +149,7 @@ a.gb2:hover {
 <br>
 <br>
 <font size=-1></font>
+<p><span style="font-size: 13px;color: green;">小提示:您可以输入想要代理上网的网址或输入关键词搜索后再点击！</span></p>
 <p><span style="font-size: 13px">&copy;<%=Calendar.getInstance().get(Calendar.YEAR)%>
 - <a href="/help.html">隐私权政策</a> - <a
 	href="https://sites.google.com/site/it/feedback">意见反映</a> - <img
