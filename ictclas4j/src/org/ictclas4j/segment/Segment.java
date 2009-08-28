@@ -231,7 +231,8 @@ public class Segment {
 						WordResultBean r = new WordResultBean();
 						r.setProperty(temp);
 						r.setWord(sn.getSrcWord());
-						if (stopWordDictionary != null && stopWordDictionary.words.contains(sn.getSrcWord()))
+						if (temp.equals("w")//如果是标点符号，算是停用词
+								|| (stopWordDictionary != null && stopWordDictionary.words.contains(sn.getSrcWord())))
 							r.setStopWord(true);
 						results.add(r);
 					}
