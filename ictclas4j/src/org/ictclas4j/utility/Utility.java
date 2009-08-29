@@ -1102,4 +1102,27 @@ public class Utility {
 
 	}
 
+	public static String posIntToString(int snpos) {
+		String temp;
+		char[] pos = new char[2];
+		int tag = Math.abs(snpos);
+		pos[0] = (char) (tag / 256);
+		pos[1] = (char) (tag % 256);
+		temp = "" + pos[0];
+		if (pos[1] > 0)
+			temp += "" + pos[1];
+		if (tag == 17)// 发现有些词语识别不出来就出现符号，索性变成?
+			temp = "?";
+		return temp;
+	}
+
+	public static int posStringToInt(String s) {
+		if (s == null || s.equals(""))
+			return 0;
+		if (s.length() == 1)
+			return s.charAt(0) << 8;
+		else
+			return (s.charAt(0) << 8) + s.charAt(1);
+	}
+
 }
