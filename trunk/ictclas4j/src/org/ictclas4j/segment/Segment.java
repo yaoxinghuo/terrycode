@@ -76,10 +76,9 @@ public class Segment {
 	public SegResult split(String src) {
 		src = Chineses.toJian(src);
 		SegResult sr = new SegResult(src);// 分词结果
-		String finalResult = null;
+		StringBuffer finalResult = new StringBuffer("");
 
 		if (src != null) {
-			finalResult = "";
 			int index = 0;
 			String midResult = null;
 			sr.setRawContent(src);
@@ -165,13 +164,13 @@ public class Segment {
 					sr.addMidResult(mr);
 				} else
 					midResult = sen.getContent();
-				finalResult += midResult;
+				finalResult.append(midResult);
 				midResult = null;
 			}
 
-			sr.setFinalResult(finalResult);
+			sr.setFinalResult(finalResult.toString());
 			sr.setResult(words);
-			logger.info(finalResult);
+			logger.debug(finalResult);
 		}
 
 		return sr;
@@ -210,28 +209,18 @@ public class Segment {
 
 	// 根据分词路径生成分词结果
 	private String outputResult(ArrayList<SegNode> wrList, ArrayList<WordResultBean> results) {
-		String result = null;
-		String temp = null;
-		char[] pos = new char[2];
+		StringBuffer result = new StringBuffer("");
 		if (wrList != null && wrList.size() > 0) {
-			result = "";
 			for (int i = 0; i < wrList.size(); i++) {
 				SegNode sn = wrList.get(i);
 				if (sn.getPos() != POSTag.SEN_BEGIN && sn.getPos() != POSTag.SEN_END) {
-					int tag = Math.abs(sn.getPos());
-					pos[0] = (char) (tag / 256);
-					pos[1] = (char) (tag % 256);
-					temp = "" + pos[0];
-					if (pos[1] > 0)
-						temp += "" + pos[1];
-					if (tag == 17)// 发现有些词语识别不出来就出现符号，索性变成?
-						temp = "?";
-					result += sn.getSrcWord() + "/" + temp + " ";
+					String property = Utility.posIntToString(sn.getPos());
+					result.append(sn.getSrcWord()).append("/").append(property).append(" ");
 					if (results != null) {
 						WordResultBean r = new WordResultBean();
-						r.setProperty(temp);
+						r.setProperty(property);
 						r.setWord(sn.getSrcWord());
-						if (temp.equals("w")//如果是标点符号，算是停用词
+						if (sn.getPos() == POSTag.PUNC// 如果是标点符号，算是停用词
 								|| (stopWordDictionary != null && stopWordDictionary.words.contains(sn.getSrcWord())))
 							r.setStopWord(true);
 						results.add(r);
@@ -240,7 +229,7 @@ public class Segment {
 			}
 		}
 
-		return result;
+		return result.toString();
 	}
 
 	public void setSegPathCount(int segPathCount) {
@@ -254,9 +243,8 @@ public class Segment {
 			BufferedReader br = new BufferedReader(new InputStreamReader(input, "UTF-8"));
 			while ((line = br.readLine()) != null) {
 				if (line.indexOf("//") != -1) {
-					line = line.substring(0, line.indexOf("//"));
+					line = line.substring(0, line.indexOf("//")).trim();
 				}
-				line = line.trim();
 				if (line.length() != 0)
 					stopWords.add(line.toLowerCase());
 			}

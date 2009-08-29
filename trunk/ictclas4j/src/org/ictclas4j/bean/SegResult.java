@@ -1,6 +1,7 @@
 package org.ictclas4j.bean;
 
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 public class SegResult {
 
@@ -11,15 +12,23 @@ public class SegResult {
 	private ArrayList<MidResult> mrList;// 中间结果
 
 	private String finalResult;// 最终分词结果
-	
+
 	private ArrayList<WordResultBean> result = new ArrayList<WordResultBean>();
-	
+
 	public void setResult(ArrayList<WordResultBean> result) {
 		this.result = result;
 	}
 
 	public ArrayList<WordResultBean> getResult() {
 		return result;
+	}
+
+	public TreeMap<Integer, WordResultBean> getPosResult() {
+		TreeMap<Integer, WordResultBean> results = new TreeMap<Integer, WordResultBean>();
+		for (int i = 0; i < result.size(); i++) {
+			results.put(i, result.get(i));
+		}
+		return results;
 	}
 
 	public SegResult(String rawContent) {
@@ -52,7 +61,7 @@ public class SegResult {
 	}
 
 	public long getSpendTime() {
-		return System.currentTimeMillis()-startTime;
+		return System.currentTimeMillis() - startTime;
 	}
 
 	public void addMidResult(MidResult mr) {
