@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.TreeMap;
 
 import org.htmlparser.Node;
@@ -60,7 +61,7 @@ public class Test {
 		ArrayList<TreeMap<Integer, MatcherWord>> mwss = new ArrayList<TreeMap<Integer, MatcherWord>>();
 
 		for (ReprocessWords sw1 : sws) {
-			System.out.println("\r\n----------------------"+sw1.toString());
+			System.out.println("\r\n----------------------" + sw1.toString());
 			String googleResult = getGoogleSearchResult(sw1.toString());
 			TreeMap<Integer, MatcherWord> mws1 = analytics(googleResult, sw1);
 			System.out.println("-----合并前的结果-----");
@@ -69,11 +70,38 @@ public class Test {
 			System.out.println("-----合并后的结果-----");
 			printMidResult(mws2);
 			mwss.add(mws2);
+			Thread.sleep(5000);
 		}
 
 		TreeMap<Integer, WordResultBean> finalResult = Reprocess.processResults(results, mwss);
 		System.out.println("\r\n××××××××××××××××××最终结果××××××××××××××××××");
 		System.out.println(Reprocess.getStringResult(input, finalResult));
+		System.out.println("\r\nStatics:");
+		statistics(finalResult);
+	}
+
+	private static void statistics(TreeMap<Integer, WordResultBean> results) {
+		HashMap<String, ArrayList<String>> cat = new HashMap<String, ArrayList<String>>();
+		for (WordResultBean result : results.values()) {
+			String property = result.getProperty().substring(0, 1);
+			if (cat.containsKey(property)) {
+				ArrayList<String> a = cat.get(property);
+				a.add(result.getWord());
+				cat.put(property, a);
+			} else {
+				ArrayList<String> a = new ArrayList<String>();
+				a.add(result.getWord());
+				cat.put(property, a);
+			}
+		}
+
+		for (String s : cat.keySet()) {
+			System.out.print("\r\n" + s + "\t");
+			ArrayList<String> aa = cat.get(s);
+			for (String a : aa) {
+				System.out.print(a + " ");
+			}
+		}
 	}
 
 	private static void printMidResult(TreeMap<Integer, MatcherWord> mws) {
