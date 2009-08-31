@@ -17,6 +17,7 @@ import org.ictclas4j.bean.SegNode;
 import org.ictclas4j.bean.SegResult;
 import org.ictclas4j.bean.Sentence;
 import org.ictclas4j.bean.StopWordDictionary;
+import org.ictclas4j.bean.WhiteWordDictionary;
 import org.ictclas4j.bean.WordResultBean;
 import org.ictclas4j.utility.Chineses;
 import org.ictclas4j.utility.POSTag;
@@ -28,6 +29,8 @@ public class Segment {
 	private Dictionary bigramDict;
 
 	private StopWordDictionary stopWordDictionary;
+
+	private WhiteWordDictionary whiteWordDictionary;
 
 	private PosTagger personTagger;
 
@@ -64,6 +67,9 @@ public class Segment {
 
 		logger.info("Load stopwords ...");
 		stopWordDictionary = new StopWordDictionary(path + "stopwords.txt");
+
+		logger.info("Load whitewords...");
+		whiteWordDictionary = new WhiteWordDictionary(path + "whitewords.txt");
 
 		logger.info("Load tagger dict ...");
 		personTagger = new PosTagger(Utility.TAG_TYPE.TT_PERSON, path + "nr", coreDict);
@@ -253,6 +259,10 @@ public class Segment {
 			logger.error("WARNING: cannot open stop words list!");
 		}
 		return stopWords;
+	}
+	
+	public WhiteWordDictionary getWhiteWordDictionary() {
+		return whiteWordDictionary;
 	}
 
 }
