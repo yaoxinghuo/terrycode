@@ -3,6 +3,10 @@ package org.ictclas4j.run;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
@@ -27,7 +31,7 @@ import org.ictclas4j.segment.Segment;
 public class Test {
 
 	public static void main(String[] args) throws Exception {
-		BufferedReader br = new BufferedReader(new FileReader(new File("E:/Lab/test.txt")));
+		BufferedReader br = new BufferedReader(new FileReader(new File("E:/test.txt")));
 		StringBuffer str = new StringBuffer("");
 		String line;
 		while (true) {
@@ -38,7 +42,7 @@ public class Test {
 		}
 
 		test(str.toString());
-		// test("狗蛋打来 倒插着头掉入卫生间的一个大铁桶内，因溺水时间过长死亡");
+		// test("狗蛋打来,倒插着头掉入卫生间的一个大铁桶内，因溺水时间过长死亡");
 	}
 
 	public static void test(String input) throws Exception {
@@ -56,7 +60,7 @@ public class Test {
 		ArrayList<TreeMap<Integer, MatcherWord>> mwss = new ArrayList<TreeMap<Integer, MatcherWord>>();
 
 		for (ReprocessWords sw1 : sws) {
-			System.out.println("\r\n----------------------");
+			System.out.println("\r\n----------------------"+sw1.toString());
 			String googleResult = getGoogleSearchResult(sw1.toString());
 			TreeMap<Integer, MatcherWord> mws1 = analytics(googleResult, sw1);
 			System.out.println("-----合并前的结果-----");
@@ -112,41 +116,27 @@ public class Test {
 	public static String getGoogleSearchResult(String keyword) throws Exception {
 		System.out.println("Try to search '" + keyword + " ' using google...");
 
-		BufferedReader br = new BufferedReader(new FileReader(new File("E:/Lab/google.txt")));
-		StringBuffer str = new StringBuffer("");
-		String line;
-		while (true) {
-			line = br.readLine();
-			if (line == null)
-				break;
-			str.append(line).append("\r\n");
+		try {
+			String s = "http://www.google.cn/search?hl=zh-CN&source=hp&q=" + URLEncoder.encode(keyword, "UTF-8")
+					+ "&btnG=Google+%E6%90%9C%E7%B4%A2&aq=f&oq=";
+			URL url = new URL(s);
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setRequestProperty("User-Agent", "IIC2.0/PC 2.1.0.0");
+			con.setRequestProperty("connection", "Close");
+			con.setDoOutput(true);
+			con.setRequestMethod("GET");
+			BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream(), "GBK"));
+			StringBuffer sb = new StringBuffer();
+			String line;
+			while ((line = reader.readLine()) != null) {
+				sb.append(line);
+			}
+			reader.close();
+			con.disconnect();
+			return sb.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
-
-		return str.toString();
-
-		// try {
-		// String s = "http://www.google.cn/search?hl=zh-CN&source=hp&q=" +
-		// URLEncoder.encode(keyword, "UTF-8")
-		// + "&btnG=Google+%E6%90%9C%E7%B4%A2&aq=f&oq=";
-		// URL url = new URL(s);
-		// HttpURLConnection con = (HttpURLConnection) url.openConnection();
-		// con.setRequestProperty("User-Agent", "IIC2.0/PC 2.1.0.0");
-		// con.setRequestProperty("connection", "Close");
-		// con.setDoOutput(true);
-		// con.setRequestMethod("GET");
-		// BufferedReader reader = new BufferedReader(new
-		// InputStreamReader(con.getInputStream(), "GBK"));
-		// StringBuffer sb = new StringBuffer();
-		// String line;
-		// while ((line = reader.readLine()) != null) {
-		// sb.append(line);
-		// }
-		// reader.close();
-		// con.disconnect();
-		// return sb.toString();
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// return null;
-		// }
 	}
 }

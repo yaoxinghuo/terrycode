@@ -17,8 +17,7 @@ public class Reprocess {
 
 	public static String getStringResult(String input, TreeMap<Integer, WordResultBean> results) {
 		StringBuffer sb = new StringBuffer("");
-		for (int i = 0; i < results.size(); i++) {
-			WordResultBean result = results.get(i);
+		for (WordResultBean result : results.values()) {
 			if (result == null)
 				continue;
 			if (!input.contains(result.getWord()))
@@ -57,6 +56,9 @@ public class Reprocess {
 						sw.addWord(i + 1, nextResult.getWord());
 						sws.add(sw);
 						sw = null;
+					} else if (!isQualified(nextResult)) {
+						sws.add(sw);
+						sw = null;
 					}
 				} else {
 					sws.add(sw);
@@ -70,13 +72,19 @@ public class Reprocess {
 
 	public static TreeMap<Integer, WordResultBean> processResults(TreeMap<Integer, WordResultBean> results,
 			ArrayList<TreeMap<Integer, MatcherWord>> mwss) {
+		ArrayList<Integer> removedKeys = new ArrayList<Integer>();// 保存已经删除过的Key，防止后面再次删除
 		for (TreeMap<Integer, MatcherWord> mws : mwss) {
-			for (MatcherWord mw : mws.values()) {
+			mw: for (MatcherWord mw : mws.values()) {
 				TreeMap<Integer, String> words = mw.getWords();
 				if (words.size() > 1) {
 					Set<Integer> keys = words.keySet();
 					for (Integer key : keys) {
-						results.remove(key.intValue());
+						if (removedKeys.contains(key))
+							continue mw;
+					}
+					for (Integer key : keys) {
+						results.remove(key);
+						removedKeys.add(key);
 					}
 					WordResultBean bean = new WordResultBean();
 					bean.setProperty(Utility.posIntToString(POSTag.UNKNOWN));
@@ -127,7 +135,7 @@ public class Reprocess {
 	}
 
 	/*
-	 * 0 not conflict 1 mw1 retains -1 mw1 retains
+	 * 0 not conflict 1 mw1 retains -1 mw2 retains
 	 */
 	private static int compare(MatcherWord mw1, MatcherWord mw2) {
 		if (!contains(mw1.getWordsKeySet(), mw2.getWordsKeySet()))
