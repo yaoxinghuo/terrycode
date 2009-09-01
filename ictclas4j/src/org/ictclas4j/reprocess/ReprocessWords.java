@@ -94,7 +94,7 @@ public class ReprocessWords {
 	}
 
 	public static String generatePattern(String s) {
-		Pattern pattern = Pattern.compile("[*|^|$|\\|+|?|.|,|\\|]", Pattern.CASE_INSENSITIVE);
+		Pattern pattern = Pattern.compile("[*|^|$|\\|+|?|.|,|\\|]");
 		Matcher matcher = pattern.matcher(s);
 		StringBuffer sb = new StringBuffer("");
 		while (matcher.find()) {
