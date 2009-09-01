@@ -66,6 +66,12 @@ public class WhiteWordDictionary {
 		return true;
 	}
 
+	public boolean contains(String s) {
+		if (words == null)
+			return false;
+		return words.contains(s);
+	}
+
 	public static void main(String[] args) {
 		WhiteWordDictionary dic = new WhiteWordDictionary("E:\\workspace\\ictclas4j\\data\\whitewords.txt");
 		for (String word : dic.words) {
