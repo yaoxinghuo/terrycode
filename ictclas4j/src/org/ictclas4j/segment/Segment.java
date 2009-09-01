@@ -54,6 +54,13 @@ public class Segment {
 		return instance;
 	}
 
+	public static Segment getInstance() {
+		if (instance == null) {
+			instance = new Segment();
+		}
+		return instance;
+	}
+
 	private Segment() {
 		String path = Constants.DATA_PATH != null && !Constants.DATA_PATH.equals("") ? Constants.DATA_PATH : "./data/";
 		if (!path.endsWith("/"))
@@ -260,7 +267,7 @@ public class Segment {
 		}
 		return stopWords;
 	}
-	
+
 	public WhiteWordDictionary getWhiteWordDictionary() {
 		return whiteWordDictionary;
 	}
