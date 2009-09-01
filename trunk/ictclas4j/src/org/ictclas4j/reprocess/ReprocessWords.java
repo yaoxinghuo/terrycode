@@ -57,7 +57,7 @@ public class ReprocessWords {
 		}
 
 		for (MatcherWord mw : mws) {
-			Pattern pattern = Pattern.compile(mw.toString(), Pattern.CASE_INSENSITIVE);
+			Pattern pattern = Pattern.compile(generatePattern(mw.toString()), Pattern.CASE_INSENSITIVE);
 			Matcher matcher = pattern.matcher(reference);
 			while (matcher.find()) {
 				// String word = matcher.group();
@@ -91,6 +91,17 @@ public class ReprocessWords {
 		}
 
 		return results;
+	}
+
+	public static String generatePattern(String s) {
+		Pattern pattern = Pattern.compile("[*|^|$|\\|+|?|.|,|\\|]", Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(s);
+		StringBuffer sb = new StringBuffer("");
+		while (matcher.find()) {
+			matcher.appendReplacement(sb, "\\\\" + matcher.group());
+		}
+		matcher.appendTail(sb);
+		return sb.toString();
 	}
 
 	public int getSingleWordsCount() {
