@@ -24,7 +24,8 @@ import org.htmlparser.util.ParserException;
 import org.ictclas4j.bean.SegResult;
 import org.ictclas4j.bean.WordResultBean;
 import org.ictclas4j.segment.Segment;
-import org.ictclas4j.utility.Chineses;
+
+import com.terry.chineses.Chineses;
 
 /**
  * @author xinghuo.yao E-mail: yaoxinghuo at 126 dot com

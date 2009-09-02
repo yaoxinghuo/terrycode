@@ -5,9 +5,10 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.ictclas4j.bean.WordResultBean;
-import org.ictclas4j.utility.Chineses;
 import org.ictclas4j.utility.POSTag;
 import org.ictclas4j.utility.Utility;
+
+import com.terry.chineses.Chineses;
 
 /**
  * @author Terry E-mail: yaoxinghuo at 126 dot com
