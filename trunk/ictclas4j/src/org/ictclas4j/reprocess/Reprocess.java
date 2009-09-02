@@ -99,10 +99,18 @@ public class Reprocess {
 	}
 
 	/*
-	 * 如果是标点符号，就不娶
+	 * 如果是标点符号，考虑是否要增加字母和数字POSTag.NOUN_LETTER, POSTag.NUM
 	 */
 	private static boolean isQualified(WordResultBean result) {
-		if (Utility.posStringToInt(result.getProperty()) == POSTag.PUNC)
+		int[] notQualifiedTags = { POSTag.PUNC /*
+												 * , POSTag.NOUN_LETTER,
+												 * POSTag.NUM
+												 */};
+		for (int notQualifiedTag : notQualifiedTags) {
+			if (Utility.posStringToInt(result.getProperty()) == notQualifiedTag)
+				return false;
+		}
+		if (result.getWord().endsWith("\\"))// 如果是\结尾，就false，因为\算POSTag.NOUN_LETTER
 			return false;
 		return true;
 	}
