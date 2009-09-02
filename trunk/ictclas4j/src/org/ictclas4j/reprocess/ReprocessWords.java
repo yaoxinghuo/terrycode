@@ -58,6 +58,11 @@ public class ReprocessWords {
 		}
 
 		for (MatcherWord mw : mws) {
+			if (mw.getWords().size() < 2) {
+				logger.info("No. " + mw.getStage() + "\tTimes: -1" + "\t\t" + mw.toString()
+						+ "\t\tSingle word, ignore it....");
+				continue;
+			}
 			Pattern pattern = null;
 			try {
 				pattern = Pattern.compile(generatePattern(mw.toString()), Pattern.CASE_INSENSITIVE);
@@ -89,11 +94,11 @@ public class ReprocessWords {
 				if (mw2 == null || mw2.getCount() < mw.getCount()) {
 					results.put(mw.getStage(), mw);
 					logger.info("No. " + mw.getStage() + "\tTimes: " + mw.getCount() + "\t\t" + mw.toString()
-							+ "\t\tIf more times in the no. overwrite the previous one....");
+							+ "\t\tIf more times in the no, overwrite the previous one....");
 				}
 			} else {
 				logger.info("No. " + mw.getStage() + "\tTimes: " + mw.getCount() + "\t\t" + mw.toString()
-						+ "\t\tIgnore it....");
+						+ "\t\tignore....");
 			}
 		}
 
