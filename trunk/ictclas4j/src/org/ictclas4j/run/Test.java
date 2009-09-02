@@ -1,13 +1,18 @@
 package org.ictclas4j.run;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.TreeMap;
 
@@ -25,14 +30,21 @@ import org.ictclas4j.reprocess.Reprocess;
 import org.ictclas4j.reprocess.ReprocessWords;
 import org.ictclas4j.segment.Segment;
 
+import com.terry.chineses.Chineses;
+
 /**
  * @author xinghuo.yao E-mail: yaoxinghuo at 126 dot com
  * @version create：Aug 13, 2009 2:47:40 PM
  */
 public class Test {
 
+	public static BufferedWriter bw = null;
+
 	public static void main(String[] args) throws Exception {
-		BufferedReader br = new BufferedReader(new FileReader(new File("E:/test.txt")));
+		bw = new BufferedWriter(new FileWriter(new File("E:/Lab/"
+				+ new SimpleDateFormat("yyyy-MM-dd-HH-mm").format(new Date()) + ".txt")));
+
+		BufferedReader br = new BufferedReader(new FileReader(new File("E:/Lab/test.txt")));
 		StringBuffer str = new StringBuffer("");
 		String line;
 		while (true) {
@@ -44,9 +56,26 @@ public class Test {
 
 		test(str.toString());
 		// test("狗蛋打来,倒插着头掉入卫生间的一个大铁桶内，因溺水时间过长死亡");
+
+		bw.flush();
+		bw.close();
+
+	}
+
+	private static void log(String s) {
+		System.out.println(s);
+		try {
+			bw.write(s);
+			bw.write("\r\n");
+			bw.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void test(String input) throws Exception {
+		long start = System.currentTimeMillis();
+		log("Started at:" + new Date() + "\r\n");
 		Segment segTag = Segment.getInstance(1);
 
 		SegResult seg_res = segTag.split(input);
@@ -54,30 +83,32 @@ public class Test {
 		TreeMap<Integer, WordResultBean> results = seg_res.getPosResult();
 		ArrayList<ReprocessWords> sws = Reprocess.getReprocessWords(results);
 
-		System.out.println("\r\n××××××××××××××××××ictclas4j初始结果××××××××××××××××××");
-		// System.out.println(seg_res.getFinalResult());
-		System.out.println(Reprocess.getStringResult(input, results));
+		log("\r\n××××××××××××××××××ictclas4j初始结果××××××××××××××××××");
+		// log(seg_res.getFinalResult());
+		log(Reprocess.getStringResult(input, results));
 
 		ArrayList<TreeMap<Integer, MatcherWord>> mwss = new ArrayList<TreeMap<Integer, MatcherWord>>();
 
 		for (ReprocessWords sw1 : sws) {
-			System.out.println("\r\n----------------------" + sw1.toString());
+			log("\r\n----------------------" + sw1.toString());
 			String googleResult = getGoogleSearchResult(sw1.toString());
 			TreeMap<Integer, MatcherWord> mws1 = analytics(googleResult, sw1);
-			System.out.println("-----合并前的结果-----");
+			log("-----合并前的结果-----");
 			printMidResult(mws1);
 			TreeMap<Integer, MatcherWord> mws2 = Reprocess.filterMatcherWord(mws1);
-			System.out.println("-----合并后的结果-----");
+			log("-----合并后的结果-----");
 			printMidResult(mws2);
 			mwss.add(mws2);
 			Thread.sleep(5000);
 		}
 
 		TreeMap<Integer, WordResultBean> finalResult = Reprocess.processResults(results, mwss);
-		System.out.println("\r\n××××××××××××××××××最终结果××××××××××××××××××");
-		System.out.println(Reprocess.getStringResult(input, finalResult));
-		System.out.println("\r\nStatics:");
+		log("\r\n××××××××××××××××××最终结果××××××××××××××××××");
+		log(Reprocess.getStringResult(input, finalResult));
+		log("\r\nStatics:");
 		statistics(finalResult);
+		log("\r\nEnded at:" + new Date());
+		log("Times took:" + (System.currentTimeMillis() - start) / 1000 + "s");
 	}
 
 	private static void statistics(TreeMap<Integer, WordResultBean> results) {
@@ -96,17 +127,19 @@ public class Test {
 		}
 
 		for (String s : cat.keySet()) {
-			System.out.print("\r\n" + s + "\t");
+			log("\r\n" + s + "\t");
+			StringBuffer sb = new StringBuffer();
 			ArrayList<String> aa = cat.get(s);
 			for (String a : aa) {
-				System.out.print(a + " ");
+				sb.append(a + " ");
 			}
+			log(sb.toString());
 		}
 	}
 
 	private static void printMidResult(TreeMap<Integer, MatcherWord> mws) {
 		for (MatcherWord mw : mws.values()) {
-			System.out.println("No. " + mw.getStage() + "\tTimes: " + mw.getCount() + "\t\t"
+			log("No. " + mw.getStage() + "\tTimes: " + mw.getCount() + "\t\t"
 					+ (mw.getPrefix() == null ? "[null]" : "[" + mw.getPrefix() + "]") + mw.toString()
 					+ (mw.getSuffix() == null ? "[null]" : "[" + mw.getSuffix() + "]"));
 		}
@@ -137,12 +170,12 @@ public class Test {
 			}
 		}
 
-		return sw.getMatcherWords(sb.toString());
+		return sw.getMatcherWords(Chineses.toJian(sb.toString()));
 
 	}
 
 	public static String getGoogleSearchResult(String keyword) throws Exception {
-		System.out.println("Try to search '" + keyword + " ' using google...");
+		log("Try to search '" + keyword + " ' using google...");
 
 		try {
 			String s = "http://www.google.cn/search?hl=zh-CN&source=hp&q=" + URLEncoder.encode(keyword, "UTF-8")
