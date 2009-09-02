@@ -9,8 +9,6 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
-import com.terry.chineses.Chineses;
-
 /**
  * @author Terry E-mail: yaoxinghuo at 126 dot com
  * @version create：Aug 29, 2009 7:49:23 PM
@@ -34,7 +32,9 @@ public class ReprocessWords {
 	}
 
 	public TreeMap<Integer, MatcherWord> getMatcherWords(String reference) {
-		reference = Chineses.toJian(reference);
+		// reference = com.terry.chineses.Chineses.toJian(reference, true);
+		// 最好不要在这里这么用，不然性能不好，如果要可以在调用这个方法的时候转换成简体
+
 		TreeMap<Integer, MatcherWord> results = new TreeMap<Integer, MatcherWord>();
 		if (reference == null || reference.trim().equals(""))
 			return results;
