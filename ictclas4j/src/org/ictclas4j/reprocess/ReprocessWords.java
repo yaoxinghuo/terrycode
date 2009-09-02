@@ -58,7 +58,13 @@ public class ReprocessWords {
 		}
 
 		for (MatcherWord mw : mws) {
-			Pattern pattern = Pattern.compile(generatePattern(mw.toString()), Pattern.CASE_INSENSITIVE);
+			Pattern pattern = null;
+			try {
+				pattern = Pattern.compile(generatePattern(mw.toString()), Pattern.CASE_INSENSITIVE);
+			} catch (Exception e) {
+				logger.error("error while compile pattern:" + mw.toString() + ". exception:" + e.getMessage());
+				continue;
+			}
 			Matcher matcher = pattern.matcher(reference);
 			while (matcher.find()) {
 				// String word = matcher.group();
