@@ -8,7 +8,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
-import org.ictclas4j.utility.Chineses;
+
+import com.terry.chineses.Chineses;
 
 /**
  * @author Terry E-mail: yaoxinghuo at 126 dot com
