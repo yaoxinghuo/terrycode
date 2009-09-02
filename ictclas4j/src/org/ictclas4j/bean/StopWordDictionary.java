@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.ictclas4j.utility.Chineses;
 
 /**
  * @author xinghuo.yao E-mail: yaoxinghuo at 126 dot com
@@ -51,9 +50,10 @@ public class StopWordDictionary {
 				if (line.indexOf("//") != -1) {
 					line = line.substring(0, line.indexOf("//"));
 				}
-				line = Chineses.toJian(line.trim());
-				if (line.length() != 0)
-					stopWords.add(line.toLowerCase());
+				String[] parts = line.split("\\s");
+				for (String part : parts)
+					if (part.trim().length() != 0)
+						stopWords.add(part.trim().toLowerCase());
 			}
 			br.close();
 		} catch (IOException e) {
