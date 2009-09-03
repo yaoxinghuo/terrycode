@@ -3,10 +3,11 @@ package org.ictclas4j.run;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -41,8 +42,8 @@ public class Test {
 	public static BufferedWriter bw = null;
 
 	public static void main(String[] args) throws Exception {
-		bw = new BufferedWriter(new FileWriter(new File("E:/Lab/"
-				+ new SimpleDateFormat("yyyy-MM-dd-HH-mm").format(new Date()) + ".txt")));
+		File f = new File("E:/Lab/" + new SimpleDateFormat("yyyy-MM-dd-HH-mm").format(new Date()) + ".txt");
+		bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f), "UTF-8"));
 
 		BufferedReader br = new BufferedReader(new FileReader(new File("E:/Lab/test.txt")));
 		StringBuffer str = new StringBuffer("");
