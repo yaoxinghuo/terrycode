@@ -127,13 +127,13 @@ public class Test {
 		}
 
 		for (String s : cat.keySet()) {
-			log("\r\n" + s + "\t");
 			StringBuffer sb = new StringBuffer();
+			sb.append(s).append("\t");
 			ArrayList<String> aa = cat.get(s);
 			for (String a : aa) {
 				sb.append(a + " ");
 			}
-			log(sb.toString());
+			log("\r\n" + sb.toString());
 		}
 	}
 
