@@ -34,6 +34,8 @@ public class GfwServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = -3212155045844726975L;
 
+	private static final int TIME_OUT = 25000;
+
 	private Cache cache;
 
 	@Override
@@ -71,6 +73,8 @@ public class GfwServlet extends HttpServlet {
 				s = "http://" + s;
 			URL url = new URL(s);
 			con = (HttpURLConnection) url.openConnection();
+			con.setConnectTimeout(TIME_OUT);
+			con.setReadTimeout(TIME_OUT);
 			con.setDoOutput(true);
 			con.setRequestMethod("GET");
 
