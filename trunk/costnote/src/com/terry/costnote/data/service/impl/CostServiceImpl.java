@@ -49,7 +49,8 @@ public class CostServiceImpl implements ICostService {
 
 	private static Log log = LogFactory.getLog(CostServiceImpl.class);
 
-	private static final int tryTimes = 5;
+	private static final int TRY_TIMES = 3;
+	private static final int TIME_OUT = 20000;
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -241,13 +242,15 @@ public class CostServiceImpl implements ICostService {
 
 	private boolean fetchToSendSMS(String mobile, String message) {
 		String uuid = UUID.randomUUID().toString();
-		for (int i = 0; i < tryTimes; i++) {
+		for (int i = 0; i < TRY_TIMES; i++) {
 			int responseCode = 0;
 			try {
 				URL postUrl = new URL(
 						"https://fetionlib.appspot.com/restlet/fetion");
 				HttpURLConnection connection = (HttpURLConnection) postUrl
 						.openConnection();
+				connection.setConnectTimeout(TIME_OUT);
+				connection.setReadTimeout(TIME_OUT);
 				connection.setDoOutput(true);
 				connection.setRequestMethod("POST");
 				connection.setUseCaches(false);
@@ -284,12 +287,14 @@ public class CostServiceImpl implements ICostService {
 	private String fetchToSaveSchedule(String mobile, String message,
 			String date) {
 		String uuid = UUID.randomUUID().toString();
-		for (int i = 0; i < tryTimes; i++) {
+		for (int i = 0; i < TRY_TIMES; i++) {
 			try {
 				URL postUrl = new URL(
 						"https://fetionlib.appspot.com/restlet/fetion/schedule");
 				HttpURLConnection connection = (HttpURLConnection) postUrl
 						.openConnection();
+				connection.setConnectTimeout(TIME_OUT);
+				connection.setReadTimeout(TIME_OUT);
 				connection.setDoOutput(true);
 				connection.setRequestMethod("POST");
 				connection.setUseCaches(false);
@@ -336,12 +341,14 @@ public class CostServiceImpl implements ICostService {
 
 	private boolean fetchToDeleteSchedule(String sids) {
 		String uuid = UUID.randomUUID().toString();
-		for (int i = 0; i < tryTimes; i++) {
+		for (int i = 0; i < TRY_TIMES; i++) {
 			try {
 				URL postUrl = new URL(
 						"https://fetionlib.appspot.com/restlet/fetion/scheduleDelete");
 				HttpURLConnection connection = (HttpURLConnection) postUrl
 						.openConnection();
+				connection.setConnectTimeout(TIME_OUT);
+				connection.setReadTimeout(TIME_OUT);
 				connection.setDoOutput(true);
 				connection.setRequestMethod("POST");
 				connection.setUseCaches(false);
