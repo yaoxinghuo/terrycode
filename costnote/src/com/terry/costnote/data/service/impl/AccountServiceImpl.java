@@ -45,7 +45,8 @@ public class AccountServiceImpl implements IAccountService {
 
 	private static Log log = LogFactory.getLog(AccountServiceImpl.class);
 
-	private static final int tryTimes = 5;
+	private static final int TRY_TIMES = 3;
+	private static final int TIME_OUT = 20000;
 
 	@Autowired
 	private ICostDao costDao;
@@ -214,13 +215,15 @@ public class AccountServiceImpl implements IAccountService {
 
 	private boolean fetchToSendSMS(String mobile, String verifyCode) {
 		String uuid = UUID.randomUUID().toString();
-		for (int i = 0; i < tryTimes; i++) {
+		for (int i = 0; i < TRY_TIMES; i++) {
 			int responseCode = 0;
 			try {
 				URL postUrl = new URL(
 						"https://fetionlib.appspot.com/restlet/fetion");
 				HttpURLConnection connection = (HttpURLConnection) postUrl
 						.openConnection();
+				connection.setConnectTimeout(TIME_OUT);
+				connection.setReadTimeout(TIME_OUT);
 				connection.setDoOutput(true);
 				connection.setRequestMethod("POST");
 				connection.setUseCaches(false);
@@ -262,13 +265,15 @@ public class AccountServiceImpl implements IAccountService {
 
 	private int fetchToAddFriend(String mobile) {
 		String uuid = UUID.randomUUID().toString();
-		for (int i = 0; i < tryTimes; i++) {
+		for (int i = 0; i < TRY_TIMES; i++) {
 			int responseCode = 0;
 			try {
 				URL postUrl = new URL(
 						"https://fetionlib.appspot.com/restlet/fetion/friend");
 				HttpURLConnection connection = (HttpURLConnection) postUrl
 						.openConnection();
+				connection.setConnectTimeout(TIME_OUT);
+				connection.setReadTimeout(TIME_OUT);
 				connection.setDoOutput(true);
 				connection.setRequestMethod("POST");
 				connection.setUseCaches(false);
