@@ -23,6 +23,7 @@ public class XmppReceiverServlet extends HttpServlet {
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse res)
 			throws IOException {
+		req.setCharacterEncoding("UTF-8");
 		XMPPService xmpp = XMPPServiceFactory.getXMPPService();
 		Message message = xmpp.parseMessage(req);
 
