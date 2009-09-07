@@ -71,7 +71,35 @@ public class Reprocess {
 		return sws;
 	}
 
-	public static TreeMap<Integer, WordResultBean> processResults(TreeMap<Integer, WordResultBean> results,
+	public static ArrayList<SingleWords> getSingleWords(TreeMap<Integer, WordResultBean> results) {
+		ArrayList<SingleWords> sws = new ArrayList<SingleWords>();
+		SingleWords sw = null;
+		for (int i = 0; i < results.size(); i++) {
+			WordResultBean result = results.get(i);
+
+			if (result.getWord().length() == 1 && isQualified(result)) {
+				if (sw == null)
+					sw = new SingleWords();
+				sw.addWord(i, result.getWord());
+				if (i != results.size() - 1) {
+					WordResultBean nextResult = results.get(i + 1);
+					if (nextResult.getWord().length() > 1 || !isQualified(nextResult)) {
+						if (sw.getWordsCount() > 1)
+							sws.add(sw);
+						sw = null;
+					}
+				} else {
+					if (sw.getWordsCount() > 1)
+						sws.add(sw);
+					sw = null;
+				}
+			}
+
+		}
+		return sws;
+	}
+
+	public static TreeMap<Integer, WordResultBean> processResults(TreeMap<Integer, WordResultBean> inputs,
 			ArrayList<TreeMap<Integer, MatcherWord>> mwss) {
 		ArrayList<Integer> removedKeys = new ArrayList<Integer>();// 保存已经删除过的Key，防止后面再次删除
 		for (TreeMap<Integer, MatcherWord> mws : mwss) {
@@ -84,17 +112,48 @@ public class Reprocess {
 							continue mw;
 					}
 					for (Integer key : keys) {
-						results.remove(key);
+						inputs.remove(key);
 						removedKeys.add(key);
 					}
 					WordResultBean bean = new WordResultBean();
 					bean.setProperty(Utility.posIntToString(POSTag.UNKNOWN));
 					bean.setStopWord(false);
 					bean.setWord(mw.toString());
-					results.put(words.firstKey(), bean);
+					inputs.put(words.firstKey(), bean);
 				}
 			}
 		}
+
+		TreeMap<Integer, WordResultBean> results = new TreeMap<Integer, WordResultBean>();
+		int index = 0;
+		for (Integer i : inputs.keySet()) {
+			results.put(index++, inputs.get(i));
+		}
+
+		return results;
+	}
+
+	public static TreeMap<Integer, WordResultBean> combineResults(TreeMap<Integer, WordResultBean> inputs,
+			ArrayList<Integer[]> cis) {
+		for (Integer[] ci : cis) {
+			String word = "";
+			for (Integer index : ci) {
+				word += inputs.get(index).getWord();
+				inputs.remove(index);
+			}
+			WordResultBean bean = new WordResultBean();
+			bean.setProperty(Utility.posIntToString(POSTag.UNKNOWN));
+			bean.setStopWord(false);
+			bean.setWord(word);
+			inputs.put(ci[0], bean);
+		}
+
+		TreeMap<Integer, WordResultBean> results = new TreeMap<Integer, WordResultBean>();
+		int index = 0;
+		for (Integer i : inputs.keySet()) {
+			results.put(index++, inputs.get(i));
+		}
+
 		return results;
 	}
 
