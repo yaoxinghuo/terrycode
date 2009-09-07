@@ -29,6 +29,7 @@ import org.ictclas4j.bean.WordResultBean;
 import org.ictclas4j.reprocess.MatcherWord;
 import org.ictclas4j.reprocess.Reprocess;
 import org.ictclas4j.reprocess.ReprocessWords;
+import org.ictclas4j.reprocess.SingleWords;
 import org.ictclas4j.segment.Segment;
 
 import com.terry.chineses.Chineses;
@@ -92,7 +93,7 @@ public class Test {
 
 		for (ReprocessWords sw1 : sws) {
 			log("\r\n----------------------" + sw1.toString());
-			String googleResult = getGoogleSearchResult(sw1.toString());
+			String googleResult = "";// getGoogleSearchResult(sw1.toString());
 			TreeMap<Integer, MatcherWord> mws1 = analytics(googleResult, sw1);
 			log("-----合并前的结果-----");
 			printMidResult(mws1);
@@ -100,10 +101,19 @@ public class Test {
 			log("-----合并后的结果-----");
 			printMidResult(mws2);
 			mwss.add(mws2);
-			Thread.sleep(5000);
+			// Thread.sleep(5000);
 		}
 
-		TreeMap<Integer, WordResultBean> finalResult = Reprocess.processResults(results, mwss);
+		TreeMap<Integer, WordResultBean> midResult = Reprocess.processResults(results, mwss);
+
+		ArrayList<SingleWords> sws2 = Reprocess.getSingleWords(midResult);
+		ArrayList<Integer[]> cis = new ArrayList<Integer[]>();
+		for (SingleWords sw2 : sws2) {
+			cis.addAll(sw2.getCombineIndexes());
+		}
+
+		TreeMap<Integer, WordResultBean> finalResult = Reprocess.combineResults(results, cis);
+
 		log("\r\n××××××××××××××××××最终结果××××××××××××××××××");
 		log(Reprocess.getStringResult(input, finalResult));
 		log("\r\nStatics:");
