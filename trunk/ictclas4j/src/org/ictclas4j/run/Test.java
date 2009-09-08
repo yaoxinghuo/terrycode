@@ -46,17 +46,16 @@ public class Test {
 		bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f), "UTF-8"));
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("E:/Lab/test.txt"), "UTF-8"));
-		StringBuffer str = new StringBuffer("");
 		String line;
 		while (true) {
 			line = br.readLine();
 			if (line == null)
 				break;
-			str.append(line).append("\r\n");
+			log("\r\n\r\nstarting process:\t" + line);
+			test(line);
 		}
 
-		// test(str.toString());
-		test("狗蛋打来,倒插着头掉入卫生间的一个大铁桶内，因溺水时间过长死亡");
+		// test("狗蛋打来,倒插着头掉入卫生间的一个大铁桶内，因溺水时间过长死亡");
 
 		bw.flush();
 		bw.close();
@@ -92,7 +91,7 @@ public class Test {
 
 		for (ReprocessWords sw1 : sws) {
 			log("\r\n----------------------" + sw1.toString());
-			String googleResult = "";// getGoogleSearchResult(sw1.toString());
+			String googleResult = getGoogleSearchResult(sw1.toString());
 			TreeMap<Integer, MatcherWord> mws1 = analytics(googleResult, sw1);
 			log("-----合并前的结果-----");
 			printMidResult(mws1);
@@ -100,7 +99,7 @@ public class Test {
 			log("-----合并后的结果-----");
 			printMidResult(mws2);
 			mwss.add(mws2);
-			// Thread.sleep(5000);
+			Thread.sleep(5000);
 		}
 
 		TreeMap<Integer, WordResultBean> midResult = Reprocess.processResults(results, mwss);
