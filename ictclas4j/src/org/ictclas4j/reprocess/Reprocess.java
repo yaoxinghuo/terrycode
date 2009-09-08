@@ -133,6 +133,15 @@ public class Reprocess {
 		return results;
 	}
 
+	public static TreeMap<Integer, WordResultBean> finalResults(TreeMap<Integer, WordResultBean> inputs) {
+		ArrayList<SingleWords> sws = Reprocess.getSingleWords(inputs);
+		ArrayList<Integer[]> cis = new ArrayList<Integer[]>();
+		for (SingleWords sw : sws) {
+			cis.addAll(sw.getCombineIndexes());
+		}
+		return combineResults(inputs, cis);
+	}
+
 	public static TreeMap<Integer, WordResultBean> combineResults(TreeMap<Integer, WordResultBean> inputs,
 			ArrayList<Integer[]> cis) {
 		for (Integer[] ci : cis) {

@@ -29,7 +29,6 @@ import org.ictclas4j.bean.WordResultBean;
 import org.ictclas4j.reprocess.MatcherWord;
 import org.ictclas4j.reprocess.Reprocess;
 import org.ictclas4j.reprocess.ReprocessWords;
-import org.ictclas4j.reprocess.SingleWords;
 import org.ictclas4j.segment.Segment;
 
 import com.terry.chineses.Chineses;
@@ -56,8 +55,8 @@ public class Test {
 			str.append(line).append("\r\n");
 		}
 
-		test(str.toString());
-		// test("狗蛋打来,倒插着头掉入卫生间的一个大铁桶内，因溺水时间过长死亡");
+		// test(str.toString());
+		test("狗蛋打来,倒插着头掉入卫生间的一个大铁桶内，因溺水时间过长死亡");
 
 		bw.flush();
 		bw.close();
@@ -106,16 +105,14 @@ public class Test {
 
 		TreeMap<Integer, WordResultBean> midResult = Reprocess.processResults(results, mwss);
 
-		ArrayList<SingleWords> sws2 = Reprocess.getSingleWords(midResult);
-		ArrayList<Integer[]> cis = new ArrayList<Integer[]>();
-		for (SingleWords sw2 : sws2) {
-			cis.addAll(sw2.getCombineIndexes());
-		}
+		log("\r\n××××××××××××××××××第一次处理后结果××××××××××××××××××");
+		log(Reprocess.getStringResult(input, midResult));
 
-		TreeMap<Integer, WordResultBean> finalResult = Reprocess.combineResults(results, cis);
+		TreeMap<Integer, WordResultBean> finalResult = Reprocess.finalResults(midResult);
 
 		log("\r\n××××××××××××××××××最终结果××××××××××××××××××");
 		log(Reprocess.getStringResult(input, finalResult));
+
 		log("\r\nStatics:");
 		statistics(finalResult);
 		log("\r\nEnded at:" + new Date());
