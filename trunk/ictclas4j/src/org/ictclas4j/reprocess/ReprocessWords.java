@@ -60,7 +60,7 @@ public class ReprocessWords {
 		for (MatcherWord mw : mws) {
 			if (mw.getWords().size() < 2) {
 				logger.info("No. " + mw.getStage() + "\tTimes: -1" + "\t\t" + mw.toString()
-						+ "\t\tSingle word, ignore it....");
+						+ "\t\tSingle word, ignore....");
 				continue;
 			}
 			Pattern pattern = null;
