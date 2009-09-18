@@ -185,6 +185,12 @@ public class Costnote implements EntryPoint {
 										+ ((JSONString) accountSettings
 												.get("nickname")).stringValue()
 										+ "</a>");
+				if (!((JSONBoolean) accountSettings.get("activate"))
+						.booleanValue()) {
+					showPopMessage(
+							"info",
+							"目前提醒飞信机器人有限，提醒功能只限于我的好朋友，如果对您有用，请<a href='http://sites.google.com/site/it/feedback' target='_blank'>联系我</a>开通！");
+				}
 			}
 
 		});
@@ -1109,14 +1115,13 @@ public class Costnote implements EntryPoint {
 	private static HiddenField<String> scheduleHidden;
 
 	public static void showScheduleWindow(String id, Date date, String message) {
-		// if (!((JSONBoolean) accountSettings.get("activate")).booleanValue())
-		// {
-		// showPopMessage(
-		// "error",
-		// "您还没有登记激活您的手机号，不能使用短信提醒功能！&nbsp;<a href='#' onclick='nav(\"tab_tree_setting\",\"账户设置\",\"setting.png\");return false;'>"
-		// + "设置手机</a>");
-		// return;
-		// }
+		if (!((JSONBoolean) accountSettings.get("activate")).booleanValue()) {
+			showPopMessage(
+					"error",
+					"您还没有登记激活您的手机号，不能使用短信提醒功能！&nbsp;<a href='#' onclick='nav(\"tab_tree_setting\",\"账户设置\",\"setting.png\");return false;'>"
+							+ "设置手机</a>");
+			return;
+		}
 		if (scheduleWindow == null) {
 			scheduleWindow = new DialogBox();
 			scheduleWindow.setHTML("<img src='/icons/note.png' />新建提醒");
