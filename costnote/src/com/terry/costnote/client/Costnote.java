@@ -185,12 +185,12 @@ public class Costnote implements EntryPoint {
 										+ ((JSONString) accountSettings
 												.get("nickname")).stringValue()
 										+ "</a>");
-				if (!((JSONBoolean) accountSettings.get("activate"))
-						.booleanValue()) {
-					showPopMessage(
-							"info",
-							"目前提醒飞信机器人有限，提醒功能只限于我的好朋友，如果对您有用，请<a href='http://sites.google.com/site/it/feedback' target='_blank'>联系我</a>开通！");
-				}
+//				if (!((JSONBoolean) accountSettings.get("activate"))
+//						.booleanValue()) {
+//					showPopMessage(
+//							"info",
+//							"目前提醒飞信机器人有限，提醒功能只限于我的好朋友，如果对您有用，请<a href='http://sites.google.com/site/it/feedback' target='_blank'>联系我</a>开通！");
+//				}
 			}
 
 		});
