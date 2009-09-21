@@ -292,7 +292,6 @@ public class AccountServiceImpl implements IAccountService {
 				out.close();
 
 				responseCode = connection.getResponseCode();
-				connection.disconnect();
 				if (responseCode == 202) {
 					BufferedReader reader = new BufferedReader(
 							new InputStreamReader(connection.getInputStream())); // 读取结果
@@ -305,8 +304,10 @@ public class AccountServiceImpl implements IAccountService {
 					connection.disconnect();
 					JSONObject jo = JSONObject.fromObject(sb.toString());
 					return jo.getInt("action");
-				} else
+				} else {
+					connection.disconnect();
 					return -1;
+				}
 			} catch (Exception e) {
 				log.warn("error fetchToAddFriend, exception:" + e.getMessage()
 						+ ". tried " + i + " times");
