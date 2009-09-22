@@ -37,11 +37,11 @@ public class ContextStat {
 
 			byte[] b = null;
 			DataInputStream in = new DataInputStream(new FileInputStream(file));
-			// ¶ÁÈ¡³¤¶È
+			// è¯»å–é•¿åº¦
 			tableLen = GFCommon.bytes2int(Utility.readBytes(in, 4), false);
 			logger.debug("tableLen:" + tableLen);
 
-			// ¶ÁÈ¡·ûºÅ±êÖ¾
+			// è¯»å–ç¬¦å·æ ‡å¿—
 			symbolTable = new int[tableLen];
 			for (int i = 0; i < tableLen; i++) {
 				b = Utility.readBytes(in, 4);
@@ -55,19 +55,19 @@ public class ContextStat {
 				logger.debug("tagContext:");
 				TagContext tc = new TagContext();
 
-				// ¶ÁÈ¡¹Ø¼ü´Ê
+				// è¯»å–å…³é”®è¯
 				b = Utility.readBytes(in, 4);
 				int key = GFCommon.bytes2int(b);
 				curLen += 4;
 				logger.debug("\tkey:" + key);
 
-				// ¶ÁÈ¡×Ü´ÊÆµ
+				// è¯»å–æ€»è¯é¢‘
 				b = Utility.readBytes(in, 4);
 				curLen += 4;
 				int totalFreq = GFCommon.bytes2int(b, false);
 				logger.debug("\ttotalFreq:" + totalFreq);
 
-				// ¶ÁÈ¡´ÊÆµ
+				// è¯»å–è¯é¢‘
 				int[] tagFreq = new int[tableLen];
 				for (int i = 0; i < tableLen; i++) {
 					b = Utility.readBytes(in, 4);
@@ -76,7 +76,7 @@ public class ContextStat {
 					logger.debug("\ttagFreq[" + i + "]:" + tagFreq[i]);
 				}
 
-				// ¶ÁÈ¡ÉÏÏÂÎÄÊı×é
+				// è¯»å–ä¸Šä¸‹æ–‡æ•°ç»„
 				int[][] contextArray = new int[tableLen][tableLen];
 				for (int i = 0; i < tableLen; i++) {
 					String pr = "";

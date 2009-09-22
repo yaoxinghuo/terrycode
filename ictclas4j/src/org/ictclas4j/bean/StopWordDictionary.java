@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 
 /**
  * @author xinghuo.yao E-mail: yaoxinghuo at 126 dot com
- * @version create£ºAug 17, 2009 5:32:26 PM
+ * @version createï¼šAug 17, 2009 5:32:26 PM
  */
 public class StopWordDictionary {
 	public Set<String> words;

@@ -3,10 +3,10 @@ package org.ictclas4j.bean;
 import java.util.ArrayList;
 
 public class ModifyTable {
-	// Í¬Ò»¿ªÍ·´ÊÌõµÄÊıÄ¿ÔÚĞŞ¸Ä±íÖĞ
+	// åŒä¸€å¼€å¤´è¯æ¡çš„æ•°ç›®åœ¨ä¿®æ”¹è¡¨ä¸­
 	private int count;
 
-	// ÔÚÔ­×Öµä±íÖĞÉ¾³ıµÄ´ÊÌõµÄÊıÄ¿
+	// åœ¨åŸå­—å…¸è¡¨ä¸­åˆ é™¤çš„è¯æ¡çš„æ•°ç›®
 	private int delete;
 
 	private ArrayList<WordItem> words;

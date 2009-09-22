@@ -46,18 +46,18 @@ public class Utility {
 
 	public static final int MAX_SEGMENT_NUM = 10;
 
-	public static final String POSTFIX_SINGLE = "°Ó°î±¤±­³Ç³Ø´åµ¥µºµÀµÌµê¶´¶É¶Ó·¨·å¸®¸Ô¸Û¸ó¹¬¹µ¹úº£ºÅºÓºş»·¼¯½­½±½¸½Ç½Ö¾®¿¤¿Ó¿Ú¿óÀïÁëÂ¥Â·ÃÅÃËÃíÅªÅÆÅÉÆÂÆÌÆìÇÅÇøÇşÈªÈËÉ½Ê¡ÊĞË®ËÂËşÌ¨Ì²Ì³ÌÃÌüÍ¤ÍÍÍåÎÄÎİÏªÏ¿ÏØÏßÏçÏïĞÍÑóÒ¤ÓªÓìÓïÔ°Ô·ÔºÕ¢Õ¯Õ¾ÕòÖİ×¯×åÚéâÖî®";
+	public static final String POSTFIX_SINGLE = "åé‚¦å ¡æ¯åŸæ± æ‘å•å²›é“å ¤åº—æ´æ¸¡é˜Ÿæ³•å³°åºœå†ˆæ¸¯é˜å®«æ²Ÿå›½æµ·å·æ²³æ¹–ç¯é›†æ±Ÿå¥–ç¤è§’è¡—äº•éƒ¡å‘å£çŸ¿é‡Œå²­æ¥¼è·¯é—¨ç›Ÿåº™å¼„ç‰Œæ´¾å¡é“ºæ——æ¡¥åŒºæ¸ æ³‰äººå±±çœå¸‚æ°´å¯ºå¡”å°æ»©å›å ‚å…äº­å±¯æ¹¾æ–‡å±‹æºªå³¡å¿çº¿ä¹¡å··å‹æ´‹çª‘è¥å±¿è¯­å›­è‹‘é™¢é—¸å¯¨ç«™é•‡å·åº„æ—é™‚åºµç”º";
 
-	public static final String[] POSTFIX_MUTIPLE = { "°ëµº", "²İÔ­", "³ÇÊĞ", "´óµÌ", "´ó¹«¹ú", "´óÇÅ", "µØÇø", "µÛ¹ú", "¶É²Û", "¸Û¿Ú",
-			"¸ßËÙ¹«Â·", "¸ßÔ­", "¹«Â·", "¹«Ô°", "¹²ºÍ¹ú", "¹ÈµØ", "¹ã³¡", "¹úµÀ", "º£Ï¿", "ºúÍ¬", "»ú³¡", "¼¯Õò", "½ÌÇø", "½ÖµÀ", "¿Ú°¶", "ÂëÍ·", "Ãº¿ó",
-			"ÄÁ³¡", "Å©³¡", "ÅèµØ", "Æ½Ô­", "ÇğÁê", "Èºµº", "É³Ä®", "É³ÖŞ", "É½Âö", "É½Çğ", "Ë®¿â", "ËíµÀ", "ÌØÇø", "ÌúÂ·", "ĞÂ´å", "Ñ©·å", "ÑÎ³¡", "ÑÎºş",
-			"Óæ³¡", "Ö±Ï½ÊĞ", "×ÔÖÎÇø", "×ÔÖÎÏØ", "×ÔÖÎÖİ", "" };
+	public static final String[] POSTFIX_MUTIPLE = { "åŠå²›", "è‰åŸ", "åŸå¸‚", "å¤§å ¤", "å¤§å…¬å›½", "å¤§æ¡¥", "åœ°åŒº", "å¸å›½", "æ¸¡æ§½", "æ¸¯å£",
+			"é«˜é€Ÿå…¬è·¯", "é«˜åŸ", "å…¬è·¯", "å…¬å›­", "å…±å’Œå›½", "è°·åœ°", "å¹¿åœº", "å›½é“", "æµ·å³¡", "èƒ¡åŒ", "æœºåœº", "é›†é•‡", "æ•™åŒº", "è¡—é“", "å£å²¸", "ç å¤´", "ç…¤çŸ¿",
+			"ç‰§åœº", "å†œåœº", "ç›†åœ°", "å¹³åŸ", "ä¸˜é™µ", "ç¾¤å²›", "æ²™æ¼ ", "æ²™æ´²", "å±±è„‰", "å±±ä¸˜", "æ°´åº“", "éš§é“", "ç‰¹åŒº", "é“è·¯", "æ–°æ‘", "é›ªå³°", "ç›åœº", "ç›æ¹–",
+			"æ¸”åœº", "ç›´è¾–å¸‚", "è‡ªæ²»åŒº", "è‡ªæ²»å¿", "è‡ªæ²»å·", "" };
 
-	public static final String TRANS_ENGLISH = "¡¤¡ª°¢°£°¬°®°²°º°½°Â°Ä°Ê°Å°Í°×°İ°à°î±£±¤±«±±±´±¾±È±Ï±Ë±ğ²¨²£²©²ª²®²´²·²¼²Å²É²Ö²é²î²ñ³¹´¨´Ä´È´Î´ï´ó´÷´úµ¤µ©µ«µ±µÀµÂµÃµÄµÇµÏµÒµÙµÛ¶¡¶«¶Å¶Ø¶à¶î¶í¶ò¶õ¶÷¶û·¥·¨·¶·Æ·Ò·Ñ·ğ·ò¸£¸¥¸¦¸Á¸Ç¸É¸Ô¸ç¸ê¸ï¸ğ¸ñ¸÷¸ù¹Å¹Ï¹şº£º±º²º¹ºººÀºÏºÓºÕºàºîºôºú»ª»ô»ù¼ª¼°¼Ó¼Ö¼á¼ò½Ü½ğ¾©¾Ã¾Ó¾ı¿¦¿¨¿­¿²¿µ¿¼¿Â¿Æ¿É¿Ë¿Ï¿â¿üÀ­À®À³À´À¼ÀÉÀÊÀÍÀÕÀ×ÀÛÀãÀèÀíÀîÀïÀòÀöÀúÀûÁ¢Á¦Á¬Á®Á¼ÁĞÁÒÁÖÂ¡Â¬Â²Â³Â·Â×ÂØÂŞÂåÂêÂíÂòÂóÂõÂüÃ©Ã¯Ã·ÃÅÃÉÃËÃ×ÃÛÃÜÃôÃ÷Ä¦ÄªÄ«Ä¬Ä·Ä¾ÄÂÄÇÄÈÄÉÄËÄÎÄÏÄÚÄáÄêÄùÄşÅ¦Å¬ÅµÅ·ÅÁÅËÅÏÅÓÅàÅåÅíÆ¤Æ½ÆÃÆÕÆäÆõÇ¡Ç¿ÇÇÇĞÇÕÇßÈªÈÃÈÈÈÙÈâÈåÈğÈôÈøÈûÈüÉ£ÉªÉ­É¯É³É½ÉÆÉÜÉáÊ¥Ê©Ê«Ê¯Ê²Ê·Ê¿ÊØË¹Ë¾Ë¿ËÕËØË÷ËşÌ©Ì¹ÌÀÌÆÌÕÌØÌáÍ¡Í¼ÍÁÍÂÍĞÍÓÍßÍòÍõÍúÍşÎ¤Î¬ÎºÎÂÎÄÎÌÎÖÎÚÎáÎäÎéÎ÷ÎıÏ£Ï²ÏÄÏàÏãĞªĞ»ĞÁĞÂÑÀÑÅÑÇÑåÒ¢Ò¶ÒÀÒÁÒÂÒËÒåÒòÒôÓ¢ÓºÓÈÓÚÔ¼Ô×ÔóÔöÕ²ÕäÖÎÖĞÖÙÖìÖî×¿×Î×æ×ôÙ¤æ«æØëèëø¼Ã¼Î½òÀµÁ«ÁÕÂÉÂÔÄ½ÄİÄôÅáÆÖÆæÆëÇÙÈãÉºÎÀĞÀÑ·ÔıÕÜÖÇ×ÈÜ½ãëåÈçêç÷èóì³ñã÷ì";
+	public static final String TRANS_ENGLISH = "Â·â€”é˜¿åŸƒè‰¾çˆ±å®‰æ˜‚æ•–å¥¥æ¾³ç¬†èŠ­å·´ç™½æ‹œç­é‚¦ä¿å ¡é²åŒ—è´æœ¬æ¯”æ¯•å½¼åˆ«æ³¢ç»åšå‹ƒä¼¯æ³Šåœå¸ƒæ‰é‡‡ä»“æŸ¥å·®æŸ´å½»å·èŒ¨æ…ˆæ¬¡è¾¾å¤§æˆ´ä»£ä¸¹æ—¦ä½†å½“é“å¾·å¾—çš„ç™»è¿ªç‹„è’‚å¸ä¸ä¸œæœæ•¦å¤šé¢ä¿„å„é„‚æ©å°”ä¼æ³•èŒƒè²èŠ¬è´¹ä½›å¤«ç¦å¼—ç”«å™¶ç›–å¹²å†ˆå“¥æˆˆé©è‘›æ ¼å„æ ¹å¤ç“œå“ˆæµ·ç½•ç¿°æ±—æ±‰è±ªåˆæ²³èµ«äº¨ä¾¯å‘¼èƒ¡åéœåŸºå‰åŠåŠ è´¾åšç®€æ°é‡‘äº¬ä¹…å±…å›å–€å¡å‡¯ååº·è€ƒæŸ¯ç§‘å¯å…‹è‚¯åº“å¥æ‹‰å–‡è±æ¥å…°éƒæœ—åŠ³å‹’é›·ç´¯æ¥é»ç†æé‡Œè‰ä¸½å†åˆ©ç«‹åŠ›è¿å»‰è‰¯åˆ—çƒˆæ—éš†å¢è™é²è·¯ä¼¦ä»‘ç½—æ´›ç›é©¬ä¹°éº¦è¿ˆæ›¼èŒ…èŒ‚æ¢…é—¨è’™ç›Ÿç±³èœœå¯†æ•æ˜æ‘©è«å¢¨é»˜å§†æœ¨ç©†é‚£å¨œçº³ä¹ƒå¥ˆå—å†…å°¼å¹´æ¶…å®çº½åŠªè¯ºæ¬§å¸•æ½˜ç•”åºåŸ¹ä½©å½­çš®å¹³æ³¼æ™®å…¶å¥‘æ°å¼ºä¹”åˆ‡é’¦æ²æ³‰è®©çƒ­è£è‚‰å„’ç‘è‹¥è¨å¡èµ›æ¡‘ç‘Ÿæ£®èæ²™å±±å–„ç»èˆåœ£æ–½è¯—çŸ³ä»€å²å£«å®ˆæ–¯å¸ä¸è‹ç´ ç´¢å¡”æ³°å¦æ±¤å”é™¶ç‰¹ææ±€å›¾åœŸåæ‰˜é™€ç“¦ä¸‡ç‹æ—ºå¨éŸ¦ç»´é­æ¸©æ–‡ç¿æ²ƒä¹Œå¾æ­¦ä¼è¥¿é”¡å¸Œå–œå¤ç›¸é¦™æ­‡è°¢è¾›æ–°ç‰™é›…äºšå½¦å°§å¶ä¾ä¼Šè¡£å®œä¹‰å› éŸ³è‹±é›å°¤äºçº¦å®°æ³½å¢è©¹çæ²»ä¸­ä»²æœ±è¯¸å“å­œç¥–ä½ä¼½å¨…å°•è…“æ»•æµå˜‰æ´¥èµ–è²ç³å¾‹ç•¥æ…•å¦®è‚è£´æµ¦å¥‡é½ç´èŒ¹çŠå«æ¬£é€Šæœ­å“²æ™ºå…¹èŠ™æ±¶è¿¦ç€çªæ¢µæ–èƒ¥é»›";
 
-	public static final String TRANS_RUSSIAN = "¡¤°¢°²°Â°Í±È±Ë²¨²¼²ì´Ä´óµÂµÃ¶¡¶Å¶û·¨·ò·ü¸¦¸Ç¸ñ¹ş»ù¼Ó¼á½İ½ğ¿¨¿Æ¿É¿Ë¿âÀ­À³À¼ÀÕÀ×ÀïÀúÀûÁ¬ÁĞÂ¬Â³ÂŞÂåÂíÃ·ÃÉÃ×Ä·ÄÈÄùÄşÅµÅÁÆÃÆÕÆæÆëÇÇÇĞÈÕÈøÉ«É½ÉêÊ²Ë¹Ë÷ËşÌ¹ÌØÍĞÍŞÎ¬ÎÄÎÚÎ÷Ï£Ğ»ÑÇÒ®Ò¶ÒÀÒÁÒÔÔú×ô²ñ´ïµÇµÙ¸ê¹ûº£ºÕ»ª»ô¼ª¼¾½ò¿ÂÀíÁÕÂêÂüÄÂÄÉÄáÆõÇÕÇğÉ£É³ÉáÌ©Í¼ÍßÍòÑÅ×¿×È";
+	public static final String TRANS_RUSSIAN = "Â·é˜¿å®‰å¥¥å·´æ¯”å½¼æ³¢å¸ƒå¯ŸèŒ¨å¤§å¾·å¾—ä¸æœå°”æ³•å¤«ä¼ç”«ç›–æ ¼å“ˆåŸºåŠ åšæ·é‡‘å¡ç§‘å¯å…‹åº“æ‹‰è±å…°å‹’é›·é‡Œå†åˆ©è¿åˆ—å¢é²ç½—æ´›é©¬æ¢…è’™ç±³å§†å¨œæ¶…å®è¯ºå¸•æ³¼æ™®å¥‡é½ä¹”åˆ‡æ—¥è¨è‰²å±±ç”³ä»€æ–¯ç´¢å¡”å¦ç‰¹æ‰˜å¨ƒç»´æ–‡ä¹Œè¥¿å¸Œè°¢äºšè€¶å¶ä¾ä¼Šä»¥æ‰ä½æŸ´è¾¾ç™»è’‚æˆˆæœæµ·èµ«åéœå‰å­£æ´¥æŸ¯ç†ç³ç›æ›¼ç©†çº³å°¼å¥‘é’¦ä¸˜æ¡‘æ²™èˆæ³°å›¾ç“¦ä¸‡é›…å“å…¹";
 
-	public static final String TRANS_JAPANESE = "°²°Â°Ë°×°Ù°î±£±±±¶±¾±È±õ²©²½²¿²Ê²Ë²Ö²ı³¤³¯³Ø³à´¨´¬´¾´Î´å´ó´úµºµ¾µÀµÂµØµä¶É¶û·±·¹·ç¸£¸Ô¸ß¹¤¹¬¹Å¹È¹Ø¹ã¹ğ¹óºÃºÆºÍºÏºÓºÚºáºãºêºó»§»Ä»æ¼ª¼Í¼Ñ¼Ó¼û½¡½­½é½ğ½ñ½ø¾®¾²¾´¾¸¾Ã¾Æ¾Õ¿¡¿µ¿É¿Ë¿ÚÀæÀíÀïÀñÀõÀöÀûÁ¢Á¹Á¼ÁÖÁáÁåÁøÂ¡Â¹ÂéÂêÃÀÃÈÃÖÃôÄ¾ÄÉÄÏÄĞÄÚÄñÄşÅóÆ¬Æ½ÆéÆëÇ§Ç°Ç³ÇÅÇÙÇàÇåÇìÇïÇğÇúÈªÈÊÈÌÈÕÈÙÈôÈıÉ­É´É¼É½ÉÆÉÏÉìÉñÊ¥Ê¯ÊµÊ¸ÊÀÊĞÊÒË®Ë³Ë¾ËÉÌ©ÌÒÌÙÌìÌïÍÁÍòÍûÎ²Î´ÎÄÎäÎåÎèÎ÷Ï¸ÏÄÏÜÏàĞ¡Ğ¢ĞÂĞÇĞĞĞÛĞãÑÅÑÇÑÒÑîÑóÑôÒ£Ò°Ò²Ò¶Ò»ÒÁÒÂÒİÒåÒæÓ£ÓÀÓÉÓĞÓÓÓîÓğÓôÔ¨ÔªÔ«Ô­Ô¶ÔÂÔÃÔçÔìÔòÔóÔöÔúÕ¬ÕÂÕÑÕÓÕæÕşÖ¦ÖªÖ®Ö²ÖÇÖÎÖĞÖÒÖÙÖñÖú×µ×Ó×ôÚæÛàÜ¥İ¶İÑŞ¹äºäşğ¯óã";
+	public static final String TRANS_JAPANESE = "å®‰å¥¥å…«ç™½ç™¾é‚¦ä¿åŒ—å€æœ¬æ¯”æ»¨åšæ­¥éƒ¨å½©èœä»“æ˜Œé•¿æœæ± èµ¤å·èˆ¹æ·³æ¬¡æ‘å¤§ä»£å²›ç¨»é“å¾·åœ°å…¸æ¸¡å°”ç¹é¥­é£ç¦å†ˆé«˜å·¥å®«å¤è°·å…³å¹¿æ¡‚è´µå¥½æµ©å’Œåˆæ²³é»‘æ¨ªæ’å®åæˆ·è’ç»˜å‰çºªä½³åŠ è§å¥æ±Ÿä»‹é‡‘ä»Šè¿›äº•é™æ•¬é–ä¹…é…’èŠä¿Šåº·å¯å…‹å£æ¢¨ç†é‡Œç¤¼æ —ä¸½åˆ©ç«‹å‡‰è‰¯æ—ç²é“ƒæŸ³éš†é¹¿éº»ç›ç¾èŒå¼¥æ•æœ¨çº³å—ç”·å†…é¸Ÿå®æœ‹ç‰‡å¹³å´é½åƒå‰æµ…æ¡¥ç´é’æ¸…åº†ç§‹ä¸˜æ›²æ³‰ä»å¿æ—¥è£è‹¥ä¸‰æ£®çº±æ‰å±±å–„ä¸Šä¼¸ç¥åœ£çŸ³å®çŸ¢ä¸–å¸‚å®¤æ°´é¡ºå¸æ¾æ³°æ¡ƒè—¤å¤©ç”°åœŸä¸‡æœ›å°¾æœªæ–‡æ­¦äº”èˆè¥¿ç»†å¤å®ªç›¸å°å­æ–°æ˜Ÿè¡Œé›„ç§€é›…äºšå²©æ¨æ´‹é˜³é¥é‡ä¹Ÿå¶ä¸€ä¼Šè¡£é€¸ä¹‰ç›Šæ¨±æ°¸ç”±æœ‰ä½‘å®‡ç¾½éƒæ¸Šå…ƒå£åŸè¿œæœˆæ‚¦æ—©é€ åˆ™æ³½å¢æ‰å®…ç« æ˜­æ²¼çœŸæ”¿æçŸ¥ä¹‹æ¤æ™ºæ²»ä¸­å¿ ä»²ç«¹åŠ©æ¤å­ä½é˜ªå‚å €è»è…è–°æµœæ¿‘é¸ ç­±";
 
 	// Translation type
 	public static final int TT_ENGLISH = 0;
@@ -67,20 +67,20 @@ public class Utility {
 	public static final int TT_JAPANESE = 2;
 
 	// Seperator type
-	public static final String SEPERATOR_C_SENTENCE = "¡££¡£¿£º£»¡­";
+	public static final String SEPERATOR_C_SENTENCE = "ã€‚ï¼ï¼Ÿï¼šï¼›â€¦";
 
-	public static final String SEPERATOR_C_SUB_SENTENCE = "¡¢£¬£¨£©¡°¡±¡®¡¯";
+	public static final String SEPERATOR_C_SUB_SENTENCE = "ã€ï¼Œï¼ˆï¼‰â€œâ€â€˜â€™";
 
 	public static final String SEPERATOR_E_SENTENCE = "!?:;";
 
 	public static final String SEPERATOR_E_SUB_SENTENCE = ",()\"'";
 
-	public static final String SEPERATOR_LINK = "\n\r ¡¡";
+	public static final String SEPERATOR_LINK = "\n\r ã€€";
 
 	// Sentence begin and ending string
-	public static final String SENTENCE_BEGIN = "Ê¼##Ê¼";
+	public static final String SENTENCE_BEGIN = "å§‹##å§‹";
 
-	public static final String SENTENCE_END = "Ä©##Ä©";
+	public static final String SENTENCE_END = "æœ«##æœ«";
 
 	// Seperator between two words
 	public static final String WORD_SEGMENTER = "@";
@@ -105,18 +105,18 @@ public class Utility {
 
 	public static final double INFINITE_VALUE = 10000.00;
 
-	// Æ½»¬²ÎÊı
+	// å¹³æ»‘å‚æ•°
 	public static final double SMOOTH_PARAM = 0.1;
 
-	public static final String UNKNOWN_PERSON = "Î´##ÈË";
+	public static final String UNKNOWN_PERSON = "æœª##äºº";
 
-	public static final String UNKNOWN_SPACE = "Î´##µØ";
+	public static final String UNKNOWN_SPACE = "æœª##åœ°";
 
-	public static final String UNKNOWN_NUM = "Î´##Êı";
+	public static final String UNKNOWN_NUM = "æœª##æ•°";
 
-	public static final String UNKNOWN_TIME = "Î´##Ê±";
+	public static final String UNKNOWN_TIME = "æœª##æ—¶";
 
-	public static final String UNKNOWN_LETTER = "Î´##´®";
+	public static final String UNKNOWN_LETTER = "æœª##ä¸²";
 
 	public static boolean gbGenerate(String fileName) {
 		File file;
@@ -203,7 +203,12 @@ public class Utility {
 	public static int charType(String str) {
 
 		if (str != null && str.length() > 0) {
-			byte[] b = str.getBytes();
+			byte[] b;
+			try {
+				b = str.getBytes("GBK");
+			} catch (UnsupportedEncodingException e) {
+				return CT_OTHER;
+			}
 			byte b1 = b[0];
 			byte b2 = b.length > 1 ? b[1] : 0;
 			if (getUnsigned(b1) < 128) {
@@ -268,7 +273,12 @@ public class Utility {
 
 			String temp = str + " ";
 			for (int i = 0; i < str.length(); i++) {
-				byte[] b = temp.substring(i, i + 1).getBytes();
+				byte[] b;
+				try {
+					b = temp.substring(i, i + 1).getBytes("GBK");
+				} catch (UnsupportedEncodingException e) {
+					return false;
+				}
 				if (b.length == 2) {
 					if (!(getUnsigned(b[0]) < 248 && getUnsigned(b[0]) > 175)
 							|| !(getUnsigned(b[0]) < 253 && getUnsigned(b[0]) > 160))
@@ -326,7 +336,12 @@ public class Utility {
 		if (str != null) {
 			int len = str.length();
 			int i = 0;
-			byte[] b = str.getBytes();
+			byte[] b;
+			try {
+				b = str.getBytes("GBK");
+			} catch (UnsupportedEncodingException e) {
+				return false;
+			}
 			while (i < len && b[i] < 128) {
 				i++;
 			}
@@ -355,19 +370,19 @@ public class Utility {
 		if (str != null) {
 			int i = 0;
 			String temp = str + " ";
-			// ÅĞ¶Ï¿ªÍ·ÊÇ·ñÊÇ+-Ö®ÀàµÄ·ûºÅ
-			if ("¡À+¡ª-£«".indexOf(temp.substring(0, 1)) != -1)
+			// åˆ¤æ–­å¼€å¤´æ˜¯å¦æ˜¯+-ä¹‹ç±»çš„ç¬¦å·
+			if ("Â±+â€”-ï¼‹".indexOf(temp.substring(0, 1)) != -1)
 				i++;
-			/** Èç¹ûÊÇÈ«½ÇµÄ£°£±£²£³£´£µ£¶£·£¸£¹ ×Ö·û* */
-			while (i < str.length() && "£°£±£²£³£´£µ£¶£·£¸£¹".indexOf(str.substring(i, i + 1)) != -1)
+			/** å¦‚æœæ˜¯å…¨è§’çš„ï¼ï¼‘ï¼’ï¼“ï¼”ï¼•ï¼–ï¼—ï¼˜ï¼™ å­—ç¬¦* */
+			while (i < str.length() && "ï¼ï¼‘ï¼’ï¼“ï¼”ï¼•ï¼–ï¼—ï¼˜ï¼™".indexOf(str.substring(i, i + 1)) != -1)
 				i++;
 
 			// Get middle delimiter such as .
 			if (i < str.length()) {
 				String s = str.substring(i, i + 1);
-				if ("¡Ã¡¤£®£¯".indexOf(s) != -1 || ".".equals(s) || "/".equals(s)) {// 98£®1£¥
+				if ("âˆ¶Â·ï¼ï¼".indexOf(s) != -1 || ".".equals(s) || "/".equals(s)) {// 98ï¼1ï¼…
 					i++;
-					while (i + 1 < str.length() && "£°£±£²£³£´£µ£¶£·£¸£¹".indexOf(str.substring(i + 1, i + 2)) != -1)
+					while (i + 1 < str.length() && "ï¼ï¼‘ï¼’ï¼“ï¼”ï¼•ï¼–ï¼—ï¼˜ï¼™".indexOf(str.substring(i + 1, i + 2)) != -1)
 
 						i++;
 				}
@@ -382,7 +397,7 @@ public class Utility {
 			// Get middle delimiter such as .
 			if (i < str.length()) {
 				String s = str.substring(i, i + 1);
-				if ("¡Ã¡¤£®£¯".indexOf(s) != -1 || ".".equals(s) || "/".equals(s)) {// 98£®1£¥
+				if ("âˆ¶Â·ï¼ï¼".indexOf(s) != -1 || ".".equals(s) || "/".equals(s)) {// 98ï¼1ï¼…
 					i++;
 					while (i + 1 < str.length() && "0123456789".indexOf(str.substring(i + 1, i + 2)) != -1)
 						i++;
@@ -391,7 +406,7 @@ public class Utility {
 
 			if (i < str.length()) {
 
-				if ("°ÙÇ§ÍòÒÚ°ÛÇª£¥¡ë".indexOf(str.substring(i, i + 1)) == -1 && !"%".equals(str.substring(i, i + 1)))
+				if ("ç™¾åƒä¸‡äº¿ä½°ä»Ÿï¼…â€°".indexOf(str.substring(i, i + 1)) == -1 && !"%".equals(str.substring(i, i + 1)))
 					i--;
 			}
 			if (i >= str.length())
@@ -454,7 +469,12 @@ public class Utility {
 
 		if (str != null) {
 			int nLen = str.length();
-			byte[] b = str.getBytes();
+			byte[] b;
+			try {
+				b = str.getBytes("GBK");
+			} catch (UnsupportedEncodingException e) {
+				return false;
+			}
 			while (i < nLen - 1
 					&& getUnsigned(b[i]) == 163
 					&& ((getUnsigned(b[i + 1]) >= 193 && getUnsigned(b[i + 1]) <= 218) || (getUnsigned(b[i + 1]) >= 225 && getUnsigned(b[i + 1]) <= 250))) {
@@ -574,16 +594,16 @@ public class Utility {
 	 * Returns : the index value Author : Kevin Zhang History : 1.create
 	 * 2002-1-26
 	 **************************************************************************/
-	public static boolean isAllChineseNum(String word) {// °Ù·ÖÖ®ÎåµãÁùµÄÈËÔçÉÏ°ËµãÊ®°Ë·ÖÆğ´²
+	public static boolean isAllChineseNum(String word) {// ç™¾åˆ†ä¹‹äº”ç‚¹å…­çš„äººæ—©ä¸Šå…«ç‚¹åå…«åˆ†èµ·åºŠ
 
-		String chineseNum = "Áã¡ğÒ»¶şÁ½ÈıËÄÎåÁùÆß°Ë¾ÅÊ®Ø¥°ÙÇ§ÍòÒÚÒ¼·¡ÈşËÁÎéÂ½Æâ°Æ¾ÁÊ°°ÛÇª¡Ã¡¤£®£¯µã";//
-		String prefix = "¼¸ÊıµÚÉÏ³É";
+		String chineseNum = "é›¶â—‹ä¸€äºŒä¸¤ä¸‰å››äº”å…­ä¸ƒå…«ä¹åå»¿ç™¾åƒä¸‡äº¿å£¹è´°åè‚†ä¼é™†æŸ’æŒç–æ‹¾ä½°ä»Ÿâˆ¶Â·ï¼ï¼ç‚¹";//
+		String prefix = "å‡ æ•°ç¬¬ä¸Šæˆ";
 
 		if (word != null) {
 			String temp = word + " ";
 			for (int i = 0; i < word.length(); i++) {
 
-				if (temp.indexOf("·ÖÖ®", i) != -1)// °Ù·ÖÖ®Îå
+				if (temp.indexOf("åˆ†ä¹‹", i) != -1)// ç™¾åˆ†ä¹‹äº”
 				{
 					i += 2;
 					continue;
@@ -626,7 +646,7 @@ public class Utility {
 	}
 
 	/**
-	 * µÃµ½×Ö·û¼¯µÄ×Ö·ûÔÚ×Ö·û´®ÖĞ³öÏÖµÄ´ÎÊı
+	 * å¾—åˆ°å­—ç¬¦é›†çš„å­—ç¬¦åœ¨å­—ç¬¦ä¸²ä¸­å‡ºç°çš„æ¬¡æ•°
 	 * 
 	 * @param charSet
 	 * @param word
@@ -697,11 +717,11 @@ public class Utility {
 		return null;
 	}
 
-	public static boolean PostfixSplit(byte[] sWord, byte[] sWordRet, byte[] sPostfix) {
-		byte[] sSinglePostfix = POSTFIX_SINGLE.getBytes();
+	public static boolean PostfixSplit(byte[] sWord, byte[] sWordRet, byte[] sPostfix) throws Exception{
+		byte[] sSinglePostfix = POSTFIX_SINGLE.getBytes("GBK");
 		byte[][] sMultiPostfix = new byte[POSTFIX_MUTIPLE.length][9];
 		for (int i = 0; i < sMultiPostfix.length; i++)
-			sMultiPostfix[i] = POSTFIX_MUTIPLE[i].getBytes();
+			sMultiPostfix[i] = POSTFIX_MUTIPLE[i].getBytes("GBK");
 		int nPostfixLen = 0, nWordLen = sWord.length;
 		int i = 0;
 
@@ -734,11 +754,11 @@ public class Utility {
 	}
 
 	/**
-	 * ±È½ÏµÚ¶ş¸ö×Ö½ÚÊı×éÊÇ·ñÔÚµÚÒ»¸öÖĞ³öÏÖ
+	 * æ¯”è¾ƒç¬¬äºŒä¸ªå­—èŠ‚æ•°ç»„æ˜¯å¦åœ¨ç¬¬ä¸€ä¸ªä¸­å‡ºç°
 	 * 
 	 * @param b1
 	 * @param b2
-	 * @return ·µ»ØµÚÒ»´Î³öÏÖÔÚÎ»ÖÃ¡£Èç¹ûÃ»ÓĞ³öÏÖ£¬Ôò·µ»Ø£­1
+	 * @return è¿”å›ç¬¬ä¸€æ¬¡å‡ºç°åœ¨ä½ç½®ã€‚å¦‚æœæ²¡æœ‰å‡ºç°ï¼Œåˆ™è¿”å›ï¼1
 	 */
 	public static int strstr(byte[] b1, byte[] b2) {
 		boolean flag = true;
@@ -779,7 +799,7 @@ public class Utility {
 	}
 
 	/**
-	 * ±È½ÏÁ½¸ö×Ö½ÚÊı×éÇ°len¸ö×Ö½ÚÊÇ·ñÏàµÈ
+	 * æ¯”è¾ƒä¸¤ä¸ªå­—èŠ‚æ•°ç»„å‰lenä¸ªå­—èŠ‚æ˜¯å¦ç›¸ç­‰
 	 * 
 	 * @param b1
 	 * @param b2
@@ -816,13 +836,17 @@ public class Utility {
 	}
 
 	/**
-	 * ºº×ÖÔÚ6768ÇøÎ»±íÖĞ¶ÔÓ¦µÄIDºÅ
+	 * æ±‰å­—åœ¨6768åŒºä½è¡¨ä¸­å¯¹åº”çš„IDå·
 	 */
 	public static int CC_ID(String str) {
 		int result = -1;
 		if (str != null && str.length() > 0) {
-			byte[] b = str.getBytes();
-			result = (getUnsigned(b[0]) - 176) * 94 + (getUnsigned(b[1]) - 161);
+			try {
+				byte[] b = str.getBytes("GBK");
+				result = (getUnsigned(b[0]) - 176) * 94 + (getUnsigned(b[1]) - 161);
+			} catch (UnsupportedEncodingException e) {
+				return -1;
+			}
 		}
 		return result;
 	}
@@ -881,7 +905,7 @@ public class Utility {
 	}
 
 	/**
-	 * ¸ù¾İIDºÅµÃµ½¶ÔÓ¦µÄGBºº×Ö
+	 * æ ¹æ®IDå·å¾—åˆ°å¯¹åº”çš„GBæ±‰å­—
 	 * 
 	 * @param id
 	 *            0--6767
@@ -904,7 +928,7 @@ public class Utility {
 	}
 
 	public static boolean isSingle(String s) {
-		if (s != null && s.getBytes().length == 1)
+		if (s != null && s.length() == 1)
 			return true;
 		else
 			return false;
@@ -930,7 +954,7 @@ public class Utility {
 	}
 
 	/**
-	 * ÅĞ¶Ï×Ö·û´®ÊÇ·ñÊÇÄê·İ
+	 * åˆ¤æ–­å­—ç¬¦ä¸²æ˜¯å¦æ˜¯å¹´ä»½
 	 * 
 	 * @param str
 	 * @return
@@ -940,32 +964,32 @@ public class Utility {
 			int len = snum.length();
 			String first = snum.substring(0, 1);
 
-			// 1992Äê, 98Äê,06Äê
+			// 1992å¹´, 98å¹´,06å¹´
 			if (isAllSingleByte(snum)
 					&& (len == 4 || len == 2 && (GFString.cint(first) > 4 || GFString.cint(first) == 0)))
 				return true;
-			if (isAllNum(snum) && (len >= 6 || len == 4 && "£°£µ£¶£·£¸£¹".indexOf(first) != -1))
+			if (isAllNum(snum) && (len >= 6 || len == 4 && "ï¼ï¼•ï¼–ï¼—ï¼˜ï¼™".indexOf(first) != -1))
 				return true;
-			if (getCharCount("Áã¡ğÒ»¶şÈıËÄÎåÁùÆß°Ë¾ÅÒ¼·¡ÈşËÁÎéÂ½Æâ°Æ¾Á", snum) == len && len >= 2)
+			if (getCharCount("é›¶â—‹ä¸€äºŒä¸‰å››äº”å…­ä¸ƒå…«ä¹å£¹è´°åè‚†ä¼é™†æŸ’æŒç–", snum) == len && len >= 2)
 				return true;
-			if (len == 4 && getCharCount("Ç§ÇªÁã¡ğ", snum) == 2)// ¶şÇªÁã¶şÄê
+			if (len == 4 && getCharCount("åƒä»Ÿé›¶â—‹", snum) == 2)// äºŒä»Ÿé›¶äºŒå¹´
 				return true;
-			if (len == 1 && getCharCount("Ç§Çª", snum) == 1)
+			if (len == 1 && getCharCount("åƒä»Ÿ", snum) == 1)
 				return true;
-			if (len == 2 && getCharCount("¼×ÒÒ±û¶¡Îì¼º¸ıĞÁÈÉ¹ï", snum) == 1
-					&& getCharCount("×Ó³óÒúÃ®³½ËÈÎçÎ´ÉêÓÏĞçº¥", snum.substring(1)) == 1)
+			if (len == 2 && getCharCount("ç”²ä¹™ä¸™ä¸æˆŠå·±åºšè¾›å£¬ç™¸", snum) == 1
+					&& getCharCount("å­ä¸‘å¯…å¯è¾°å·³åˆæœªç”³é…‰æˆŒäº¥", snum.substring(1)) == 1)
 				return true;
 		}
 		return false;
 	}
 
 	/**
-	 * ÅĞ¶ÏÒ»¸ö×Ö·û´®µÄËùÓĞ×Ö·ûÊÇ·ñÔÚÁíÒ»¸ö×Ö·û´®¼¯ºÏÖĞ
+	 * åˆ¤æ–­ä¸€ä¸ªå­—ç¬¦ä¸²çš„æ‰€æœ‰å­—ç¬¦æ˜¯å¦åœ¨å¦ä¸€ä¸ªå­—ç¬¦ä¸²é›†åˆä¸­
 	 * 
 	 * @param aggr
-	 *            ×Ö·û´®¼¯ºÏ
+	 *            å­—ç¬¦ä¸²é›†åˆ
 	 * @param str
-	 *            ĞèÒªÅĞ¶ÏµÄ×Ö·û´®
+	 *            éœ€è¦åˆ¤æ–­çš„å­—ç¬¦ä¸²
 	 * @return
 	 */
 	public static boolean isInAggregate(String aggr, String str) {
@@ -983,7 +1007,7 @@ public class Utility {
 	}
 
 	/**
-	 * ÅĞ¶Ï¸Ã×Ö·û´®ÊÇ·ñÊÇ°ë½Ç×Ö·û
+	 * åˆ¤æ–­è¯¥å­—ç¬¦ä¸²æ˜¯å¦æ˜¯åŠè§’å­—ç¬¦
 	 * 
 	 * @param str
 	 * @return
@@ -993,7 +1017,7 @@ public class Utility {
 			str += " ";
 			for (int i = 0; i < str.length(); i++) {
 				String s = str.substring(i, i + 1);
-				if (s.getBytes().length != 1)
+				if (s.length() != 1)
 					return false;
 			}
 
@@ -1004,7 +1028,7 @@ public class Utility {
 	}
 
 	/**
-	 * ÅĞ¶Ï¸Ã×Ö·û´®ÊÇ·ñÊÇÈ«½Ç×Ö·û
+	 * åˆ¤æ–­è¯¥å­—ç¬¦ä¸²æ˜¯å¦æ˜¯å…¨è§’å­—ç¬¦
 	 * 
 	 * @param str
 	 * @return
@@ -1014,7 +1038,7 @@ public class Utility {
 			str += " ";
 			for (int i = 0; i < str.length(); i++) {
 				String s = str.substring(i, i + 1);
-				if (s.getBytes().length != 2)
+				if (s.length() != 2)
 					return false;
 			}
 
@@ -1025,20 +1049,20 @@ public class Utility {
 	}
 
 	/**
-	 * ÅĞ¶ÏÊÇ·ñÊÇÒ»¸öÁ¬×Ö·û£¨·Ö¸ô·û£©
+	 * åˆ¤æ–­æ˜¯å¦æ˜¯ä¸€ä¸ªè¿å­—ç¬¦ï¼ˆåˆ†éš”ç¬¦ï¼‰
 	 * 
 	 * @param str
 	 * @return
 	 */
 	public static boolean isDelimiter(String str) {
-		if (str != null && ("-".equals(str) || "£­".equals(str)))
+		if (str != null && ("-".equals(str) || "ï¼".equals(str)))
 			return true;
 		else
 			return false;
 	}
 
 	public static boolean isUnknownWord(String word) {
-		if (word != null && word.indexOf("Î´##") == 0)
+		if (word != null && word.indexOf("æœª##") == 0)
 			return true;
 		else
 			return false;
@@ -1090,7 +1114,7 @@ public class Utility {
 
 			if (surNameLen != 2
 					&& ((surNameLen == 0 && len > 2) || giveName.length() > 2 || getForeignCharCount(word) >= 3
-							&& freq < personDict.getFreq("ÕÅ", 1) / 40 && freq2 < personDict.getFreq("»ª", 2) / 20 || (freq < 10 && getForeignCharCount(giveName) == (len - surNameLen) / 2)))
+							&& freq < personDict.getFreq("å¼ ", 1) / 40 && freq2 < personDict.getFreq("å", 2) / 20 || (freq < 10 && getForeignCharCount(giveName) == (len - surNameLen) / 2)))
 				return null;
 			if (len == 2 && personTagger.isGivenName(word))
 				return null;
@@ -1111,7 +1135,7 @@ public class Utility {
 		temp = "" + pos[0];
 		if (pos[1] > 0)
 			temp += "" + pos[1];
-		if (tag == 17)// ·¢ÏÖÓĞĞ©´ÊÓïÊ¶±ğ²»³öÀ´¾Í³öÏÖ·ûºÅ£¬Ë÷ĞÔ±ä³É?
+		if (tag == 17)// å‘ç°æœ‰äº›è¯è¯­è¯†åˆ«ä¸å‡ºæ¥å°±å‡ºç°ç¬¦å·ï¼Œç´¢æ€§å˜æˆ?
 			temp = "?";
 		return temp;
 	}

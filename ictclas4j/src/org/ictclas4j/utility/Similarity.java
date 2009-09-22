@@ -1,7 +1,7 @@
 package org.ictclas4j.utility;
 
 /**
- * ¾İ‹¾àëxµÄƒÉ×Ö·û´®ÏàËÆ¶È
+ * ç·¨è¼¯è·é›¢çš„å…©å­—ç¬¦ä¸²ç›¸ä¼¼åº¦
  */
 public class Similarity {
 	private int min(int one, int two, int three) {
@@ -16,14 +16,14 @@ public class Similarity {
 	}
 
 	public int ld(String str1, String str2) {
-		int d[][]; // ¾Øê‡
+		int d[][]; // çŸ©é™£
 		int n = str1.length();
 		int m = str2.length();
 		int i; // for str1
 		int j; // for str2
-		char ch1; // str1µÄ
-		char ch2; // str2µÄ
-		int temp; // Ó›ä›ÏàÍ¬×Ö·û,ÔÚÄ³‚€¾Øê‡Î»ÖÃÖµµÄÔöÁ¿,²»ÊÇ0¾ÍÊÇ1
+		char ch1; // str1çš„
+		char ch2; // str2çš„
+		int temp; // è¨˜éŒ„ç›¸åŒå­—ç¬¦,åœ¨æŸå€‹çŸ©é™£ä½ç½®å€¼çš„å¢é‡,ä¸æ˜¯0å°±æ˜¯1
 		if (n == 0) {
 			return m;
 		}
@@ -31,15 +31,15 @@ public class Similarity {
 			return n;
 		}
 		d = new int[n + 1][m + 1];
-		for (i = 0; i <= n; i++) { // ³õÊ¼»¯µÚÒ»ÁĞ
+		for (i = 0; i <= n; i++) { // åˆå§‹åŒ–ç¬¬ä¸€åˆ—
 			d[i][0] = i;
 		}
-		for (j = 0; j <= m; j++) { // ³õÊ¼»¯µÚÒ»ĞĞ
+		for (j = 0; j <= m; j++) { // åˆå§‹åŒ–ç¬¬ä¸€è¡Œ
 			d[0][j] = j;
 		}
-		for (i = 1; i <= n; i++) { // ±éšvstr1
+		for (i = 1; i <= n; i++) { // éæ­·str1
 			ch1 = str1.charAt(i - 1);
-			// È¥Æ¥Åästr2
+			// å»åŒ¹é…str2
 			for (j = 1; j <= m; j++) {
 				ch2 = str2.charAt(j - 1);
 				if (ch1 == ch2) {
@@ -47,7 +47,7 @@ public class Similarity {
 				} else {
 					temp = 1;
 				}
-				// ×óß…+1,ÉÏß…+1, ×óÉÏ½Ç+tempÈ¡×îĞ¡
+				// å·¦é‚Š+1,ä¸Šé‚Š+1, å·¦ä¸Šè§’+tempå–æœ€å°
 				d[i][j] = min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + temp);
 			}
 		}

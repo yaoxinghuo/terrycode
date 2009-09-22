@@ -12,7 +12,7 @@ import com.terry.chineses.Chineses;
 
 /**
  * @author Terry E-mail: yaoxinghuo at 126 dot com
- * @version create£ºAug 29, 2009 8:38:27 PM
+ * @version create: Aug 29, 2009 8:38:27 PM
  */
 public class Reprocess {
 
@@ -101,7 +101,7 @@ public class Reprocess {
 
 	public static TreeMap<Integer, WordResultBean> processResults(TreeMap<Integer, WordResultBean> inputs,
 			ArrayList<TreeMap<Integer, MatcherWord>> mwss) {
-		ArrayList<Integer> removedKeys = new ArrayList<Integer>();// ±£´æÒÑ¾­É¾³ı¹ıµÄKey£¬·ÀÖ¹ºóÃæÔÙ´ÎÉ¾³ı
+		ArrayList<Integer> removedKeys = new ArrayList<Integer>();// ä¿å­˜å·²ç»åˆ é™¤è¿‡çš„Keyï¼Œé˜²æ­¢åé¢å†æ¬¡åˆ é™¤
 		for (TreeMap<Integer, MatcherWord> mws : mwss) {
 			mw: for (MatcherWord mw : mws.values()) {
 				TreeMap<Integer, String> words = mw.getWords();
@@ -167,7 +167,7 @@ public class Reprocess {
 	}
 
 	/*
-	 * Èç¹ûÊÇ±êµã·ûºÅ£¬¿¼ÂÇÊÇ·ñÒªÔö¼Ó×ÖÄ¸ºÍÊı×ÖPOSTag.NOUN_LETTER, POSTag.NUM
+	 * å¦‚æœæ˜¯æ ‡ç‚¹ç¬¦å·ï¼Œè€ƒè™‘æ˜¯å¦è¦å¢åŠ å­—æ¯å’Œæ•°å­—POSTag.NOUN_LETTER, POSTag.NUM
 	 */
 	private static boolean isQualified(WordResultBean result) {
 		int[] notQualifiedTags = { POSTag.PUNC /*
@@ -178,7 +178,7 @@ public class Reprocess {
 			if (Utility.posStringToInt(result.getProperty()) == notQualifiedTag)
 				return false;
 		}
-		if (result.getWord().endsWith("\\"))// Èç¹ûÊÇ\½áÎ²£¬¾Ífalse£¬ÒòÎª\ËãPOSTag.NOUN_LETTER
+		if (result.getWord().endsWith("\\"))// å¦‚æœæ˜¯\ç»“å°¾ï¼Œå°±falseï¼Œå› ä¸º\ç®—POSTag.NOUN_LETTER
 			return false;
 		return true;
 	}
