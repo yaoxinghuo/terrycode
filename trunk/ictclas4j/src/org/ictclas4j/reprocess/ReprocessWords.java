@@ -11,12 +11,12 @@ import org.apache.log4j.Logger;
 
 /**
  * @author Terry E-mail: yaoxinghuo at 126 dot com
- * @version create£ºAug 29, 2009 7:49:23 PM
+ * @version create: Aug 29, 2009 7:49:23 PM
  */
 public class ReprocessWords {
 
 	/*
-	 * ´ı´¦Àí´ÊÓï£¨Ä¿Ç°µÄÈ¡·¨ÊÇÈ¡µ¥¸ö´ÊÓïÇ°ºóÒ»¸ö´Ê(Èç¹ûÓĞ)£¬²»°üº¬±êµã£©
+	 * å¾…å¤„ç†è¯è¯­ï¼ˆç›®å‰çš„å–æ³•æ˜¯å–å•ä¸ªè¯è¯­å‰åä¸€ä¸ªè¯(å¦‚æœæœ‰)ï¼Œä¸åŒ…å«æ ‡ç‚¹ï¼‰
 	 */
 	static Logger logger = Logger.getLogger(ReprocessWords.class);
 
@@ -33,7 +33,7 @@ public class ReprocessWords {
 
 	public TreeMap<Integer, MatcherWord> getMatcherWords(String reference) {
 		// reference = com.terry.chineses.Chineses.toJian(reference, true);
-		// ×îºÃ²»ÒªÔÚÕâÀïÕâÃ´ÓÃ£¬²»È»ĞÔÄÜ²»ºÃ£¬Èç¹ûÒª¿ÉÒÔÔÚµ÷ÓÃÕâ¸ö·½·¨µÄÊ±ºò×ª»»³É¼òÌå
+		// æœ€å¥½ä¸è¦åœ¨è¿™é‡Œè¿™ä¹ˆç”¨ï¼Œä¸ç„¶æ€§èƒ½ä¸å¥½ï¼Œå¦‚æœè¦å¯ä»¥åœ¨è°ƒç”¨è¿™ä¸ªæ–¹æ³•çš„æ—¶å€™è½¬æ¢æˆç®€ä½“
 
 		TreeMap<Integer, MatcherWord> results = new TreeMap<Integer, MatcherWord>();
 		if (reference == null || reference.trim().equals(""))

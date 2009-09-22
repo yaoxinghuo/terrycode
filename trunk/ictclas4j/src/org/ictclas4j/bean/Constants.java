@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 
 /**
  * @author xinghuo.yao E-mail: yaoxinghuo at 126 dot com
- * @version create£ºAug 13, 2009 4:17:08 PM
+ * @version create: Aug 13, 2009 4:17:08 PM
  */
 public class Constants {
 	static Logger logger = Logger.getLogger(Constants.class);

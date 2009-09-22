@@ -41,7 +41,7 @@ public class Segment {
 
 	private PosTagger lexTagger;
 
-	private static int segPathCount = 1;// ·Ö´ÊÂ·¾¶µÄÊıÄ¿
+	private static int segPathCount = 1;// åˆ†è¯è·¯å¾„çš„æ•°ç›®
 
 	static Logger logger = Logger.getLogger(Segment.class);
 
@@ -89,7 +89,7 @@ public class Segment {
 
 	public SegResult split(String src) {
 		src = Chineses.toJian(src);
-		SegResult sr = new SegResult(src);// ·Ö´Ê½á¹û
+		SegResult sr = new SegResult(src);// åˆ†è¯ç»“æœ
 		StringBuffer finalResult = new StringBuffer("");
 
 		if (src != null) {
@@ -108,23 +108,23 @@ public class Segment {
 				mr.setSource(sen.getContent());
 				if (sen.isSeg()) {
 
-					// Ô­×Ó·Ö´Ê
+					// åŸå­åˆ†è¯
 					AtomSeg as = new AtomSeg(sen.getContent());
 					ArrayList<Atom> atoms = as.getAtoms();
 					mr.setAtoms(atoms);
 					logger.info("[atom time]:" + (System.currentTimeMillis() - start));
 					start = System.currentTimeMillis();
 
-					// Éú³É·Ö´ÊÍ¼±í,ÏÈ½øĞĞ³õ²½·Ö´Ê£¬È»ºó½øĞĞÓÅ»¯£¬×îºó½øĞĞ´ÊĞÔ±ê¼Ç
+					// ç”Ÿæˆåˆ†è¯å›¾è¡¨,å…ˆè¿›è¡Œåˆæ­¥åˆ†è¯ï¼Œç„¶åè¿›è¡Œä¼˜åŒ–ï¼Œæœ€åè¿›è¡Œè¯æ€§æ ‡è®°
 					SegGraph segGraph = GraphGenerate.generate(atoms, coreDict);
 					mr.setSegGraph(segGraph.getSnList());
-					// Éú³É¶ş²æ·Ö´ÊÍ¼±í
+					// ç”ŸæˆäºŒå‰åˆ†è¯å›¾è¡¨
 					SegGraph biSegGraph = GraphGenerate.biGenerate(segGraph, coreDict, bigramDict);
 					mr.setBiSegGraph(biSegGraph.getSnList());
 					logger.info("[graph time]:" + (System.currentTimeMillis() - start));
 					start = System.currentTimeMillis();
 
-					// ÇóN×î¶ÌÂ·¾¶
+					// æ±‚Næœ€çŸ­è·¯å¾„
 					NShortPath nsp = new NShortPath(biSegGraph, segPathCount);
 					ArrayList<ArrayList<Integer>> bipath = nsp.getPaths();
 					mr.setBipath(bipath);
@@ -132,7 +132,7 @@ public class Segment {
 					start = System.currentTimeMillis();
 
 					for (ArrayList<Integer> onePath : bipath) {
-						// µÃµ½³õ´Î·Ö´ÊÂ·¾¶
+						// å¾—åˆ°åˆæ¬¡åˆ†è¯è·¯å¾„
 						ArrayList<SegNode> segPath = getSegPath(segGraph, onePath);
 						ArrayList<SegNode> firstPath = AdjustSeg.firstAdjust(segPath);
 						String firstResult = outputResult(firstPath);
@@ -140,7 +140,7 @@ public class Segment {
 						logger.info("[first time]:" + (System.currentTimeMillis() - start));
 						start = System.currentTimeMillis();
 
-						// ´¦ÀíÎ´µÇÂ½´Ê£¬½ø¶Ô³õ´Î·Ö´Ê½á¹û½øĞĞÓÅ»¯
+						// å¤„ç†æœªç™»é™†è¯ï¼Œè¿›å¯¹åˆæ¬¡åˆ†è¯ç»“æœè¿›è¡Œä¼˜åŒ–
 						SegGraph optSegGraph = new SegGraph(firstPath);
 						ArrayList<SegNode> sns = clone(firstPath);
 						personTagger.recognition(optSegGraph, sns);
@@ -150,16 +150,16 @@ public class Segment {
 						logger.info("[unknown time]:" + (System.currentTimeMillis() - start));
 						start = System.currentTimeMillis();
 
-						// ¸ù¾İÓÅ»¯ºóµÄ½á¹û£¬ÖØĞÂ½øĞĞÉú³É¶ş²æ·Ö´ÊÍ¼±í
+						// æ ¹æ®ä¼˜åŒ–åçš„ç»“æœï¼Œé‡æ–°è¿›è¡Œç”ŸæˆäºŒå‰åˆ†è¯å›¾è¡¨
 						SegGraph optBiSegGraph = GraphGenerate.biGenerate(optSegGraph, coreDict, bigramDict);
 						mr.setOptBiSegGraph(optBiSegGraph.getSnList());
 
-						// ÖØĞÂÇóÈ¡N£­×î¶ÌÂ·¾¶
+						// é‡æ–°æ±‚å–Nï¼æœ€çŸ­è·¯å¾„
 						NShortPath optNsp = new NShortPath(optBiSegGraph, segPathCount);
 						ArrayList<ArrayList<Integer>> optBipath = optNsp.getPaths();
 						mr.setOptBipath(optBipath);
 
-						// Éú³ÉÓÅ»¯ºóµÄ·Ö´Ê½á¹û£¬²¢¶Ô½á¹û½øĞĞ´ÊĞÔ±ê¼ÇºÍ×îºóµÄÓÅ»¯µ÷Õû´¦Àí
+						// ç”Ÿæˆä¼˜åŒ–åçš„åˆ†è¯ç»“æœï¼Œå¹¶å¯¹ç»“æœè¿›è¡Œè¯æ€§æ ‡è®°å’Œæœ€åçš„ä¼˜åŒ–è°ƒæ•´å¤„ç†
 						ArrayList<SegNode> adjResult = null;
 						for (ArrayList<Integer> optOnePath : optBipath) {
 							ArrayList<SegNode> optSegPath = getSegPath(optSegGraph, optOnePath);
@@ -200,7 +200,7 @@ public class Segment {
 		return result;
 	}
 
-	// ¸ù¾İ¶ş²æ·Ö´ÊÂ·¾¶Éú³É·Ö´ÊÂ·¾¶
+	// æ ¹æ®äºŒå‰åˆ†è¯è·¯å¾„ç”Ÿæˆåˆ†è¯è·¯å¾„
 	private ArrayList<SegNode> getSegPath(SegGraph sg, ArrayList<Integer> bipath) {
 
 		ArrayList<SegNode> path = null;
@@ -216,12 +216,12 @@ public class Segment {
 		return path;
 	}
 
-	// ¸ù¾İ·Ö´ÊÂ·¾¶Éú³É·Ö´Ê½á¹û
+	// æ ¹æ®åˆ†è¯è·¯å¾„ç”Ÿæˆåˆ†è¯ç»“æœ
 	private String outputResult(ArrayList<SegNode> wrList) {
 		return outputResult(wrList, null);
 	}
 
-	// ¸ù¾İ·Ö´ÊÂ·¾¶Éú³É·Ö´Ê½á¹û
+	// æ ¹æ®åˆ†è¯è·¯å¾„ç”Ÿæˆåˆ†è¯ç»“æœ
 	private String outputResult(ArrayList<SegNode> wrList, ArrayList<WordResultBean> results) {
 		StringBuffer result = new StringBuffer("");
 		if (wrList != null && wrList.size() > 0) {
@@ -234,7 +234,7 @@ public class Segment {
 						WordResultBean r = new WordResultBean();
 						r.setProperty(property);
 						r.setWord(sn.getSrcWord());
-						if (sn.getPos() == POSTag.PUNC// Èç¹ûÊÇ±êµã·ûºÅ£¬ËãÊÇÍ£ÓÃ´Ê
+						if (sn.getPos() == POSTag.PUNC// å¦‚æœæ˜¯æ ‡ç‚¹ç¬¦å·ï¼Œç®—æ˜¯åœç”¨è¯
 								|| (stopWordDictionary != null && stopWordDictionary.words.contains(sn.getSrcWord())))
 							r.setStopWord(true);
 						results.add(r);

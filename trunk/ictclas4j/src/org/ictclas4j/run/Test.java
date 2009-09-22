@@ -35,7 +35,7 @@ import com.terry.chineses.Chineses;
 
 /**
  * @author xinghuo.yao E-mail: yaoxinghuo at 126 dot com
- * @version create£ºAug 13, 2009 2:47:40 PM
+ * @version createï¼šAug 13, 2009 2:47:40 PM
  */
 public class Test {
 
@@ -55,7 +55,7 @@ public class Test {
 			test(line);
 		}
 
-		// test("¹·µ°´òÀ´,µ¹²å×ÅÍ·µôÈëÎÀÉú¼äµÄÒ»¸ö´óÌúÍ°ÄÚ£¬ÒòÄçË®Ê±¼ä¹ı³¤ËÀÍö");
+		// test("ç‹—è›‹æ‰“æ¥,å€’æ’ç€å¤´æ‰å…¥å«ç”Ÿé—´çš„ä¸€ä¸ªå¤§é“æ¡¶å†…ï¼Œå› æººæ°´æ—¶é—´è¿‡é•¿æ­»äº¡");
 
 		bw.flush();
 		bw.close();
@@ -83,7 +83,7 @@ public class Test {
 		TreeMap<Integer, WordResultBean> results = seg_res.getPosResult();
 		ArrayList<ReprocessWords> sws = Reprocess.getReprocessWords(results);
 
-		log("\r\n¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Áictclas4j³õÊ¼½á¹û¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á");
+		log("\r\nÃ—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—ictclas4jåˆå§‹ç»“æœÃ—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—");
 		// log(seg_res.getFinalResult());
 		log(Reprocess.getStringResult(input, results));
 
@@ -93,10 +93,10 @@ public class Test {
 			log("\r\n----------------------" + sw1.toString());
 			String googleResult = getGoogleSearchResult(sw1.toString());
 			TreeMap<Integer, MatcherWord> mws1 = analytics(googleResult, sw1);
-			log("-----ºÏ²¢Ç°µÄ½á¹û-----");
+			log("-----åˆå¹¶å‰çš„ç»“æœ-----");
 			printMidResult(mws1);
 			TreeMap<Integer, MatcherWord> mws2 = Reprocess.filterMatcherWord(mws1);
-			log("-----ºÏ²¢ºóµÄ½á¹û-----");
+			log("-----åˆå¹¶åçš„ç»“æœ-----");
 			printMidResult(mws2);
 			mwss.add(mws2);
 			Thread.sleep(5000);
@@ -104,12 +104,12 @@ public class Test {
 
 		TreeMap<Integer, WordResultBean> midResult = Reprocess.processResults(results, mwss);
 
-		log("\r\n¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡ÁµÚÒ»´Î´¦Àíºó½á¹û¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á");
+		log("\r\nÃ—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—ç¬¬ä¸€æ¬¡å¤„ç†åç»“æœÃ—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—");
 		log(Reprocess.getStringResult(input, midResult));
 
 		TreeMap<Integer, WordResultBean> finalResult = Reprocess.finalResults(midResult);
 
-		log("\r\n¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á×îÖÕ½á¹û¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á¡Á");
+		log("\r\nÃ—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—æœ€ç»ˆç»“æœÃ—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—Ã—");
 		log(Reprocess.getStringResult(input, finalResult));
 
 		log("\r\nStatics:");

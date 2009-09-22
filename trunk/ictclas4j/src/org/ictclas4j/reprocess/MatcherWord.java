@@ -7,12 +7,12 @@ import java.util.TreeSet;
 
 /**
  * @author Terry E-mail: yaoxinghuo at 126 dot com
- * @version create£ºAug 29, 2009 7:55:21 PM
+ * @version create: Aug 29, 2009 7:55:21 PM
  */
 public class MatcherWord {
 	/*
-	 * ProcessWordsÒ»´Î´Î²ğ·ÖºóµÄ´ÊÓï,Èç¡°¹·µ°´òÀ´¡±×îºó»á²ğ·Ö³ÉÈô¸É×éÀàËÆ[¡°¹·µ°´òÀ´¡±£¬¡°¹·µ°´ò¡±£¬¡°¹·µ°¡±£¬¡°¹·¡±]£¬
-	 * [¡°µ°´òÀ´¡±£¬¡°µ°´ò¡±£¬¡°µ°¡°]£¬[ ¡±´òÀ´¡°£¬¡±´ò¡°]£¬[ ¡±À´¡°]µÈMatcherWord
+	 * ProcessWordsä¸€æ¬¡æ¬¡æ‹†åˆ†åçš„è¯è¯­,å¦‚â€œç‹—è›‹æ‰“æ¥â€æœ€åä¼šæ‹†åˆ†æˆè‹¥å¹²ç»„ç±»ä¼¼[â€œç‹—è›‹æ‰“æ¥â€ï¼Œâ€œç‹—è›‹æ‰“â€ï¼Œâ€œç‹—è›‹â€ï¼Œâ€œç‹—â€]ï¼Œ
+	 * [â€œè›‹æ‰“æ¥â€ï¼Œâ€œè›‹æ‰“â€ï¼Œâ€œè›‹â€œ]ï¼Œ[ â€æ‰“æ¥â€œï¼Œâ€æ‰“â€œ]ï¼Œ[ â€æ¥â€œ]ç­‰MatcherWord
 	 */
 	private TreeMap<Integer, String> words = new TreeMap<Integer, String>();
 

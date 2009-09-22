@@ -29,7 +29,7 @@ import com.terry.chineses.Chineses;
 
 /**
  * @author xinghuo.yao E-mail: yaoxinghuo at 126 dot com
- * @version create£ºAug 13, 2009 2:47:40 PM
+ * @version createï¼šAug 13, 2009 2:47:40 PM
  */
 public class Test2 {
 	public static void main(String[] args) throws Exception {

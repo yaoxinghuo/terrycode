@@ -6,7 +6,7 @@ import org.apache.log4j.Logger;
 import org.ictclas4j.segment.Segment;
 
 /**
- * Copyright 2007.6.1 ÕÅĞÂ²¨£¨sinboy£©
+ * Copyright 2007.6.1 å¼ æ–°æ³¢ï¼ˆsinboyï¼‰
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -31,14 +31,14 @@ public class SegMain {
 		SegMain sm = new SegMain();
 		sm.initFrm();
 		// String[] source = {
-		// "2006ÄêµÂ¹úÊÀ½ç±­°Ë·ÖÖ®Ò»¾öÈüÂíÉÏÒª¿ªÊ¼",
-		// "¹ãÖİ£ºÍøÂç¾¯²ì¡°Ñ²Âß¡±BBSºÍ²©¿Í",
-		// "18Ê±42·ÖµÄÇòÈü¾ÍÒª¿ªÊ¼ÁË",
-		// "ÕÅĞÂ²¨×¡ÔÚÑÅÊËÔ·",
-		// "ÕÅĞÂ²¨ÔÚº¼Öİ",
-		// "ºìÑÛ²¡ºÜ¶à",
-		// "ÖĞ¹úÈËÃñ´Ó´ËÕ¾ÁËÆğÀ´",
-		// "ÈıĞÇ£Ó£È£Í£­£±£°£°ĞÍµçÊÓ»ñµÃÁË¹¤ÒµÉè¼Æ´ó½±"};
+		// "2006å¹´å¾·å›½ä¸–ç•Œæ¯å…«åˆ†ä¹‹ä¸€å†³èµ›é©¬ä¸Šè¦å¼€å§‹",
+		// "å¹¿å·ï¼šç½‘ç»œè­¦å¯Ÿâ€œå·¡é€»â€BBSå’Œåšå®¢",
+		// "18æ—¶42åˆ†çš„çƒèµ›å°±è¦å¼€å§‹äº†",
+		// "å¼ æ–°æ³¢ä½åœ¨é›…ä»•è‹‘",
+		// "å¼ æ–°æ³¢åœ¨æ­å·",
+		// "çº¢çœ¼ç—…å¾ˆå¤š",
+		// "ä¸­å›½äººæ°‘ä»æ­¤ç«™äº†èµ·æ¥",
+		// "ä¸‰æ˜Ÿï¼³ï¼¨ï¼­ï¼ï¼‘ï¼ï¼å‹ç”µè§†è·å¾—äº†å·¥ä¸šè®¾è®¡å¤§å¥–"};
 		// for (int i = 0; i < source.length; i++) {
 		// SegResult sr = seg.split(source[i]);
 		// System.out.println("time:" + sr.getSpendTime() + " " +

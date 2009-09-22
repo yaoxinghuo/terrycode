@@ -84,7 +84,7 @@ public class FrmMain {
 
 	private JPanel getJpSplitMsg() {
 		jlSplitMsg = new JLabel();
-		jlSplitMsg.setText("·Ö´Ê½á¹û£º");
+		jlSplitMsg.setText("åˆ†è¯ç»“æœï¼š");
 	
 
 		JPanel jpSplitMsg = new JPanel();
@@ -97,9 +97,9 @@ public class FrmMain {
 
 	private JPanel getJpSegPathCount() {
 		jlSegPathCount = new JLabel();
-		jlSegPathCount.setText("·Ö´ÊÂ·¾¶£º");
+		jlSegPathCount.setText("åˆ†è¯è·¯å¾„ï¼š");
 		JLabel jtf=new JLabel();
-		jtf.setText("²âÊÔ·Ö´ÊÑ­»·´ÎÊı£º");
+		jtf.setText("æµ‹è¯•åˆ†è¯å¾ªç¯æ¬¡æ•°ï¼š");
 
 		JPanel jpSegPath = new JPanel();
 		jpSegPath.add(jlSegPathCount);
@@ -129,7 +129,7 @@ public class FrmMain {
 
 	private JTextArea getJtSrcMsg() {
 		jtSrcMsg = new JTextArea(6, 40);
-		jtSrcMsg.setText("ÕÅ»ªÆ½Ëµ°Ëµã¶ş·Ö¿ª»á");
+		jtSrcMsg.setText("å¼ åå¹³è¯´å…«ç‚¹äºŒåˆ†å¼€ä¼š");
 		jtSrcMsg.setLineWrap(true);
 		return jtSrcMsg;
 	}
@@ -143,7 +143,7 @@ public class FrmMain {
 
 	private JPanel getJpSrcMsg() {
 		jlSrcMsg = new JLabel();
-		jlSrcMsg.setText("Ô´×Ö·û´®£º");
+		jlSrcMsg.setText("æºå­—ç¬¦ä¸²ï¼š");
 
 		JPanel jpSrcMsg = new JPanel();
 		jpSrcMsg.add(jlSrcMsg);
@@ -161,7 +161,7 @@ public class FrmMain {
 	private JButton getJbSplitOK() {
 		if (jbSplitOK == null) {
 			jbSplitOK = new JButton();
-			jbSplitOK.setText("·Ö´Ê");
+			jbSplitOK.setText("åˆ†è¯");
 			jbSplitOK.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					int segPathCount = Integer.parseInt(jtSegPathCount.getText());
@@ -177,7 +177,7 @@ public class FrmMain {
 	private JButton getJbTest() {
 		if (jbTest == null) {
 			jbTest = new JButton();
-			jbTest.setText("·Ö´Ê²âÊÔ");
+			jbTest.setText("åˆ†è¯æµ‹è¯•");
 			jbTest.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					try {
@@ -219,7 +219,7 @@ public class FrmMain {
 		if (jFrame == null) {
 			jFrame = new JFrame();
 			jFrame.setSize(new java.awt.Dimension(624, 215));
-			jFrame.setTitle("ICTCLAS4JÑİÊ¾ÏµÍ³");
+			jFrame.setTitle("ICTCLAS4Jæ¼”ç¤ºç³»ç»Ÿ");
 			jFrame.setContentPane(getJContentPane());
 			jFrame.addWindowListener(new java.awt.event.WindowAdapter() {
 				@Override
@@ -254,7 +254,7 @@ public class FrmMain {
 	private JTabbedPane getJTabbedPane() {
 		if (jTabbedPane == null) {
 			jTabbedPane = new JTabbedPane();
-			jTabbedPane.addTab("·Ö´Ê", null, getJpSplit(), null);
+			jTabbedPane.addTab("åˆ†è¯", null, getJpSplit(), null);
 		}
 		return jTabbedPane;
 	}

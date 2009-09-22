@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
 
 /**
  * @author xinghuo.yao E-mail: yaoxinghuo at 126 dot com
- * @version create£ºAug 17, 2009 5:32:26 PM
+ * @version createï¼šAug 17, 2009 5:32:26 PM
  */
 public class WhiteWordDictionary {
 	public TreeMap<Integer, String> words = new TreeMap<Integer, String>();
@@ -104,7 +104,7 @@ public class WhiteWordDictionary {
 
 	public static void main(String[] args) {
 		WhiteWordDictionary dic = new WhiteWordDictionary("E:\\workspace\\ictclas4j\\data\\whitewords.txt");
-		ArrayList<String> s = dic.searchWords("µ°".charAt(0));
+		ArrayList<String> s = dic.searchWords("è›‹".charAt(0));
 		for(String ss:s){
 			System.out.println(ss);
 		}

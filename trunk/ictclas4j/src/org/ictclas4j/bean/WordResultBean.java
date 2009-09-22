@@ -2,7 +2,7 @@ package org.ictclas4j.bean;
 
 /**
  * @author xinghuo.yao E-mail: yaoxinghuo at 126 dot com
- * @version create£ºAug 14, 2009 9:55:39 AM
+ * @version create: Aug 14, 2009 9:55:39 AM
  */
 public class WordResultBean {
 	private String word;

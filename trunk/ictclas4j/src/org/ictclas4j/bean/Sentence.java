@@ -4,7 +4,7 @@ package org.ictclas4j.bean;
 public class Sentence {
 	private String content;
 
-	// ÊÇ·ñĞèÒª½øĞĞ·Ö´Ê.»Ø³µ»»ĞĞºÍ¿Õ¸ñÊÇ²»ĞèÒªµÄ
+	// æ˜¯å¦éœ€è¦è¿›è¡Œåˆ†è¯.å›è½¦æ¢è¡Œå’Œç©ºæ ¼æ˜¯ä¸éœ€è¦çš„
 	private boolean isSeg;
 
 	public Sentence() {

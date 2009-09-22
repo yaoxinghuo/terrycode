@@ -3,13 +3,13 @@ package org.ictclas4j.bean;
 import java.util.ArrayList;
 
 /**
- * ÏàÍ¬¿ªÍ·µÄ´Ê×é±í.
+ * ç›¸åŒå¼€å¤´çš„è¯ç»„è¡¨.
  * 
  * @author sinboy
  * 
  */
 public class WordTable {
-	// ´Ê×é¼¯µÄÊıÄ¿
+	// è¯ç»„é›†çš„æ•°ç›®
 	private int count;
 
 	private ArrayList<WordItem> words;
