@@ -1377,7 +1377,7 @@ public class Costnote implements EntryPoint {
 
 			formPanel2
 					.add(new HTML(
-							"<font color='red'>发送验证码前，请先按“加为好友”，机器人将自动将您加为好友，本站仅使用您的手机号给您本人发送免费提醒短信。<br/>"
+							"<font color='red'>发送验证码前，请先按“加为好友”，飞信机器人将自动将您加为好友，本站使用您的手机号利用飞信给您本人发送免费提醒短信。<br/>"
 									+ "本站承诺不会将使用您的号码用于其他任何用途！若您对此有任何疑议，请不要使用该功能！"
 									+ "<a href='http://sites.google.com/site/it/feedback' target='_blank'>给本站留言</a>"));
 
@@ -1434,7 +1434,7 @@ public class Costnote implements EntryPoint {
 															"pass",
 															"系统已将验证码发送到"
 																	+ m
-																	+ ",请输入后按'验证激活'");
+																	+ ",请输入后按'验证激活'，这只是确认手机是否能本人拥有，是完全免费的");
 												} else
 													showPopMessage("error",
 															"系统发送验证码时发生错误,请确认您的手机号码已开通飞信且已加13916416465为飞信好友!");
@@ -1488,7 +1488,7 @@ public class Costnote implements EntryPoint {
 																JSONBoolean
 																		.getInstance(true));
 												showPopMessage("pass",
-														"您的手机号已成功验证!");
+														"您的手机号已成功验证，现在您可以使用免费短信提醒功能了!");
 											} else {
 												showPopMessage("error",
 														"请输入正确的验证号码!");
@@ -1564,7 +1564,7 @@ public class Costnote implements EntryPoint {
 																"pass",
 																"系统已加"
 																		+ m
-																		+ "为好友！");
+																		+ "为好友！接下来请按“发送验证码”，以确定该手机是您拥有，本服务免费");
 													}
 													validateButton
 															.setEnabled(true);
@@ -1581,7 +1581,7 @@ public class Costnote implements EntryPoint {
 													addFriendButton
 															.setEnabled(true);
 													showPopMessage("error",
-															"系统加您为好友时发生错误,请确认您的手机号码已开通飞信!");
+															"系统加您为好友时发生错误,请确认您的手机号码已开通飞信或稍候再试!");
 												}
 
 											}
