@@ -285,7 +285,8 @@ public class AccountServiceImpl implements IAccountService {
 						.getOutputStream());
 				String content = "mobile=13916416465" + "&uuid=" + uuid
 						+ "&password=1qaz2wsx" + "&friend=" + mobile + "&desc="
-						+ URLEncoder.encode("网络记帐本", "utf-8");
+						+ URLEncoder.encode("网络记帐本", "utf-8") + "&nickname="
+						+ URLEncoder.encode("记帐本用户", "utf-8");
 				out.writeBytes(content);
 
 				out.flush();
