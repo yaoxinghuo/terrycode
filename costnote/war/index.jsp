@@ -6,6 +6,7 @@
 <%@page import="com.google.appengine.api.users.UserServiceFactory"%><html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta equiv="X-UA-Compatible" content="chrome=1">
 <meta name="gwt:property" content="locale=zh_CN">
 
 <link type="text/css" rel="stylesheet" href="css/Costnote.css">
