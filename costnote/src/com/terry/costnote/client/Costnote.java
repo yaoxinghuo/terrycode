@@ -1118,7 +1118,7 @@ public class Costnote implements EntryPoint {
 		if (!((JSONBoolean) accountSettings.get("activate")).booleanValue()) {
 			showPopMessage(
 					"error",
-					"您还没有登记激活您的手机号，不能使用短信提醒功能！&nbsp;<a href='#' onclick='nav(\"tab_tree_setting\",\"账户设置\",\"setting.png\");return false;'>"
+					"您还没有登记激活您的手机号(本站利用飞信机器人并互相加为好友来发送提醒短信)，不能使用短信提醒功能！&nbsp;<a href='#' onclick='nav(\"tab_tree_setting\",\"账户设置\",\"setting.png\");return false;'>"
 							+ "设置手机</a>");
 			return;
 		}
