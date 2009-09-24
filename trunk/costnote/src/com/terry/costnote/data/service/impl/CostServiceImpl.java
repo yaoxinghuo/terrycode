@@ -50,7 +50,7 @@ public class CostServiceImpl implements ICostService {
 	private static Log log = LogFactory.getLog(CostServiceImpl.class);
 
 	private static final int TRY_TIMES = 3;
-	private static final int TIME_OUT = 20000;
+	private static final int TIME_OUT = 30000;
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -277,8 +277,6 @@ public class CostServiceImpl implements ICostService {
 			} catch (Exception e) {
 				log.warn("error fetchToSendSMS, exception:" + e.getMessage()
 						+ ". tried " + i + " times");
-				if (!e.getMessage().contains("Unknown"))
-					return false;
 			}
 		}
 		return false;
@@ -332,8 +330,6 @@ public class CostServiceImpl implements ICostService {
 			} catch (Exception e) {
 				log.warn("error fetchToSaveSchedule, exception:"
 						+ e.getMessage() + ". tried " + i + " times");
-				if (!e.getMessage().contains("Unknown"))
-					return null;
 			}
 		}
 		return null;
@@ -375,8 +371,6 @@ public class CostServiceImpl implements ICostService {
 			} catch (Exception e) {
 				log.warn("error fetchToDeleteSchedule, exception:"
 						+ e.getMessage() + ". tried " + i + " times");
-				if (!e.getMessage().contains("Unknown"))
-					return false;
 			}
 		}
 		return false;

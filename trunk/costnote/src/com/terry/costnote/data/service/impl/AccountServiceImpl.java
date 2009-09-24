@@ -46,7 +46,7 @@ public class AccountServiceImpl implements IAccountService {
 	private static Log log = LogFactory.getLog(AccountServiceImpl.class);
 
 	private static final int TRY_TIMES = 3;
-	private static final int TIME_OUT = 20000;
+	private static final int TIME_OUT = 30000;
 
 	@Autowired
 	private ICostDao costDao;
@@ -256,8 +256,6 @@ public class AccountServiceImpl implements IAccountService {
 			} catch (Exception e) {
 				log.warn("error fetchToSendSMS, exception:" + e.getMessage()
 						+ ". tried " + i + " times");
-				if (!e.getMessage().contains("Unknown"))
-					return false;
 			}
 		}
 		return false;
@@ -312,8 +310,6 @@ public class AccountServiceImpl implements IAccountService {
 			} catch (Exception e) {
 				log.warn("error fetchToAddFriend, exception:" + e.getMessage()
 						+ ". tried " + i + " times");
-				if (!e.getMessage().contains("Unknown"))
-					return -1;
 			}
 		}
 		return -1;
