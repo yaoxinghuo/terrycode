@@ -185,12 +185,13 @@ public class Costnote implements EntryPoint {
 										+ ((JSONString) accountSettings
 												.get("nickname")).stringValue()
 										+ "</a>");
-//				if (!((JSONBoolean) accountSettings.get("activate"))
-//						.booleanValue()) {
-//					showPopMessage(
-//							"info",
-//							"目前提醒飞信机器人有限，提醒功能只限于我的好朋友，如果对您有用，请<a href='http://sites.google.com/site/it/feedback' target='_blank'>联系我</a>开通！");
-//				}
+				if (!((JSONBoolean) accountSettings.get("activate"))
+						.booleanValue()) {
+					showPopMessage(
+							"info",
+							"最新推出短信提醒功能，<a href='#' onclick='nav(\"tab_tree_setting\",\"账户设置\",\"setting.png\");return false;'>"
+									+ "设置手机</a>，通过飞信机器人给您发送免费短信，飞信好友最多能添加300人，所以仅限前300位用户！");
+				}
 			}
 
 		});
@@ -1377,7 +1378,7 @@ public class Costnote implements EntryPoint {
 
 			formPanel2
 					.add(new HTML(
-							"<font color='red'>发送验证码前，请先按“加为好友”，飞信机器人将自动将您加为好友，本站使用您的手机号利用飞信给您本人发送免费提醒短信。<br/>"
+							"<font color='red'>发送验证码前，请先按“加为好友”，飞信机器人将您加为好友，本站使用您的手机号利用飞信给您本人发送免费提醒短信。<br/>"
 									+ "本站承诺不会将使用您的号码用于其他任何用途！若您对此有任何疑议，请不要使用该功能！"
 									+ "<a href='http://sites.google.com/site/it/feedback' target='_blank'>给本站留言</a>"));
 
