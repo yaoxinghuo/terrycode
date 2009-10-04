@@ -37,7 +37,7 @@ public class Dictionary {
 	public Dictionary(String filename) {
 		init();
 		boolean result = load(filename);
-		logger.info("load result:" + result);
+		logger.info(filename + " load result:" + result);
 	}
 
 	public void init() {

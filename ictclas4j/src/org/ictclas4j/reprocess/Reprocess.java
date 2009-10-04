@@ -16,6 +16,10 @@ import com.terry.chineses.Chineses;
  */
 public class Reprocess {
 
+	/*
+	 * 对ictclas4j 原版的分词结构进行再处理，包括取连续的落单的字，检查是否在白名单中能组成词语
+	 */
+
 	public static String getStringResult(String input, TreeMap<Integer, WordResultBean> results) {
 		StringBuffer sb = new StringBuffer("");
 		for (WordResultBean result : results.values()) {

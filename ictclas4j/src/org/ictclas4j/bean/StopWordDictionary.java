@@ -26,7 +26,7 @@ public class StopWordDictionary {
 	public StopWordDictionary(String filename) {
 		init();
 		boolean result = load(filename);
-		logger.info("load result:" + result);
+		logger.info(filename + " load result:" + result);
 	}
 
 	private void init() {
