@@ -30,7 +30,7 @@ public class WhiteWordDictionary {
 	public WhiteWordDictionary(String filename) {
 		init();
 		boolean result = load(filename);
-		logger.info("load result:" + result);
+		logger.info(filename + " load result:" + result);
 	}
 
 	private void init() {
@@ -97,7 +97,7 @@ public class WhiteWordDictionary {
 				indexes.put(c, index);
 			}
 		} catch (IOException e) {
-			System.err.println("WARNING: cannot open stop words list!");
+			logger.error("WARNING: cannot open white words list!");
 		}
 		return true;
 	}
@@ -105,7 +105,7 @@ public class WhiteWordDictionary {
 	public static void main(String[] args) {
 		WhiteWordDictionary dic = new WhiteWordDictionary("E:\\workspace\\ictclas4j\\data\\whitewords.txt");
 		ArrayList<String> s = dic.searchWords("蛋".charAt(0));
-		for(String ss:s){
+		for (String ss : s) {
 			System.out.println(ss);
 		}
 	}

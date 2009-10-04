@@ -7,9 +7,9 @@ package org.ictclas4j.bean;
 public class WordResultBean {
 	private String word;
 
-	private String property;
+	private String property;//词性
 	
-	private boolean stopWord = false;
+	private boolean stopWord = false;//是否是停用词
 	
 	public String getWord() {
 		return word;

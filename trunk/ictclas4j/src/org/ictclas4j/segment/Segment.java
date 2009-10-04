@@ -67,19 +67,19 @@ public class Segment {
 		if (!path.endsWith("/"))
 			path = path + "/";
 
-		logger.info("Load coreDict  ...");
+		logger.info("Loading coreDict  ...");
 		coreDict = new Dictionary(path + "coreDict.dct");
 
-		logger.info("Load bigramDict ...");
+		logger.info("Loading bigramDict ...");
 		bigramDict = new Dictionary(path + "bigramDict.dct");
 
-		logger.info("Load stopwords ...");
+		logger.info("Loading stopwords ...");
 		stopWordDictionary = new StopWordDictionary(path + "stopwords.txt");
 
-		logger.info("Load whitewords...");
+		logger.info("Loading whitewords...");
 		whiteWordDictionary = new WhiteWordDictionary(path + "whitewords.txt");
 
-		logger.info("Load tagger dict ...");
+		logger.info("Loading tagger dict ...");
 		personTagger = new PosTagger(Utility.TAG_TYPE.TT_PERSON, path + "nr", coreDict);
 		transPersonTagger = new PosTagger(Utility.TAG_TYPE.TT_TRANS_PERSON, path + "tr", coreDict);
 		placeTagger = new PosTagger(Utility.TAG_TYPE.TT_TRANS_PERSON, path + "ns", coreDict);
@@ -88,7 +88,7 @@ public class Segment {
 	}
 
 	public SegResult split(String src) {
-		src = Chineses.toJian(src);
+		src = Chineses.toJian(src);// 主要是为了可以处理繁体字，把繁体先转换成简体后处理
 		SegResult sr = new SegResult(src);// 分词结果
 		StringBuffer finalResult = new StringBuffer("");
 
@@ -112,7 +112,7 @@ public class Segment {
 					AtomSeg as = new AtomSeg(sen.getContent());
 					ArrayList<Atom> atoms = as.getAtoms();
 					mr.setAtoms(atoms);
-					logger.info("[atom time]:" + (System.currentTimeMillis() - start));
+					logger.debug("[atom time]:" + (System.currentTimeMillis() - start));
 					start = System.currentTimeMillis();
 
 					// 生成分词图表,先进行初步分词，然后进行优化，最后进行词性标记
@@ -121,14 +121,14 @@ public class Segment {
 					// 生成二叉分词图表
 					SegGraph biSegGraph = GraphGenerate.biGenerate(segGraph, coreDict, bigramDict);
 					mr.setBiSegGraph(biSegGraph.getSnList());
-					logger.info("[graph time]:" + (System.currentTimeMillis() - start));
+					logger.debug("[graph time]:" + (System.currentTimeMillis() - start));
 					start = System.currentTimeMillis();
 
 					// 求N最短路径
 					NShortPath nsp = new NShortPath(biSegGraph, segPathCount);
 					ArrayList<ArrayList<Integer>> bipath = nsp.getPaths();
 					mr.setBipath(bipath);
-					logger.info("[NSP time]:" + (System.currentTimeMillis() - start));
+					logger.debug("[NSP time]:" + (System.currentTimeMillis() - start));
 					start = System.currentTimeMillis();
 
 					for (ArrayList<Integer> onePath : bipath) {
@@ -137,7 +137,7 @@ public class Segment {
 						ArrayList<SegNode> firstPath = AdjustSeg.firstAdjust(segPath);
 						String firstResult = outputResult(firstPath);
 						mr.addFirstResult(firstResult);
-						logger.info("[first time]:" + (System.currentTimeMillis() - start));
+						logger.debug("[first time]:" + (System.currentTimeMillis() - start));
 						start = System.currentTimeMillis();
 
 						// 处理未登陆词，进对初次分词结果进行优化
@@ -147,7 +147,7 @@ public class Segment {
 						transPersonTagger.recognition(optSegGraph, sns);
 						placeTagger.recognition(optSegGraph, sns);
 						mr.setOptSegGraph(optSegGraph.getSnList());
-						logger.info("[unknown time]:" + (System.currentTimeMillis() - start));
+						logger.debug("[unknown time]:" + (System.currentTimeMillis() - start));
 						start = System.currentTimeMillis();
 
 						// 根据优化后的结果，重新进行生成二叉分词图表
@@ -168,7 +168,7 @@ public class Segment {
 							mr.addOptResult(optResult);
 							adjResult = AdjustSeg.finaAdjust(optSegPath, personTagger, placeTagger);
 							String adjrs = outputResult(adjResult, words);
-							logger.info("[last time]:" + (System.currentTimeMillis() - start));
+							logger.debug("[last time]:" + (System.currentTimeMillis() - start));
 							start = System.currentTimeMillis();
 							if (midResult == null)
 								midResult = adjrs;
