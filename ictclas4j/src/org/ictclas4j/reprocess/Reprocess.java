@@ -174,10 +174,11 @@ public class Reprocess {
 	 * 如果是标点符号，考虑是否要增加字母和数字POSTag.NOUN_LETTER, POSTag.NUM
 	 */
 	private static boolean isQualified(WordResultBean result) {
-		int[] notQualifiedTags = { POSTag.PUNC /*
-												 * , POSTag.NOUN_LETTER,
-												 * POSTag.NUM
-												 */};
+		int[] notQualifiedTags = { POSTag.PUNC, POSTag.PREP /*
+															 * ,
+															 * POSTag.NOUN_LETTER
+															 * , POSTag.NUM
+															 */};
 		for (int notQualifiedTag : notQualifiedTags) {
 			if (Utility.posStringToInt(result.getProperty()) == notQualifiedTag)
 				return false;
