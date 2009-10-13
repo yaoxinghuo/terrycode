@@ -100,7 +100,8 @@ public class PosTagger {
 			case TT_NORMAL:
 				for (SegNode sn : sns) {
 					if (sn.getPos() == 0) {
-						sn.setPos(getBestTag(sn));
+						int bestTag = getBestTag(sn);
+						sn.setPos(bestTag == 4 ? POSTag.UNKNOWN : bestTag);
 					}
 				}
 			}
