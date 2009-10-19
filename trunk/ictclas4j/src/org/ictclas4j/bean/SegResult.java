@@ -3,6 +3,9 @@ package org.ictclas4j.bean;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
+import org.ictclas4j.utility.POSTag;
+import org.ictclas4j.utility.Utility;
+
 public class SegResult {
 
 	private long startTime;
@@ -25,8 +28,19 @@ public class SegResult {
 
 	public TreeMap<Integer, WordResultBean> getPosResult() {
 		TreeMap<Integer, WordResultBean> results = new TreeMap<Integer, WordResultBean>();
+		int index = 0;
 		for (int i = 0; i < result.size(); i++) {
-			results.put(i, result.get(i));
+			WordResultBean word = result.get(i);
+			if (i != result.size() - 1 && Utility.posStringToInt(word.getProperty()) == POSTag.NUM
+					&& Utility.posStringToInt(result.get(i + 1).getProperty()) == POSTag.QUAN) {
+				WordResultBean newResultBean = new WordResultBean();
+				newResultBean.setWord(word.getWord() + result.get(i + 1).getWord());
+				newResultBean.setProperty(Utility.posIntToString(POSTag.NOUN));
+				results.put(index, newResultBean);
+				i++;
+			} else
+				results.put(index, word);
+			index++;
 		}
 		return results;
 	}
