@@ -27,7 +27,7 @@ public class SingleWords {
 		return words.size();
 	}
 
-	public ArrayList<Integer[]> getCombineIndexes() {
+	public ArrayList<Integer[]> getWhitePhraseFilterCombineIndexes() {
 		Segment segment = Segment.getInstance();
 
 		ArrayList<Integer[]> combineIndexes = new ArrayList<Integer[]>();
