@@ -2,6 +2,7 @@ package com.terry.cronwork.servlet;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.servlet.http.HttpServlet;
@@ -21,21 +22,24 @@ public class PingServlet extends HttpServlet {
 	private static final int TIME_OUT = 30000;
 
 	@Override
-	public void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException {
+	public void doGet(HttpServletRequest req, HttpServletResponse resp) {
 		resp.setContentType("text/plain");
-		String url = req.getParameter("url");
-		if (url == null || url.equals("")) {
-			resp.getWriter().println(500);
-			return;
+		try {
+			String url = req.getParameter("url");
+			if (url == null || url.equals("")) {
+				resp.getWriter().println(500);
+				return;
+			}
+			HttpURLConnection connection = (HttpURLConnection) new URL(url)
+					.openConnection();
+			connection.setConnectTimeout(TIME_OUT);
+			connection.setReadTimeout(TIME_OUT);
+			connection.connect();
+			resp.getWriter().println(connection.getResponseCode());
+			connection.disconnect();
+		} catch (MalformedURLException e) {
+		} catch (IOException e) {
 		}
-		HttpURLConnection connection = (HttpURLConnection) new URL(url)
-				.openConnection();
-		connection.setConnectTimeout(TIME_OUT);
-		connection.setReadTimeout(TIME_OUT);
-		connection.connect();
-		resp.getWriter().println(connection.getResponseCode());
-		connection.disconnect();
 	}
 
 	@Override
