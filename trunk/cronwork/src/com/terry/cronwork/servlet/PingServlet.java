@@ -23,9 +23,12 @@ public class PingServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
+		resp.setContentType("text/plain");
 		String url = req.getParameter("url");
-		if (url == null || url.equals(""))
+		if (url == null || url.equals("")) {
+			resp.getWriter().println(500);
 			return;
+		}
 		HttpURLConnection connection = (HttpURLConnection) new URL(url)
 				.openConnection();
 		connection.setConnectTimeout(TIME_OUT);
