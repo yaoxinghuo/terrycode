@@ -137,11 +137,11 @@ public class Reprocess {
 		return results;
 	}
 
-	public static TreeMap<Integer, WordResultBean> finalResults(TreeMap<Integer, WordResultBean> inputs) {
+	public static TreeMap<Integer, WordResultBean> whitePhraseFilterResults(TreeMap<Integer, WordResultBean> inputs) {
 		ArrayList<SingleWords> sws = Reprocess.getSingleWords(inputs);
 		ArrayList<Integer[]> cis = new ArrayList<Integer[]>();
 		for (SingleWords sw : sws) {
-			cis.addAll(sw.getCombineIndexes());
+			cis.addAll(sw.getWhitePhraseFilterCombineIndexes());
 		}
 		return combineResults(inputs, cis);
 	}
