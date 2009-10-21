@@ -120,8 +120,7 @@ a.gb2:hover {
 <div id=gbar><nobr><b class=gb1>GFWout</b> <a
 	href="https://fetionlib.appspot.com" onclick=gbar.qs(this) class=gb1>网页飞信</a>
 <a href="http://costnote.appspot.com/" onclick=gbar.qs(this) class=gb1>网络账本</a>
-<a href="http://sites.google.com/site/terry/" onclick=gbar.qs(this)
-	class=gb1>个人主页</a> </nobr></div>
+</nobr></div>
 <div id=guser width=100%><nobr><a
 	href="http://www.google.cn/">Google 中国</a></nobr></div>
 <div class=gbh style="left: 0"></div>
@@ -153,7 +152,7 @@ a.gb2:hover {
 <p><span style="font-size: 13px;color: green;">小提示:您可以输入想要代理上网的网址或输入关键词搜索后再点击！</span></p>
 <p><span style="font-size: 13px">&copy;<%=Calendar.getInstance().get(Calendar.YEAR)%>
 - <a href="/help.html">隐私权政策</a> - <a
-	href="https://sites.google.com/site/it/feedback">意见反映</a> - <img
+	href="http://spreadsheets.google.com/viewform?key=0AkW7RjU4e3Q3cF9XQWJkZTQzOHg1dnpGSmppYVo4ZkE&hl=en&cfg=true">意见反映</a> - <img
 	style="vertical-align: middle; align: left; border: none"
 	src="http://code.google.com/appengine/images/appengine-noborder-120x30.gif"
 	alt="Powered by Google App Engine" /></span></p>
