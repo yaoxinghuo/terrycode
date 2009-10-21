@@ -62,7 +62,6 @@
 			<tr>
 				<td align="center"><font size='-1'>&nbsp;<span
 					id="account_content"><span id="nickname"></span>&nbsp;|&nbsp;<a
-					href="http://sites.google.com/site/terry/" target="_blank">作者主页</a>&nbsp;|&nbsp;<a
 					href="https://fetionlib.appspot.com/" target="_blank">网页飞信</a>&nbsp;|&nbsp;<a
 					href="http://gfwout.appspot.com/" target="_blank">代理上网</a>&nbsp;|&nbsp;<a
 					href="<%=logoutURL%>">退出</a></span></font></td>
