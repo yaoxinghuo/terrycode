@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cronentries>
 	<cron>
-		<url>/ping?url=https://fetionlib.appspot.com/restlet/ping</url>
+		<url>/pingFetionLib</url>
 		<description>ping fetionlib.appspot.com</description>
 		<schedule>every 2 minutes</schedule>
 		<timezone>Asia/Shanghai</timezone>
