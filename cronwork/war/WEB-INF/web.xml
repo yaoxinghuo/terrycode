@@ -15,6 +15,11 @@
 		<servlet-name>ping</servlet-name>
 		<servlet-class>com.terry.cronwork.servlet.PingServlet</servlet-class>
 	</servlet>
+	
+	<servlet>
+		<servlet-name>pingFetionLib</servlet-name>
+		<servlet-class>com.terry.cronwork.servlet.FetionLibPingServlet</servlet-class>
+	</servlet>
   
 	<servlet-mapping>
 		<servlet-name>greetServlet</servlet-name>
@@ -24,6 +29,11 @@
 	<servlet-mapping>
 		<servlet-name>ping</servlet-name>
 		<url-pattern>/ping</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>pingFetionLib</servlet-name>
+		<url-pattern>/pingFetionLib</url-pattern>
 	</servlet-mapping>
   
 	<!-- Default page to serve -->
