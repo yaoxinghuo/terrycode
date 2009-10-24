@@ -35,6 +35,16 @@
 		<servlet-name>xmppreceiver</servlet-name>
 		<url-pattern>/_ah/xmpp/message/chat/</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>wavereceiver</servlet-name>
+		<servlet-class>com.terry.servlet.WaveReceiverServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>wavereceiver</servlet-name>
+		<url-pattern>/_wave/robot/jsonrpc</url-pattern>
+	</servlet-mapping>
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
