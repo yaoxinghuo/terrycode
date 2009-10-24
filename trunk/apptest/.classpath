@@ -29,6 +29,9 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/org.springframework.asm-3.0.0.CI-353.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/aopalliance-1.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/org.springframework.expression-3.0.0.CI-353.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jsonrpc.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/org.json.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/wave-robot-api-20090916.jar"/>
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
