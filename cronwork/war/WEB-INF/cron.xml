@@ -3,7 +3,7 @@
 	<cron>
 		<url>/pingFetionLib</url>
 		<description>ping fetionlib.appspot.com</description>
-		<schedule>every 2 minutes</schedule>
+		<schedule>every 4 minutes</schedule>
 		<timezone>Asia/Shanghai</timezone>
 	</cron>
 </cronentries>

@@ -23,17 +23,17 @@ public class FetionLibPingServlet extends HttpServlet {
 	private static final long serialVersionUID = -2595534483186456601L;
 
 	private static final int TIME_OUT = 30000;
-	private static boolean b = true;
+//	private static boolean b = true;
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) {
 		resp.setContentType("text/plain");
 		String responseCode;
-		if (b)
+//		if (b)
 			responseCode = "pingRpcCall: " + pingRpcCall();
-		else
-			responseCode = "pingRestlet: " + pingRestlet();
-		b = !b;
+//		else
+//			responseCode = "pingRestlet: " + pingRestlet();
+//		b = !b;
 		try {
 			resp.getWriter().println(responseCode);
 		} catch (IOException e) {
@@ -46,6 +46,7 @@ public class FetionLibPingServlet extends HttpServlet {
 		doGet(req, resp);
 	}
 
+	@SuppressWarnings("unused")
 	private int pingRestlet() {
 		try {
 			HttpURLConnection connection = (HttpURLConnection) new URL(
