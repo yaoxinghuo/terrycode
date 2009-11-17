@@ -119,7 +119,7 @@ a.gb2:hover {
 <textarea id=csi style="display: none"></textarea>
 <div id=gbar><nobr><b class=gb1>GFWout</b> <a
 	href="http://fetionlib.appspot.com" onclick=gbar.qs(this) class=gb1>网页飞信</a>
-<a href="http://costnote.appspot.com/" onclick=gbar.qs(this) class=gb1>网络账本</a>
+<!-- <a href="http://costnote.appspot.com/" onclick=gbar.qs(this) class=gb1>网络账本</a> -->
 </nobr></div>
 <div id=guser width=100%><nobr><a
 	href="http://www.google.cn/">Google 中国</a></nobr></div>
