@@ -273,4 +273,8 @@ public class Segment {
 		return whiteWordDictionary;
 	}
 
+	public StopWordDictionary getStopWordDictionary() {
+		return stopWordDictionary;
+	}
+
 }
