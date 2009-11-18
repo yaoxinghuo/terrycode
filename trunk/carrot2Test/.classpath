@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/carrot2-filter-lingo.jar"/>
+	<classpathentry kind="lib" path="lib/carrot2-local-core.jar"/>
+	<classpathentry kind="lib" path="lib/carrot2-snowball-stemmers.jar"/>
+	<classpathentry kind="lib" path="lib/carrot2-stemmer-morfologik.jar"/>
+	<classpathentry kind="lib" path="lib/carrot2-util-common.jar"/>
+	<classpathentry kind="lib" path="lib/carrot2-util-log4j.jar"/>
+	<classpathentry kind="lib" path="lib/carrot2-util-tokenizer.jar"/>
+	<classpathentry kind="lib" path="lib/chineses.jar"/>
+	<classpathentry kind="lib" path="lib/commons-collections-3.2.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="lib/commons-pool-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/htmlparser.jar"/>
+	<classpathentry kind="lib" path="lib/ictclas4j.jar"/>
+	<classpathentry kind="lib" path="lib/Jama-1.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.14.jar"/>
+	<classpathentry kind="lib" path="lib/morfologik-stemming-1.1.2.jar"/>
+	<classpathentry kind="lib" path="lib/stempel-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/violinstrings-1.0.2.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
