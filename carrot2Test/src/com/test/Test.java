@@ -1,9 +1,16 @@
 package com.test;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.carrot2.core.DuplicatedKeyException;
 import org.carrot2.core.InitializationException;
@@ -21,6 +28,14 @@ import org.carrot2.core.impl.ArrayInputComponent;
 import org.carrot2.core.impl.ArrayOutputComponent;
 import org.carrot2.core.impl.ArrayOutputComponent.Result;
 import org.carrot2.util.ArrayUtils;
+import org.htmlparser.Node;
+import org.htmlparser.NodeFilter;
+import org.htmlparser.Parser;
+import org.htmlparser.PrototypicalNodeFactory;
+import org.htmlparser.filters.NodeClassFilter;
+import org.htmlparser.tags.CompositeTag;
+import org.htmlparser.util.NodeList;
+import org.htmlparser.util.ParserException;
 
 /**
  * @author xinghuo.yao E-mail: yaoxinghuo at 126 dot com
@@ -30,109 +45,23 @@ public class Test {
 	@SuppressWarnings("unchecked")
 	public static void main(final String[] args) {
 		try {
+
+			final String query = "程序";
+			System.out.println("\r\nSearching \"" + query
+					+ "\" using google...");
 			/*
 			 * Initialize local controller. Normally you'd run this only once
 			 * for an entire application (controller is thread safe).
 			 */
 			final LocalController controller = initLocalController();
 
-			/*
-			 * Once we have a controller we can run queries. Change the query to
-			 * something that is relevant to the data in your index.
-			 */
-
-			// Data for clustering, containing documents consisting of
-			// titles and bodies of documents.
-			String[][] documents = new String[][] {
-					{ "Data Mining - Wikipedia",
-							"http://en.wikipedia.org/wiki/Data_mining" },
-					{ "KD Nuggets", "http://www.kdnuggets.com/" },
-					{ "The Data Mine", "http://www.the-data-mine.com/" },
-					{ "DMG", "http://www.dmg.org/" },
-					{ "Two Crows: Data mining glossary",
-							"http://www.twocrows.com/glossary.htm" },
-					{ "Jeff Ullman's Data Mining Lecture Notes",
-							"http://www-db.stanford.edu/~ullman/mining/mining.html" },
-					{ "Thearling.com", "http://www.thearling.com/" },
-					{ "Data Mining",
-							"http://www.eco.utexas.edu/~norman/BUS.FOR/course.mat/Alex" },
-					{ "CCSU - Data Mining",
-							"http://www.ccsu.edu/datamining/resources.html" },
-					{
-							"Data Mining: Practical Machine Learning Tools and Techniques",
-							"http://www.cs.waikato.ac.nz/~ml/weka/book.html" },
-					{ "Data Mining - Monografias.com",
-							"http://www.monografias.com/trabajos/datamining/datamining.shtml" },
-					{
-							"Amazon.com: Data Mining: Books: Pieter Adriaans,Dolf Zantinge",
-							"http://www.amazon.com/exec/obidos/tg/detail/-/0201403803?v=glance" },
-					{ "DMReview", "http://www.dmreview.com/" },
-					{ "Data Mining @ CCSU", "http://www.ccsu.edu/datamining" },
-					{ "What is Data Mining",
-							"http://www.megaputer.com/dm/dm101.php3" },
-					{ "Electronic Statistics Textbook: Data Mining Techniques",
-							"http://www.statsoft.com/textbook/stdatmin.html" },
-					{
-							"data mining - a definition from Whatis.com - see also: data miner, data analysis",
-							"http://searchcrm.techtarget.com/sDefinition/0,,sid11_gci211901,00.html" },
-					{ "St@tServ - About Data Mining",
-							"http://www.statserv.com/datamining.html" },
-					{ "DATA MINING 2005",
-							"http://www.wessex.ac.uk/conferences/2005/data05" },
-					{ "Investor Home - Data Mining",
-							"http://www.investorhome.com/mining.htm" },
-					{ "SAS | Data Mining and Text Mining",
-							"http://www.sas.com/technologies/data_mining" },
-					{ "Data Mining Student Notes, QUB",
-							"http://www.pcc.qub.ac.uk/tec/courses/datamining/stu_notes/dm_book_1.html" },
-					{ "Data Mining",
-							"http://datamining.typepad.com/data_mining" },
-					{ "Two Crows Corporation", "http://www.twocrows.com/" },
-					{ "Statistical Data Mining Tutorials",
-							"http://www.autonlab.org/tutorials" },
-					{ "Data Mining: An Introduction",
-							"http://databases.about.com/library/weekly/aa100700a.htm" },
-					{ "Data Mining Project",
-							"http://research.microsoft.com/dmx/datamining" },
-					{ "An Introduction to Data Mining",
-							"http://www.thearling.com/text/dmwhite/dmwhite.htm" },
-					{ "Untangling Text Data Mining",
-							"http://www.sims.berkeley.edu/~hearst/papers/acl99/acl99-tdm.html" },
-					{ "Data Mining Technologies", "http://www.data-mine.com/" },
-					{ "SQL Server Data Mining",
-							"http://www.sqlserverdatamining.com/" },
-					{ "Data Warehousing Information Center",
-							"http://www.dwinfocenter.org/" },
-					{ "ITworld.com - Data mining",
-							"http://www.itworld.com/App/110/050805datamining" },
-					{
-							"IBM Research | Almaden Research Center | Computer Science",
-							"http://www.almaden.ibm.com/cs/quest" },
-					{ "Data Mining and Discovery",
-							"http://www.aaai.org/AITopics/html/mining.html" },
-					{ "Data Mining: An Overview",
-							"http://www.fas.org/irp/crs/RL31798.pdf" },
-					{ "Data Mining", "http://www.gr-fx.com/graf-fx.htm" },
-					{ "Data Mining Benchmarking Association (DMBA)",
-							"http://www.dmbenchmarking.com/" },
-					{ "Data Mining",
-							"http://www.computerworld.com/databasetopics/businessintelligence/datamining" },
-					{
-							"National Center for Data Mining (NCDM) - University of Illinois at Chicago",
-							"http://www.ncdm.uic.edu/" }, };
-
-			// Although the query will not be used to fetch any data, if the
-			// data
-			// that you're submitting for clustering is a response to some
-			// search engine-like query, please provide it, as the clustering
-			// algrithm may use it to improve the clustering quality.
-			final String query = "data mining";
-
 			// The documents are provided for clustering in the
 			// PARAM_SOURCE_RAW_DOCUMENTS parameter, which should point to
 			// a List of RawDocuments.
-			List documentList = new ArrayList(documents.length);
-			for (int i = 0; i < documents.length; i++) {
+			ArrayList<SearchResult> al = analytics(getGoogleSearchResult(query));
+			List documentList = new ArrayList(al.size());
+			for (int i = 0; i < al.size(); i++) {
+				SearchResult sr = al.get(i);
 				documentList.add(new RawDocumentSnippet(new Integer(i), // unique
 						// id of
 						// the
@@ -142,9 +71,9 @@ public class Test {
 						// plain
 						// sequence
 						// id
-						documents[i][0], // document title
-						documents[i][1], // document body
-						"dummy://" + i, // URL (not required for clustering)
+						sr.getTitle(), // document title
+						sr.getContent(), // document body
+						sr.getLink(), // URL (not required for clustering)
 						0.0f) // document score, can be 0.0
 						);
 			}
@@ -168,6 +97,7 @@ public class Test {
 			System.err.println("An exception occurred: " + e.toString());
 			e.printStackTrace();
 		}
+
 	}
 
 	/**
@@ -266,7 +196,7 @@ public class Test {
 		// component first.
 		//
 		final List documents = result.documents;
-		System.out.println("Collected: " + documents.size() + " snippets.");
+		System.out.println("\r\nCollected: " + documents.size() + " snippets.");
 
 		int num = 1;
 		for (Iterator i = documents.iterator(); i.hasNext(); num++) {
@@ -348,7 +278,8 @@ public class Test {
 
 			for (int i = 0; i < level; i++)
 				System.out.print("  ");
-			System.out.print("     " + count + ": " + document.getUrl() + "\n");
+			System.out.print("     " + count + ": " + document.getTitle()
+					+ "\r\n     \t\t\t" + document.getUrl() + "\n");
 		}
 
 		// finally, if this cluster has subclusters, descend into recursion.
@@ -356,5 +287,157 @@ public class Test {
 		for (Iterator c = cluster.getSubclusters().iterator(); c.hasNext(); num++) {
 			displayCluster(level + 1, tag + "." + num, (RawCluster) c.next());
 		}
+	}
+
+	public static ArrayList<SearchResult> analytics(String result) {
+		ArrayList<SearchResult> al = new ArrayList<SearchResult>();
+		Parser parser = Parser.createParser(result, "utf8");
+
+		// 注册新的结点解析器
+		PrototypicalNodeFactory factory = new PrototypicalNodeFactory();
+		factory.registerTag(new LiTag());
+		parser.setNodeFactory(factory);
+
+		NodeFilter emFilter = new NodeClassFilter(LiTag.class);
+		NodeList nodelist;
+		try {
+			nodelist = parser.extractAllNodesThatMatch(emFilter);
+		} catch (ParserException e) {
+			return al;
+		}
+
+		Node[] nodes = nodelist.toNodeArray();
+
+		for (int i = 0; i < nodes.length; i++) {
+			Node node = nodes[i];
+			if (node instanceof LiTag) {
+				LiTag lt = (LiTag) node;
+				if (lt.getAttribute("class") != null
+						&& lt.getAttribute("class").equals("g")) {
+					SearchResult sr = new SearchResult();
+					String content = lt.getStringText();
+					Pattern p = Pattern
+							.compile("<a[\\s]+[^<]*?href[\\s]?=(\"|'|)(.*?)\\1.*?>([^<]+|.*?)?<\\/a>");
+					Matcher m = p.matcher(content);
+					if (m.find()) {
+						sr.setLink(m.group(2));
+						sr.setTitle(HTMLToTEXT(m.group(3)));
+					} else
+						continue;
+					Pattern p2 = Pattern.compile("<div class=\"s\">(.*)<br>");
+					Matcher m2 = p2.matcher(content);
+					if (m2.find()) {
+						sr.setContent(HTMLToTEXT(m2.group(1)));
+						al.add(sr);
+					}
+				}
+			}
+		}
+		return al;
+	}
+
+	public static String getGoogleSearchResult(String keyword) {
+		try {
+			String s = "http://www.google.cn/search?hl=zh-CN&source=hp&q="
+					+ URLEncoder.encode(keyword, "UTF-8")
+					+ "&num=100&btnG=Google+%E6%90%9C%E7%B4%A2&aq=f&oq=";
+			URL url = new URL(s);
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setRequestProperty("User-Agent", "IIC2.0/PC 2.1.0.0");
+			con.setRequestProperty("connection", "Close");
+			con.setDoOutput(true);
+			con.setRequestMethod("GET");
+			BufferedReader reader = new BufferedReader(new InputStreamReader(
+					con.getInputStream(), "GBK"));
+			StringBuffer sb = new StringBuffer();
+			String line;
+			while ((line = reader.readLine()) != null) {
+				sb.append(line);
+			}
+			reader.close();
+			con.disconnect();
+			return sb.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private static String HTMLToTEXT(String html) {
+		// html=html.replaceAll("<([^<>]+)>","");
+		// html=StringUtils.replace(html, "&nbsp;"," ");
+		// html=StringUtils.replace(html, "&#160;"," ");
+		// html=StringUtils.replace(html, "&lt;","<");
+		// html=StringUtils.replace(html, "&gt;",">");
+		// html=StringUtils.replace(html, "&quot;","\"");
+		// html=StringUtils.replace(html, "&amp;","&");
+
+		return html.replaceAll("<([^<>]+)>", "");
+
+	}
+
+	private static class SearchResult {
+		public String getContent() {
+			return content;
+		}
+
+		public void setContent(String content) {
+			this.content = content;
+		}
+
+		public String getLink() {
+			return link;
+		}
+
+		public void setLink(String link) {
+			this.link = link;
+		}
+
+		public void setTitle(String title) {
+			this.title = title;
+		}
+
+		public String getTitle() {
+			return title;
+		}
+
+		private String content = "<no content>";
+		private String link = "<no link>";
+		private String title = "<no title>";
+	}
+
+	static class LiTag extends CompositeTag {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 4128765593530859643L;
+
+		private static final String[] mIds = new String[] { "LI" };
+
+		// private static final String[] mEndTagEnders = new String[] {"DIV"};
+		@Override
+		public String[] getIds() {
+			return (mIds);
+		}
+
+		@Override
+		public String[] getEnders() {
+			return (mIds);
+		}
+
+		// @Override
+		// public String[] getEndTagEnders (){
+		// return (mEndTagEnders);
+		// }
+
+		public String getLink() {
+			return super.getAttribute("href");
+		}
+
+		public String getMethod() {
+			return super.getAttribute("method");
+		}
+
 	}
 }
