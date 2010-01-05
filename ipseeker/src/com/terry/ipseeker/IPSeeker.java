@@ -80,9 +80,27 @@ public class IPSeeker {
 
 	public static IPSeeker instance;
 
+	/**
+	 * 得到IPSeeker实例，无参数表示从ipseeker。properties配置文件读取IP数据库的位置
+	 * 
+	 * @return IPSeeker实例
+	 * @throws IPSeekerException
+	 */
 	public static IPSeeker getInstance() throws IPSeekerException {
+		return getInstance(Loader.DATA_PATH);
+	}
+
+	/**
+	 * 得到IPSeeker实例
+	 * 
+	 * @param IP数据库的位置 QQ IP数据库 纯真版
+	 * @return IPSeeker实例
+	 * @throws IPSeekerException
+	 */
+	public static IPSeeker getInstance(String ipDataFile)
+			throws IPSeekerException {
 		if (instance == null) {
-			File theIpFile = new File(Loader.DATA_PATH);
+			File theIpFile = new File(ipDataFile);
 			if (!theIpFile.exists())
 				throw new IPSeekerException(
 						"请确保ipseeker.properties存在classpath，且正确配置，IP显示功能将无法使用");
@@ -92,7 +110,7 @@ public class IPSeeker {
 	}
 
 	/**
-	 * 构造函数
+	 * 构造函数，单例模式
 	 */
 	private IPSeeker(File theIpFile) throws IPSeekerException {
 		ipCache = new HashMap<String, IPLocation>();
