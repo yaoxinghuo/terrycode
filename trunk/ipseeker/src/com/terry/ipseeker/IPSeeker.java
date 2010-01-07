@@ -78,7 +78,7 @@ public class IPSeeker {
 
 	private static String unknown_area;
 
-	public static IPSeeker instance;
+	private static IPSeeker instance;
 
 	/**
 	 * 得到IPSeeker实例，无参数表示从ipseeker。properties配置文件读取IP数据库的位置
