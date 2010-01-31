@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.servlet.ServletException;
@@ -107,18 +106,15 @@ public class MessageOutServlet extends HttpServlet {
 			}
 
 			int code = con.getResponseCode();
+			String message = con.getRequestMethod() + " " + code + " "
+					+ con.getResponseMessage();
 			if (code == HttpServletResponse.SC_OK) {
-				String s = getContent(con.getInputStream());
-				con.disconnect();
-				log.debug("getResponse response:" + s);
-				return code + "\r\n" + s;
+				message = message + "\r\n" + getContent(con.getInputStream());
 			}
 			con.disconnect();
-			return String.valueOf(code);
-		} catch (MalformedURLException e) {
-			return "500 " + e.getMessage();
+			return message;
 		} catch (Exception e) {
-			return "500 " + e.getMessage();
+			return "Error: " + e.getMessage();
 		}
 	}
 
