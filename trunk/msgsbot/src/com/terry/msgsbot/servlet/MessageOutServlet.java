@@ -136,6 +136,8 @@ public class MessageOutServlet extends HttpServlet {
 					}
 					String result = "已从历史记录删除：" + queue.removeLink(index)
 							+ "\r\n" + queue.statics();
+					if (queue.getSize() == 0)
+						short_cache.put(STATUS, 0);
 					cache.put(CALL_LOGS, queue);
 					return result;
 				}
@@ -189,7 +191,7 @@ public class MessageOutServlet extends HttpServlet {
 			int code = con.getResponseCode();
 			String message = con.getRequestMethod() + " " + code + " "
 					+ con.getResponseMessage();
-			if (code == HttpServletResponse.SC_OK) {
+			if (code >= 200 && code < 300) {
 				message = message + "\r\n" + getContent(con.getInputStream());
 				Queue queue = getQueueFromCache();
 				if (data == null)
