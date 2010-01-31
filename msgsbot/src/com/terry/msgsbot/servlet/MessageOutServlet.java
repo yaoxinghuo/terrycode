@@ -76,7 +76,7 @@ public class MessageOutServlet extends HttpServlet {
 	private String getResponse(String body) {
 		if (body == null || body.trim().equals(""))
 			return "Message body can not be empty.";
-		String[] parts = body.trim().split("\\s");
+		String[] parts = body.trim().split("\\s", 2);
 		if (!StringUtil.validateUrl(parts[0])) {
 			return "You must start with an valid URL seperated with post data if any.";
 		}
@@ -87,6 +87,8 @@ public class MessageOutServlet extends HttpServlet {
 		try {
 			if (StringUtil.isEmptyOrWhitespace(data))
 				data = null;
+			if (!url.startsWith("http://") || !url.startsWith("https://"))
+				url = "http://" + url;
 			HttpURLConnection con = (HttpURLConnection) new URL(url)
 					.openConnection();
 			con.setConnectTimeout(10000);
