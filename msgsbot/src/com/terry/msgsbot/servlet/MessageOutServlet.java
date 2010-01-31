@@ -78,7 +78,7 @@ public class MessageOutServlet extends HttpServlet {
 			return "Message body can not be empty.";
 		String[] parts = body.trim().split("\\s", 2);
 		if (!StringUtil.validateUrl(parts[0])) {
-			return "You must start with an valid URL seperated with post data if any.";
+			return "请输入一个有效的URL地址，如果要POST数据，请加空格把数据写在URL后";
 		}
 		return fetchData(parts[0], parts.length > 1 ? parts[1] : null);
 	}
