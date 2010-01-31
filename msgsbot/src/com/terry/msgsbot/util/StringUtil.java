@@ -58,6 +58,15 @@ public class StringUtil {
 			return true;
 		return false;
 	}
+	
+	public static boolean isDigital(String s) {
+		String pattern = "[0-9]+(.[0-9]+)?";
+		// 对()的用法总结：将()中的表达式作为一个整体进行处理，必须满足他的整体结构才可以。
+		// (.[0-9]+)? ：表示()中的整体出现一次或一次也不出现
+		Pattern p = Pattern.compile(pattern);
+		Matcher m = p.matcher(s);
+		return m.matches();
+	}
 
 	public static boolean validateEmail(String email) {
 		if (email == null)
