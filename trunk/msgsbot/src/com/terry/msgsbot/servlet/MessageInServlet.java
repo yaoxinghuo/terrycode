@@ -49,9 +49,11 @@ public class MessageInServlet extends HttpServlet {
 		try {
 			XMPPService xmpp = XMPPServiceFactory.getXMPPService();
 			JID jid = new JID("yaoxinghuo@gmail.com");
-			Message message = new MessageBuilder().withRecipientJids(jid)
+			JID jid2 = new JID("yaoxinghuo@gmail.com");
+			Message message = new MessageBuilder().withRecipientJids(jid, jid2)
 					.withBody(content + "\r\n(From: " + from + ")").build();
-			if (xmpp.getPresence(jid).isAvailable()) {
+			if (xmpp.getPresence(jid).isAvailable()
+					|| xmpp.getPresence(jid2).isAvailable()) {
 				SendResponse status = xmpp.sendMessage(message);
 				messageSent = (status.getStatusMap().get(jid) == SendResponse.Status.SUCCESS);
 			}

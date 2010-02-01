@@ -87,7 +87,8 @@ public class MessageOutServlet extends HttpServlet {
 		String jids = jid.getId();
 		if (jids.indexOf("/") != -1)
 			jids = jids.substring(0, jids.indexOf("/"));
-		if (jids.equals("yaoxinghuo@gmail.com")) {
+		if (jids.equals("yaoxinghuo@gmail.com")
+				|| jids.equals("itcontent@gmail.com")) {
 			msgBody = getResponse(message.getBody());
 		} else
 			return;
