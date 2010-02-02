@@ -49,7 +49,7 @@ public class MessageInServlet extends HttpServlet {
 		try {
 			XMPPService xmpp = XMPPServiceFactory.getXMPPService();
 			JID jid = new JID("yaoxinghuo@gmail.com");
-			JID jid2 = new JID("yaoxinghuo@gmail.com");
+			JID jid2 = new JID("itcontent@gmail.com");
 			Message message = new MessageBuilder().withRecipientJids(jid, jid2)
 					.withBody(content + "\r\n(From: " + from + ")").build();
 			if (xmpp.getPresence(jid).isAvailable()
