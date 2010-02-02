@@ -109,7 +109,7 @@ public class MessageOutServlet extends HttpServlet {
 			return "CACHE为空，程序无法正常执行";
 		}
 		if (body == null || body.trim().equalsIgnoreCase("list")
-				|| body.trim().equalsIgnoreCase("l")) {
+				|| body.trim().equals("0")) {
 			Object o = cache.get(CALL_LOGS);
 			if (o == null || !(o instanceof Queue))
 				return "历史记录为空";
