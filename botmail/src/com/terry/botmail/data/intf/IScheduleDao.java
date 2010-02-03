@@ -13,7 +13,7 @@ public interface IScheduleDao {
 
 	public Schedule getScheduleById(String id);
 
-	public boolean deleteSchedule(Schedule schedule);
+	public boolean deleteScheduleById(String id);
 
 	public int getScheduleCount(String account);
 
