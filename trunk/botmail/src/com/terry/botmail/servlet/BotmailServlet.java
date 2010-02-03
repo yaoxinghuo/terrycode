@@ -54,6 +54,7 @@ public class BotmailServlet extends HttpServlet {
 
 	private static final String HELP = "标准格式为：手机号[空格]标题[空格]内容";
 	private static final String HELP_TYPE_CHOICE = "输入1每年发送";
+	private static final String ERROR = "Sorry, error occured, please try again later.";
 
 	@Override
 	public void init() throws ServletException {
@@ -80,16 +81,13 @@ public class BotmailServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		Message message = xmpp.parseMessage(req);
 
-		String msgBody = "Sorry, error occured, please try again later.";
-
 		JID jid = message.getFromJid();
 		String jids = jid.getId();
 		if (jids.indexOf("/") != -1)
 			jids = jids.substring(0, jids.indexOf("/"));
-		msgBody = getResponse(jids, message.getBody());
 
 		Message msg = new MessageBuilder().withRecipientJids(jid).withBody(
-				msgBody).build();
+				getResponse(jids, message.getBody())).build();
 
 		if (xmpp.getPresence(jid).isAvailable()) {
 			xmpp.sendMessage(msg);
@@ -98,6 +96,9 @@ public class BotmailServlet extends HttpServlet {
 
 	@SuppressWarnings("unchecked")
 	private String getResponse(String account, String body) {
+		if (cache == null)
+			return ERROR;
+
 		Object o = cache.get(account);
 		if (o != null && o instanceof Schedule) {
 			Schedule schedule = (Schedule) o;
