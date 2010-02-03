@@ -52,12 +52,14 @@ public class MessageOutServlet extends HttpServlet {
 	private static final String STATUS = "status";
 
 	private static final String ROOT_MENU = "Menu:\r\n"
-			+ "0000:return 1:msgsbot 2:comutil 3:fetionlib 4:fetiontool 5:newfetion";
+			+ "0000:return 1:msgsbot 2:comutil 3:fetionlib 4:fetiontool 5:newfetion 101:invite";
 
 	private static final int COMUTIL = 2;
 	private static final int FETIONLIB = 3;
 	private static final int FETIONTOOL = 4;
 	private static final int NEWFETION = 5;
+
+	private static final int INVITE = 101;
 
 	private static final int MSGSBOT = 1;
 	private static final int ROOT = 0;
@@ -109,7 +111,7 @@ public class MessageOutServlet extends HttpServlet {
 		} else if (jids.contains("@appspot.com")) {
 			Message m = new MessageBuilder().withRecipientJids(
 					Constants.REC_JID1, Constants.REC_JID2).withBody(
-					jids + " :\r\n" + body).build();
+					jids + ":\r\n" + body).build();
 			if (xmpp.getPresence(Constants.REC_JID1).isAvailable()
 					|| xmpp.getPresence(Constants.REC_JID2).isAvailable()) {
 				xmpp.sendMessage(m);
@@ -153,15 +155,29 @@ public class MessageOutServlet extends HttpServlet {
 			} else if (body.equals("5")) {
 				short_cache.put(STATUS, NEWFETION);
 				return getJidsByStatus(NEWFETION);
+			} else if (body.equals("101")) {
+				short_cache.put(STATUS, INVITE);
+				return "Please enter jid(xxx@appspot.com):";
 			}
 			return ROOT_MENU;
 		}
 
 		int status = (Integer) o;
 		short_cache.put(STATUS, status);
-		if (status == 1)
+		if (status == MSGSBOT)
 			return msgsResponse(body);
-		else {
+		else if (status == INVITE) {
+			if (!StringUtil.validateEmail(body)
+					|| !body.endsWith("@appspot.com")) {
+				return body + " is not an valid appspot jid!";
+			}
+			try {
+				xmpp.sendInvitation(new JID(body));
+				return "Invite sent to " + body;
+			} catch (Exception e) {
+				return "Error send invite, exception: " + e.getMessage();
+			}
+		} else {
 			String jids = getJidsByStatus(status);
 			if (jids != null) {
 				xmpp.sendMessage(new MessageBuilder().withRecipientJids(
