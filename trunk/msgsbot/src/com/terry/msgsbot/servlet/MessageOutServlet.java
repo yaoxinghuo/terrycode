@@ -26,9 +26,9 @@ import com.google.appengine.api.memcache.stdimpl.GCacheFactory;
 import com.google.appengine.api.xmpp.JID;
 import com.google.appengine.api.xmpp.Message;
 import com.google.appengine.api.xmpp.MessageBuilder;
-import com.google.appengine.api.xmpp.SendResponse;
 import com.google.appengine.api.xmpp.XMPPService;
 import com.google.appengine.api.xmpp.XMPPServiceFactory;
+import com.terry.msgsbot.util.Constants;
 import com.terry.msgsbot.util.Queue;
 import com.terry.msgsbot.util.StringUtil;
 
@@ -51,6 +51,17 @@ public class MessageOutServlet extends HttpServlet {
 
 	private static final String STATUS = "status";
 
+	private static final String ROOT_MENU = "Menu:\r\n"
+			+ "0000:return 1:msgsbot 2:comutil 3:fetionlib 4:fetiontool 5:newfetion";
+
+	private static final int COMUTIL = 2;
+	private static final int FETIONLIB = 3;
+	private static final int FETIONTOOL = 4;
+	private static final int NEWFETION = 5;
+
+	private static final int MSGSBOT = 1;
+	private static final int ROOT = 0;
+
 	private Cache cache;
 	private Cache short_cache;
 
@@ -60,7 +71,7 @@ public class MessageOutServlet extends HttpServlet {
 			cache = CacheManager.getInstance().getCacheFactory().createCache(
 					Collections.emptyMap());
 			Map<Integer, Integer> CACHE_PROPS = new HashMap<Integer, Integer>();
-			CACHE_PROPS.put(GCacheFactory.EXPIRATION_DELTA, 60 * 5);
+			CACHE_PROPS.put(GCacheFactory.EXPIRATION_DELTA, 3600);
 			short_cache = CacheManager.getInstance().getCacheFactory()
 					.createCache(CACHE_PROPS);
 		} catch (CacheException e) {
@@ -81,26 +92,37 @@ public class MessageOutServlet extends HttpServlet {
 		log.debug("xmpp received message...");
 		Message message = xmpp.parseMessage(req);
 
-		String msgBody = "Sorry, error occured, please try again later.";
+		String body = message.getBody();
 
 		JID jid = message.getFromJid();
 		String jids = jid.getId();
 		if (jids.indexOf("/") != -1)
 			jids = jids.substring(0, jids.indexOf("/"));
-		if (jids.equals("yaoxinghuo@gmail.com")
-				|| jids.equals("itcontent@gmail.com")) {
-			msgBody = getResponse(message.getBody());
-		} else
-			return;
-		Message msg = new MessageBuilder().withRecipientJids(jid).withBody(
-				msgBody).build();
-
-		@SuppressWarnings("unused")
-		boolean messageSent = false;
-		if (xmpp.getPresence(jid).isAvailable()) {
-			SendResponse status = xmpp.sendMessage(msg);
-			messageSent = (status.getStatusMap().get(jid) == SendResponse.Status.SUCCESS);
+		if (isAdmin(jids)) {
+			String msgBody = getResponse(body);
+			if (!StringUtil.isEmptyOrWhitespace(msgBody)) {
+				if (xmpp.getPresence(jid).isAvailable()) {
+					xmpp.sendMessage(new MessageBuilder()
+							.withRecipientJids(jid).withBody(msgBody).build());
+				}
+			}
+		} else if (jids.contains("@appspot.com")) {
+			Message m = new MessageBuilder().withRecipientJids(
+					Constants.REC_JID1, Constants.REC_JID2).withBody(
+					jids + " :\r\n" + body).build();
+			if (xmpp.getPresence(Constants.REC_JID1).isAvailable()
+					|| xmpp.getPresence(Constants.REC_JID2).isAvailable()) {
+				xmpp.sendMessage(m);
+			}
 		}
+	}
+
+	private boolean isAdmin(String jids) {
+		for (String admin : Constants.ADMINS) {
+			if (admin.equals(jids))
+				return true;
+		}
+		return false;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -108,61 +130,46 @@ public class MessageOutServlet extends HttpServlet {
 		if (cache == null || short_cache == null) {
 			return "CACHE为空，程序无法正常执行";
 		}
-		if (body == null || body.trim().equalsIgnoreCase("list")
-				|| body.trim().equals("0")) {
-			Object o = cache.get(CALL_LOGS);
-			if (o == null || !(o instanceof Queue))
-				return "历史记录为空";
-			else {
-				short_cache.put(STATUS, 1);
-				return ((Queue) o).statics();
-			}
-		}
 		Object o = short_cache.get(STATUS);
-		if (o != null && ((Integer) o) == 1) {
-			Queue queue = getQueueFromCache();
-			if (body.startsWith("-")) {
-				if (body.length() < 2) {
-					queue.clear();
-					cache.put(CALL_LOGS, queue);
-					short_cache.put(STATUS, 0);
-					return "历史记录已清空";
-				} else {
-					String other = body.substring(1);
-					if (!StringUtil.isDigital(other))
-						return "请输入-[数字]";
-					int index = Integer.parseInt(other);
-					if (index <= 0 || index > queue.getSize()) {
-						return "数字范围为1<=x<=" + queue.getSize();
-					}
-					String result = "已从历史记录删除：" + queue.removeLink(index)
-							+ "\r\n" + queue.statics();
-					if (queue.getSize() == 0)
-						short_cache.put(STATUS, 0);
-					cache.put(CALL_LOGS, queue);
-					return result;
-				}
-			} else {
-				if (StringUtil.isDigital(body)) {
-					int index = Integer.parseInt(body);
-					if (index <= 0 || index > queue.getSize()) {
-						return "数字范围为1<=x<=" + queue.getSize();
-					}
-					String link = queue.getLink(index);
-					if (link == null)
-						return "请重新选择序号";
-					String[] p = link.split("\\s", 2);
-					return link + "\r\n"
-							+ fetchData(p[0], p.length > 1 ? p[1] : null);
-				}
+		if (StringUtil.isEmptyOrWhitespace(body) || body.equals("0000")
+				|| o == null) {
+			short_cache.put(STATUS, ROOT);
+			return ROOT_MENU;
+		}
+		body = body.trim();
+		if ((Integer) o == ROOT) {
+			if (body.equals("1")) {
+				short_cache.put(STATUS, MSGSBOT);
+				return getJidsByStatus(MSGSBOT);
+			} else if (body.equals("2")) {
+				short_cache.put(STATUS, COMUTIL);
+				return getJidsByStatus(COMUTIL);
+			} else if (body.equals("3")) {
+				short_cache.put(STATUS, FETIONLIB);
+				return getJidsByStatus(FETIONLIB);
+			} else if (body.equals("4")) {
+				short_cache.put(STATUS, FETIONTOOL);
+				return getJidsByStatus(FETIONTOOL);
+			} else if (body.equals("5")) {
+				short_cache.put(STATUS, NEWFETION);
+				return getJidsByStatus(NEWFETION);
+			}
+			return ROOT_MENU;
+		}
+
+		int status = (Integer) o;
+		short_cache.put(STATUS, status);
+		if (status == 1)
+			return msgsResponse(body);
+		else {
+			String jids = getJidsByStatus(status);
+			if (jids != null) {
+				xmpp.sendMessage(new MessageBuilder().withRecipientJids(
+						new JID(jids)).withBody(body).build());
 			}
 		}
-		String[] parts = body.trim().split("\\s", 2);
-		if (!StringUtil.validateUrl(parts[0])) {
-			return "请输入一个有效的URL地址，如果要POST数据，请加空格把数据写在URL后，"
-					+ "输入list查看编辑或重新执行过往记录";
-		}
-		return fetchData(parts[0], parts.length > 1 ? parts[1] : null);
+		return null;
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -232,6 +239,76 @@ public class MessageOutServlet extends HttpServlet {
 		}
 		reader.close();
 		return StringUtil.HTMLToTEXT(sb.toString().trim());
+	}
 
+	@SuppressWarnings("unchecked")
+	private String msgsResponse(String body) {
+		if (body.equalsIgnoreCase("list") || body.trim().equals("00")) {
+			Object obj = cache.get(CALL_LOGS);
+			if (obj == null || !(obj instanceof Queue))
+				return "历史记录为空";
+			else {
+				return ((Queue) obj).statics();
+			}
+		}
+
+		Queue queue = getQueueFromCache();
+		if (body.startsWith("-")) {
+			if (body.length() < 2) {
+				queue.clear();
+				cache.put(CALL_LOGS, queue);
+				return "历史记录已清空";
+			} else {
+				String other = body.substring(1);
+				if (!StringUtil.isDigital(other))
+					return "请输入-[数字]";
+				int index = Integer.parseInt(other);
+				if (index <= 0 || index > queue.getSize()) {
+					return "数字范围为1<=x<=" + queue.getSize();
+				}
+				String result = "已从历史记录删除：" + queue.removeLink(index) + "\r\n"
+						+ queue.statics();
+				cache.put(CALL_LOGS, queue);
+				return result;
+			}
+		} else {
+			if (StringUtil.isDigital(body)) {
+				if (queue.getSize() == 0)
+					return "历史记录为空";
+				int index = Integer.parseInt(body);
+				if (index <= 0 || index > queue.getSize()) {
+					return "数字范围为1<=x<=" + queue.getSize();
+				}
+				String link = queue.getLink(index);
+				if (link == null)
+					return "请重新选择序号";
+				String[] p = link.split("\\s", 2);
+				return link + "\r\n"
+						+ fetchData(p[0], p.length > 1 ? p[1] : null);
+			}
+		}
+
+		String[] parts = body.trim().split("\\s", 2);
+		if (!StringUtil.validateUrl(parts[0])) {
+			return "请输入一个有效的URL地址，如果要POST数据，请加空格把数据写在URL后，"
+					+ "输入list查看编辑或重新执行过往记录";
+		}
+		return fetchData(parts[0], parts.length > 1 ? parts[1] : null);
+	}
+
+	private String getJidsByStatus(int status) {
+		switch (status) {
+		case MSGSBOT:
+			return "msgsbot@appspot.com";
+		case COMUTIL:
+			return "comutil@appspot.com";
+		case FETIONLIB:
+			return "fetionlib@appspot.com";
+		case FETIONTOOL:
+			return "fetiontool@appspot.com";
+		case NEWFETION:
+			return "newfetion@appspot.com";
+		}
+		return null;
 	}
 }

@@ -11,12 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.google.appengine.api.xmpp.JID;
 import com.google.appengine.api.xmpp.Message;
 import com.google.appengine.api.xmpp.MessageBuilder;
 import com.google.appengine.api.xmpp.SendResponse;
 import com.google.appengine.api.xmpp.XMPPService;
 import com.google.appengine.api.xmpp.XMPPServiceFactory;
+import com.terry.msgsbot.util.Constants;
 import com.terry.msgsbot.util.StringUtil;
 
 /**
@@ -48,14 +48,14 @@ public class MessageInServlet extends HttpServlet {
 		boolean messageSent = false;
 		try {
 			XMPPService xmpp = XMPPServiceFactory.getXMPPService();
-			JID jid = new JID("yaoxinghuo@gmail.com");
-			JID jid2 = new JID("itcontent@gmail.com");
-			Message message = new MessageBuilder().withRecipientJids(jid, jid2)
-					.withBody(content + "\r\n(From: " + from + ")").build();
-			if (xmpp.getPresence(jid).isAvailable()
-					|| xmpp.getPresence(jid2).isAvailable()) {
+			Message message = new MessageBuilder().withRecipientJids(
+					Constants.REC_JID1, Constants.REC_JID2).withBody(
+					content + "\r\n(From: " + from + ")").build();
+			if (xmpp.getPresence(Constants.REC_JID1).isAvailable()
+					|| xmpp.getPresence(Constants.REC_JID2).isAvailable()) {
 				SendResponse status = xmpp.sendMessage(message);
-				messageSent = (status.getStatusMap().get(jid) == SendResponse.Status.SUCCESS);
+				messageSent = (status.getStatusMap().get(Constants.REC_JID1) == SendResponse.Status.SUCCESS)
+						|| (status.getStatusMap().get(Constants.REC_JID2) == SendResponse.Status.SUCCESS);
 			}
 			PrintWriter pw = resp.getWriter();
 			pw.write(String.valueOf(messageSent));
