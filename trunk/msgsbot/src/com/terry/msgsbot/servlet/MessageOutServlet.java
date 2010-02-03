@@ -108,13 +108,12 @@ public class MessageOutServlet extends HttpServlet {
 							.withRecipientJids(jid).withBody(msgBody).build());
 				}
 			}
-		} else if (jids.contains("@appspot.com")) {
-			Message m = new MessageBuilder().withRecipientJids(
-					Constants.REC_JID1, Constants.REC_JID2).withBody(
-					jids + "\r\n" + body).build();
+		} else {
 			if (xmpp.getPresence(Constants.REC_JID1).isAvailable()
 					|| xmpp.getPresence(Constants.REC_JID2).isAvailable()) {
-				xmpp.sendMessage(m);
+				xmpp.sendMessage(new MessageBuilder().withRecipientJids(
+						Constants.REC_JID1, Constants.REC_JID2).withBody(
+						jids + "\r\n" + body).build());
 			}
 		}
 	}
