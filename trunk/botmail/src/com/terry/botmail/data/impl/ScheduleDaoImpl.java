@@ -55,12 +55,19 @@ public class ScheduleDaoImpl implements IScheduleDao {
 	}
 
 	@Override
-	public boolean deleteSchedule(Schedule schedule) {
+	public boolean deleteScheduleById(String id) {
+		Key key = KeyFactory.stringToKey(id);
+		if (key == null || !key.isComplete())
+			return false;
+
+		EntityManager em = EMF.get().createEntityManager();
+
+		Schedule schedule = em.find(Schedule.class, key);
+		if (schedule == null)
+			return false;
 		try {
-			EntityManager em = EMF.get().createEntityManager();
 			EntityTransaction tx = em.getTransaction();
 			tx.begin();
-
 			em.remove(schedule);
 			tx.commit();
 		} catch (Exception e) {

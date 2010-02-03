@@ -4,14 +4,17 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.terry.botmail.data.impl.ScheduleDaoImpl;
-import com.terry.botmail.data.intf.IScheduleDao;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.terry.botmail.model.Schedule;
+import com.terry.botmail.util.EMF;
 import com.terry.botmail.util.MailSender;
 import com.terry.botmail.util.StringUtil;
 
@@ -26,8 +29,6 @@ public class SendMailServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = -843840894946959108L;
 
-	private IScheduleDao scheduleDao = new ScheduleDaoImpl();
-
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws IOException, ServletException {
@@ -40,14 +41,23 @@ public class SendMailServlet extends HttpServlet {
 		String id = req.getParameter("id");
 		if (StringUtil.isEmptyOrWhitespace(id))
 			return;
-		Schedule schedule = scheduleDao.getScheduleById(id);
+		Key key = KeyFactory.stringToKey(id);
+		if (key == null || !key.isComplete())
+			return;
+
+		EntityManager em = EMF.get().createEntityManager();
+
+		Schedule schedule = em.find(Schedule.class, key);
 		if (schedule == null)
 			return;
 		try {
+			EntityTransaction tx = em.getTransaction();
+			tx.begin();
+
 			MailSender.sendMail(schedule.getMobile() + "@139.com", schedule
 					.getSubject(), schedule.getContent());
 			if (schedule.getType() == 0)
-				scheduleDao.deleteSchedule(schedule);
+				em.remove(schedule);
 			else {
 				Calendar c_sdate = Calendar.getInstance();
 				c_sdate.setTime(schedule.getSdate());
@@ -67,8 +77,9 @@ public class SendMailServlet extends HttpServlet {
 				}
 				schedule.setSdate(c_sdate.getTime());
 				schedule.setAdate(new Date());
-				scheduleDao.saveSchedule(schedule);
+				em.persist(schedule);
 			}
+			tx.commit();
 		} catch (Exception e) {
 		}
 	}
