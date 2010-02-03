@@ -111,7 +111,7 @@ public class MessageOutServlet extends HttpServlet {
 		} else if (jids.contains("@appspot.com")) {
 			Message m = new MessageBuilder().withRecipientJids(
 					Constants.REC_JID1, Constants.REC_JID2).withBody(
-					jids + ":\r\n" + body).build();
+					jids + "\r\n" + body).build();
 			if (xmpp.getPresence(Constants.REC_JID1).isAvailable()
 					|| xmpp.getPresence(Constants.REC_JID2).isAvailable()) {
 				xmpp.sendMessage(m);
@@ -259,7 +259,7 @@ public class MessageOutServlet extends HttpServlet {
 
 	@SuppressWarnings("unchecked")
 	private String msgsResponse(String body) {
-		if (body.equalsIgnoreCase("list") || body.trim().equals("00")) {
+		if (body.equalsIgnoreCase("list") || body.trim().equals("0")) {
 			Object obj = cache.get(CALL_LOGS);
 			if (obj == null || !(obj instanceof Queue))
 				return "历史记录为空";
