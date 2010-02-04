@@ -1,8 +1,10 @@
 package com.terry.botmail.servlet;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -17,6 +19,7 @@ import com.terry.botmail.model.Schedule;
 import com.terry.botmail.util.EMF;
 import com.terry.botmail.util.MailSender;
 import com.terry.botmail.util.StringUtil;
+import com.terry.botmail.util.XMPPSender;
 
 /**
  * @author xinghuo.yao E-mail: yaoxinghuo at 126 dot com
@@ -28,6 +31,9 @@ public class SendMailServlet extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = -843840894946959108L;
+
+	private SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm",
+			Locale.CHINA);
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
@@ -54,8 +60,10 @@ public class SendMailServlet extends HttpServlet {
 			EntityTransaction tx = em.getTransaction();
 			tx.begin();
 
-			MailSender.sendMail(schedule.getEmail(), schedule.getSubject(),
-					schedule.getContent());
+			MailSender.sendMail(schedule.getEmail(), schedule.getAccount(),
+					schedule.getSubject(), schedule.getContent());
+			String report = "主题为：" + schedule.getSubject() + "的邮件已发送至："
+					+ schedule.getEmail();
 			if (schedule.getType() == 2)
 				em.remove(schedule);
 			else {
@@ -78,8 +86,10 @@ public class SendMailServlet extends HttpServlet {
 				schedule.setSdate(c_sdate.getTime());
 				schedule.setAdate(new Date());
 				em.persist(schedule);
+				report = report + "，下次发送日期为：" + sdf2.format(c_sdate.getTime());
 			}
 			tx.commit();
+			XMPPSender.sendXMPP(schedule.getAccount(), report);
 		} catch (Exception e) {
 		}
 	}
