@@ -56,7 +56,7 @@ public class BotmailServlet extends HttpServlet {
 			+ "手机号[空格]标题[空格]内容" + "\r\n输入list或00查看已设置定时列表";
 	private static final String HELP_TYPE_CHOICE = "输入1即时发送，2指定时间发送，3定时每天发送，"
 			+ "4每周发送，5每月发送，6每年发送，输入0取消";
-	private static final String ERROR = "对不起，程序出现错误，请稍候再试！";
+	private static final String ERROR = "对不起，程序出现错误，请稍候再试";
 
 	@Override
 	public void init() throws ServletException {
@@ -109,10 +109,10 @@ public class BotmailServlet extends HttpServlet {
 			HashMap<Integer, String> map = (HashMap<Integer, String>) o;
 			if (body.equals("0")) {
 				cache.remove(account);
-				return "您已取消设置\r\n" + HELP;
+				return "已取消。" + HELP;
 			} else {
 				if (!StringUtil.isDigital(body)) {
-					return "请输入有效的数字来删除";
+					return "请输入有效的序号以删除定时设置";
 				}
 				int index = Integer.parseInt(body);
 				String id = map.get(index);
@@ -120,7 +120,7 @@ public class BotmailServlet extends HttpServlet {
 					return "对不起，找不到该序号的定时设置";
 				else {
 					if (scheduleDao.deleteScheduleById(id))
-						return "您已成功删除定时设置，输入数字继续删除，按0返回";
+						return "您已成功删除定时设置，输入序号继续删除，按0返回";
 					else
 						return ERROR;
 				}
@@ -138,11 +138,11 @@ public class BotmailServlet extends HttpServlet {
 			return HELP;
 
 		if (!StringUtil.isChinaMobile(parts[0]))
-			return parts[0] + " 不是有效的中国移动手机号码！";
+			return parts[0] + "不是有效的中国移动手机号码";
 		String email = parts[0] + "@139.com";
 
 		if (scheduleDao.getScheduleCount(account) >= 10) {
-			return "对不起，您设置的定时数目已经达到上限，请删除一些再试！";
+			return "对不起，您设置的定时数目已经达到上限，请删除一些定时设置后再试";
 		}
 
 		Schedule schedule = new Schedule();
@@ -157,7 +157,7 @@ public class BotmailServlet extends HttpServlet {
 
 		cache.put(account, schedule);
 
-		return "您将设置标题为 " + parts[1] + "的邮件发送至：" + email + "\r\n"
+		return "您将设置标题为：" + parts[1] + "的邮件发送至：" + email + "\r\n"
 				+ HELP_TYPE_CHOICE;
 	}
 
@@ -166,8 +166,7 @@ public class BotmailServlet extends HttpServlet {
 			List<Schedule> schedules) {
 		if (schedules == null || schedules.size() == 0)
 			return "您尚未设置定时";
-		StringBuffer sb = new StringBuffer(
-				"显示您现有的定时列表，直接输入序号数字将删除该定时设置，输入0返回");
+		StringBuffer sb = new StringBuffer("显示您现有的定时列表，直接输入序号数字将删除该定时设置，输入0返回");
 		HashMap<Integer, String> map = new HashMap<Integer, String>();
 		int count = 0;
 		for (Schedule schedule : schedules) {
@@ -198,7 +197,7 @@ public class BotmailServlet extends HttpServlet {
 			Schedule schedule) {
 		if (body.equals("0")) {
 			cache.remove(account);
-			return "您已取消设置\r\n" + HELP;
+			return "已取消。\r\n" + HELP;
 		}
 		boolean scheduleSaved = false;
 		if (schedule.getType() > 1) {
@@ -218,12 +217,12 @@ public class BotmailServlet extends HttpServlet {
 				} else
 					sdate = sdf2.parse(body.replace("：", ":"));
 				if (sdate.getTime() <= new Date().getTime())
-					return "您输入的：" + sdf2.format(sdate) + " 已超过现在时间，请重新输入";
+					return "您输入的：" + sdf2.format(sdate) + "已超过现在时间，请重新输入";
 				schedule.setSdate(sdate);
 				scheduleSaved = scheduleDao.saveSchedule(schedule);
 				cache.remove(account);
 			} catch (ParseException e) {
-				return "请输入有效的时间日期如2010-05-01 09:08，如果是当天发送，也可只输入时间如09:08";
+				return "请输入有效的时间日期，如2010-05-01 09:08，如果是当天发送，也可只输入时间，如09:08";
 			}
 		}
 
@@ -236,14 +235,15 @@ public class BotmailServlet extends HttpServlet {
 				try {
 					MailSender.sendMail(email, schedule.getSubject(), schedule
 							.getContent());
-					return "邮件已即时发送至：" + email;
+					return "标题为：" + schedule.getSubject() + "的邮件已即时发送至："
+							+ email;
 				} catch (Exception e) {
 					return "对不起，邮件未发送：" + email + "，错误：" + e.getMessage();
 				}
 			} else if (body.equals("2")) {
 				schedule.setType(2);
 				cache.put(account, schedule);
-				return "请输入要发送邮件的日期时间如2010-05-01 09:08，如果是当天发送，也可只输入时间如09:08";
+				return "请输入要发送邮件的日期时间，如2010-05-01 09:08，如果是当天发送，也可只输入时间，如09:08";
 			} else if (body.equals("3")) {
 				t = "天";
 				schedule.setType(3);
@@ -263,7 +263,7 @@ public class BotmailServlet extends HttpServlet {
 				cache.put(account, schedule);
 				return "您成功设置定时每"
 						+ t
-						+ "发送，请输入第一次发送邮件的日期时间如2010-05-01 09:08，如果是当天，也可只输入时间如09:08";
+						+ "发送，请输入第一次发送邮件的日期时间，如2010-05-01 09:08，如果是当天，也可只输入时间，如09:08";
 
 			}
 		case 2:
