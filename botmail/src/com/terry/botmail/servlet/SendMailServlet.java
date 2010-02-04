@@ -54,8 +54,8 @@ public class SendMailServlet extends HttpServlet {
 			EntityTransaction tx = em.getTransaction();
 			tx.begin();
 
-			MailSender.sendMail(schedule.getMobile() + "@139.com", schedule
-					.getSubject(), schedule.getContent());
+			MailSender.sendMail(schedule.getEmail(), schedule.getSubject(),
+					schedule.getContent());
 			if (schedule.getType() == 2)
 				em.remove(schedule);
 			else {
