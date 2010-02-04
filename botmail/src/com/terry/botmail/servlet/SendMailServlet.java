@@ -59,11 +59,12 @@ public class SendMailServlet extends HttpServlet {
 		try {
 			EntityTransaction tx = em.getTransaction();
 			tx.begin();
-
-			MailSender.sendMail(schedule.getEmail(), schedule.getAccount(),
-					schedule.getSubject(), schedule.getContent());
-			String report = "主题为：" + schedule.getSubject() + "的邮件已发送至："
-					+ schedule.getEmail();
+			String account = schedule.getAccount();
+			MailSender.sendMail(schedule.getEmail(), account, schedule
+					.getSubject(), schedule.getContent());
+			Date now = new Date();
+			String report = "主题为：" + schedule.getSubject() + "的邮件已于："
+					+ sdf2.format(now) + "发送至：" + schedule.getEmail();
 			if (schedule.getType() == 2)
 				em.remove(schedule);
 			else {
@@ -84,12 +85,12 @@ public class SendMailServlet extends HttpServlet {
 					break;
 				}
 				schedule.setSdate(c_sdate.getTime());
-				schedule.setAdate(new Date());
+				schedule.setAdate(now);
 				em.persist(schedule);
 				report = report + "，下次发送日期为：" + sdf2.format(c_sdate.getTime());
 			}
 			tx.commit();
-			XMPPSender.sendXMPP(schedule.getAccount(), report);
+			XMPPSender.sendXMPP(account, report);
 		} catch (Exception e) {
 		}
 	}

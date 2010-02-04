@@ -14,8 +14,12 @@ public class XMPPSender {
 	private static XMPPService xmpp = XMPPServiceFactory.getXMPPService();
 
 	public static boolean sendXMPP(String account, String content) {
+		JID jid = new JID(account);
+		return sendXMPP(jid, content);
+	}
+
+	public static boolean sendXMPP(JID jid, String content) {
 		try {
-			JID jid = new JID(account);
 			if (!xmpp.getPresence(jid).isAvailable())
 				return false;
 			SendResponse status = xmpp.sendMessage(new MessageBuilder()
