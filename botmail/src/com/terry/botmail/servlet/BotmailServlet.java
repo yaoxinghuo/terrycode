@@ -137,13 +137,12 @@ public class BotmailServlet extends HttpServlet {
 		if (parts.length < 3)
 			return HELP;
 
+		if (!checkCount(account))
+			return "对不起，您设置的定时数目已经达到上限，请删除一些定时设置后再试";
+
 		if (!StringUtil.isChinaMobile(parts[0]))
 			return parts[0] + "不是有效的中国移动手机号码";
 		String email = parts[0] + "@139.com";
-
-		if (scheduleDao.getScheduleCount(account) >= 10) {
-			return "对不起，您设置的定时数目已经达到上限，请删除一些定时设置后再试";
-		}
 
 		Schedule schedule = new Schedule();
 		schedule.setSdate(null);
@@ -295,6 +294,18 @@ public class BotmailServlet extends HttpServlet {
 		default:
 			return "年";
 		}
+	}
+
+	private boolean checkCount(String account) {
+		String[] whiteList = { "q409640976@gmail.com" };
+		for (String s : whiteList) {
+			if (s.equals(account))
+				return true;
+		}
+		if (scheduleDao.getScheduleCount(account) >= 10) {
+			return false;
+		}
+		return true;
 	}
 
 }
