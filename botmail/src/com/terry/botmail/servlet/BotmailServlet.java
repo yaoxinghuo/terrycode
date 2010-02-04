@@ -246,7 +246,7 @@ public class BotmailServlet extends HttpServlet {
 				return "请输入要发送邮件的日期时间如2010-05-01 09:08，如果是当天发送，也可只输入时间如09:08";
 			} else if (body.equals("3")) {
 				t = "天";
-				schedule.setType(4);
+				schedule.setType(3);
 			} else if (body.equals("4")) {
 				t = "周";
 				schedule.setType(4);
