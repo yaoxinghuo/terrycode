@@ -40,7 +40,9 @@ public class ScheduleDaoImpl implements IScheduleDao {
 	public List<Schedule> getReadyToToSchedules() {
 		Query query = em.createQuery("SELECT s FROM "
 				+ Schedule.class.getName() + " s where s.sdate<=:sdate");
-		query.setParameter("sdate", new Date());
+		Date date = new Date();
+		date.setTime(date.getTime() + 180000l);
+		query.setParameter("sdate", date);
 		query.setMaxResults(500);
 		return query.getResultList();
 	}
