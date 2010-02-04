@@ -88,20 +88,20 @@ public class Schedule implements Serializable {
 		this.content = content;
 	}
 
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
-
-	public String getMobile() {
-		return mobile;
-	}
-
 	public void setSubject(String subject) {
 		this.subject = subject;
 	}
 
 	public String getSubject() {
 		return subject;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getEmail() {
+		return email;
 	}
 
 	@Enumerated
@@ -121,6 +121,6 @@ public class Schedule implements Serializable {
 	@Enumerated
 	private String content;
 	@Enumerated
-	private String mobile;
+	private String email;
 
 }

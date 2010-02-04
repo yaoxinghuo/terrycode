@@ -52,8 +52,8 @@ public class BotmailServlet extends HttpServlet {
 
 	private Cache cache;
 
-	private static final String HELP = "直接添加或发送邮件请输入标准格式（机器人会提示您接下来的操作）："
-			+ "手机号[空格]标题[空格]内容" + "\r\n输入list或00查看已设置定时列表";
+	private static final String HELP = "直接添加或发送邮件（默认139邮箱）请输入标准格式（机器人会提示您接下来的操作）："
+			+ "手机号或Email[空格]标题[空格]内容" + "\r\n输入list或00查看已设置定时列表";
 	private static final String HELP_TYPE_CHOICE = "输入1即时发送，2指定时间发送，3定时每天发送，"
 			+ "4每周发送，5每月发送，6每年发送，输入0取消";
 	private static final String ERROR = "对不起，程序出现错误，请稍候再试";
@@ -140,16 +140,23 @@ public class BotmailServlet extends HttpServlet {
 		if (!checkCount(account))
 			return "对不起，您设置的定时数目已经达到上限，请删除一些定时设置后再试";
 
-		if (!StringUtil.isChinaMobile(parts[0]))
-			return parts[0] + "不是有效的中国移动手机号码";
-		String email = parts[0] + "@139.com";
+		String email = parts[0];
+		if (StringUtil.isDigital(parts[0])) {
+			if (!StringUtil.isChinaMobile(parts[0]))
+				return parts[0] + "不是有效的中国移动手机号码";
+			else
+				email = parts[0] + "@139.com";
+		} else {
+			if (!StringUtil.validateEmail(parts[0]))
+				return parts[0] + "不是有效的邮件地址";
+		}
 
 		Schedule schedule = new Schedule();
 		schedule.setSdate(null);
 		schedule.setAccount(account);
 		schedule.setAdate(null);
 		schedule.setCdate(new Date());
-		schedule.setMobile(parts[0]);
+		schedule.setEmail(email);
 		schedule.setSubject(parts[1]);
 		schedule.setContent(parts[2]);
 		schedule.setType(0);
@@ -175,13 +182,11 @@ public class BotmailServlet extends HttpServlet {
 			if (schedule.getType() == 2)
 				sb.append("指定：").append(sdf2.format(schedule.getSdate()))
 						.append("发送一次主题为：").append(schedule.getSubject())
-						.append("的邮件至：" + schedule.getMobile()).append(
-								"@139.com");
+						.append("的邮件至：" + schedule.getEmail());
 			else {
 				sb.append("定时每").append(changeTypeToString(schedule.getType()))
 						.append("发送主题为：").append(schedule.getSubject()).append(
-								"的邮件至：" + schedule.getMobile()).append(
-								"@139.com");
+								"的邮件至：" + schedule.getEmail());
 				if (schedule.getAdate() != null) {
 					sb.append("，最近一次发送时间：" + sdf2.format(schedule.getAdate()));
 				}
@@ -229,15 +234,15 @@ public class BotmailServlet extends HttpServlet {
 		case 0:
 			String t = null;
 			if (body.equals("1")) {
-				String email = schedule.getMobile() + "@139.com";
 				cache.remove(account);
 				try {
-					MailSender.sendMail(email, schedule.getSubject(), schedule
-							.getContent());
+					MailSender.sendMail(schedule.getEmail(), schedule
+							.getSubject(), schedule.getContent());
 					return "标题为：" + schedule.getSubject() + "的邮件已即时发送至："
-							+ email;
+							+ schedule.getEmail();
 				} catch (Exception e) {
-					return "对不起，邮件未发送：" + email + "，错误：" + e.getMessage();
+					return "对不起，邮件未发送：" + schedule.getEmail() + "，错误："
+							+ e.getMessage();
 				}
 			} else if (body.equals("2")) {
 				schedule.setType(2);
@@ -268,15 +273,14 @@ public class BotmailServlet extends HttpServlet {
 		case 2:
 			if (scheduleSaved)
 				return "您已设置指定：" + sdf2.format(schedule.getSdate()) + "发送主题为："
-						+ schedule.getSubject() + "的邮件至："
-						+ schedule.getMobile() + "@139.com";
+						+ schedule.getSubject() + "的邮件至：" + schedule.getEmail();
 			else
 				return ERROR;
 		default:
 			if (scheduleSaved)
 				return "您已设置定时每" + changeTypeToString(schedule.getType())
 						+ "发送主题为：" + schedule.getSubject() + "的邮件至："
-						+ schedule.getMobile() + "@139.com，下一次发送时间为："
+						+ schedule.getEmail() + "，下一次发送时间为："
 						+ sdf2.format(schedule.getSdate());
 			else
 				return ERROR;
