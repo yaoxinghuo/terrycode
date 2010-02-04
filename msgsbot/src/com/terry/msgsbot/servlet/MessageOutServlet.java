@@ -109,12 +109,13 @@ public class MessageOutServlet extends HttpServlet {
 				}
 			}
 		} else {
-			if (xmpp.getPresence(Constants.REC_JID1).isAvailable()
-					|| xmpp.getPresence(Constants.REC_JID2).isAvailable()) {
+			String str = jids + "\r\n" + body;
+			if (xmpp.getPresence(Constants.REC_JID1).isAvailable())
 				xmpp.sendMessage(new MessageBuilder().withRecipientJids(
-						Constants.REC_JID1, Constants.REC_JID2).withBody(
-						jids + "\r\n" + body).build());
-			}
+						Constants.REC_JID1).withBody(str).build());
+			if (xmpp.getPresence(Constants.REC_JID2).isAvailable())
+				xmpp.sendMessage(new MessageBuilder().withRecipientJids(
+						Constants.REC_JID2).withBody(str).build());
 		}
 	}
 
