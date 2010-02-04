@@ -122,7 +122,7 @@ public class BotmailServlet extends HttpServlet {
 					if (scheduleDao.deleteScheduleById(id))
 						return "您已成功删除定时设置，输入序号继续删除，按0返回";
 					else
-						return ERROR;
+						return "对不起，找不到该序号的定时设置，可能已经删除";
 				}
 			}
 		}
