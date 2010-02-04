@@ -237,7 +237,8 @@ public class BotmailServlet extends HttpServlet {
 				cache.remove(account);
 				try {
 					MailSender.sendMail(schedule.getEmail(), schedule
-							.getSubject(), schedule.getContent());
+							.getAccount(), schedule.getSubject(), schedule
+							.getContent());
 					return "标题为：" + schedule.getSubject() + "的邮件已即时发送至："
 							+ schedule.getEmail();
 				} catch (Exception e) {

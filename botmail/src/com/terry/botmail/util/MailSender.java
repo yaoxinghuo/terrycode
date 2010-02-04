@@ -13,14 +13,17 @@ import javax.mail.internet.MimeUtility;
  * @version create: 2010-2-3 下午04:38:15
  */
 public class MailSender {
-	public static void sendMail(String email, String subject, String body)
-			throws Exception {
+	public static void sendMail(String email, String replyTo, String subject,
+			String body) throws Exception {
 		Properties props = new Properties();
 		Session session = Session.getDefaultInstance(props, null);
 
 		javax.mail.Message msg = new MimeMessage(session);
-		msg.setFrom(new InternetAddress("139timer@139timer.appspotmail.com",
-				"139timer"));
+		String sender = replyTo.substring(0, replyTo.indexOf("@"));
+		msg.setFrom(new InternetAddress(sender + "@139timer.appspotmail.com",
+				sender));
+		msg.setReplyTo(new InternetAddress[] { new InternetAddress(replyTo,
+				sender) });
 		msg.addRecipient(javax.mail.Message.RecipientType.TO,
 				new InternetAddress(email));
 		msg.setSubject(MimeUtility.encodeText(subject, "UTF-8", "b"));
