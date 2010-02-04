@@ -56,23 +56,23 @@ public class SendMailServlet extends HttpServlet {
 
 			MailSender.sendMail(schedule.getMobile() + "@139.com", schedule
 					.getSubject(), schedule.getContent());
-			if (schedule.getType() == 0)
+			if (schedule.getType() == 2)
 				em.remove(schedule);
 			else {
 				Calendar c_sdate = Calendar.getInstance();
 				c_sdate.setTime(schedule.getSdate());
 				switch (schedule.getType()) {
-				case 1:
-					c_sdate.add(Calendar.YEAR, 1);
-					break;
-				case 2:
-					c_sdate.add(Calendar.MONTH, 1);
-					break;
 				case 3:
-					c_sdate.add(Calendar.WEEK_OF_YEAR, 1);
+					c_sdate.add(Calendar.DAY_OF_YEAR, 1);
 					break;
 				case 4:
-					c_sdate.add(Calendar.DAY_OF_YEAR, 1);
+					c_sdate.add(Calendar.WEEK_OF_YEAR, 1);
+					break;
+				case 5:
+					c_sdate.add(Calendar.MONTH, 1);
+					break;
+				default:
+					c_sdate.add(Calendar.YEAR, 1);
 					break;
 				}
 				schedule.setSdate(c_sdate.getTime());
