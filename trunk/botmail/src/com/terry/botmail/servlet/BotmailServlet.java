@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.memcache.stdimpl.GCacheFactory;
 import com.google.appengine.api.xmpp.JID;
 import com.google.appengine.api.xmpp.Message;
-import com.google.appengine.api.xmpp.MessageBuilder;
 import com.google.appengine.api.xmpp.XMPPService;
 import com.google.appengine.api.xmpp.XMPPServiceFactory;
 import com.terry.botmail.data.impl.ScheduleDaoImpl;
@@ -30,6 +29,7 @@ import com.terry.botmail.data.intf.IScheduleDao;
 import com.terry.botmail.model.Schedule;
 import com.terry.botmail.util.MailSender;
 import com.terry.botmail.util.StringUtil;
+import com.terry.botmail.util.XMPPSender;
 
 /**
  * @author xinghuo.yao E-mail: yaoxinghuo at 126 dot com
@@ -88,12 +88,7 @@ public class BotmailServlet extends HttpServlet {
 		if (jids.indexOf("/") != -1)
 			jids = jids.substring(0, jids.indexOf("/"));
 
-		Message msg = new MessageBuilder().withRecipientJids(jid).withBody(
-				getResponse(jids, message.getBody())).build();
-
-		if (xmpp.getPresence(jid).isAvailable()) {
-			xmpp.sendMessage(msg);
-		}
+		XMPPSender.sendXMPP(jid, getResponse(jids, message.getBody()));
 	}
 
 	@SuppressWarnings("unchecked")
