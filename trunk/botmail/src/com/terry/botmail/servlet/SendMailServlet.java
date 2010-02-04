@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -34,6 +35,11 @@ public class SendMailServlet extends HttpServlet {
 
 	private SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm",
 			Locale.CHINA);
+
+	@Override
+	public void init() throws ServletException {
+		sdf2.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
+	}
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res)

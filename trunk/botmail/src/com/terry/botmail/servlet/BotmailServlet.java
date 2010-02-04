@@ -185,6 +185,7 @@ public class BotmailServlet extends HttpServlet {
 				if (schedule.getAdate() != null) {
 					sb.append("，最近一次发送时间：" + sdf2.format(schedule.getAdate()));
 				}
+				sb.append("，下一次发送时间：" + sdf2.format(schedule.getSdate()));
 			}
 		}
 		cache.put(account, map);
