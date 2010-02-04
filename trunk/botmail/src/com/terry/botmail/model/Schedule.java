@@ -114,7 +114,8 @@ public class Schedule implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date sdate;
 	@Enumerated
-	private int type;// 0 定时发送一次 //1每年发送//2每月发送 //3每周发送 //4每天发送 //5立即发送
+	private int type;// 即时发送请输入1，指定时间发送输入2，
+	// 定时每天发送输入3，每周发送输入4，每月发送输入5，每年发送输入6，输入0取消
 	@Enumerated
 	private String subject;
 	@Enumerated
