@@ -167,7 +167,7 @@ public class BotmailServlet extends HttpServlet {
 		if (schedules == null || schedules.size() == 0)
 			return "您尚未设置定时";
 		StringBuffer sb = new StringBuffer(
-				"列表显示您现有的定时列表，直接输入序号数字将删除该定时设置，输入0返回");
+				"显示您现有的定时列表，直接输入序号数字将删除该定时设置，输入0返回");
 		HashMap<Integer, String> map = new HashMap<Integer, String>();
 		int count = 0;
 		for (Schedule schedule : schedules) {
