@@ -24,8 +24,11 @@ import com.google.appengine.api.xmpp.JID;
 import com.google.appengine.api.xmpp.Message;
 import com.google.appengine.api.xmpp.XMPPService;
 import com.google.appengine.api.xmpp.XMPPServiceFactory;
+import com.terry.botmail.data.impl.AccountDaoImpl;
 import com.terry.botmail.data.impl.ScheduleDaoImpl;
+import com.terry.botmail.data.intf.IAccountDao;
 import com.terry.botmail.data.intf.IScheduleDao;
+import com.terry.botmail.model.Account;
 import com.terry.botmail.model.Schedule;
 import com.terry.botmail.util.MailSender;
 import com.terry.botmail.util.StringUtil;
@@ -45,6 +48,7 @@ public class BotmailServlet extends HttpServlet {
 	private XMPPService xmpp = XMPPServiceFactory.getXMPPService();
 
 	private IScheduleDao scheduleDao = new ScheduleDaoImpl();
+	private IAccountDao accountDao = new AccountDaoImpl();
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.CHINA);
 	private SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm",
@@ -57,6 +61,7 @@ public class BotmailServlet extends HttpServlet {
 	private static final String HELP_TYPE_CHOICE = "输入1即时发送，2指定时间发送，3定时每天发送，"
 			+ "4每周发送，5每月发送，6每年发送，输入0取消";
 	private static final String ERROR = "对不起，程序出现错误，请稍候再试";
+	private static final int DEFAULT_SCHEDULES_LIMIT = 10;
 
 	@Override
 	public void init() throws ServletException {
@@ -107,12 +112,12 @@ public class BotmailServlet extends HttpServlet {
 				return "已取消。" + HELP;
 			} else {
 				if (!StringUtil.isDigital(body)) {
-					return "请输入有效的序号以删除定时设置";
+					return "请重新输入有效的序号以删除定时设置";
 				}
 				int index = Integer.parseInt(body);
 				String id = map.get(index);
 				if (id == null)
-					return "对不起，找不到该序号的定时设置";
+					return "对不起，找不到该序号的定时设置，请重新输入序号";
 				else {
 					if (scheduleDao.deleteScheduleById(id))
 						return "您已成功删除定时设置，输入序号继续删除，按0返回";
@@ -132,7 +137,7 @@ public class BotmailServlet extends HttpServlet {
 		if (parts.length < 3)
 			return HELP;
 
-		if (!checkCount(account))
+		if (!checkCountLimit(account))
 			return "对不起，您设置的定时数目已经达到上限，请删除一些定时设置后再试";
 
 		String email = parts[0];
@@ -220,6 +225,11 @@ public class BotmailServlet extends HttpServlet {
 					return "您输入的：" + sdf2.format(sdate) + "已超过现在时间，请重新输入";
 				schedule.setSdate(sdate);
 				scheduleSaved = scheduleDao.saveSchedule(schedule);
+				Account a = accountDao.getAccountByAccount(account);
+				if (a != null) {
+					a.setUdate(new Date());
+					accountDao.saveAccount(a);
+				}
 				cache.remove(account);
 			} catch (ParseException e) {
 				return "请输入有效的时间日期，如2010-05-01 09:08，如果是当天发送，也可只输入时间，如09:08";
@@ -262,20 +272,21 @@ public class BotmailServlet extends HttpServlet {
 				return HELP_TYPE_CHOICE;
 			} else {
 				cache.put(account, schedule);
-				return "您成功设置定时每"
+				return "您已成功设置定时每"
 						+ t
 						+ "发送，请输入第一次发送邮件的日期时间，如2010-05-01 09:08，如果是当天，也可只输入时间，如09:08";
 
 			}
 		case 2:
 			if (scheduleSaved)
-				return "您已设置指定：" + sdf2.format(schedule.getSdate()) + "发送主题为："
-						+ schedule.getSubject() + "的邮件至：" + schedule.getEmail();
+				return "您已成功设置指定：" + sdf2.format(schedule.getSdate())
+						+ "发送主题为：" + schedule.getSubject() + "的邮件至："
+						+ schedule.getEmail();
 			else
 				return ERROR;
 		default:
 			if (scheduleSaved)
-				return "您已设置定时每" + changeTypeToString(schedule.getType())
+				return "您已成功设置定时每" + changeTypeToString(schedule.getType())
 						+ "发送主题为：" + schedule.getSubject() + "的邮件至："
 						+ schedule.getEmail() + "，下一次发送时间为："
 						+ sdf2.format(schedule.getSdate());
@@ -297,16 +308,23 @@ public class BotmailServlet extends HttpServlet {
 		}
 	}
 
-	private boolean checkCount(String account) {
-		String[] whiteList = { "q409640976@gmail.com" };
-		for (String s : whiteList) {
-			if (s.equals(account))
+	private boolean checkCountLimit(String a) {
+		Account account = accountDao.getAccountByAccount(a);
+		Date now = new Date();
+		if (account == null) {
+			account = new Account();
+			account.setSlimit(DEFAULT_SCHEDULES_LIMIT);
+			account.setAccount(a);
+			account.setCdate(now);
+			account.setUdate(now);
+			accountDao.saveAccount(account);
+			return true;
+		} else {
+			if (scheduleDao.getScheduleCount(a) >= account.getSlimit())
+				return false;
+			else
 				return true;
 		}
-		if (scheduleDao.getScheduleCount(account) >= 10) {
-			return false;
-		}
-		return true;
 	}
 
 }
