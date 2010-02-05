@@ -133,7 +133,7 @@ public class BotmailServlet extends HttpServlet {
 			return generateScheduleListResponse(account, scheduleDao
 					.getSchedulesByAccount(account));
 		}
-		String[] parts = body.split("\\s", 4);
+		String[] parts = body.split("\\s", 3);
 		if (parts.length < 3)
 			return HELP;
 
