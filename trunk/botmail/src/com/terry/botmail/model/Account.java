@@ -30,6 +30,9 @@ public class Account implements Serializable {
 
 	@Enumerated
 	private String account;
+	
+	@Enumerated
+	private String nickname;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date cdate;
@@ -77,5 +80,13 @@ public class Account implements Serializable {
 
 	public void setSlimit(int slimit) {
 		this.slimit = slimit;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public String getNickname() {
+		return nickname;
 	}
 }
