@@ -57,7 +57,9 @@ public class BotmailServlet extends HttpServlet {
 	private Cache cache;
 
 	private static final String HELP = "直接添加或发送邮件（默认139邮箱）请输入标准格式（机器人会提示您接下来的操作）："
-			+ "手机号或Email[空格]标题[空格]内容" + "\r\n输入list或00查看已设置定时列表";
+			+ "手机号或Email[空格]标题[空格]内容"
+			+ "\r\n输入list或00查看已设置定时列表"
+			+ "\r\n输入account或000查看或修改账户信息";
 	private static final String HELP_TYPE_CHOICE = "输入1即时发送，2指定时间发送，3定时每天发送，"
 			+ "4每周发送，5每月发送，6每年发送，输入0取消";
 	private static final String ERROR = "对不起，程序出现错误，请稍候再试";
@@ -102,27 +104,43 @@ public class BotmailServlet extends HttpServlet {
 			return ERROR;
 
 		Object o = cache.get(account);
+		if (body.equals("0")) {
+			if (o != null) {
+				cache.remove(account);
+				return "已取消。" + HELP;
+			} else
+				return HELP;
+		}
 		if (o != null && o instanceof Schedule) {
 			return setScheduleResponse(account, body, (Schedule) o);
 		}
 		if (o != null && o instanceof HashMap<?, ?>) {
 			HashMap<Integer, String> map = (HashMap<Integer, String>) o;
-			if (body.equals("0")) {
-				cache.remove(account);
-				return "已取消。" + HELP;
-			} else {
-				if (!StringUtil.isDigital(body)) {
-					return "请重新输入有效的序号以删除定时设置";
-				}
-				int index = Integer.parseInt(body);
-				String id = map.get(index);
-				if (id == null)
-					return "对不起，找不到该序号的定时设置，请重新输入序号";
+			if (!StringUtil.isDigital(body)) {
+				return "请重新输入有效的序号以删除定时设置";
+			}
+			int index = Integer.parseInt(body);
+			String id = map.get(index);
+			if (id == null)
+				return "对不起，找不到该序号的定时设置，请重新输入序号";
+			else {
+				if (scheduleDao.deleteScheduleById(id))
+					return "您已成功删除定时设置，输入序号继续删除，按0返回";
+				else
+					return "对不起，找不到该序号的定时设置，可能已经删除";
+			}
+		}
+		if (o != null && o instanceof Account) {
+			if (body.length() > 20)
+				return "请重新输入少于20个字的邮件发送人昵称，输入0返回";
+			else {
+				Account acc = (Account) o;
+				acc.setNickname(body.trim());
+				if (accountDao.updateAccountNickname(account, body))
+					return "您已成功设置邮件发送人昵称为：" + body + "，重新设置请直接输入昵称，输入0返回";
 				else {
-					if (scheduleDao.deleteScheduleById(id))
-						return "您已成功删除定时设置，输入序号继续删除，按0返回";
-					else
-						return "对不起，找不到该序号的定时设置，可能已经删除";
+					cache.remove(account);
+					return ERROR;
 				}
 			}
 		}
@@ -133,12 +151,30 @@ public class BotmailServlet extends HttpServlet {
 			return generateScheduleListResponse(account, scheduleDao
 					.getSchedulesByAccount(account));
 		}
+		if (body.equalsIgnoreCase("account") || body.equalsIgnoreCase("000")) {
+			Account acc = checkAndGetAccount(account);
+			cache.put(account, acc);
+			StringBuffer sb = new StringBuffer("");
+			if (acc.getCdate().getTime() == acc.getUdate().getTime())
+				sb.append("您从未设置过定时邮件");
+			else {
+				sb.append("您共有" + scheduleDao.getScheduleCount(account)
+						+ "条定时邮件设置，");
+				sb.append("最近一次设置定时邮件时间为：").append(sdf2.format(acc.getUdate()));
+			}
+			sb.append("\r\n邮件发送人昵称为：").append(acc.getNickname()).append(
+					"\r\n设置定时邮件的限额为：少于").append(acc.getSlimit()).append("条");
+			sb.append("\r\n").append(
+					"请直接输入昵称以修改现有的昵称（少于20个字）：" + acc.getNickname());
+			sb.append("\r\n输入0返回");
+			return sb.toString();
+		}
 		String[] parts = body.split("\\s", 3);
 		if (parts.length < 3)
 			return HELP;
 
-		String nickname = checkCountLimitAndReturnNickname(account);
-		if (nickname == null)
+		Account acc = checkAndGetAccount(account);
+		if (scheduleDao.getScheduleCount(account) >= acc.getSlimit())
 			return "对不起，您设置的定时数目已经达到上限，请删除一些定时设置后再试";
 
 		String email = parts[0];
@@ -160,7 +196,7 @@ public class BotmailServlet extends HttpServlet {
 		schedule.setEmail(email);
 		schedule.setSubject(parts[1]);
 		schedule.setContent(parts[2]);
-		schedule.setNickname(nickname);
+		schedule.setNickname(acc.getNickname());
 		schedule.setType(0);
 
 		cache.put(account, schedule);
@@ -202,10 +238,6 @@ public class BotmailServlet extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	private String setScheduleResponse(String account, String body,
 			Schedule schedule) {
-		if (body.equals("0")) {
-			cache.remove(account);
-			return "已取消。\r\n" + HELP;
-		}
 		boolean scheduleSaved = false;
 		if (schedule.getType() > 1) {
 			try {
@@ -310,7 +342,7 @@ public class BotmailServlet extends HttpServlet {
 		}
 	}
 
-	private String checkCountLimitAndReturnNickname(String a) {
+	private Account checkAndGetAccount(String a) {
 		Account account = accountDao.getAccountByAccount(a);
 		Date now = new Date();
 		if (account == null) {
@@ -321,12 +353,9 @@ public class BotmailServlet extends HttpServlet {
 			account.setCdate(now);
 			account.setUdate(now);
 			accountDao.saveAccount(account);
-			return account.getNickname();
+			return account;
 		} else {
-			if (scheduleDao.getScheduleCount(a) >= account.getSlimit())
-				return null;
-			else
-				return account.getNickname();
+			return account;
 		}
 	}
 

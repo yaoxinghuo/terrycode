@@ -9,5 +9,7 @@ import com.terry.botmail.model.Account;
 public interface IAccountDao {
 	public boolean saveAccount(Account account);
 
+	public boolean updateAccountNickname(String a, String nickname);
+
 	public Account getAccountByAccount(String a);
 }
