@@ -20,8 +20,7 @@ public class MailSender {
 
 		javax.mail.Message msg = new MimeMessage(session);
 		String sender = replyTo.substring(0, replyTo.indexOf("@"));
-		msg.setFrom(new InternetAddress(sender + "@139timer.appspotmail.com",
-				sender));
+		msg.setFrom(new InternetAddress("service@appmail.org.ru", sender));
 		msg.setReplyTo(new InternetAddress[] { new InternetAddress(replyTo,
 				sender) });
 		msg.addRecipient(javax.mail.Message.RecipientType.TO,
