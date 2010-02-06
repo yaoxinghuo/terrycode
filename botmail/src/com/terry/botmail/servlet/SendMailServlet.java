@@ -9,6 +9,7 @@ import java.util.TimeZone;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.terry.botmail.model.Account;
 import com.terry.botmail.model.Schedule;
 import com.terry.botmail.util.EMF;
 import com.terry.botmail.util.MailSender;
@@ -62,12 +64,17 @@ public class SendMailServlet extends HttpServlet {
 		Schedule schedule = em.find(Schedule.class, key);
 		if (schedule == null)
 			return;
+		String a = schedule.getAccount();
+		Query query = em.createQuery("SELECT a FROM " + Account.class.getName()
+				+ " a where a.account=:account");
+		query.setParameter("account", a);
+		Account account = (Account) query.getSingleResult();
 		try {
 			EntityTransaction tx = em.getTransaction();
 			tx.begin();
-			String account = schedule.getAccount();
-			MailSender.sendMail(schedule.getEmail(), account, schedule
-					.getSubject(), schedule.getContent());
+			MailSender.sendMail(schedule.getEmail(), account == null ? null
+					: account.getNickname(), a, schedule.getSubject(), schedule
+					.getContent());
 			Date now = new Date();
 			String report = "主题为：" + schedule.getSubject() + "的邮件已于："
 					+ sdf2.format(now) + "发送至：" + schedule.getEmail();
@@ -96,7 +103,7 @@ public class SendMailServlet extends HttpServlet {
 				report = report + "，下次发送日期为：" + sdf2.format(c_sdate.getTime());
 			}
 			tx.commit();
-			XMPPSender.sendXMPP(account, report);
+			XMPPSender.sendXMPP(a, report);
 		} catch (Exception e) {
 		}
 	}

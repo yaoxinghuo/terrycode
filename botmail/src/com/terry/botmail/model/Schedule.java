@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.datanucleus.jpa.annotations.Extension;
 
@@ -104,6 +105,14 @@ public class Schedule implements Serializable {
 		return email;
 	}
 
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
 	@Enumerated
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date adate;
@@ -122,5 +131,7 @@ public class Schedule implements Serializable {
 	private String content;
 	@Enumerated
 	private String email;
+	@Transient
+	private String nickname;
 
 }

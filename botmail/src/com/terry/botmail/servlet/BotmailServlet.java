@@ -137,7 +137,8 @@ public class BotmailServlet extends HttpServlet {
 		if (parts.length < 3)
 			return HELP;
 
-		if (!checkCountLimit(account))
+		String nickname = checkCountLimitAndReturnNickname(account);
+		if (nickname == null)
 			return "对不起，您设置的定时数目已经达到上限，请删除一些定时设置后再试";
 
 		String email = parts[0];
@@ -159,6 +160,7 @@ public class BotmailServlet extends HttpServlet {
 		schedule.setEmail(email);
 		schedule.setSubject(parts[1]);
 		schedule.setContent(parts[2]);
+		schedule.setNickname(nickname);
 		schedule.setType(0);
 
 		cache.put(account, schedule);
@@ -243,8 +245,8 @@ public class BotmailServlet extends HttpServlet {
 				cache.remove(account);
 				try {
 					MailSender.sendMail(schedule.getEmail(), schedule
-							.getAccount(), schedule.getSubject(), schedule
-							.getContent());
+							.getNickname(), schedule.getAccount(), schedule
+							.getSubject(), schedule.getContent());
 					return "标题为：" + schedule.getSubject() + "的邮件已即时发送至："
 							+ schedule.getEmail();
 				} catch (Exception e) {
@@ -308,22 +310,23 @@ public class BotmailServlet extends HttpServlet {
 		}
 	}
 
-	private boolean checkCountLimit(String a) {
+	private String checkCountLimitAndReturnNickname(String a) {
 		Account account = accountDao.getAccountByAccount(a);
 		Date now = new Date();
 		if (account == null) {
 			account = new Account();
 			account.setSlimit(DEFAULT_SCHEDULES_LIMIT);
 			account.setAccount(a);
+			account.setNickname(a.substring(0, a.indexOf("@")));
 			account.setCdate(now);
 			account.setUdate(now);
 			accountDao.saveAccount(account);
-			return true;
+			return account.getNickname();
 		} else {
 			if (scheduleDao.getScheduleCount(a) >= account.getSlimit())
-				return false;
+				return null;
 			else
-				return true;
+				return account.getNickname();
 		}
 	}
 
