@@ -44,4 +44,26 @@ public class AccountDaoImpl implements IAccountDao {
 		return true;
 	}
 
+	@Override
+	public boolean updateAccountNickname(String a, String nickname) {
+		try {
+			EntityManager em = EMF.get().createEntityManager();
+			Query query = em.createQuery("SELECT a FROM "
+					+ Account.class.getName() + " a where a.account=:account");
+			query.setParameter("account", a);
+			Account account = (Account) query.getSingleResult();
+			if (account == null) {
+				return false;
+			}
+			account.setNickname(nickname);
+			EntityTransaction tx = em.getTransaction();
+			tx.begin();
+			em.persist(account);
+			tx.commit();
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+
 }
