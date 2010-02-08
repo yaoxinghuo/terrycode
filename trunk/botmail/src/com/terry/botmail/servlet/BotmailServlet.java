@@ -59,7 +59,7 @@ public class BotmailServlet extends HttpServlet {
 	private static final String HELP = "直接添加或发送邮件（默认139邮箱）请输入标准格式（机器人会提示您接下来的操作）："
 			+ "手机号或Email[空格]标题[空格]内容"
 			+ "\r\n输入list或00查看已设置定时列表"
-			+ "\r\n输入account或000查看或修改账户信息";
+			+ "\r\n输入account或000查看或修改账户信息" + "\r\n任何时候输入0取消当前操作";
 	private static final String HELP_TYPE_CHOICE = "输入1即时发送，2指定时间发送，3定时每天发送，"
 			+ "4每周发送，5每月发送，6每年发送，输入0取消";
 	private static final String ERROR = "对不起，程序出现错误，请稍候再试";
@@ -266,7 +266,9 @@ public class BotmailServlet extends HttpServlet {
 				}
 				cache.remove(account);
 			} catch (ParseException e) {
-				return "请输入有效的时间日期，如2010-05-01 09:08，如果是当天发送，也可只输入时间，如09:08";
+				return "请输入有效的时间日期，如"
+						+ sdf2.format(new Date(new Date().getTime() + 3600000))
+						+ "，如果是当天发送，也可只输入时间，如09:08";
 			}
 		}
 
@@ -288,7 +290,9 @@ public class BotmailServlet extends HttpServlet {
 			} else if (body.equals("2")) {
 				schedule.setType(2);
 				cache.put(account, schedule);
-				return "请输入要发送邮件的日期时间，如2010-05-01 09:08，如果是当天发送，也可只输入时间，如09:08";
+				return "请输入要发送邮件的日期时间，如"
+						+ sdf2.format(new Date(new Date().getTime() + 3600000))
+						+ "，如果是当天发送，也可只输入时间，如20:08";
 			} else if (body.equals("3")) {
 				t = "天";
 				schedule.setType(3);
@@ -306,9 +310,9 @@ public class BotmailServlet extends HttpServlet {
 				return HELP_TYPE_CHOICE;
 			} else {
 				cache.put(account, schedule);
-				return "您已成功设置定时每"
-						+ t
-						+ "发送，请输入第一次发送邮件的日期时间，如2010-05-01 09:08，如果是当天，也可只输入时间，如09:08";
+				return "您已成功设置定时每" + t + "发送，请输入第一次发送邮件的日期时间，如"
+						+ sdf2.format(new Date(new Date().getTime() + 3600000))
+						+ "，如果是当天，也可只输入时间，如09:08";
 
 			}
 		case 2:
