@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xmlns="http://java.sun.com/xml/ns/javaee"
-xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
-http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	
 	<context-param>
-		<param-name>gvemail</param-name>
+		<param-name>gvemail</param-name><!-- Google Voice Email帐号 -->
 		<param-value>test@gmail.com</param-value>
 	</context-param>
 	<context-param>
-		<param-name>gvpassword</param-name>
+		<param-name>gvpassword</param-name><!-- Google Voice 密码 -->
 		<param-value>12345678</param-value>
 	</context-param>
+	<context-param>
+		<param-name>whitelist</param-name><!-- 机器人接受哪些Gtalk用户的指令，用逗号隔开，如果为空，说明允许所有的人 -->
+		<param-value>test1@gmail.com,test2@gmail.com</param-value>
+	</context-param>
+	
 	<servlet>
 		<servlet-name>xmppreceiver</servlet-name>
 		<servlet-class>com.terry.smsbot.servlet.XMPPServlet</servlet-class>
