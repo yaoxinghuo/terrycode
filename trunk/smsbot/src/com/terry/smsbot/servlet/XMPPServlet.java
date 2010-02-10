@@ -20,6 +20,7 @@ import com.google.appengine.api.xmpp.XMPPServiceFactory;
 import com.terry.smsbot.AuthenticationExeption;
 import com.terry.smsbot.GoogleVoice;
 import com.terry.smsbot.util.Constants;
+import com.terry.smsbot.util.Pinyin4j;
 import com.terry.smsbot.util.StringUtil;
 import com.terry.smsbot.util.XMPPSender;
 
@@ -88,7 +89,14 @@ public class XMPPServlet extends HttpServlet {
 			return WRONG_MOBILE;
 		String message = parts[1];
 		if (message.length() > 160)
-			return "消息内容太长，不要超过160字";
+			return "消息内容太长，请不要超过160字";
+		if (StringUtil.containsChinese(message)) {
+			message = Pinyin4j.cn2Spell(message);
+			if (message.length() > 160)
+				return "您的消息含有中文，消息转化拼音后超过160字，请删除一些后再试";
+			if (StringUtil.isEmptyOrWhitespace(message))
+				return "您的消息含有中文，消息转化拼音后遇到错误，请检查您的输入是否有生僻字";
+		}
 		try {
 			GoogleVoice gv = getGoogleVoiceInstance(Constants.GV_EMAIL,
 					Constants.GV_PASSWORD);
