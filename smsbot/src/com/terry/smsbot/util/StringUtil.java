@@ -101,8 +101,8 @@ public class StringUtil {
 			return true;
 		return false;
 	}
-	
-	public static boolean isMobile(String s){
+
+	public static boolean isMobile(String s) {
 		if (s == null)
 			return false;
 
@@ -112,7 +112,36 @@ public class StringUtil {
 		return false;
 	}
 
+	/**
+	 * 判断给定的字符是否有常见中文
+	 * 
+	 * @param str
+	 *            要检查的字符
+	 */
+	public static boolean containsChinese(String str) {
+		if (str == null || str.trim().length() == 0)
+			return false;
+		if (str.getBytes().length == str.length())
+			return true;
+		for (int i = 0; i < str.length(); i++) {
+			if (isCommonChinese(str.charAt(i)))
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * 判断给定的char代表的字符是否是常见中文
+	 * 
+	 * @param c
+	 *            要检查的char
+	 */
+	public static boolean isCommonChinese(char c) {
+		if (c >= 19968 && c <= 40896)
+			return true;
+		return false;
+	}
+
 	public static void main(String[] args) {
-		System.out.println(isMobile("14016416465"));
 	}
 }
