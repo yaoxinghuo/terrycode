@@ -21,5 +21,8 @@ public class InitListener implements ServletContextListener {
 				"gvemail");
 		Constants.GV_PASSWORD = contextEvent.getServletContext()
 				.getInitParameter("gvpassword");
+
+		Constants.WHITE_LIST = contextEvent.getServletContext()
+				.getInitParameter("whitelist").split(",");
 	}
 }

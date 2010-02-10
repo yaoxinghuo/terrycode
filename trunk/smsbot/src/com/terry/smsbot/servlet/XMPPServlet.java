@@ -68,9 +68,7 @@ public class XMPPServlet extends HttpServlet {
 		if (jids.indexOf("/") != -1)
 			jids = jids.substring(0, jids.indexOf("/"));
 
-		if (jids.equals("yaoxinghuo@gmail.com")
-				|| jids.equals("q409640976@gmail.com"))
-
+		if (checkWhiteList(jids))
 			XMPPSender.sendXMPP(jid, getResponse(message.getBody()));
 	}
 
@@ -117,5 +115,15 @@ public class XMPPServlet extends HttpServlet {
 			gv = new GoogleVoice(email, password);
 		cache.put("xmpp-cache-gv", gv);
 		return gv;
+	}
+
+	private boolean checkWhiteList(String account) {
+		if (Constants.WHITE_LIST == null || Constants.WHITE_LIST.length == 0)
+			return true;
+		for (String s : Constants.WHITE_LIST) {
+			if (s.equals(account))
+				return true;
+		}
+		return false;
 	}
 }

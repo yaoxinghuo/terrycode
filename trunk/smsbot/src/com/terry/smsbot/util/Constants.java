@@ -7,4 +7,6 @@ package com.terry.smsbot.util;
 public class Constants {
 	public static String GV_EMAIL;
 	public static String GV_PASSWORD;
+
+	public static String[] WHITE_LIST = null;
 }
