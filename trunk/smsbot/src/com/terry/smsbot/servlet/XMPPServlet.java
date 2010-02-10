@@ -75,7 +75,7 @@ public class XMPPServlet extends HttpServlet {
 	private String getResponse(String body) {
 		String[] parts = body.split("\\s", 2);
 		if (parts.length < 2) {
-			return "格式为中国手机号[空格]+消息";
+			return "发送消息的格式为：中国手机号[空格]消息";
 		}
 		String mobile = parts[0];
 		if (mobile.length() < 11)
