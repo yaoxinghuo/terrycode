@@ -87,7 +87,7 @@ public class XMPPServlet extends HttpServlet {
 			mobile = mobile.substring(2);
 		if (!StringUtil.isMobile(mobile))
 			return WRONG_MOBILE;
-		String message = parts[1];
+		String message = StringUtil.replaceSymbolToEn(parts[1]);
 		if (message.length() > 160)
 			return "消息内容太长，请不要超过160字";
 		if (StringUtil.containsChinese(message)) {
