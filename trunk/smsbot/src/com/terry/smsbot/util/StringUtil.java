@@ -8,6 +8,10 @@ import java.util.regex.Pattern;
  * @version create: Jul 20, 2009 5:50:14 PM
  */
 public class StringUtil {
+	public static String chs = "～！@#￥%…&×（）『』【】；‘：、|“，。/《》？·";
+
+	public static String ens = "~!@#$%^&*(){}[];':\\|\",./<>?`";
+
 	public static String unicodeEncoding(final String gbString) {
 		char[] utfBytes = gbString.toCharArray();
 		String unicodeBytes = "";
@@ -142,6 +146,40 @@ public class StringUtil {
 		return false;
 	}
 
+	public static String firstCharUpperCase(String str) {
+		if (StringUtil.isEmptyOrWhitespace(str))
+			return str;
+		String first = str.substring(0, 1);
+		return str.replaceFirst(first, first.toUpperCase());
+	}
+
+	public static String replaceSymbolToEn(String str) {
+		if (isEmptyOrWhitespace(str))
+			return str;
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < str.length(); i++) {
+			sb.append(toEns(str.charAt(i)));
+		}
+		return sb.toString();
+	}
+
+	public static char toEns(char ch) {
+		int index = chs.indexOf(ch);
+		if (index != -1)
+			return ens.charAt(index);
+		else
+			return ch;
+	}
+
+	public char toChs(char en) {
+		int index = ens.indexOf(en);
+		if (index != -1)
+			return chs.charAt(index);
+		else
+			return en;
+	}
+
 	public static void main(String[] args) {
+		System.out.println(firstCharUpperCase("hello"));
 	}
 }

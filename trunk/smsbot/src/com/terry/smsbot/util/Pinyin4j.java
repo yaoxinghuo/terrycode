@@ -64,8 +64,10 @@ public class Pinyin4j {
 				try {
 					if (lastChinese)
 						pybf.append(" ");
-					pybf.append(PinyinHelper.toHanyuPinyinStringArray(arr[i],
-							defaultFormat)[0]);
+					pybf.append(StringUtil
+							.firstCharUpperCase(PinyinHelper
+									.toHanyuPinyinStringArray(arr[i],
+											defaultFormat)[0]));
 					lastChinese = true;
 				} catch (BadHanyuPinyinOutputFormatCombination e) {
 					// e.printStackTrace();
