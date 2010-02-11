@@ -129,7 +129,7 @@ public class XMPPServlet extends HttpServlet {
 		if (Constants.WHITE_LIST == null || Constants.WHITE_LIST.length == 0)
 			return true;
 		for (String s : Constants.WHITE_LIST) {
-			if (s.equals(account))
+			if (s.trim().equals(account))
 				return true;
 		}
 		return false;
