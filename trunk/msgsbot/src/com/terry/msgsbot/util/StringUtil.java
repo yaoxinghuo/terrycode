@@ -85,7 +85,7 @@ public class StringUtil {
 		// "(http|https):\\/\\/[\\w\\-_]+(\\.[\\w\\-_]+)+([\\w\\-\\.,@?^=%&amp;:/~\\+#]*[\\w\\-\\@?^=%&amp;/~\\+#])?",
 		// Pattern.CASE_INSENSITIVE);
 		Pattern p = Pattern.compile(
-				"(http://|https://)?([\\w-]+\\.)+[\\w-]+(/[\\w-   ./?%&=]*)?",
+				"(http://|https://)?([\\w-]+\\.)+[\\w-]+(/[\\w-   ./?%&=@;]*)?",
 				Pattern.CASE_INSENSITIVE);
 		Matcher matcher = p.matcher(url);
 		return matcher.matches();
