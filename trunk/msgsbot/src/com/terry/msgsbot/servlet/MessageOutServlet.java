@@ -313,7 +313,6 @@ public class MessageOutServlet extends HttpServlet {
 			return "请输入一个有效的URL地址，如果要POST数据，请加空格把数据写在URL后，"
 					+ "输入list查看编辑或重新执行过往记录";
 		}
-		log.warn("parts1:" + parts[1]);
 		return fetchData(parts[0], parts.length > 1 ? parts[1] : null);
 	}
 
