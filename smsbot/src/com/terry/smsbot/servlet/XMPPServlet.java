@@ -39,12 +39,16 @@ public class XMPPServlet extends HttpServlet {
 
 	private Cache cache;
 
+	private static final int SESSON_TIME = 3600;
+
+	private static final String XMPP_GV_CACHE = "xmpp-gv-cache";
+
 	private static final String WRONG_MOBILE = "请输入正确的手机号码";
 
 	@Override
 	public void init() throws ServletException {
 		Map<Integer, Integer> props = new HashMap<Integer, Integer>();
-		props.put(GCacheFactory.EXPIRATION_DELTA, 3600);
+		props.put(GCacheFactory.EXPIRATION_DELTA, SESSON_TIME);
 		try {
 			cache = CacheManager.getInstance().getCacheFactory().createCache(
 					props);
@@ -112,16 +116,21 @@ public class XMPPServlet extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	private GoogleVoice getGoogleVoiceInstance(String email, String password)
 			throws AuthenticationExeption {
-		Object o = cache.get("xmpp-cache-gv");
+		Object o = cache.get(XMPP_GV_CACHE);
 		GoogleVoice gv = null;
 		if (o != null || o instanceof GoogleVoice) {
 			gv = (GoogleVoice) o;
-			if (!password.equals(gv.getPassword()))
-				throw new AuthenticationExeption("Forbidden.(Password wrong)");
-			gv.setLastSessionTime(System.currentTimeMillis());
-		} else
+			long now = System.currentTimeMillis();
+			if (now - gv.getLastSessionTime() < SESSON_TIME * 1000) {
+				if (!password.equals(gv.getPassword()))
+					throw new AuthenticationExeption(
+							"Forbidden.(Password wrong)");
+				gv.setLastSessionTime(System.currentTimeMillis());
+			}
+		}
+		if (gv == null)
 			gv = new GoogleVoice(email, password);
-		cache.put("xmpp-cache-gv", gv);
+		cache.put(XMPP_GV_CACHE, gv);
 		return gv;
 	}
 
