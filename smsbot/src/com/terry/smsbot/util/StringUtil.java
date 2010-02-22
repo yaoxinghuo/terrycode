@@ -110,7 +110,7 @@ public class StringUtil {
 		if (s == null)
 			return false;
 
-		String regMobileStr = "^(13[0-9]|15[0|3|6|7|8|9]|18[8|9])\\d{8}$";
+		String regMobileStr = "^(13[0-9]|15[0|1|2|3|6|7|8|9]|18[8|9])\\d{8}$";
 		if (s.matches(regMobileStr))
 			return true;
 		return false;
@@ -180,6 +180,6 @@ public class StringUtil {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(firstCharUpperCase("hello"));
+		System.out.println(isMobile("18912345678"));
 	}
 }
