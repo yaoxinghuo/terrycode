@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type"
+	content="application/xhtml+xml; charset=UTF-8" />
+<meta name="viewport"
+	content="width=device-width,minimum-scale=1.0,maximum-scale=1.0" />
+<link rel="alternate" media="handheld"
+	href="http://www.google.cn/m?loc=%E4%B8%8A%E6%B5%B7&amp;site=weather" />
+<meta http-equiv="Cache-Control" content="no-cache" />
+<style type="text/css"> /* <![CDATA[ */
+html,body {
+	background-color: #fff;
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	-webkit-text-size-adjust: none;
+}
+
+body,td {
+	font-family: sans-serif;
+	vertical-align: middle;
+	font-weight: normal;
+}
+
+.hint {
+	color: #555;
+	font-size: small;
+	padding-bottom: 2px;
+}
+
+.block_head {
+	font-weight: bold;
+	padding-top: 2px;
+}
+
+.form_block {
+	padding: 0px 0px 3px 2px;
+}
+
+.darkred {
+	color: #900;
+}
+
+.small {
+	font-size: small;
+}
+
+.xxsmall {
+	font-size: xx-small;
+}
+
+.smaller {
+	font-size: smaller;
+	margin-bottom: 1px;
+}
+
+.red {
+	color: #f00;
+}
+
+.grey {
+	color: #808080;
+}
+
+.dkgrey {
+	color: #333333;
+}
+
+.green {
+	color: #008000;
+}
+
+table {
+	border-spacing: 0px;
+}
+
+.fullWidth {
+	width: 100%
+}
+
+.alignright {
+	text-align: right;
+}
+
+.center {
+	text-align: center;
+}
+
+.padtop {
+	padding-top: 10px;
+}
+
+.padbottom {
+	padding-bottom: 6px;
+}
+
+.smallpadbottom {
+	padding-bottom: 3px;
+}
+
+.padleft {
+	padding-left: 12px;
+}
+
+.floatright {
+	float: right;
+}
+
+.divider_line {
+	border-top: 2px solid #7AA5D6;
+	margin-top: 6px;
+	margin-bottom: 4px;
+}  /* ]]> */
+.vcent {
+	vertical-align: middle
+}
+
+.textinput {
+	
+}
+
+.section {
+	background-color: #e5ecf9;
+	border-top: 2px solid #3366cc;
+	padding: 2px;
+	margin-bottom: 2px;
+}
+</style>
+<title>Google</title>
+<script> /* <![CDATA[ */ function set_module_display_style(m_id, m_style) { var m = document.getElementById(m_id); if (m) { m.style.display = m_style; } } function show_module(m_id) { set_module_display_style(m_id + '_closed', 'none'); set_module_display_style(m_id + '_open', 'block'); } function hide_module(m_id) { set_module_display_style(m_id + '_open', 'none'); set_module_display_style(m_id + '_closed', 'block'); } /* ]]> */ </script>
+</head>
+<body onload="document.getElementById('loc').focus();">
+<div style="padding: 8px;">
+<div>
+<div class="padbottom"><img
+	src="http://www.gstatic.cn/m/images/google_cn_medium.gif" class="vcent"
+	alt="Google" width="90" height="33" />
+<form action="/m">
+<div><b>天气</b> <br />
+<span class="hint"> 输入一个城市，如：北京 </span> <br />
+<input class="textinput" type="text" name="loc" size="10"
+	maxlength="2048" value="上海市" /> <input type="hidden" name="site"
+	value="weather" /> <input type="submit" value="搜天气" /></div>
+</form>
+</div>
+<div class="section"><span class="small">上海市天气</span></div>
+<div class="padbottom">
+<div class="small"><img
+	src="http://www.google.com/xhtml/images/weather/sunny.gif" alt="晴"
+	width="20" height="20" /> 今天 <b>20 / 12℃</b> 晴 到 多云 风力：南，3-4 级 <br />
+<img src="http://www.google.com/xhtml/images/weather/cn_cloudy.gif"
+	alt="多云" width="20" height="20" /> 周三 22/ 15℃ 多云 到 阵雨 <br />
+<img
+	src="http://www.google.com/xhtml/images/weather/cn_moderaterain.gif"
+	alt="中雨" width="20" height="20" /> 周四 20/ 9℃ 中雨</div>
+</div>
+</div>
+<div class="small padtop">
+<div class="divider_line"></div>
+<div class="small padtop"><a href="/m">Google首页</a> <br />
+</div>
+<div class="small padtop"><a href="/m/survey/feedback">反馈意见</a> <br />
+</div>
+<div class="small padtop"><a
+	href="http://www.google.cn/m/help?output=xhtml">帮助</a> <br />
+</div>
+</div>
+<div class="center small padtop">&#0169;2009 - <a
+	href="http://m.google.com/static/zh-CN/privacy.html">隐私权</a> <br />
+北京市专业气象台2月23日8:00发布 <br />
+<img src="/m/ping?site=weather&amp;ust=1266908399284" width="1"
+	height="1" alt="" /></div>
+</div>
+</body>
+</html>
