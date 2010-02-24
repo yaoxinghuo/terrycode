@@ -1,12 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type"
-	content="application/xhtml+xml; charset=UTF-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport"
 	content="width=device-width,minimum-scale=1.0,maximum-scale=1.0" />
 <link rel="alternate" media="handheld"
-	href="http://www.google.cn/m?loc=%E4%B8%8A%E6%B5%B7&amp;site=weather" />
+	href="http://www.google.cn/m?loc=wuxi&amp;site=weather" />
 <meta http-equiv="Cache-Control" content="no-cache" />
 <style type="text/css"> /* <![CDATA[ */
 html,body {
@@ -122,11 +122,17 @@ table {
 	
 }
 
-.section {
+.module_open {
 	background-color: #e5ecf9;
-	border-top: 2px solid #3366cc;
+	border-top: 2px solid #7aa5d6;
+	border-bottom: 1px solid #7aa5d6;
 	padding: 2px;
-	margin-bottom: 2px;
+	font-color: #3366cc;
+}
+
+.module_contents {
+	padding-top: 6px;
+	padding-bottom: 6px;
 }
 </style>
 <title>Google</title>
@@ -142,20 +148,23 @@ table {
 <div><b>天气</b> <br />
 <span class="hint"> 输入一个城市，如：北京 </span> <br />
 <input class="textinput" type="text" name="loc" size="10"
-	maxlength="2048" value="上海市" /> <input type="hidden" name="site"
+	maxlength="2048" value="无锡市" /> <input type="hidden" name="site"
 	value="weather" /> <input type="submit" value="搜天气" /></div>
 </form>
 </div>
-<div class="section"><span class="small">上海市天气</span></div>
+<div id="module__open" style="display: block;">
+<div class="module_open">无锡市天气</div>
+<div class="module_contents"></div>
+</div>
 <div class="padbottom">
 <div class="small"><img
-	src="http://www.google.com/xhtml/images/weather/sunny.gif" alt="晴"
-	width="20" height="20" /> 今天 <b>20 / 12℃</b> 晴 到 多云 风力：南，3-4 级 <br />
-<img src="http://www.google.com/xhtml/images/weather/cn_cloudy.gif"
-	alt="多云" width="20" height="20" /> 周三 22/ 15℃ 多云 到 阵雨 <br />
+	src="http://www.google.com/xhtml/images/weather/cn_cloudy.gif" alt="多云"
+	width="20" height="20" /> 今天 <b>23 / 15℃</b> 多云 到 雷阵雨 风力：东南，4-5 级 <br />
 <img
 	src="http://www.google.com/xhtml/images/weather/cn_moderaterain.gif"
-	alt="中雨" width="20" height="20" /> 周四 20/ 9℃ 中雨</div>
+	alt="中雨" width="20" height="20" /> 周四 18/ 7℃ 中雨 到 小雨 <br />
+<img src="http://www.google.com/xhtml/images/weather/cn_lightrain.gif"
+	alt="小雨" width="20" height="20" /> 周五 14/ 6℃ 小雨</div>
 </div>
 </div>
 <div class="small padtop">
@@ -170,9 +179,7 @@ table {
 </div>
 <div class="center small padtop">&#0169;2009 - <a
 	href="http://m.google.com/static/zh-CN/privacy.html">隐私权</a> <br />
-北京市专业气象台2月23日8:00发布 <br />
-<img src="/m/ping?site=weather&amp;ust=1266908399284" width="1"
-	height="1" alt="" /></div>
+北京市专业气象台2月24日8:00发布</div>
 </div>
 </body>
 </html>
