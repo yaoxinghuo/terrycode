@@ -2,6 +2,7 @@ package com.terry.weatherlib.servlet;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -208,6 +209,13 @@ public class XMPPServlet extends HttpServlet {
 			return "无法获取“" + parts[2] + "”的天气，所以未能保存您的定时设置，请检查您的输入并稍候再试";
 		else {
 			Schedule schedule = new Schedule();
+			Calendar c = Calendar.getInstance();
+			c.setTime(sdate);
+			Calendar now = Calendar.getInstance();
+			c.set(Calendar.YEAR, now.get(Calendar.YEAR));
+			c.set(Calendar.MONTH, now.get(Calendar.MONTH));
+			c.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
+			sdate = c.getTime();
 			schedule.setSdate(sdate);
 			schedule.setAccount(account);
 			schedule.setAdate(null);
