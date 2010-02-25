@@ -1,185 +1,46 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="viewport"
-	content="width=device-width,minimum-scale=1.0,maximum-scale=1.0" />
-<link rel="alternate" media="handheld"
-	href="http://www.google.cn/m?loc=wuxi&amp;site=weather" />
-<meta http-equiv="Cache-Control" content="no-cache" />
-<style type="text/css"> /* <![CDATA[ */
-html,body {
-	background-color: #fff;
-	padding: 0;
-	margin: 0;
-}
-
-body {
-	-webkit-text-size-adjust: none;
-}
-
-body,td {
-	font-family: sans-serif;
-	vertical-align: middle;
-	font-weight: normal;
-}
-
-.hint {
-	color: #555;
-	font-size: small;
-	padding-bottom: 2px;
-}
-
-.block_head {
-	font-weight: bold;
-	padding-top: 2px;
-}
-
-.form_block {
-	padding: 0px 0px 3px 2px;
-}
-
-.darkred {
-	color: #900;
-}
-
-.small {
-	font-size: small;
-}
-
-.xxsmall {
-	font-size: xx-small;
-}
-
-.smaller {
-	font-size: smaller;
-	margin-bottom: 1px;
-}
-
-.red {
-	color: #f00;
-}
-
-.grey {
-	color: #808080;
-}
-
-.dkgrey {
-	color: #333333;
-}
-
-.green {
-	color: #008000;
-}
-
-table {
-	border-spacing: 0px;
-}
-
-.fullWidth {
-	width: 100%
-}
-
-.alignright {
-	text-align: right;
-}
-
-.center {
-	text-align: center;
-}
-
-.padtop {
-	padding-top: 10px;
-}
-
-.padbottom {
-	padding-bottom: 6px;
-}
-
-.smallpadbottom {
-	padding-bottom: 3px;
-}
-
-.padleft {
-	padding-left: 12px;
-}
-
-.floatright {
-	float: right;
-}
-
-.divider_line {
-	border-top: 2px solid #7AA5D6;
-	margin-top: 6px;
-	margin-bottom: 4px;
-}  /* ]]> */
-.vcent {
-	vertical-align: middle
-}
-
-.textinput {
-	
-}
-
-.module_open {
-	background-color: #e5ecf9;
-	border-top: 2px solid #7aa5d6;
-	border-bottom: 1px solid #7aa5d6;
-	padding: 2px;
-	font-color: #3366cc;
-}
-
-.module_contents {
-	padding-top: 6px;
-	padding-bottom: 6px;
-}
-</style>
-<title>Google</title>
-<script> /* <![CDATA[ */ function set_module_display_style(m_id, m_style) { var m = document.getElementById(m_id); if (m) { m.style.display = m_style; } } function show_module(m_id) { set_module_display_style(m_id + '_closed', 'none'); set_module_display_style(m_id + '_open', 'block'); } function hide_module(m_id) { set_module_display_style(m_id + '_open', 'none'); set_module_display_style(m_id + '_closed', 'block'); } /* ]]> */ </script>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>天气预报邮件定制机器人</title>
 </head>
-<body onload="document.getElementById('loc').focus();">
-<div style="padding: 8px;">
-<div>
-<div class="padbottom"><img
-	src="http://www.gstatic.cn/m/images/google_cn_medium.gif" class="vcent"
-	alt="Google" width="90" height="33" />
-<form action="/m">
-<div><b>天气</b> <br />
-<span class="hint"> 输入一个城市，如：北京 </span> <br />
-<input class="textinput" type="text" name="loc" size="10"
-	maxlength="2048" value="无锡市" /> <input type="hidden" name="site"
-	value="weather" /> <input type="submit" value="搜天气" /></div>
-</form>
-</div>
-<div id="module__open" style="display: block;">
-<div class="module_open">无锡市天气</div>
-<div class="module_contents"></div>
-</div>
-<div class="padbottom">
-<div class="small"><img
-	src="http://www.google.com/xhtml/images/weather/cn_cloudy.gif" alt="多云"
-	width="20" height="20" /> 今天 <b>23 / 15℃</b> 多云 到 雷阵雨 风力：东南，4-5 级 <br />
-<img
-	src="http://www.google.com/xhtml/images/weather/cn_moderaterain.gif"
-	alt="中雨" width="20" height="20" /> 周四 18/ 7℃ 中雨 到 小雨 <br />
-<img src="http://www.google.com/xhtml/images/weather/cn_lightrain.gif"
-	alt="小雨" width="20" height="20" /> 周五 14/ 6℃ 小雨</div>
-</div>
-</div>
-<div class="small padtop">
-<div class="divider_line"></div>
-<div class="small padtop"><a href="/m">Google首页</a> <br />
-</div>
-<div class="small padtop"><a href="/m/survey/feedback">反馈意见</a> <br />
-</div>
-<div class="small padtop"><a
-	href="http://www.google.cn/m/help?output=xhtml">帮助</a> <br />
-</div>
-</div>
-<div class="center small padtop">&#0169;2009 - <a
-	href="http://m.google.com/static/zh-CN/privacy.html">隐私权</a> <br />
-北京市专业气象台2月24日8:00发布</div>
-</div>
-</body>
+<p align="center"><font size="6">天气预报邮件定制机器人<br />
+</font></p>
+<p align="left"><strong><font size="4">功能：</font></strong><br />
+&nbsp; &nbsp; 定时向指定邮箱发送天气预报邮件，可借助手机邮箱（<a href="http://mail.139.com/"
+	target="_blank">139邮箱</a>，<a href="http://mail.wo.com.cn"
+	target="_blank">联通邮箱</a>，<a href="http://www.189.cn/webmail/"
+	target="_blank">189邮箱</a>）实现手机天气预报定制<br />
+<strong><font size="4">特点：<br />
+</font></strong>&nbsp; &nbsp; 简单，直观，不用登陆139邮箱，通过Gmail(或者Gtalk)直接发送命令。<br />
+&nbsp; &nbsp; 一个Gtalk帐号可定制多个城市的天气预报或多个好友的邮箱<br />
+&nbsp; &nbsp; 定时期限无限长（只要gae没倒闭）<br />
+&nbsp; &nbsp; 只适合习惯用gmail的人群<br />
+<strong><font size="4">使用方法：</font></strong><br />
+&nbsp; &nbsp; 用Gmail邀请“机器人”<a href="mailto:139timer@appspot.com"><font
+	color="#0000ff">weatherlib@appspot.com</font></a>，向其发送定时命令即可<br />
+<strong><font size="4">命令说明：</font></strong>所有操作机器人均有提示<br />
+&nbsp; &nbsp; 基本格式：<font face="楷体_GB2312 "><font color="green">每天发送时间[空格]手机号或邮箱[空格]城市名称</font></font>，例如：<font
+	color="seagreen">08:00 13812345678@139.com 上海</font><br />
+&nbsp; &nbsp; 或者直接输入手机号，默认会发往手机号对应的139邮箱，如：<font color="seagreen">08:00
+13812345678 上海</font><br />
+&nbsp; &nbsp; 直接输入tq+城市可查询该城市的天气，直接由机器人输出结果，如发送命令：tq上海<br />
+<strong><font size="4">其他说明：<br />
+</font></strong>&nbsp; &nbsp; 1.定时只能精确到5分钟<br />
+&nbsp; &nbsp; 2.暂时只能制定10条定时命令，有需要可以联系作者<br />
+&nbsp; &nbsp; 3.输入list查看定时列表，可根据提示进行管理操作<br />
+&nbsp; &nbsp; 4.输入account查看当前账户，可根据提示修改邮件发送人昵称<br />
+&nbsp; &nbsp; 5.139邮箱地址可以省略为手机号<br />
+<br />
+程序设计：<a href="http://xinghuo.org.ru/" target="_blank"><font
+	color="#800080">Terry</font></a> 企划：<a href="http://liming.net.ru/"
+	target="_blank"><font color="#800080">黎明破晓</font></a><br />
+其他作品： <a href="http://fetion.xinghuo.org.ru/" target="_blank"><font
+	color="#800080">网页飞信</font></a> <a href="http://feix.org.ru/"
+	target="_blank"><font color="#800080">网页飞信</font></a></p>
+
+
+<p align="center"><img
+	src="http://code.google.com/appengine/images/appengine-silver-120x30.gif"></p>
 </html>
