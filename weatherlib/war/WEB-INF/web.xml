@@ -9,6 +9,24 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</welcome-file-list>
 	
 	<servlet>
+		<servlet-name>send</servlet-name>
+		<servlet-class>com.terry.weatherlib.servlet.SendMailServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>send</servlet-name>
+		<url-pattern>/cron/send</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>check</servlet-name>
+		<servlet-class>com.terry.weatherlib.servlet.CheckScheduleServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>check</servlet-name>
+		<url-pattern>/cron/check</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 		<servlet-name>xmppreceiver</servlet-name>
 		<servlet-class>com.terry.weatherlib.servlet.XMPPServlet</servlet-class>
 	</servlet>
@@ -16,4 +34,13 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>xmppreceiver</servlet-name>
 		<url-pattern>/_ah/xmpp/message/chat/</url-pattern>
 	</servlet-mapping>
+	
+	<security-constraint>
+        <web-resource-collection>
+            <url-pattern>/cron/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
 </web-app>
