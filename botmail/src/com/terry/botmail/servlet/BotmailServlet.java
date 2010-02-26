@@ -136,12 +136,11 @@ public class BotmailServlet extends HttpServlet {
 			else {
 				Account acc = (Account) o;
 				acc.setNickname(body.trim());
+				cache.remove(account);
 				if (accountDao.updateAccountNickname(account, body))
-					return "您已成功设置邮件发送人昵称为：" + body + "，重新设置请直接输入昵称，输入0返回";
-				else {
-					cache.remove(account);
+					return "您已成功设置邮件发送人昵称为：" + body + "，输入0返回";
+				else
 					return ERROR;
-				}
 			}
 		}
 
