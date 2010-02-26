@@ -153,7 +153,7 @@ public class XMPPServlet extends HttpServlet {
 			if (acc.getCdate().getTime() == acc.getUdate().getTime())
 				sb.append("您从未设置过定时天气预报邮件");
 			else {
-				sb.append("您共有" + scheduleDao.getScheduleCount(account)
+				sb.append("您共有" + scheduleDao.getScheduleCountByAccount(account)
 						+ "条定时天气预报邮件设置，");
 				sb.append("最近一次设置定时邮件时间为：").append(sdf2.format(acc.getUdate()));
 			}
@@ -184,7 +184,7 @@ public class XMPPServlet extends HttpServlet {
 			return HELP;
 
 		Account acc = checkAndGetAccount(account);
-		if (scheduleDao.getScheduleCount(account) >= acc.getSlimit())
+		if (scheduleDao.getScheduleCountByAccount(account) >= acc.getSlimit())
 			return "对不起，您" + "设置的定时数目已经达到上限，请删除一些定时设置后再试";
 
 		Date sdate = new Date();
