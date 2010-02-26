@@ -214,6 +214,8 @@ public class XMPPServlet extends HttpServlet {
 			c.set(Calendar.YEAR, now.get(Calendar.YEAR));
 			c.set(Calendar.MONTH, now.get(Calendar.MONTH));
 			c.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
+			if (c.getTimeInMillis() < now.getTimeInMillis())
+				c.add(Calendar.DAY_OF_YEAR, 1);// 如果小于现在时间，就再加一天，第二天再发
 			sdate = c.getTime();
 			schedule.setSdate(sdate);
 			schedule.setAccount(account);
