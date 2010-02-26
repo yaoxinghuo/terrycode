@@ -23,11 +23,11 @@ public class MailSender {
 			sender = replyTo.substring(0, replyTo.indexOf("@"));
 		/**
 		 * 下面的邮件地址请改成你的Gmail帐号，根据官方文档
-		 * http://code.google.com/intl/zh-CN/appengine/docs/java/mail/overview.html#Sending_Mail
+		 * http://code.google.com/intl/zh-CN/appengine/docs/java/mail/overview.html#Email_Messages
 		 * 
 		 * 不能随意设置发件人
 		 */
-		msg.setFrom(new InternetAddress("service@appmail.org.ru", MimeUtility
+		msg.setFrom(new InternetAddress("quan.gtalk@gmail.com", MimeUtility
 				.encodeText(sender, "UTF-8", "b")));
 		msg.setReplyTo(new InternetAddress[] { new InternetAddress(replyTo,
 				MimeUtility.encodeText(sender, "UTF-8", "b")) });
