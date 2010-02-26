@@ -1,5 +1,7 @@
 package com.terry.weatherlib.data.impl;
 
+import java.util.Date;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
@@ -56,6 +58,28 @@ public class AccountDaoImpl implements IAccountDao {
 				return false;
 			}
 			account.setNickname(nickname);
+			EntityTransaction tx = em.getTransaction();
+			tx.begin();
+			em.persist(account);
+			tx.commit();
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean updateAccountUdate(String a) {
+		try {
+			EntityManager em = EMF.get().createEntityManager();
+			Query query = em.createQuery("SELECT a FROM "
+					+ Account.class.getName() + " a where a.account=:account");
+			query.setParameter("account", a);
+			Account account = (Account) query.getSingleResult();
+			if (account == null) {
+				return false;
+			}
+			account.setUdate(new Date());
 			EntityTransaction tx = em.getTransaction();
 			tx.begin();
 			em.persist(account);
