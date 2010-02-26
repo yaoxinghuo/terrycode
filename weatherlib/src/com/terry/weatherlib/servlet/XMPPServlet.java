@@ -153,7 +153,8 @@ public class XMPPServlet extends HttpServlet {
 			if (acc.getCdate().getTime() == acc.getUdate().getTime())
 				sb.append("您从未设置过定时天气预报邮件");
 			else {
-				sb.append("您共有" + scheduleDao.getScheduleCountByAccount(account)
+				sb.append("您共有"
+						+ scheduleDao.getScheduleCountByAccount(account)
 						+ "条定时天气预报邮件设置，");
 				sb.append("最近一次设置定时邮件时间为：").append(sdf2.format(acc.getUdate()));
 			}
@@ -229,7 +230,9 @@ public class XMPPServlet extends HttpServlet {
 			else {
 				accountDao.updateAccountUdate(account);
 				return "天气预报定时设置已成功保存，程序会在每天" + parts[0] + "将“" + parts[2]
-						+ "”的天气预报发往" + email + "\r\n" + w.getReport();
+						+ "”的天气预报发往" + email
+						+ "\r\n若您使用139邮箱可到邮箱设置“长短信”邮件通知，以便能在手机上看到正文的天气内容"
+						+ "\r\n" + w.getReport();
 			}
 		}
 
