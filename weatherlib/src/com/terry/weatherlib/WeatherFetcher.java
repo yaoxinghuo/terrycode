@@ -97,15 +97,16 @@ public class WeatherFetcher {
 				if (className != null) {
 					if (className.equals("padbottom")) {
 						if (div.getFirstChild() instanceof Div) {
-							weather.setContent(div.toPlainTextString().trim());
-							log.debug("content:"
-									+ div.toPlainTextString().trim());
+							weather.setContent(div.toPlainTextString().replace(
+									"   ", "\r\n").trim());
+							log.debug("content:" + weather.getContent());
 						}
 					} else if (className.equals("section")
 							|| className.equals("module_open")) {
 						weather.setCity(div.toPlainTextString().trim().replace(
-								"市天气", "").replace("县天气", ""));
-						log.debug("city:" + div.toPlainTextString().trim());
+								"市天气", "").replace("县天气", "")
+								.replace("省天气", ""));
+						log.debug("city:" + weather.getCity());
 					} else if (className.equals("center small padtop")
 							|| className.equals("small padtop")) {
 						weather.setDesc(div.toPlainTextString().replace(
