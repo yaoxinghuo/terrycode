@@ -83,19 +83,21 @@ public class SendMailServlet extends HttpServlet {
 			else {
 				Calendar c_sdate = Calendar.getInstance();
 				c_sdate.setTime(schedule.getSdate());
-				switch (schedule.getType()) {
-				case 3:
-					c_sdate.add(Calendar.DAY_OF_YEAR, 1);
-					break;
-				case 4:
-					c_sdate.add(Calendar.WEEK_OF_YEAR, 1);
-					break;
-				case 5:
-					c_sdate.add(Calendar.MONTH, 1);
-					break;
-				default:
-					c_sdate.add(Calendar.YEAR, 1);
-					break;
+				while (c_sdate.getTimeInMillis() < System.currentTimeMillis()) {
+					switch (schedule.getType()) {
+					case 3:
+						c_sdate.add(Calendar.DAY_OF_YEAR, 1);
+						break;
+					case 4:
+						c_sdate.add(Calendar.WEEK_OF_YEAR, 1);
+						break;
+					case 5:
+						c_sdate.add(Calendar.MONTH, 1);
+						break;
+					default:
+						c_sdate.add(Calendar.YEAR, 1);
+						break;
+					}
 				}
 				schedule.setSdate(c_sdate.getTime());
 				schedule.setAdate(now);
