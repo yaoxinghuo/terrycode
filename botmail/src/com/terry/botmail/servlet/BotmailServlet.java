@@ -258,11 +258,7 @@ public class BotmailServlet extends HttpServlet {
 					return "您输入的：" + sdf2.format(sdate) + "已超过现在时间，请重新输入";
 				schedule.setSdate(sdate);
 				scheduleSaved = scheduleDao.saveSchedule(schedule);
-				Account a = accountDao.getAccountByAccount(account);
-				if (a != null) {
-					a.setUdate(new Date());
-					accountDao.saveAccount(a);
-				}
+				accountDao.updateAccountUdate(account);
 				cache.remove(account);
 			} catch (ParseException e) {
 				return "请输入有效的时间日期，如"

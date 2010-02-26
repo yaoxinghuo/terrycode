@@ -11,5 +11,7 @@ public interface IAccountDao {
 
 	public boolean updateAccountNickname(String a, String nickname);
 
+	public boolean updateAccountUdate(String a);
+
 	public Account getAccountByAccount(String a);
 }
