@@ -73,7 +73,7 @@ public class SendMailServlet extends HttpServlet {
 			EntityTransaction tx = em.getTransaction();
 			tx.begin();
 			MailSender.sendMail(schedule.getEmail(), account == null ? null
-					: account.getNickname(), a, schedule.getSubject(), schedule
+					: account.getNickname(), schedule.getSubject(), schedule
 					.getContent());
 			Date now = new Date();
 			String report = "主题为：" + schedule.getSubject() + "的邮件已于："
