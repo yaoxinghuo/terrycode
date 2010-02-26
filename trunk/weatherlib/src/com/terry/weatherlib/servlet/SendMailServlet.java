@@ -76,8 +76,7 @@ public class SendMailServlet extends HttpServlet {
 		try {
 			EntityTransaction tx = em.getTransaction();
 			tx.begin();
-			String content = weather.getContent();
-			String subject = content.split("  ")[0].trim();
+			String subject = weather.getDesc() + weather.getCity() + "天气预报";
 			MailSender.sendMail(schedule.getEmail(), account == null ? null
 					: account.getNickname(), a, subject, weather.getReport());
 			Date now = new Date();
