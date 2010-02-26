@@ -200,7 +200,7 @@ public class XMPPServlet extends HttpServlet {
 			else
 				email = parts[1] + "@139.com";
 		} else {
-			if (!StringUtil.validateEmail(parts[0]))
+			if (!StringUtil.validateEmail(parts[1]))
 				return parts[1] + "不是有效的邮件地址";
 		}
 		Weather w = WeatherCache.queryWeather(parts[2]);
