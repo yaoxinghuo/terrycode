@@ -110,7 +110,7 @@ public class WeatherFetcher {
 					} else if (className.equals("center small padtop")
 							|| className.equals("small padtop")) {
 						weather.setDesc(div.toPlainTextString().replace(
-								"&#0169;2009 -", "").replace("隐私权", "").trim());
+								"&#0169;2010 -", "").replace("隐私权", "").trim());
 					}
 				}
 
