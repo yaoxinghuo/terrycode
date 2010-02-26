@@ -23,7 +23,7 @@ public class MailSender {
 			sender = replyTo.substring(0, replyTo.indexOf("@"));
 		/**
 		 * 下面的邮件地址请改成你的Gmail帐号，根据官方文档
-		 * http://code.google.com/intl/zh-CN/appengine/docs/java/mail/overview.html#Sending_Mail
+		 * http://code.google.com/intl/zh-CN/appengine/docs/java/mail/overview.html#Email_Messages
 		 * 
 		 * 不能随意设置发件人
 		 */
