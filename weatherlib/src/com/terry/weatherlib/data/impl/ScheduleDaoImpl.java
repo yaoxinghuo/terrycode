@@ -79,11 +79,19 @@ public class ScheduleDaoImpl implements IScheduleDao {
 	}
 
 	@Override
-	public int getScheduleCount(String account) {
+	public int getScheduleCountByAccount(String account) {
 		Query query = em.createQuery("SELECT count(s) FROM "
 				+ Schedule.class.getName() + " s where s.account=:account");
 		query.setHint("datanucleus.query.resultSizeMethod", "count");
 		query.setParameter("account", account);
+		return (Integer) query.getSingleResult();
+	}
+	
+	@Override
+	public int getScheduleCount() {
+		Query query = em.createQuery("SELECT count(s) FROM "
+				+ Schedule.class.getName() + " s");
+		query.setHint("datanucleus.query.resultSizeMethod", "count");
 		return (Integer) query.getSingleResult();
 	}
 

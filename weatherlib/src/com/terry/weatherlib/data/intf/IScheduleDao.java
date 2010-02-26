@@ -15,7 +15,9 @@ public interface IScheduleDao {
 
 	public boolean deleteScheduleById(String id);
 
-	public int getScheduleCount(String account);
+	public int getScheduleCountByAccount(String account);
+
+	public int getScheduleCount();
 
 	public List<Schedule> getReadyToToSchedules();
 
