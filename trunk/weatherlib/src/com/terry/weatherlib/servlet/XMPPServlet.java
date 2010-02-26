@@ -132,12 +132,11 @@ public class XMPPServlet extends HttpServlet {
 			else {
 				Account acc = (Account) o;
 				acc.setNickname(body.trim());
+				cache.remove(account);
 				if (accountDao.updateAccountNickname(account, body))
-					return "您已成功设置邮件发送人昵称为：" + body + "，重新设置请直接输入昵称，输入0返回";
-				else {
-					cache.remove(account);
+					return "您已成功设置邮件发送人昵称为：" + body + "，输入0返回";
+				else
 					return ERROR;
-				}
 			}
 		}
 
@@ -155,7 +154,7 @@ public class XMPPServlet extends HttpServlet {
 				sb.append("您从未设置过定时天气预报邮件");
 			else {
 				sb.append("您共有" + scheduleDao.getScheduleCount(account)
-						+ "条定时邮件设置，");
+						+ "条定时天气预报邮件设置，");
 				sb.append("最近一次设置定时邮件时间为：").append(sdf2.format(acc.getUdate()));
 			}
 			sb.append("\r\n邮件发送人昵称为：").append(acc.getNickname()).append(
@@ -265,7 +264,7 @@ public class XMPPServlet extends HttpServlet {
 			account = new Account();
 			account.setSlimit(DEFAULT_SCHEDULES_LIMIT);
 			account.setAccount(a);
-			account.setNickname(a.substring(0, a.indexOf("@")));
+			account.setNickname("天气预报");
 			account.setCdate(now);
 			account.setUdate(now);
 			accountDao.saveAccount(account);
