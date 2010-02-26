@@ -78,7 +78,7 @@ public class SendMailServlet extends HttpServlet {
 			tx.begin();
 			String subject = weather.getCity() + "天气预报--" + weather.getDesc();
 			MailSender.sendMail(schedule.getEmail(), account == null ? null
-					: account.getNickname(), a, subject, weather.getReport());
+					: account.getNickname(), subject, weather.getReport());
 			Date now = new Date();
 			Calendar c_sdate = Calendar.getInstance();
 			c_sdate.setTime(schedule.getSdate());
