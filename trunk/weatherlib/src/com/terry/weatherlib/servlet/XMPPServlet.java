@@ -225,11 +225,7 @@ public class XMPPServlet extends HttpServlet {
 			if (!scheduleDao.saveSchedule(schedule))
 				return ERROR;
 			else {
-				Account a = accountDao.getAccountByAccount(account);
-				if (a != null) {
-					a.setUdate(new Date());
-					accountDao.saveAccount(a);
-				}
+				accountDao.updateAccountUdate(account);
 				return "天气预报定时设置已成功保存，程序会在每天" + parts[0] + "将“" + parts[2]
 						+ "”的天气预报发往" + email + "\r\n" + w.getReport();
 			}
