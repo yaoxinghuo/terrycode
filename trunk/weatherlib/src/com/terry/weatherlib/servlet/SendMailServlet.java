@@ -82,7 +82,8 @@ public class SendMailServlet extends HttpServlet {
 			Date now = new Date();
 			Calendar c_sdate = Calendar.getInstance();
 			c_sdate.setTime(schedule.getSdate());
-			c_sdate.add(Calendar.DAY_OF_YEAR, 1);
+			while (c_sdate.getTimeInMillis() < System.currentTimeMillis())
+				c_sdate.add(Calendar.DAY_OF_YEAR, 1);
 			schedule.setSdate(c_sdate.getTime());
 			schedule.setAdate(now);
 			em.persist(schedule);
