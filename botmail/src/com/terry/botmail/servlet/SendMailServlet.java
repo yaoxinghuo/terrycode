@@ -83,7 +83,7 @@ public class SendMailServlet extends HttpServlet {
 			else {
 				Calendar c_sdate = Calendar.getInstance();
 				c_sdate.setTime(schedule.getSdate());
-				while (c_sdate.getTimeInMillis() < System.currentTimeMillis()) {
+				while (c_sdate.getTimeInMillis() <= System.currentTimeMillis()) {
 					switch (schedule.getType()) {
 					case 3:
 						c_sdate.add(Calendar.DAY_OF_YEAR, 1);
