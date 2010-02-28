@@ -97,6 +97,14 @@ public class Schedule implements Serializable {
 		return city;
 	}
 
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
+	public Integer getType() {
+		return type;
+	}
+
 	@Enumerated
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date adate;
@@ -112,5 +120,6 @@ public class Schedule implements Serializable {
 	private String email;
 	@Transient
 	private String nickname;
+	private Integer type;//0 天气预报内容写在主题里，1写在正文里
 
 }
