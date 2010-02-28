@@ -1,6 +1,8 @@
 package com.terry.weatherlib;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,6 +10,12 @@ import javax.cache.Cache;
 import javax.cache.CacheException;
 import javax.cache.CacheManager;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.google.appengine.api.memcache.Expiration;
+import com.google.appengine.api.memcache.MemcacheService;
+import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import com.google.appengine.api.memcache.stdimpl.GCacheFactory;
 import com.terry.weatherlib.util.Constants;
 import com.terry.weatherlib.util.Pinyin4j;
@@ -19,6 +27,11 @@ import com.terry.weatherlib.util.Pinyin4j;
 public class WeatherCache {
 
 	private static Cache cache;
+
+	private static Log log = LogFactory.getLog(WeatherCache.class);
+
+	private static MemcacheService cacheService = MemcacheServiceFactory
+			.getMemcacheService();
 
 	static {
 		Map<Integer, Integer> props = new HashMap<Integer, Integer>();
@@ -47,7 +60,7 @@ public class WeatherCache {
 		if (w != null && cache != null) {
 			String name = Constants.DEFAULT_WEATHER_CACHE_NAME + "-"
 					+ Pinyin4j.cn2Spell(w.getCity());
-			cache.put(name, w);
+			cacheService.put(name, w, getExpiration());
 
 			// Add weather cache name to cache.
 			ArrayList<String> names = null;
@@ -60,5 +73,50 @@ public class WeatherCache {
 			cache.put(Constants.DEFAULT_CACHE_CACHE_NAME, names);
 		}
 		return w;
+	}
+
+	/*
+	 * http://www.google.com/m的天气预报每天8:32 17:32更新一次，还有凌晨也要手动更新一次
+	 * 
+	 * 所以要得到Cache的保存时间
+	 */
+	public static Expiration getExpiration() {
+		long now = System.currentTimeMillis();
+		Calendar c = Calendar.getInstance();
+		c.setTimeInMillis(now);
+		c.set(Calendar.HOUR_OF_DAY, 0);// 8:32
+		c.set(Calendar.MINUTE, 32);
+		boolean add = false;
+		if (c.getTimeInMillis() <= now) {
+			c.add(Calendar.DAY_OF_YEAR, 1);
+			add = true;
+		}
+		long x = c.getTimeInMillis();
+
+		if (add) {
+			c.add(Calendar.DAY_OF_YEAR, -1);
+			add = false;
+		}
+		c.set(Calendar.HOUR_OF_DAY, 9);// 17:32
+		c.set(Calendar.MINUTE, 32);
+		if (c.getTimeInMillis() <= now) {
+			c.add(Calendar.DAY_OF_YEAR, 1);
+			add = true;
+		}
+		long y = c.getTimeInMillis();
+
+		if (add) {
+			c.add(Calendar.DAY_OF_YEAR, -1);
+			add = false;
+		}
+		c.set(Calendar.HOUR_OF_DAY, 16);// 00:00
+		c.set(Calendar.MINUTE, 10);
+		if (c.getTimeInMillis() <= now)
+			c.add(Calendar.DAY_OF_YEAR, 1);
+		long z = c.getTimeInMillis();
+
+		Date minDate = new Date(Math.min(x, Math.min(y, z)));
+		log.debug("minDate:" + minDate.toString());
+		return Expiration.onDate(minDate);
 	}
 }

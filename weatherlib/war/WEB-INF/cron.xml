@@ -10,22 +10,22 @@
 		<description>recheck schedule every 2 minutes</description>
 		<schedule>every 2 minutes</schedule>
 	</cron>
-	<cron>
-		<url>/cron/clearWeatherCache</url>
-		<description>clear Weather Cache</description>
-		<schedule>every day 00:10</schedule>
-		<timezone>Asia/Shanghai</timezone>
-	</cron>
-	<cron>
-		<url>/cron/clearWeatherCache</url>
-		<description>clear Weather Cache</description>
-		<schedule>every day 08:32</schedule>
-		<timezone>Asia/Shanghai</timezone>
-	</cron>
-	<cron>
-		<url>/cron/clearWeatherCache</url>
-		<description>clear Weather Cache</description>
-		<schedule>every day 17:32</schedule>
-		<timezone>Asia/Shanghai</timezone>
-	</cron>
+	<!--<cron>
+			<url>/cron/clearWeatherCache</url>
+			<description>clear Weather Cache</description>
+			<schedule>every day 00:10</schedule>
+			<timezone>Asia/Shanghai</timezone>
+		</cron>
+		<cron>
+			<url>/cron/clearWeatherCache</url>
+			<description>clear Weather Cache</description>
+			<schedule>every day 08:32</schedule>
+			<timezone>Asia/Shanghai</timezone>
+		</cron>
+		<cron>
+			<url>/cron/clearWeatherCache</url>
+			<description>clear Weather Cache</description>
+			<schedule>every day 17:32</schedule>
+			<timezone>Asia/Shanghai</timezone>
+		</cron>-->
 </cronentries>
