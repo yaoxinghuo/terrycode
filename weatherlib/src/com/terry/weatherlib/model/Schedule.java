@@ -105,6 +105,14 @@ public class Schedule implements Serializable {
 		return type;
 	}
 
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
 	@Enumerated
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date adate;
@@ -120,6 +128,7 @@ public class Schedule implements Serializable {
 	private String email;
 	@Transient
 	private String nickname;
-	private Integer type;//0 天气预报内容写在主题里，1写在正文里
+	private int type;//0 天气预报内容写在主题里，1写在正文里
+	private String remark;
 
 }
