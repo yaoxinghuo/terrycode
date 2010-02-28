@@ -60,6 +60,9 @@ public class ClearWeatherCacheServlet extends HttpServlet {
 			for (String name : names) {
 				cache.remove(name);
 			}
-		}
+			cache.put(Constants.DEFAULT_CACHE_CACHE_NAME,
+					new ArrayList<String>());
+		} else
+			cache.clear();
 	}
 }
