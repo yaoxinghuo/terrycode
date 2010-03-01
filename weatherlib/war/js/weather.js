@@ -101,11 +101,5 @@ function test(com, grid) {
  */
 
 $(function() {
-	$('#sdate').timepickr();
-	$("#sdate").focus(function() {
-		$('#sdate_blank').attr("height","70px");
-	});
-	$("#sdate").blur(function() {
-		$('#sdate_blank').attr("height","1px");
-	});
+	
 });

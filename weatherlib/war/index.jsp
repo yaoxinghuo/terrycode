@@ -11,15 +11,11 @@
 <link rel="stylesheet" type="text/css" href="css/flexigrid.css" />
 <link rel="stylesheet" type="text/css" href="css/thickbox.css" />
 <link rel="stylesheet" type="text/css" href="css/jNice.css" />
-<link rel="stylesheet" type="text/css" href="css/themes/default/ui.core.css" />
-<link rel="stylesheet" type="text/css" href="css/ui.timepickr.css" />
 
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="js/flexigrid.pack.js"></script>
 <script type="text/javascript" src="js/thickbox.js"></script>
 <script type="text/javascript" src="js/jquery.jNice.js"></script>
-<script type="text/javascript" src="js/jquery.ui.all.js"></script>
-<script type="text/javascript" src="js/ui.timepickr.min.js"></script>
 
 <title>天气预报邮件定制机器人</title>
 <%
@@ -30,7 +26,7 @@
 <textarea id=csi style="display: none"></textarea>
 <div id=gbar><b class=gb1>天气预报</b> <a
 	href="http://fetion.xinghuo.org.ru/" target="_blank" class=gb1>网页飞信</a>
-<a href="http://websms.org.ru/" target="_blank" class=gb1>GV网页短信</a> </nobr></div>
+<a href="http://websms.org.ru/" target="_blank" class=gb1>GV网页短信</a></div>
 <div id=guser width=100%><%=userService.isUserLoggedIn() ? userService
 					.getCurrentUser().getEmail()
 					+ " | " : ""%><a
@@ -55,30 +51,48 @@
 %>
 
 <div style="display: none;"><input id="newSchedule"
-	alt="#TB_inline?height=250&width=560&inlineId=hiddenModalContent&;modal=false"
+	alt="#TB_inline?height=160&width=360&inlineId=hiddenModalContent&;modal=false"
 	title="<b>新建天气预报提醒</b>" class="thickbox" type="button" value="Show" /></div>
 
-<div id="hiddenModalContent" style="visibility:hidden;">
+<div id="hiddenModalContent" style="visibility: hidden;">
 <form class="jNice">
-<table width="400" border="0">
+<table border="0">
 	<tr>
-		<td style="width:100px;">每天发送时间：</td>
-		<td><input name="sdate" id="sdate" value="09:00" type="text" class="demo"/></td>
+		<td style="width: 100px;">发送时间：</td>
+		<td align="left" style="width: 20px;"><select name="sdate_hour" id="sdate_hour"
+			style="width: 70px;">
+			<%
+				for (int i = 0; i < 24; i++) {
+			%>
+			<option <%=i == 20 ? "selected" : ""%> value="<%=i < 10 ? ("0" + i) : i%>"><%=i < 10 ? ("0" + i) : i%>
+			时</option>
+			<%
+				}
+			%>
+		</select></td><td align="left"><select name="sdate_minute" id="sdate_minute"
+			style="width: 70px;">
+			<%
+				for (int i = 0; i < 12; i++) {
+			%>
+			<option value="<%=i < 2 ? ("0" + i * 5) : i * 5%>"><%=i < 2 ? ("0" + i * 5) : i * 5%>
+			分</option>
+			<%
+				}
+			%>
+		</select></td>
 	</tr>
-	<tr>
-		<td id="sdate_blank" height="1px;"></td>
-	</tr>
+
 	<tr>
 		<td>接受邮箱：</td>
-		<td><input name="email" id="email" value="@139.com"/></td>
+		<td colspan="2"><input name="email" id="email" value="@139.com" style="width:180px;"/></td>
 	</tr>
 	<tr>
 		<td>定制的城市：</td>
-		<td><input name="city" id="city" /></td>
+		<td colspan="2"><input name="city" id="city" style="width:180px;"/></td>
 	</tr>
 	<tr>
 		<td>状态：</td>
-		<td><select name="type" id="type">
+		<td colspan="2"><select name="type" id="type" style="width:150px;">
 			<option value="1" selected="selected">天气内容放正文</option>
 			<option value="2">天气内容放主题</option>
 			<option value="0">暂时停用</option>
@@ -86,11 +100,12 @@
 	</tr>
 	<tr>
 		<td>备注：</td>
-		<td><input name="remark" id="remark" /></td>
+		<td colspan="2"><input name="remark" id="remark" style="width:180px;"/></td>
 	</tr>
 	<tr>
 		<td></td>
-		<td><input type="button" value="保存" id="newScheduleSave"/></td>
+		<td colspan="2"><input type="button" value="保存"
+			id="newScheduleSave" /></td>
 	</tr>
 </table>
 </form>
