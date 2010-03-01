@@ -79,6 +79,30 @@ public class ScheduleDaoImpl implements IScheduleDao {
 	}
 
 	@Override
+	public boolean deleteScheduleByIdAndAccount(String id, String account) {
+		Key key = KeyFactory.stringToKey(id);
+		if (key == null || !key.isComplete())
+			return false;
+
+		EntityManager em = EMF.get().createEntityManager();
+
+		Schedule schedule = em.find(Schedule.class, key);
+		if (schedule == null)
+			return false;
+		if (!schedule.getAccount().equals(account))
+			return false;
+		try {
+			EntityTransaction tx = em.getTransaction();
+			tx.begin();
+			em.remove(schedule);
+			tx.commit();
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
 	public int getScheduleCountByAccount(String account) {
 		Query query = em.createQuery("SELECT count(s) FROM "
 				+ Schedule.class.getName() + " s where s.account=:account");
@@ -86,7 +110,7 @@ public class ScheduleDaoImpl implements IScheduleDao {
 		query.setParameter("account", account);
 		return (Integer) query.getSingleResult();
 	}
-	
+
 	@Override
 	public int getScheduleCount() {
 		Query query = em.createQuery("SELECT count(s) FROM "
@@ -102,6 +126,34 @@ public class ScheduleDaoImpl implements IScheduleDao {
 				+ Schedule.class.getName() + " s where s.account=:account");
 		query.setParameter("account", account);
 		return query.getResultList();
+	}
+
+	@Override
+	public boolean updateScheduleById(String id, String email, String city,
+			Date sdate, int type, String remark) {
+		Key key = KeyFactory.stringToKey(id);
+		if (key == null || !key.isComplete())
+			return false;
+
+		EntityManager em = EMF.get().createEntityManager();
+
+		Schedule schedule = em.find(Schedule.class, key);
+		if (schedule == null)
+			return false;
+		schedule.setEmail(email);
+		schedule.setCity(city);
+		schedule.setSdate(sdate);
+		schedule.setType(type);
+		schedule.setRemark(remark);
+		try {
+			EntityTransaction tx = em.getTransaction();
+			tx.begin();
+			em.persist(schedule);
+			tx.commit();
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
 	}
 
 }

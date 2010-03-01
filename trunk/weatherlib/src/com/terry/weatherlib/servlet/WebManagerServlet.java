@@ -1,7 +1,10 @@
 package com.terry.weatherlib.servlet;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -17,9 +20,12 @@ import org.json.JSONObject;
 
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.terry.weatherlib.Weather;
+import com.terry.weatherlib.WeatherCache;
 import com.terry.weatherlib.data.impl.ScheduleDaoImpl;
 import com.terry.weatherlib.data.intf.IScheduleDao;
 import com.terry.weatherlib.model.Schedule;
+import com.terry.weatherlib.util.StringUtil;
 
 /**
  * @author Terry E-mail: yaoxinghuo at 126 dot com
@@ -31,6 +37,8 @@ public class WebManagerServlet extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = -419330133682830958L;
+
+	private static final String ERROR = "对不起，程序出现错误，请稍候再试";
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.CHINA);
 	private SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm",
@@ -49,11 +57,32 @@ public class WebManagerServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
-		resp.setContentType("text/html;charset=UTF-8");
+		resp.setContentType("application/json;charset=UTF-8");
 
-		JSONObject jo = new JSONObject();
-		if (!userService.isUserLoggedIn())
-			return;
+		JSONObject jo = null;
+		if (userService.isUserLoggedIn()) {
+			String action = req.getParameter("action");
+			if (action != null) {
+				if (action.equals("saveSchedule")) {
+					jo = saveSchedule(req);
+				} else if (action.equals("deleteSchedules")) {
+					jo = deleteSchedules(req);
+				} else
+					jo = schedulesList();
+			}
+		}
+
+		resp.getWriter().println(jo.toString());
+	}
+
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		doPost(req, resp);
+	}
+
+	private JSONObject schedulesList() {
+		JSONObject jo = createDefaultJo();
 		List<Schedule> schedules = scheduleDao
 				.getSchedulesByAccount(userService.getCurrentUser().getEmail());
 		JSONArray rows = new JSONArray();
@@ -71,7 +100,10 @@ public class WebManagerServlet extends HttpServlet {
 			else
 				ja.put("邮件正文接收");
 			ja.put(s.getRemark());
-			ja.put(sdf2.format(s.getAdate()));
+			if (s.getAdate() == null)
+				ja.put("从未发送过");
+			else
+				ja.put(sdf2.format(s.getAdate()));
 			try {
 				jso.put("id", s.getId());
 				jso.put("cell", ja);
@@ -83,17 +115,134 @@ public class WebManagerServlet extends HttpServlet {
 			jo.put("total", schedules == null ? 0 : schedules.size());
 			jo.put("page", 1);
 			jo.put("rows", rows);
+			jo.put("result", true);
+			jo.put("message", "ok");
 		} catch (JSONException e) {
 		}
-
-		resp.setContentType("application/json");
-		resp.getWriter().println(jo.toString());
+		return jo;
 	}
 
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		doPost(req, resp);
+	private JSONObject saveSchedule(HttpServletRequest req) {
+		JSONObject jo = createDefaultJo();
+
+		String email = req.getParameter("email");
+		String sdateS = req.getParameter("sdate");
+		String city = req.getParameter("city");
+		String remark = req.getParameter("remark");
+		String typeS = req.getParameter("type");
+		String sid = req.getParameter("sid");
+
+		if (StringUtil.isEmptyOrWhitespace(email)
+				|| StringUtil.isEmptyOrWhitespace(city)
+				|| StringUtil.isEmptyOrWhitespace(sdateS)
+				|| StringUtil.isEmptyOrWhitespace(typeS) || remark == null) {
+			try {
+				jo.put("message", "请检查必填栏位");
+			} catch (JSONException e) {
+			}
+			return jo;
+		}
+
+		if (!StringUtil.validateEmail(email)) {
+			try {
+				jo.put("message", "请检查邮件格式");
+			} catch (JSONException e) {
+			}
+			return jo;
+		}
+
+		if (!StringUtil.isDigital(typeS)) {
+			try {
+				jo.put("message", "请检查状态");
+			} catch (JSONException e) {
+			}
+			return jo;
+		}
+		int type = Integer.parseInt(typeS);
+		if (type != 1 || type != 2)
+			type = 0;
+
+		Date sdate = null;
+		try {
+			sdate = sdf.parse(sdateS);
+			Calendar c = Calendar.getInstance();
+			c.setTime(sdate);
+			Calendar now = Calendar.getInstance();
+			c.set(Calendar.YEAR, now.get(Calendar.YEAR));
+			c.set(Calendar.MONTH, now.get(Calendar.MONTH));
+			c.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
+			if (c.getTimeInMillis() < now.getTimeInMillis())
+				c.add(Calendar.DAY_OF_YEAR, 1);// 如果小于现在时间，就再加一天，第二天再发
+			sdate = c.getTime();
+		} catch (ParseException e1) {
+			try {
+				jo.put("message", "请检查发送时间");
+			} catch (JSONException e) {
+			}
+			return jo;
+		}
+
+		Weather w = WeatherCache.queryWeather(city);
+		if (w == null) {
+			try {
+				jo.put("message", "无法获取“" + city
+						+ "”的天气，所以未能保存您的定时设置，请检查您的输入并稍候再试");
+			} catch (JSONException e) {
+			}
+			return jo;
+		}
+		boolean result = false;
+		if (!StringUtil.isEmptyOrWhitespace(sid)) {
+			result = scheduleDao.updateScheduleById(sid, email, city, sdate,
+					type, remark);
+		} else {
+			Schedule s = new Schedule();
+			s.setAccount(userService.getCurrentUser().getEmail());
+			s.setAdate(null);
+			s.setCdate(new Date());
+			s.setCity(city);
+			s.setEmail(email);
+			s.setRemark(remark);
+			s.setSdate(sdate);
+			s.setType(type);
+			result = scheduleDao.saveSchedule(s);
+		}
+		try {
+			jo.put("result", result);
+			jo.put("message", result ? "已经成功保存“" + city + "”的天气预报定时设置" : ERROR);
+		} catch (JSONException e) {
+		}
+		return jo;
+	}
+
+	private JSONObject deleteSchedules(HttpServletRequest req) {
+		JSONObject jo = createDefaultJo();
+		String[] ids = req.getParameter("ids").split(",");
+		String account = userService.getCurrentUser().getEmail();
+		int total = 0;
+		for (String id : ids) {
+			if (!StringUtil.isEmptyOrWhitespace(id))
+				if (scheduleDao.deleteScheduleByIdAndAccount(id, account))
+					total++;
+		}
+		try {
+			jo.put("result", total > 0);
+			String message = total > 0 ? "您已成功删除" + total + "条天气预报设置" : ERROR;
+			jo.put("message", message);
+		} catch (JSONException e) {
+
+		}
+		return jo;
+	}
+
+	private JSONObject createDefaultJo() {
+		JSONObject jo = new JSONObject();
+		try {
+			jo.put("result", false);
+			jo.put("message", ERROR);
+		} catch (JSONException e) {
+		}
+		return jo;
 	}
 
 }
