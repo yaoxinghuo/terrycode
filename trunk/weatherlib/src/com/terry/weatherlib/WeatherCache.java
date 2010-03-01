@@ -76,7 +76,7 @@ public class WeatherCache {
 	}
 
 	/*
-	 * http://www.google.com/m的天气预报每天8:32 17:32更新一次，还有凌晨也要手动更新一次
+	 * http://www.google.com/m的天气预报每天8:35 17:35更新一次，还有凌晨也要手动更新一次
 	 * 
 	 * 所以要得到Cache的保存时间
 	 */
@@ -85,7 +85,7 @@ public class WeatherCache {
 		Calendar c = Calendar.getInstance();
 		c.setTimeInMillis(now);
 		c.set(Calendar.HOUR_OF_DAY, 0);// 8:32
-		c.set(Calendar.MINUTE, 32);
+		c.set(Calendar.MINUTE, 35);
 		boolean add = false;
 		if (c.getTimeInMillis() <= now) {
 			c.add(Calendar.DAY_OF_YEAR, 1);
@@ -98,7 +98,7 @@ public class WeatherCache {
 			add = false;
 		}
 		c.set(Calendar.HOUR_OF_DAY, 9);// 17:32
-		c.set(Calendar.MINUTE, 32);
+		c.set(Calendar.MINUTE, 35);
 		if (c.getTimeInMillis() <= now) {
 			c.add(Calendar.DAY_OF_YEAR, 1);
 			add = true;
