@@ -1,40 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-
 <%@page import="com.google.appengine.api.users.UserService"%>
 <%@page import="com.google.appengine.api.users.UserServiceFactory"%>
 
-
-<%@page import="com.terry.weatherlib.data.impl.ScheduleDaoImpl"%>
-<%@page import="java.util.List"%>
-<%@page import="com.terry.weatherlib.model.Schedule"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="java.util.Locale"%>
-<%@page import="java.util.TimeZone"%><html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<meta equiv="X-UA-Compatible" content="chrome=1">
-<link rel="stylesheet" type="text/css" href="grid/css/flexigrid/flexigrid.css" />
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="css/flexigrid.css" />
+<link rel="stylesheet" type="text/css" href="css/thickbox.css" />
+
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
-<script type="text/javascript" src="grid/flexigrid.pack.js"></script>
-<!--  导入thickbox 遮罩层  -->
-<!--  注：导入 thickbox.css  -->
-<style type="text/css" media="all">
-@import "grid/thickbox.css";
-</style>
-<link rel="alternate stylesheet" type="text/css" href="grid/1024.css" title="1024 x 768" />
-<script src="grid/thickbox.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/flexigrid.pack.js"></script>
+<script type="text/javascript" src="js/thickbox.js"></script>
         
 <style>
-        .flexigrid div.fbutton .add
-                {
-                        background: url(grid/css/flexigrid/images/add.png) no-repeat center left;
-                }       
-        .flexigrid div.fbutton .delete
-                {
-                        background: url(grid/css/flexigrid/images/close.png) no-repeat center left;
-                }       
+.flexigrid div.fbutton .add{
+background: url(images/add.png) no-repeat center left;
+}
+.flexigrid div.fbutton .delete{
+background: url(images/close.png) no-repeat center left;
+}
+.flexigrid div.fbutton .modify{
+background: url(images/modify.png) no-repeat center left;
+}
 </style>
 <style>
 input {
@@ -140,10 +129,10 @@ a.gb2:hover {
 </head>
 <body topmargin=3 marginheight=3>
 <textarea id=csi style="display: none"></textarea>
-<div id=gbar><nobr><b class=gb1>天气预报</b> <a
+<div id=gbar><b class=gb1>天气预报</b> <a
 	href="http://fetion.xinghuo.org.ru/" target="_blank" class=gb1>网页飞信</a>
 <a href="http://websms.org.ru/" target="_blank" class=gb1>GV网页短信</a> </nobr></div>
-<div id=guser width=100%><nobr> <%=userService.isUserLoggedIn() ? userService
+<div id=guser width=100%> <%=userService.isUserLoggedIn() ? userService
 					.getCurrentUser().getEmail()
 					+ " | " : ""%><a
 	href="<%=userService.isUserLoggedIn() ? userService
@@ -162,24 +151,26 @@ a.gb2:hover {
 <input type="button" id="cssrain" title="新建用户" class="thickbox"/>
 </div>
 
-<script type="text/javascript">
+<script type="text/javascript"> 
 // 各种属性解释：都在 flexgrid.js里
                         $("#flex1").flexigrid
                         (
                         {
-                        url: 'ajax/retrieveStudents.action',
+                        url: 'webManager',
                         dataType: 'json',
                         colModel : [
-                                {display: '创建时间', name : 'id', width : 60, sortable : true, align: 'center'},
-                                {display: '定制城市', name : 'username', width : 120, sortable : true, align: 'left'},
-                                {display: '发送时间', name : 'password', width : 120, sortable : true, align: 'left', hide: true},
-                                {display: '接受邮箱', name : 'age', width : 120, sortable : true, align: 'left'},
-                                {display: '格式', name : 'age', width : 120, sortable : true, align: 'left'},
-                                {display: '备注', name : 'address', width : 120, sortable : true, align: 'left'}
+                                {display: '创建时间', name : 'cdate', width : 160, sortable : false, align: 'center'},
+                                {display: '定制城市', name : 'city', width : 120, sortable : false, align: 'left'},
+                                {display: '发送时间', name : 'sdate', width : 120, sortable : false, align: 'left'},
+                                {display: '接受邮箱', name : 'email', width : 120, sortable : false, align: 'left'},
+                                {display: '状态', name : 'type', width : 120, sortable : false, align: 'left'},
+                                {display: '备注', name : 'remark', width : 120, sortable : false, align: 'left'},
+                                {display: '上次发送时间', name : 'adate', width : 160, sortable : false, align: 'left', hide: true}
                                 ],
                         buttons : [
                                 {name: '增加', bclass: 'add', onpress : test},
                                 {name: '删除', bclass: 'delete', onpress : test},
+                                {name: '修改', bclass: 'modify', onpress : test},
                                 {separator: true}
                                 ],
                         sortname: "id",
@@ -188,7 +179,6 @@ a.gb2:hover {
                         useRp: true,
                         rp: 10,
                         showTableToggleBtn: true,
-                        width: 600,
                         height: 300
                         }
                         );
@@ -222,37 +212,8 @@ a.gb2:hover {
                         $(this).parent().toggleClass('fh');
                                 });
             */
-</script>
+</script> 
 
-<table>
-
-	<%
-		if (userService.isUserLoggedIn()) {
-			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm",
-					Locale.CHINA);
-			SimpleDateFormat sdf2 = new SimpleDateFormat(
-					"yyyy-MM-dd HH:mm", Locale.CHINA);
-			sdf.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
-			sdf2.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
-			ScheduleDaoImpl scheduleDao = new ScheduleDaoImpl();
-			List<Schedule> schedules = scheduleDao
-					.getSchedulesByAccount(userService.getCurrentUser()
-							.getEmail());
-			for (Schedule schedule : schedules) {
-	%>
-	<tr>
-		<td><%=sdf2.format(schedule.getCdate())%></td>
-		<td><%=schedule.getEmail()%></td>
-		<td><%=sdf.format(schedule.getSdate())%></td>
-		<td><%=sdf2.format(schedule.getAdate())%></td>
-		<td><%=schedule.getCity()%></td>
-		<td><%=schedule.getType() == 0 ? "主题" : "正文"%></td>
-	</tr>
-	<%
-		}
-		}
-	%>
-</table>
 <p align="center"><font size="6">天气预报邮件定制机器人<br />
 </font></p>
 <p align="left"><strong><font size="4">功能：</font></strong><br />
@@ -296,6 +257,6 @@ a.gb2:hover {
 
 
 <p align="center"><img
-	src="http://code.google.com/appengine/images/appengine-silver-120x30.gif"></p>
+	src="http://code.google.com/appengine/images/appengine-silver-120x30.gif"/></p>
 </body>
 </html>

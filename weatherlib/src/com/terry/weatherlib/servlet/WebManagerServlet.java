@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.appengine.api.users.UserService;
@@ -47,26 +48,46 @@ public class WebManagerServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8");
+		resp.setContentType("text/html;charset=UTF-8");
+
 		JSONObject jo = new JSONObject();
 		if (!userService.isUserLoggedIn())
 			return;
 		List<Schedule> schedules = scheduleDao
 				.getSchedulesByAccount(userService.getCurrentUser().getEmail());
 		JSONArray rows = new JSONArray();
-		for(Schedule s:schedules){
+		for (Schedule s : schedules) {
+			JSONObject jso = new JSONObject();
 			JSONArray ja = new JSONArray();
-			ja.put(s.getId());
 			ja.put(sdf2.format(s.getCdate()));
 			ja.put(s.getCity());
 			ja.put(sdf.format(s.getSdate()));
 			ja.put(s.getEmail());
-			ja.put(s.getType());
+			if (s.getType() == 0)
+				ja.put("暂停");
+			else if (s.getType() == 1)
+				ja.put("邮件主题接收");
+			else
+				ja.put("邮件正文接收");
 			ja.put(s.getRemark());
 			ja.put(sdf2.format(s.getAdate()));
-			ja.put(s.getEmail());
-			rows.put(ja);
+			try {
+				jso.put("id", s.getId());
+				jso.put("cell", ja);
+			} catch (JSONException e) {
+			}
+			rows.put(jso);
+		}
+		try {
+			jo.put("total", schedules == null ? 0 : schedules.size());
+			jo.put("page", 1);
+			jo.put("rows", rows);
+		} catch (JSONException e) {
 		}
 
+		resp.setContentType("application/json");
+		resp.getWriter().println(jo.toString());
 	}
 
 	@Override

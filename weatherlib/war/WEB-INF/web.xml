@@ -9,6 +9,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</welcome-file-list>
 	
 	<servlet>
+		<servlet-name>webManager</servlet-name>
+		<servlet-class>com.terry.weatherlib.servlet.WebManagerServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>webManager</servlet-name>
+		<url-pattern>/webManager</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 		<servlet-name>send</servlet-name>
 		<servlet-class>com.terry.weatherlib.servlet.SendMailServlet</servlet-class>
 	</servlet>

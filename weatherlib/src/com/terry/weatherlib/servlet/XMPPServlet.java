@@ -224,7 +224,7 @@ public class XMPPServlet extends HttpServlet {
 			schedule.setCdate(new Date());
 			schedule.setEmail(email);
 			schedule.setCity(parts[2]);
-			schedule.setType(0);
+			schedule.setType(1);
 			schedule.setRemark("");
 			schedule.setNickname(acc.getNickname());
 			if (!scheduleDao.saveSchedule(schedule))
