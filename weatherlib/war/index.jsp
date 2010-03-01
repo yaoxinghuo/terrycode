@@ -23,6 +23,19 @@
 %>
 </head>
 <body topmargin=3 marginheight=3>
+
+<div id="msg"
+	style="visibility: hidden; z-index: 1000; position: absolute; left: 300px;">
+<table border='0' cellspacing='0' cellpadding='0'>
+	<tr>
+		<td style="padding: 4px; background-color: #fad163;"><font
+			size="-1"><span id="msg_content"></span>&nbsp;<a href="#"
+			onclick="clearMsg();return false;"><img id="close" alt="关闭"
+			title="关闭" style="border: none;" src='images/close.gif' /></a></font></td>
+	</tr>
+</table>
+</div>
+
 <textarea id=csi style="display: none"></textarea>
 <div id=gbar><b class=gb1>天气预报</b> <a
 	href="http://fetion.xinghuo.org.ru/" target="_blank" class=gb1>网页飞信</a>
@@ -51,25 +64,27 @@
 %>
 
 <div style="display: none;"><input id="newSchedule"
-	alt="#TB_inline?height=160&width=360&inlineId=hiddenModalContent&;modal=false"
+	alt="#TB_inline?height=210&width=360&inlineId=hiddenModalContent&;modal=false"
 	title="<b>新建天气预报提醒</b>" class="thickbox" type="button" value="Show" /></div>
 
 <div id="hiddenModalContent" style="visibility: hidden;">
 <form class="jNice">
-<table border="0">
+<table border="0" style="line-height: 24px;">
 	<tr>
 		<td style="width: 100px;">发送时间：</td>
-		<td align="left" style="width: 20px;"><select name="sdate_hour" id="sdate_hour"
-			style="width: 70px;">
+		<td align="left" style="width: 20px;"><select name="sdate_hour"
+			id="sdate_hour" style="width: 70px;">
 			<%
 				for (int i = 0; i < 24; i++) {
 			%>
-			<option <%=i == 20 ? "selected" : ""%> value="<%=i < 10 ? ("0" + i) : i%>"><%=i < 10 ? ("0" + i) : i%>
+			<option <%=i == 20 ? "selected" : ""%>
+				value="<%=i < 10 ? ("0" + i) : i%>"><%=i < 10 ? ("0" + i) : i%>
 			时</option>
 			<%
 				}
 			%>
-		</select></td><td align="left"><select name="sdate_minute" id="sdate_minute"
+		</select></td>
+		<td align="left"><select name="sdate_minute" id="sdate_minute"
 			style="width: 70px;">
 			<%
 				for (int i = 0; i < 12; i++) {
@@ -81,34 +96,47 @@
 			%>
 		</select></td>
 	</tr>
-
 	<tr>
-		<td>接受邮箱：</td>
-		<td colspan="2"><input name="email" id="email" value="@139.com" style="width:180px;"/></td>
-	</tr>
-	<tr>
-		<td>定制的城市：</td>
-		<td colspan="2"><input name="city" id="city" style="width:180px;"/></td>
-	</tr>
-	<tr>
-		<td>状态：</td>
-		<td colspan="2"><select name="type" id="type" style="width:150px;">
+		<td>发送状态：</td>
+		<td colspan="2"><select name="type" id="type"
+			style="width: 150px;">
 			<option value="1" selected="selected">天气内容放正文</option>
 			<option value="2">天气内容放主题</option>
 			<option value="0">暂时停用</option>
 		</select></td>
 	</tr>
 	<tr>
-		<td>备注：</td>
-		<td colspan="2"><input name="remark" id="remark" style="width:180px;"/></td>
+		<td>接收邮箱：</td>
+		<td colspan="2"><input name="email" id="email" value="@139.com"
+			style="width: 180px;" /></td>
 	</tr>
 	<tr>
-		<td></td>
-		<td colspan="2"><input type="button" value="保存"
-			id="newScheduleSave" /></td>
+		<td>定制城市：</td>
+		<td colspan="2"><input name="city" id="city"
+			style="width: 180px;" size="3" /></td>
+	</tr>
+	<tr>
+		<td>备注：</td>
+		<td colspan="2"><input name="remark" id="remark"
+			style="width: 180px;" /></td>
+	</tr>
+	<tr>
+		<td colspan="3" style="height: 10px;"><input type="hidden"
+			id="sid" value="" /></td>
 	</tr>
 </table>
 </form>
+<table>
+	<tr>
+		<td width="100px;"></td>
+		<td><input type="button" value="保存"
+			id="newScheduleSave" /></td>
+	</tr>
+	<tr>
+		<td colspan="2" align="center">&nbsp;<span id="message"
+			style="display: none; color: red; font-weight: bold;"></span></td>
+	</tr>
+</table>
 </div>
 
 <p align="center"><font size="6">天气预报邮件定制机器人<br />

@@ -1,5 +1,6 @@
 package com.terry.weatherlib.data.intf;
 
+import java.util.Date;
 import java.util.List;
 
 import com.terry.weatherlib.model.Schedule;
@@ -14,6 +15,11 @@ public interface IScheduleDao {
 	public Schedule getScheduleById(String id);
 
 	public boolean deleteScheduleById(String id);
+
+	public boolean deleteScheduleByIdAndAccount(String id, String account);
+
+	public boolean updateScheduleById(String id, String email, String city,
+			Date sdate, int type, String remark);
 
 	public int getScheduleCountByAccount(String account);
 

@@ -65,6 +65,9 @@ public class SendMailServlet extends HttpServlet {
 		Schedule schedule = em.find(Schedule.class, key);
 		if (schedule == null)
 			return;
+		if (schedule.getType() == 0) {
+			return;
+		}
 		String a = schedule.getAccount();
 		Query query = em.createQuery("SELECT a FROM " + Account.class.getName()
 				+ " a where a.account=:account");
