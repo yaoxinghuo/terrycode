@@ -97,11 +97,11 @@ public class Schedule implements Serializable {
 		return city;
 	}
 
-	public void setType(Integer type) {
+	public void setType(int type) {
 		this.type = type;
 	}
 
-	public Integer getType() {
+	public int getType() {
 		return type;
 	}
 
@@ -128,7 +128,7 @@ public class Schedule implements Serializable {
 	private String email;
 	@Transient
 	private String nickname;
-	private int type;//0 天气预报内容写在主题里，1写在正文里
+	private int type = 0;// 0 暂停，2 天气预报内容写在主题里，1写在正文里
 	private String remark;
 
 }
