@@ -7,121 +7,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="css/core.css" />
 <link rel="stylesheet" type="text/css" href="css/flexigrid.css" />
 <link rel="stylesheet" type="text/css" href="css/thickbox.css" />
+<link rel="stylesheet" type="text/css" href="css/jNice.css" />
+<link rel="stylesheet" type="text/css" href="css/themes/default/ui.core.css" />
+<link rel="stylesheet" type="text/css" href="css/ui.timepickr.css" />
 
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="js/flexigrid.pack.js"></script>
 <script type="text/javascript" src="js/thickbox.js"></script>
-        
-<style>
-.flexigrid div.fbutton .add{
-background: url(images/add.png) no-repeat center left;
-}
-.flexigrid div.fbutton .delete{
-background: url(images/close.png) no-repeat center left;
-}
-.flexigrid div.fbutton .modify{
-background: url(images/modify.png) no-repeat center left;
-}
-</style>
-<style>
-input {
-	font-size: 14px;
-	height: 28px
-}
+<script type="text/javascript" src="js/jquery.jNice.js"></script>
+<script type="text/javascript" src="js/jquery.ui.all.js"></script>
+<script type="text/javascript" src="js/ui.timepickr.min.js"></script>
 
-body,td,a,p,.h {
-	font-family: arial, sans-serif
-}
-
-.h {
-	color: #36c;
-	font-size: 20px
-}
-
-.q {
-	color: #00c
-}
-
-.ts td {
-	padding: 0
-}
-
-.ts {
-	border-collapse: collapse
-}
-
-#gbar {
-	height: 22px
-}
-
-.gbh,.gbd {
-	border-top: 1px solid #c9d7f1;
-	font-size: 1px
-}
-
-.gbh {
-	height: 0;
-	position: absolute;
-	top: 24px;
-	width: 100%
-}
-
-#gbi,#gbs {
-	background: #fff;
-	left: 0;
-	position: absolute;
-	top: 24px;
-	visibility: hidden;
-	z-index: 1000
-}
-
-#gbi {
-	border: 1px solid;
-	border-color: #c9d7f1 #36c #36c #a2bae7;
-	z-index: 1001
-}
-
-#guser {
-	padding-bottom: 7px !important;
-	text-align: right
-}
-
-#gbar,#guser {
-	font-size: 13px;
-	padding-top: 1px !important
-}
-
-@media all {
-	.gb1,.gb3 {
-		height: 22px;
-		margin-right: .5em;
-		vertical-align: top
-	}
-	#gbar {
-		float: left
-	}
-}
-
-.gb2 {
-	display: block;
-	padding: .2em .5em
-}
-
-a.gb1,a.gb2,a.gb3 {
-	color: #00c !important
-}
-
-.gb2,.gb3 {
-	text-decoration: none
-}
-
-a.gb2:hover {
-	background: #36c;
-	color: #fff !important
-}
-</style>
 <title>天气预报邮件定制机器人</title>
 <%
 	UserService userService = UserServiceFactory.getUserService();
@@ -132,87 +31,70 @@ a.gb2:hover {
 <div id=gbar><b class=gb1>天气预报</b> <a
 	href="http://fetion.xinghuo.org.ru/" target="_blank" class=gb1>网页飞信</a>
 <a href="http://websms.org.ru/" target="_blank" class=gb1>GV网页短信</a> </nobr></div>
-<div id=guser width=100%> <%=userService.isUserLoggedIn() ? userService
+<div id=guser width=100%><%=userService.isUserLoggedIn() ? userService
 					.getCurrentUser().getEmail()
 					+ " | " : ""%><a
 	href="<%=userService.isUserLoggedIn() ? userService
 					.createLogoutURL("/index.jsp") : userService
 					.createLoginURL("/index.jsp")%>"><%=userService.isUserLoggedIn() ? "退出" : "登录"%></a>
-</nobr></div>
+</div>
 <div class=gbh style="left: 0"></div>
 <div class=gbh style="right: 0"></div>
 
+
 <div class="bborderx">
-<table id="flex1" style="display:none"></table>
+<table id="flex1" style="display: none"></table>
 </div>
 
-<!--  隐藏一个按钮 ，用来调用thickbox  -->
-<div style="display:none;">
-<input type="button" id="cssrain" title="新建用户" class="thickbox"/>
-</div>
+<%
+	if (userService.isUserLoggedIn()) {
+%>
+<script type="text/javascript" src="js/weather.js"></script>
+<%
+	}
+%>
 
-<script type="text/javascript"> 
-// 各种属性解释：都在 flexgrid.js里
-                        $("#flex1").flexigrid
-                        (
-                        {
-                        url: 'webManager',
-                        dataType: 'json',
-                        colModel : [
-                                {display: '创建时间', name : 'cdate', width : 160, sortable : false, align: 'center'},
-                                {display: '定制城市', name : 'city', width : 120, sortable : false, align: 'left'},
-                                {display: '发送时间', name : 'sdate', width : 120, sortable : false, align: 'left'},
-                                {display: '接受邮箱', name : 'email', width : 120, sortable : false, align: 'left'},
-                                {display: '状态', name : 'type', width : 120, sortable : false, align: 'left'},
-                                {display: '备注', name : 'remark', width : 120, sortable : false, align: 'left'},
-                                {display: '上次发送时间', name : 'adate', width : 160, sortable : false, align: 'left', hide: true}
-                                ],
-                        buttons : [
-                                {name: '增加', bclass: 'add', onpress : test},
-                                {name: '删除', bclass: 'delete', onpress : test},
-                                {name: '修改', bclass: 'modify', onpress : test},
-                                {separator: true}
-                                ],
-                        sortname: "id",
-                        sortorder: "asc",
-                        title: '定制天气预报列表',
-                        useRp: true,
-                        rp: 10,
-                        showTableToggleBtn: true,
-                        height: 300
-                        }
-                        );
-                        function test(com,grid)
-                        {
-                                if (com=='删除')
-                                        {
-                                                if( $('.trSelected',grid).length>0){
-                                                 if(confirm('是否删除这 ' + $('.trSelected',grid).length + ' 条记录吗?'))
-                                                {
-                                                  var  id ="";
-                                             for(var i=0;i<$('.trSelected',grid).length;i++){
-                                                id += "id="+$('.trSelected',grid).find("td:first").eq(i).text()+"&";
-                                              }
-                                              //window.location.href="delete.jsp?"+id+"date="+new Date().getTime(); 
-                                              alert("Delete Not Implemented!");
-                                           }
-                                         }else{
-                                           alert("请选择某行删除！");
-                                         }
-                                        }
-                                else if (com=='增加')
-                                        {
-                                          $('#cssrain').trigger("click");   //触发 id为 cssrain 的 onclick 事件
-                                          //alert("Add Not Implemented!");
-                                        }                       
-                        }
-                /*
-                $('b.top').click
-                (function (){
-                        $(this).parent().toggleClass('fh');
-                                });
-            */
-</script> 
+<div style="display: none;"><input id="newSchedule"
+	alt="#TB_inline?height=250&width=560&inlineId=hiddenModalContent&;modal=false"
+	title="<b>新建天气预报提醒</b>" class="thickbox" type="button" value="Show" /></div>
+
+<div id="hiddenModalContent" style="visibility:hidden;">
+<form class="jNice">
+<table width="400" border="0">
+	<tr>
+		<td style="width:100px;">每天发送时间：</td>
+		<td><input name="sdate" id="sdate" value="09:00" type="text" class="demo"/></td>
+	</tr>
+	<tr>
+		<td id="sdate_blank" height="1px;"></td>
+	</tr>
+	<tr>
+		<td>接受邮箱：</td>
+		<td><input name="email" id="email" value="@139.com"/></td>
+	</tr>
+	<tr>
+		<td>定制的城市：</td>
+		<td><input name="city" id="city" /></td>
+	</tr>
+	<tr>
+		<td>状态：</td>
+		<td><select name="type" id="type">
+			<option value="1" selected="selected">天气内容放正文</option>
+			<option value="2">天气内容放主题</option>
+			<option value="0">暂时停用</option>
+		</select></td>
+	</tr>
+	<tr>
+		<td>备注：</td>
+		<td><input name="remark" id="remark" /></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td><input type="button" value="保存" id="newScheduleSave"/></td>
+	</tr>
+</table>
+</form>
+</div>
 
 <p align="center"><font size="6">天气预报邮件定制机器人<br />
 </font></p>
@@ -257,6 +139,6 @@ a.gb2:hover {
 
 
 <p align="center"><img
-	src="http://code.google.com/appengine/images/appengine-silver-120x30.gif"/></p>
+	src="http://code.google.com/appengine/images/appengine-silver-120x30.gif" /></p>
 </body>
 </html>
