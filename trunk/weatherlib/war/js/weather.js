@@ -72,22 +72,20 @@ $("#flex1").flexigrid( {
 		hide : true
 	} ],
 	buttons : [ {
-		name : '增加',
+		name : '新建',
 		bclass : 'add',
-		onpress : test
+		onpress : scheduleAction
 	}, {
 		name : '删除',
 		bclass : 'delete',
-		onpress : test
-	},
-	// {
-			// name : '修改',
-			// bclass : 'modify',
-			// onpress : test
-			// },
-			{
-				separator : true
-			} ],
+		onpress : scheduleAction
+	}, {
+		name : '修改',
+		bclass : 'modify',
+		onpress : scheduleAction
+	}, {
+		separator : true
+	} ],
 	sortname : "id",
 	sortorder : "asc",
 	title : '定制天气预报列表',
@@ -96,7 +94,7 @@ $("#flex1").flexigrid( {
 	showTableToggleBtn : true,
 	height : 300
 });
-function test(com, grid) {
+function scheduleAction(com, grid) {
 	if (com == '删除') {
 		if ($('.trSelected', grid).length > 0) {
 			if (confirm('是否删除这 ' + $('.trSelected', grid).length + ' 条记录吗?')) {
@@ -119,17 +117,36 @@ function test(com, grid) {
 				});
 			}
 		} else {
-			showMsg("error", "请至少选择一行删除！");
+			showMsg("error", "请至少选中一行删除！");
 		}
-	} else if (com == '增加') {
+	} else if (com == '新建') {
+		$("#sid").val("");
+		$("#newSchedule").attr("title", "<b>新建天气预报提醒</b>");
 		$('#newSchedule').trigger("click");
 	} else if (com == '修改') {
 		if ($('.trSelected', grid).length > 0) {
-			$('#sid').val();
+			var cell = $('.trSelected', grid);
+			var sdate = cell.find("td:eq(2)").eq(0).text();
+			var hour = sdate.substring(0, 2);
+			var minute = sdate.substring(3, 5);
+			$("#sdate_hour").attr("value", hour);
+			$("#sdate_minute").attr("value", minute);
+			$("#email").val(cell.find("td:eq(3)").eq(0).text());
+			$("#city").val(cell.find("td:eq(1)").eq(0).text());
+			$("#remark").val(cell.find("td:eq(5)").eq(0).text());
+			var type = cell.find("td:eq(4)").eq(0).text();
+			if (type == "天气内容放正文")
+				$("#type").attr("value", "1");
+			else if (type = "天气内容放主题")
+				$("#type").attr("value", "2");
+			else
+				$("#type").attr("value", "0");
+			$("#sid").val(cell[0].id.substr(3));
 		} else {
-			showMsg("error", "请至少选择一行删除！");
+			showMsg("error", "请选中一行修改！");
 			return;
 		}
+		$("#newSchedule").attr("title", "<b>修改天气预报提醒</b>");
 		$('#newSchedule').trigger("click");
 	}
 }
@@ -138,10 +155,11 @@ function test(com, grid) {
  */
 
 $(function() {
-	$("#newScheduleSave").click(function() {
+	$("#scheduleSave").click(function() {
 		var email = $("#email").val();
 		if (!validateEmail(email)) {
 			$("#message").html("Email格式不正确！").show();
+			resetForm();
 			return;
 		}
 		var city = $("#city").val();
@@ -153,26 +171,32 @@ $(function() {
 		var sdate = $("#sdate_hour").val() + ":" + $("#sdate_minute").val();
 		var type = $("#type").val();
 		$("#message").html("").hide();
-		$("#newScheduleSave").attr("disabled", "true").attr("value", "请稍候");
+		$("#scheduleSave").attr("disabled", "true").attr("value", "请稍候");
 		$.getJSON("webManager", {
 			"action" : "saveSchedule",
 			"email" : email,
 			"city" : city,
 			"remark" : remark,
 			"sdate" : sdate,
-			"type" : type
+			"type" : type,
+			"sid" : $("#sid").val()
 		}, function(data) {
-			$("#newScheduleSave").attr("disabled", "").attr("value", "发送");
+			$("#scheduleSave").attr("disabled", "").attr("value", "发送");
 			if (!data.result)
 				$("#message").html(data.message).show();
 			else {
 				tb_remove();
+				resetForm();
 				$("#flex1").flexReload();
 				showMsg("pass", data.message);
 			}
 		});
 	});
 });
+
+function resetForm() {
+	document.getElementById("scheduleForm").reset();
+}
 
 function validateEmail(input) {
 	var email = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
