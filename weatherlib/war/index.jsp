@@ -156,8 +156,8 @@
 &nbsp; &nbsp; 定时期限无限长（只要gae没倒闭）<br />
 <strong><font size="4">说明：<br />
 </font></strong>&nbsp; &nbsp; 1.定时只能精确到5分钟<br />
-&nbsp; &nbsp; 2.暂时只能制定10条定时命令，有需要可以联系作者<br />
-&nbsp; &nbsp; 3.天气数据来自Google，Google每天<b>8:35</b>和<b>17:35</b>点更新数据，请把提醒时间适当设置在这两个时间点之后<br />
+&nbsp; &nbsp; 2.暂时只能定制10条邮件天气预报列表，有更多需要可以联系作者<br />
+&nbsp; &nbsp; 3.天气数据来自Google，Google每天<b style="color:blue">8:35</b>和<b style="color:blue">17:35</b>点更新数据，请把提醒时间适当设置在这两个时间点之后<br />
 &nbsp; &nbsp; 4.为了方便您今后管理和取消订阅，需要登录到您的Google帐号<br />
 <br />
 程序设计：<a href="http://xinghuo.org.ru/" target="_blank"><font
