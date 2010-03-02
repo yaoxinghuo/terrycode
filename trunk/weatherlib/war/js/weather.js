@@ -136,15 +136,15 @@ function scheduleAction(com, grid) {
 	} else if (com == '修改') {
 		if ($('.trSelected', grid).length > 0) {
 			var cell = $('.trSelected', grid);
-			var sdate = cell.find("td:eq(2)").eq(0).text();
+			var sdate = cell.find("td:eq(2)").eq(0).text().trim();
 			var hour = sdate.substring(0, 2);
 			var minute = sdate.substring(3, 5);
 			$("#sdate_hour").attr("value", hour);
 			$("#sdate_minute").attr("value", minute);
-			$("#email").val(cell.find("td:eq(3)").eq(0).text());
-			$("#city").val(cell.find("td:eq(1)").eq(0).text());
-			$("#remark").val(cell.find("td:eq(6)").eq(0).text());
-			var type = cell.find("td:eq(4)").eq(0).text();
+			$("#email").val(cell.find("td:eq(3)").eq(0).text().trim());
+			$("#city").val(cell.find("td:eq(1)").eq(0).text().trim());
+			$("#remark").val(cell.find("td:eq(6)").eq(0).text().trim());
+			var type = cell.find("td:eq(4)").eq(0).text().trim();
 			if (type == "天气内容放正文")
 				$("#type").attr("value", "1");
 			else if (type == "天气内容放主题")
@@ -194,7 +194,7 @@ $(function() {
 			"type" : type,
 			"sid" : $("#sid").val()
 		}, function(data) {
-			$("#scheduleSave").attr("disabled", "").attr("value", "发送");
+			$("#scheduleSave").attr("disabled", "").attr("value", "保存");
 			if (!data.result)
 				$("#message").html(data.message).show();
 			else {
