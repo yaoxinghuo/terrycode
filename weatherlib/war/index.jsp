@@ -10,12 +10,10 @@
 <link rel="stylesheet" type="text/css" href="css/core.css" />
 <link rel="stylesheet" type="text/css" href="css/flexigrid.css" />
 <link rel="stylesheet" type="text/css" href="css/thickbox.css" />
-<link rel="stylesheet" type="text/css" href="css/jNice.css" />
 
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="js/flexigrid.pack.js"></script>
 <script type="text/javascript" src="js/thickbox.js"></script>
-<script type="text/javascript" src="js/jquery.jNice.js"></script>
 
 <title>天气预报邮件定制机器人</title>
 <%
@@ -64,16 +62,15 @@
 %>
 
 <div style="display: none;"><input id="newSchedule"
-	alt="#TB_inline?height=210&width=360&inlineId=hiddenModalContent&;modal=false"
+	alt="#TB_inline?height=166&width=336&inlineId=hiddenModalContent&;modal=false"
 	title="<b>新建天气预报提醒</b>" class="thickbox" type="button" value="Show" /></div>
 
-<div id="hiddenModalContent" style="visibility: hidden;">
-<form class="jNice">
-<table border="0" style="line-height: 24px;">
+<div id="hiddenModalContent" style="display: none;">
+<form id="scheduleForm">
+<table border="0">
 	<tr>
 		<td style="width: 100px;">发送时间：</td>
-		<td align="left" style="width: 20px;"><select name="sdate_hour"
-			id="sdate_hour" style="width: 70px;">
+		<td align="left"><select name="sdate_hour" id="sdate_hour">
 			<%
 				for (int i = 0; i < 24; i++) {
 			%>
@@ -84,8 +81,7 @@
 				}
 			%>
 		</select></td>
-		<td align="left"><select name="sdate_minute" id="sdate_minute"
-			style="width: 70px;">
+		<td align="left"><select name="sdate_minute" id="sdate_minute">
 			<%
 				for (int i = 0; i < 12; i++) {
 			%>
@@ -113,30 +109,27 @@
 	<tr>
 		<td>定制城市：</td>
 		<td colspan="2"><input name="city" id="city"
-			style="width: 180px;" size="3" /></td>
+			style="width: 180px;" maxlength="12" /></td>
 	</tr>
 	<tr>
 		<td>备注：</td>
-		<td colspan="2"><input name="remark" id="remark"
+		<td colspan="2"><input name="remark" id="remark" maxlength="100"
 			style="width: 180px;" /></td>
 	</tr>
 	<tr>
-		<td colspan="3" style="height: 10px;"><input type="hidden"
+		<td colspan="3"><input type="hidden"
 			id="sid" value="" /></td>
 	</tr>
-</table>
-</form>
-<table>
 	<tr>
 		<td width="100px;"></td>
-		<td><input type="button" value="保存"
-			id="newScheduleSave" /></td>
+		<td><input type="button" value="保存" id="scheduleSave" /></td>
 	</tr>
 	<tr>
 		<td colspan="2" align="center">&nbsp;<span id="message"
 			style="display: none; color: red; font-weight: bold;"></span></td>
 	</tr>
 </table>
+</form>
 </div>
 
 <p align="center"><font size="6">天气预报邮件定制机器人<br />

@@ -177,7 +177,9 @@ public class WebManagerServlet extends HttpServlet {
 			return jo;
 		}
 		int type = Integer.parseInt(typeS);
-		if (type != 1 || type != 2)
+		if (type == 1 || type == 2)
+			;
+		else
 			type = 0;
 
 		String account = userService.getCurrentUser().getEmail();
