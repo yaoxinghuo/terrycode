@@ -239,9 +239,9 @@ public class WebManagerServlet extends HttpServlet {
 			s.setAccount(account);
 			s.setAdate(null);
 			s.setCdate(new Date());
-			s.setCity(city);
+			s.setCity(city.trim());
 			s.setEmail(email);
-			s.setRemark(remark);
+			s.setRemark(remark.trim());
 			s.setSdate(sdate);
 			s.setType(type);
 			result = scheduleDao.saveSchedule(s);
