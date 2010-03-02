@@ -134,7 +134,7 @@
 <span id="slimit" style="color: blue; font-weight: bold;">10</span>
 个邮件提醒，已定制
 <span id="count" style="color: blue; font-weight: bold;">0</span>
-个邮件提醒，输入发送邮件时的昵称：
+个邮件提醒，设置发送邮件时的昵称：
 <input type="text" id="nickname" maxlength="12" />
 <input id="updateNickname" type="button" value="更改" />
 <br />
