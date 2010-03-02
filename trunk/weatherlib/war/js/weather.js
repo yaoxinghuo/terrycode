@@ -134,16 +134,18 @@ function scheduleAction(com, grid) {
 		$("#newSchedule").attr("title", "<b>新建天气预报提醒</b>");
 		$('#newSchedule').trigger("click");
 	} else if (com == '修改') {
-		if ($('.trSelected', grid).length > 0) {
+		if ($('.trSelected', grid).length == 1) {
 			var cell = $('.trSelected', grid);
 			var sdate = cell.find("td:eq(2)").eq(0).text().trim();
 			var hour = sdate.substring(0, 2);
 			var minute = sdate.substring(3, 5);
 			$("#sdate_hour").attr("value", hour);
 			$("#sdate_minute").attr("value", minute);
-			$("#email").val(cell.find("td:eq(3)").eq(0).text().trim());
-			$("#city").val(cell.find("td:eq(1)").eq(0).text().trim());
-			$("#remark").val(cell.find("td:eq(6)").eq(0).text().trim());
+			$("#email").val(cell.find("td:eq(3)").eq(0).text());
+			$("#city").val(cell.find("td:eq(1)").eq(0).text());
+			var remark = cell.find("td:eq(6)").eq(0).text();
+			if(remark!="[无]")
+				$("#remark").val(remark);
 			var type = cell.find("td:eq(4)").eq(0).text().trim();
 			if (type == "天气内容放正文")
 				$("#type").attr("value", "1");

@@ -120,7 +120,8 @@ public class WebManagerServlet extends HttpServlet {
 				ja.put("从未发送过");
 			else
 				ja.put(sdf2.format(s.getAdate()));
-			ja.put(s.getRemark());
+			ja.put(StringUtil.isEmptyOrWhitespace(s.getRemark()) ? "[无]" : s
+					.getRemark());
 			try {
 				jso.put("id", s.getId());
 				jso.put("cell", ja);
