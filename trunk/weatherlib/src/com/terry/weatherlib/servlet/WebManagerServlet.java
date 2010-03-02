@@ -111,11 +111,11 @@ public class WebManagerServlet extends HttpServlet {
 			ja.put(sdf.format(s.getSdate()));
 			ja.put(s.getEmail());
 			if (s.getType() == 0)
-				ja.put("暂停");
+				ja.put("暂时停用");
 			else if (s.getType() == 1)
-				ja.put("邮件主题接收");
+				ja.put("天气内容放正文");
 			else
-				ja.put("邮件正文接收");
+				ja.put("天气内容放主题");
 			if (s.getAdate() == null)
 				ja.put("从未发送过");
 			else
