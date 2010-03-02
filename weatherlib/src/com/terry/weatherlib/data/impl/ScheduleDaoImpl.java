@@ -39,10 +39,12 @@ public class ScheduleDaoImpl implements IScheduleDao {
 	@Override
 	public List<Schedule> getReadyToToSchedules() {
 		Query query = em.createQuery("SELECT s FROM "
-				+ Schedule.class.getName() + " s where s.sdate<=:sdate");
+				+ Schedule.class.getName()
+				+ " s where s.sdate<=:sdate and s.type in(1,2)");
 		Date date = new Date();
 		date.setTime(date.getTime() - 50000l);
 		query.setParameter("sdate", date);
+		query.setParameter("type", 0);
 		query.setMaxResults(500);
 		return query.getResultList();
 	}
@@ -121,10 +123,14 @@ public class ScheduleDaoImpl implements IScheduleDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Schedule> getSchedulesByAccount(String account) {
+	public List<Schedule> getSchedulesByAccount(String account, int start,
+			int limit) {
 		Query query = em.createQuery("SELECT s FROM "
 				+ Schedule.class.getName() + " s where s.account=:account");
 		query.setParameter("account", account);
+		query.setFirstResult(start);
+		if (limit != 0)
+			query.setMaxResults(limit);
 		return query.getResultList();
 	}
 

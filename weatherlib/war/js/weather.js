@@ -24,6 +24,9 @@ function clearMsg() {
 	document.getElementById("msg_content").innerHTML = "";
 }
 
+var slimit = 10;
+var count = 0;
+
 $("#flex1").flexigrid( {
 	url : 'webManager?action=schedulesList',
 	dataType : 'json',
@@ -40,7 +43,7 @@ $("#flex1").flexigrid( {
 		sortable : false,
 		align : 'left'
 	}, {
-		display : '发送时间',
+		display : '每天发送时间',
 		name : 'sdate',
 		width : 120,
 		sortable : false,
@@ -57,19 +60,19 @@ $("#flex1").flexigrid( {
 		width : 120,
 		sortable : false,
 		align : 'left'
+	},{
+		display : '最近发送时间',
+		name : 'adate',
+		width : 160,
+		sortable : false,
+		align : 'left',
+		hide : false
 	}, {
 		display : '备注',
 		name : 'remark',
 		width : 150,
 		sortable : false,
 		align : 'left'
-	}, {
-		display : '上次发送时间',
-		name : 'adate',
-		width : 160,
-		sortable : false,
-		align : 'left',
-		hide : true
 	} ],
 	buttons : [ {
 		name : '新建',
@@ -85,20 +88,23 @@ $("#flex1").flexigrid( {
 		onpress : scheduleAction
 	}, {
 		separator : true
+	}, {
+		name : '刷新',
+		bclass : 'refresh',
+		onpress : scheduleAction
 	} ],
-	sortname : "id",
-	sortorder : "asc",
 	title : '定制天气预报列表',
-	useRp : true,
-	rp : 10,
-	showTableToggleBtn : true,
+	usepager : true,
+	useRp : false,
+	pagestat : '显示 第 {from} 到 {to} 条 , 总共  {total} 条记录',
+	procmsg : '加载中, 请稍候 ...',
 	height : 300
 });
 function scheduleAction(com, grid) {
 	if (com == '删除') {
-		if ($('.trSelected', grid).length > 0) {
-			if (confirm('是否删除这 ' + $('.trSelected', grid).length + ' 条记录吗?')) {
-				var items = $('.trSelected', grid);
+		var items = $('.trSelected', grid);
+		if (items.length > 0) {
+			if (confirm('确认删除选中的 ' + items.length + ' 条记录吗？' + '如果只是暂时不想收到邮件，只需设置状态玩为“暂时停用”即可')) {
 				var itemlist = '';
 				for (i = 0; i < items.length; i++) {
 					itemlist += items[i].id.substr(3) + ",";
@@ -112,6 +118,8 @@ function scheduleAction(com, grid) {
 						showMsg(data.result ? "pass" : "error", data.message);
 						if (data.result) {
 							$("#flex1").flexReload();
+							count-=data.affected;
+							$("#count").html(count);
 						}
 					}
 				});
@@ -120,6 +128,8 @@ function scheduleAction(com, grid) {
 			showMsg("error", "请至少选中一行删除！");
 		}
 	} else if (com == '新建') {
+		if(count>=slimit)
+			showMsg("error", "设置的定时数目已经达到上限:"+slimit+"，请删除一些定时设置后再试，或联系站长");
 		$("#sid").val("");
 		$("#newSchedule").attr("title", "<b>新建天气预报提醒</b>");
 		$('#newSchedule').trigger("click");
@@ -133,11 +143,11 @@ function scheduleAction(com, grid) {
 			$("#sdate_minute").attr("value", minute);
 			$("#email").val(cell.find("td:eq(3)").eq(0).text());
 			$("#city").val(cell.find("td:eq(1)").eq(0).text());
-			$("#remark").val(cell.find("td:eq(5)").eq(0).text());
+			$("#remark").val(cell.find("td:eq(6)").eq(0).text());
 			var type = cell.find("td:eq(4)").eq(0).text();
 			if (type == "天气内容放正文")
 				$("#type").attr("value", "1");
-			else if (type = "天气内容放主题")
+			else if (type == "天气内容放主题")
 				$("#type").attr("value", "2");
 			else
 				$("#type").attr("value", "0");
@@ -148,6 +158,8 @@ function scheduleAction(com, grid) {
 		}
 		$("#newSchedule").attr("title", "<b>修改天气预报提醒</b>");
 		$('#newSchedule').trigger("click");
+	} else if (com == '刷新') {
+		$("#flex1").flexReload();
 	}
 }
 /*
@@ -170,6 +182,7 @@ $(function() {
 		var remark = $("#remark").val();
 		var sdate = $("#sdate_hour").val() + ":" + $("#sdate_minute").val();
 		var type = $("#type").val();
+		var sid = $("#sid").val();
 		$("#message").html("").hide();
 		$("#scheduleSave").attr("disabled", "true").attr("value", "请稍候");
 		$.getJSON("webManager", {
@@ -188,9 +201,41 @@ $(function() {
 				tb_remove();
 				resetForm();
 				$("#flex1").flexReload();
+				if(sid==""){
+					count++;
+					$("#count").html(count);
+				}
 				showMsg("pass", data.message);
 			}
 		});
+	});
+
+	$("#updateNickname").click(function() {
+		var nickname = $("#nickname").val();
+		if (nickname == "") {
+			showMsg("error", "请输入昵称");
+			return;
+		}
+		$("#updateNickname").attr("disabled", "true").attr("value", "请稍候");
+		$.getJSON("webManager", {
+			"action" : "updateNickname",
+			"nickname" : nickname,
+		}, function(data) {
+			$("#updateNickname").attr("disabled", "").attr("value", "更改");
+			showMsg(data.result?"pass":"error", data.message);
+		});
+	});
+	
+	$.getJSON("webManager", {
+		"action" : "getAccountInfo",
+	}, function(data) {
+		if(data.result){
+			$("#nickname").val(data.nickname);
+			slimit = data.slimit;
+			count = data.count;
+			$("#slimit").html(slimit);
+			$("#count").html(count);
+		}
 	});
 });
 

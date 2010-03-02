@@ -96,10 +96,28 @@ public class XMPPServlet extends HttpServlet {
 		if (jids.indexOf("/") != -1)
 			jids = jids.substring(0, jids.indexOf("/"));
 
-		XMPPSender.sendXMPP(jid, getResponse(jids, message.getBody()));
+		XMPPSender.sendXMPP(jid, getResponse2(message.getBody()));
 	}
 
-	@SuppressWarnings("unchecked")
+	private String getResponse2(String body) {
+		if (body.toLowerCase().startsWith("tq")) {
+			if (body.trim().length() < 3) {
+				return "请在tq后面输入城市名称或者拼音";
+			} else {
+				String city = body.substring(2).trim();
+				if (city.length() > 12)
+					return ERROR;
+				Weather w = WeatherCache.queryWeather(city);
+				if (w == null)
+					return WEATHER_ERROR;
+				return w.getReport();
+			}
+		} else
+			return "直接输入tq+城市名称或拼音将直接显示天气预报，"
+					+ "\r\n若要定制或管理每天定时邮件提醒，请登录http://tianqiyubao.org.ru/，机器人形式已取消。";
+	}
+
+	@SuppressWarnings( { "unchecked", "unused" })
 	private String getResponse(String account, String body) {
 		Object o = cache.get(account);
 		if (body.equals("0")) {
@@ -144,7 +162,7 @@ public class XMPPServlet extends HttpServlet {
 			return HELP;
 		if (body.equalsIgnoreCase("list") || body.equalsIgnoreCase("00")) {
 			return generateScheduleListResponse(account, scheduleDao
-					.getSchedulesByAccount(account));
+					.getSchedulesByAccount(account, 0, 0));
 		}
 		if (body.equalsIgnoreCase("account") || body.equalsIgnoreCase("000")) {
 			Account acc = checkAndGetAccount(account);
