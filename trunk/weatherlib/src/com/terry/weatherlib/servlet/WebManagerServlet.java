@@ -73,8 +73,12 @@ public class WebManagerServlet extends HttpServlet {
 					jo = saveSchedule(req);
 				} else if (action.equals("deleteSchedules")) {
 					jo = deleteSchedules(req);
+				} else if (action.equals("updateNickname")) {
+					jo = updateNickanme(req);
+				} else if (action.equals("getAccountInfo")) {
+					jo = getAccountInfo();
 				} else
-					jo = schedulesList();
+					jo = schedulesList(req);
 			}
 		}
 
@@ -87,21 +91,17 @@ public class WebManagerServlet extends HttpServlet {
 		doPost(req, resp);
 	}
 
-	private JSONObject schedulesList() {
+	private JSONObject schedulesList(HttpServletRequest req) {
+		// 得到当前页数
+		int page = Integer.parseInt(req.getParameter("page"));
+		// 得到每页显示行数
+		int limit = Integer.parseInt(req.getParameter("rp"));
+		int start = (page - 1) * limit;
+
 		String account = userService.getCurrentUser().getEmail();
-		Account a = accountDao.getAccountByAccount(account);
-		Date now = new Date();
-		if (a == null) {
-			a = new Account();
-			a.setSlimit(DEFAULT_SCHEDULES_LIMIT);
-			a.setAccount(account);
-			a.setNickname("天气预报");
-			a.setCdate(now);
-			a.setUdate(now);
-			accountDao.saveAccount(a);
-		}
 		JSONObject jo = createDefaultJo();
-		List<Schedule> schedules = scheduleDao.getSchedulesByAccount(account);
+		List<Schedule> schedules = scheduleDao.getSchedulesByAccount(account,
+				start, limit);
 		JSONArray rows = new JSONArray();
 		for (Schedule s : schedules) {
 			JSONObject jso = new JSONObject();
@@ -116,11 +116,11 @@ public class WebManagerServlet extends HttpServlet {
 				ja.put("邮件主题接收");
 			else
 				ja.put("邮件正文接收");
-			ja.put(s.getRemark());
 			if (s.getAdate() == null)
 				ja.put("从未发送过");
 			else
 				ja.put(sdf2.format(s.getAdate()));
+			ja.put(s.getRemark());
 			try {
 				jso.put("id", s.getId());
 				jso.put("cell", ja);
@@ -194,7 +194,8 @@ public class WebManagerServlet extends HttpServlet {
 
 		if (scheduleDao.getScheduleCountByAccount(account) >= a.getSlimit()) {
 			try {
-				jo.put("message", "设置的定时数目已经达到上限，请删除一些定时设置后再试");
+				jo.put("message", "设置的定时数目已经达到上限:" + a.getSlimit()
+						+ "，请删除一些定时设置后再试，或联系站长");
 			} catch (JSONException e) {
 			}
 			return jo;
@@ -247,7 +248,7 @@ public class WebManagerServlet extends HttpServlet {
 		}
 		try {
 			jo.put("result", result);
-			jo.put("message", result ? "已经成功保存“" + city + "”的天气预报定时设置" : ERROR);
+			jo.put("message", result ? "已成功保存“" + city + "”的天气预报定时设置" : ERROR);
 		} catch (JSONException e) {
 		}
 		return jo;
@@ -267,8 +268,58 @@ public class WebManagerServlet extends HttpServlet {
 			jo.put("result", total > 0);
 			String message = total > 0 ? "您已成功删除" + total + "条天气预报设置" : ERROR;
 			jo.put("message", message);
+			jo.put("affected", total);
 		} catch (JSONException e) {
 
+		}
+		return jo;
+	}
+
+	private JSONObject getAccountInfo() {
+		JSONObject jo = createDefaultJo();
+		String account = userService.getCurrentUser().getEmail();
+		Account a = accountDao.getAccountByAccount(account);
+		Date now = new Date();
+		if (a == null) {
+			a = new Account();
+			a.setSlimit(DEFAULT_SCHEDULES_LIMIT);
+			a.setAccount(account);
+			a.setNickname("天气预报");
+			a.setCdate(now);
+			a.setUdate(now);
+			if (!accountDao.saveAccount(a))
+				return jo;
+		}
+		try {
+			jo.put("result", true);
+			jo.put("message", "ok");
+			jo.put("nickname", a.getNickname());
+			jo.put("slimit", a.getSlimit());
+			jo.put("cdate", sdf2.format(a.getCdate()));
+			jo.put("udate", sdf2.format(a.getUdate()));
+			jo.put("count", scheduleDao.getScheduleCountByAccount(account));
+		} catch (JSONException e) {
+		}
+		return jo;
+	}
+
+	private JSONObject updateNickanme(HttpServletRequest req) {
+		JSONObject jo = createDefaultJo();
+		String nickname = req.getParameter("nickname");
+		if (StringUtil.isEmptyOrWhitespace(nickname) || nickname.length() > 12) {
+			try {
+				jo.put("message", "请检查您的输入");
+			} catch (JSONException e) {
+			}
+			return jo;
+		}
+		if (accountDao.updateAccountNickname(userService.getCurrentUser()
+				.getEmail(), nickname)) {
+			try {
+				jo.put("result", true);
+				jo.put("message", "已成功更新邮件发送时昵称为：" + nickname);
+			} catch (JSONException e) {
+			}
 		}
 		return jo;
 	}

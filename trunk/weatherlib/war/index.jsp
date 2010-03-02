@@ -15,7 +15,7 @@
 <script type="text/javascript" src="js/flexigrid.pack.js"></script>
 <script type="text/javascript" src="js/thickbox.js"></script>
 
-<title>天气预报邮件定制机器人</title>
+<title>天气预报邮件定制</title>
 <%
 	UserService userService = UserServiceFactory.getUserService();
 %>
@@ -42,9 +42,8 @@
 					.getCurrentUser().getEmail()
 					+ " | " : ""%><a
 	href="<%=userService.isUserLoggedIn() ? userService
-					.createLogoutURL("/index.jsp") : userService
-					.createLoginURL("/index.jsp")%>"><%=userService.isUserLoggedIn() ? "退出" : "登录"%></a>
-</div>
+					.createLogoutURL("/") : userService.createLoginURL("/")%>"><%=userService.isUserLoggedIn() ? "退出"
+					: "<strong style='COLOR: blue'>登录</strong>"%></a></div>
 <div class=gbh style="left: 0"></div>
 <div class=gbh style="right: 0"></div>
 
@@ -117,12 +116,12 @@
 			style="width: 180px;" /></td>
 	</tr>
 	<tr>
-		<td colspan="3"><input type="hidden"
-			id="sid" value="" /></td>
+		<td colspan="3"><input type="hidden" id="sid" value="" /></td>
 	</tr>
 	<tr>
 		<td width="100px;"></td>
-		<td><input type="button" value="保存" id="scheduleSave" /></td>
+		<td><input type="button" value="保存" id="scheduleSave"
+			style="width: 60px;" /></td>
 	</tr>
 	<tr>
 		<td colspan="2" align="center">&nbsp;<span id="message"
@@ -131,38 +130,30 @@
 </table>
 </form>
 </div>
-
-<p align="center"><font size="6">天气预报邮件定制机器人<br />
-</font></p>
+您最多可以定制
+<span id="slimit" style="color: blue; font-weight: bold;">0</span>
+个邮件提醒，已定制
+<span id="count" style="color: blue; font-weight: bold;">10</span>
+个邮件提醒，输入发送邮件时的昵称：
+<input type="text" id="nickname" maxlength="12" />
+<input id="updateNickname" type="button" value="更改" />
+<br />
+<br />
 <p align="left"><strong><font size="4">功能：</font></strong><br />
 &nbsp; &nbsp; 定时每天向指定邮箱发送天气预报邮件，可借助手机邮箱（<a href="http://mail.139.com/"
 	target="_blank">139邮箱</a>，<a href="http://mail.wo.com.cn"
 	target="_blank">联通邮箱</a>，<a href="http://www.189.cn/webmail/"
 	target="_blank">189邮箱</a>）实现手机天气预报定制<br />
 <strong><font size="4">特点：<br />
-</font></strong>&nbsp; &nbsp; 简单，直观，通过Gmail(或者Gtalk)直接发送命令。<br />
-&nbsp; &nbsp; 一个Gtalk帐号可定制多个城市的天气预报或多个好友的邮箱<br />
-&nbsp; &nbsp; 可自定义每天发送时间<br />
+</font></strong> &nbsp; &nbsp; 一个Gtalk帐号可定制多个城市的天气预报或多个好友的邮箱<br />
+&nbsp; &nbsp; 可自定义每天发送时间、可选择天气预报内容放入邮件正文或主题<br />
 &nbsp; &nbsp; 可发送3天的天气情况<br />
 &nbsp; &nbsp; 定时期限无限长（只要gae没倒闭）<br />
-&nbsp; &nbsp; 只适合习惯用gmail的人群<br />
-<strong><font size="4">使用方法：</font></strong><br />
-&nbsp; &nbsp; 用Gmail邀请“机器人”<a href="mailto:weatherlib@appspot.com"><font
-	color="#0000ff">weatherlib@appspot.com</font></a>，向其发送定时命令即可<br />
-<strong><font size="4">命令说明：</font></strong>所有操作机器人均有提示<br />
-&nbsp; &nbsp; 基本格式：<font face="楷体_GB2312 "><font color="green">每天发送时间[空格]手机号或邮箱[空格]城市名称</font></font>，例如：<font
-	color="seagreen">20:00 13812345678@139.com 上海</font><br />
-&nbsp; &nbsp; 或者直接输入手机号，默认会发往手机号对应的139邮箱，如：<font color="seagreen">20:00
-13812345678 上海</font><br />
-&nbsp; &nbsp; 直接输入tq+城市可查询该城市的天气，直接由机器人输出结果，如发送命令：tq上海<br />
-<strong><font size="4">其他说明：<br />
+<strong><font size="4">说明：<br />
 </font></strong>&nbsp; &nbsp; 1.定时只能精确到5分钟<br />
 &nbsp; &nbsp; 2.暂时只能制定10条定时命令，有需要可以联系作者<br />
-&nbsp; &nbsp; 3.天气数据来自Google，Google每天<b>8:00</b>和<b>17:00</b>点更新数据，请把提醒时间适当设置在这两个时间点之后<br />
-&nbsp; &nbsp; <font color='red'>4.因预报3天，“天气内容”较长所以放在正文中，请在139邮箱中设置为“长短信”的手机接收方式</font><br />
-&nbsp; &nbsp; 5.输入list查看定时列表，可根据提示进行管理操作<br />
-&nbsp; &nbsp; 6.输入account查看当前账户，可根据提示修改邮件发送人昵称<br />
-&nbsp; &nbsp; 7.139邮箱地址可以省略为手机号<br />
+&nbsp; &nbsp; 3.天气数据来自Google，Google每天<b>8:35</b>和<b>17:35</b>点更新数据，请把提醒时间适当设置在这两个时间点之后<br />
+&nbsp; &nbsp; 4.为了方便您今后管理和取消订阅，需要登录到您的Google帐号<br />
 <br />
 程序设计：<a href="http://xinghuo.org.ru/" target="_blank"><font
 	color="#800080">Terry</font></a> <a

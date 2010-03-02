@@ -27,5 +27,6 @@ public interface IScheduleDao {
 
 	public List<Schedule> getReadyToToSchedules();
 
-	public List<Schedule> getSchedulesByAccount(String account);
+	public List<Schedule> getSchedulesByAccount(String account, int start,
+			int limit);
 }

@@ -79,15 +79,28 @@ public class SendMailServlet extends HttpServlet {
 		try {
 			EntityTransaction tx = em.getTransaction();
 			tx.begin();
-			String subject = weather.getCity() + "天气预报--" + weather.getDesc();
-			MailSender.sendMail(schedule.getEmail(), account == null ? null
-					: account.getNickname(), subject, weather.getReport());
+			String subject = schedule.getType() == 2 ? weather.getReport()
+					.replace("\r\n", " ")
+					: (weather.getCity() + "天气预报--" + weather.getDesc());
+			MailSender
+					.sendMail(
+							schedule.getEmail(),
+							account == null ? null : account.getNickname(),
+							subject,
+							schedule.getType() == 2 ? "如题。\r\n您可登陆http://tianqiyubao.org.ru/更改发送方式。"
+									: weather.getReport());
 			Date now = new Date();
 			Calendar c_sdate = Calendar.getInstance();
 			c_sdate.setTime(schedule.getSdate());
-			do {
+			if (now.getTime() - schedule.getSdate().getTime() > 24 * 3600 * 1000) {
+				Calendar nowC = Calendar.getInstance();
+				c_sdate.set(Calendar.YEAR, nowC.get(Calendar.YEAR));
+				c_sdate.set(Calendar.MONTH, nowC.get(Calendar.MONTH));
+				c_sdate.set(Calendar.DAY_OF_MONTH, nowC
+						.get(Calendar.DAY_OF_MONTH));
+			}
+			if (c_sdate.getTimeInMillis() <= now.getTime())
 				c_sdate.add(Calendar.DAY_OF_YEAR, 1);
-			} while (c_sdate.getTimeInMillis() <= System.currentTimeMillis());
 			schedule.setSdate(c_sdate.getTime());
 			schedule.setAdate(now);
 			em.persist(schedule);
