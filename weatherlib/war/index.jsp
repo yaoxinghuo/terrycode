@@ -65,7 +65,7 @@
 <form id="scheduleForm">
 <table border="0">
 	<tr>
-		<td style="width: 100px;">发送时间：</td>
+		<td style="width: 100px;">*发送时间：</td>
 		<td align="left"><select name="sdate_hour" id="sdate_hour">
 			<%
 				for (int i = 0; i < 24; i++) {
@@ -89,7 +89,7 @@
 		</select></td>
 	</tr>
 	<tr>
-		<td>发送状态：</td>
+		<td>*发送状态：</td>
 		<td colspan="2"><select name="type" id="type"
 			style="width: 150px;">
 			<option value="1" selected="selected">天气内容放正文</option>
@@ -98,12 +98,12 @@
 		</select></td>
 	</tr>
 	<tr>
-		<td>接收邮箱：</td>
+		<td>*接收邮箱：</td>
 		<td colspan="2"><input name="email" id="email" value="@139.com"
 			style="width: 180px;" /></td>
 	</tr>
 	<tr>
-		<td>定制城市：</td>
+		<td>*定制城市：</td>
 		<td colspan="2"><input name="city" id="city"
 			style="width: 180px;" maxlength="12" /></td>
 	</tr>
@@ -142,7 +142,7 @@
 	}else {
 %>
 	<br/><p align="center"><font size="5">天气预报邮件定制<br /></font>
-	<font color='blue'>提示：需要<a href="<%=userService.createLoginURL("/") %>">登录</a>才能进行天气预报邮件定制</font></p>
+	<font color='green'>提示：需要<a href="<%=userService.createLoginURL("/") %>">登录</a>才能进行天气预报邮件定制</font></p>
 <%} %>
 <p align="left"><strong><font size="4">功能：</font></strong><br />
 &nbsp; &nbsp; 定时每天向指定邮箱发送天气预报邮件，可借助手机邮箱（<a href="http://mail.139.com/"
