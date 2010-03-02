@@ -22,8 +22,11 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.terry.weatherlib.Weather;
 import com.terry.weatherlib.WeatherCache;
+import com.terry.weatherlib.data.impl.AccountDaoImpl;
 import com.terry.weatherlib.data.impl.ScheduleDaoImpl;
+import com.terry.weatherlib.data.intf.IAccountDao;
 import com.terry.weatherlib.data.intf.IScheduleDao;
+import com.terry.weatherlib.model.Account;
 import com.terry.weatherlib.model.Schedule;
 import com.terry.weatherlib.util.StringUtil;
 
@@ -40,11 +43,14 @@ public class WebManagerServlet extends HttpServlet {
 
 	private static final String ERROR = "对不起，程序出现错误，请稍候再试";
 
+	private static final int DEFAULT_SCHEDULES_LIMIT = 10;
+
 	private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.CHINA);
 	private SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm",
 			Locale.CHINA);
 
 	private IScheduleDao scheduleDao = new ScheduleDaoImpl();
+	private IAccountDao accountDao = new AccountDaoImpl();
 	private UserService userService = UserServiceFactory.getUserService();
 
 	@Override
@@ -82,9 +88,20 @@ public class WebManagerServlet extends HttpServlet {
 	}
 
 	private JSONObject schedulesList() {
+		String account = userService.getCurrentUser().getEmail();
+		Account a = accountDao.getAccountByAccount(account);
+		Date now = new Date();
+		if (a == null) {
+			a = new Account();
+			a.setSlimit(DEFAULT_SCHEDULES_LIMIT);
+			a.setAccount(account);
+			a.setNickname("天气预报");
+			a.setCdate(now);
+			a.setUdate(now);
+			accountDao.saveAccount(a);
+		}
 		JSONObject jo = createDefaultJo();
-		List<Schedule> schedules = scheduleDao
-				.getSchedulesByAccount(userService.getCurrentUser().getEmail());
+		List<Schedule> schedules = scheduleDao.getSchedulesByAccount(account);
 		JSONArray rows = new JSONArray();
 		for (Schedule s : schedules) {
 			JSONObject jso = new JSONObject();
@@ -132,12 +149,13 @@ public class WebManagerServlet extends HttpServlet {
 		String typeS = req.getParameter("type");
 		String sid = req.getParameter("sid");
 
-		if (StringUtil.isEmptyOrWhitespace(email)
-				|| StringUtil.isEmptyOrWhitespace(city)
+		if (StringUtil.isEmptyOrWhitespace(email) || email.length() > 100
+				|| StringUtil.isEmptyOrWhitespace(city) || city.length() > 12
 				|| StringUtil.isEmptyOrWhitespace(sdateS)
-				|| StringUtil.isEmptyOrWhitespace(typeS) || remark == null) {
+				|| StringUtil.isEmptyOrWhitespace(typeS) || remark == null
+				|| remark.length() > 100) {
 			try {
-				jo.put("message", "请检查必填栏位");
+				jo.put("message", "请检查必填栏位或是否符合长度规定");
 			} catch (JSONException e) {
 			}
 			return jo;
@@ -161,6 +179,24 @@ public class WebManagerServlet extends HttpServlet {
 		int type = Integer.parseInt(typeS);
 		if (type != 1 || type != 2)
 			type = 0;
+
+		String account = userService.getCurrentUser().getEmail();
+		Account a = accountDao.getAccountByAccount(account);
+		if (a == null) {
+			try {
+				jo.put("message", "非法操作");
+			} catch (JSONException e) {
+			}
+			return jo;
+		}
+
+		if (scheduleDao.getScheduleCountByAccount(account) >= a.getSlimit()) {
+			try {
+				jo.put("message", "设置的定时数目已经达到上限，请删除一些定时设置后再试");
+			} catch (JSONException e) {
+			}
+			return jo;
+		}
 
 		Date sdate = null;
 		try {
@@ -197,7 +233,7 @@ public class WebManagerServlet extends HttpServlet {
 					type, remark);
 		} else {
 			Schedule s = new Schedule();
-			s.setAccount(userService.getCurrentUser().getEmail());
+			s.setAccount(account);
 			s.setAdate(null);
 			s.setCdate(new Date());
 			s.setCity(city);
