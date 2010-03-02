@@ -56,9 +56,6 @@
 	if (userService.isUserLoggedIn()) {
 %>
 <script type="text/javascript" src="js/weather.js"></script>
-<%
-	}
-%>
 
 <div style="display: none;"><input id="newSchedule"
 	alt="#TB_inline?height=166&width=336&inlineId=hiddenModalContent&;modal=false"
@@ -130,6 +127,7 @@
 </table>
 </form>
 </div>
+<div>
 您最多可以定制
 <span id="slimit" style="color: blue; font-weight: bold;">10</span>
 个邮件提醒，已定制
@@ -137,8 +135,15 @@
 个邮件提醒，设置发送邮件时的昵称：
 <input type="text" id="nickname" maxlength="12" />
 <input id="updateNickname" type="button" value="更改" />
+</div>
 <br />
 <br />
+<%
+	}else {
+%>
+	<br/><p align="center"><font size="5">天气预报邮件定制<br /></font>
+	<font color='blue'>提示：需要<a href="<%=userService.createLoginURL("/") %>">登录</a>才能进行天气预报邮件定制</font></p>
+<%} %>
 <p align="left"><strong><font size="4">功能：</font></strong><br />
 &nbsp; &nbsp; 定时每天向指定邮箱发送天气预报邮件，可借助手机邮箱（<a href="http://mail.139.com/"
 	target="_blank">139邮箱</a>，<a href="http://mail.wo.com.cn"
