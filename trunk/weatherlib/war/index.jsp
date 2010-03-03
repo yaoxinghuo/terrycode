@@ -58,12 +58,16 @@
 <script type="text/javascript" src="js/weather.js"></script>
 
 <div style="display: none;"><input id="newSchedule"
-	alt="#TB_inline?height=166&width=336&inlineId=hiddenModalContent&;modal=false"
+	alt="#TB_inline?height=180&width=336&inlineId=hiddenModalContent&;modal=false"
 	title="<b>新建天气预报提醒</b>" class="thickbox" type="button" value="Show" /></div>
 
 <div id="hiddenModalContent" style="display: none;">
 <form id="scheduleForm">
 <table border="0">
+	<tr>
+		<td colspan="3" align="center">&nbsp;<span id="message"
+			style="display: none; color: red; font-weight: bold;"></span></td>
+	</tr>
 	<tr>
 		<td style="width: 100px;">*发送时间：</td>
 		<td align="left"><select name="sdate_hour" id="sdate_hour">
@@ -119,10 +123,6 @@
 		<td width="100px;"></td>
 		<td><input type="button" value="保存" id="scheduleSave"
 			style="width: 60px;" /></td>
-	</tr>
-	<tr>
-		<td colspan="2" align="center">&nbsp;<span id="message"
-			style="display: none; color: red; font-weight: bold;"></span></td>
 	</tr>
 </table>
 </form>

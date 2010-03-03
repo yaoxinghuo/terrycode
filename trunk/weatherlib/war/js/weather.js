@@ -95,10 +95,11 @@ $("#flex1").flexigrid( {
 	} ],
 	title : '定制天气预报列表',
 	usepager : true,
+	rp: 10,
 	useRp : false,
 	pagestat : '显示 第 {from} 到 {to} 条 , 总共  {total} 条记录',
 	procmsg : '加载中, 请稍候 ...',
-	height : 300
+	height : 260
 });
 function scheduleAction(com, grid) {
 	if (com == '删除') {
@@ -128,8 +129,10 @@ function scheduleAction(com, grid) {
 			showMsg("error", "请至少选中一行删除！");
 		}
 	} else if (com == '新建') {
-		if(count>=slimit)
+		if(count>=slimit){
 			showMsg("error", "设置的定时数目已经达到上限:"+slimit+"，请删除一些定时设置后再试，或联系站长");
+			return;
+		}
 		$("#sid").val("");
 		$("#newSchedule").attr("title", "<b>新建天气预报提醒</b>");
 		$('#newSchedule').trigger("click");
