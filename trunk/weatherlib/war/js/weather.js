@@ -33,19 +33,19 @@ $("#flex1").flexigrid( {
 	colModel : [ {
 		display : '创建时间',
 		name : 'cdate',
-		width : 160,
+		width : 120,
 		sortable : false,
 		align : 'left'
 	}, {
 		display : '定制城市',
 		name : 'city',
-		width : 120,
+		width : 110,
 		sortable : false,
 		align : 'left'
 	}, {
 		display : '每天发送时间',
 		name : 'sdate',
-		width : 120,
+		width : 100,
 		sortable : false,
 		align : 'left'
 	}, {
@@ -63,7 +63,7 @@ $("#flex1").flexigrid( {
 	},{
 		display : '最近发送时间',
 		name : 'adate',
-		width : 160,
+		width : 120,
 		sortable : false,
 		align : 'left',
 		hide : false
@@ -99,7 +99,7 @@ $("#flex1").flexigrid( {
 	useRp : false,
 	pagestat : '显示 第 {from} 到 {to} 条 , 总共  {total} 条记录',
 	procmsg : '加载中, 请稍候 ...',
-	height : 260
+	height : 278
 });
 function scheduleAction(com, grid) {
 	if (com == '删除') {
@@ -225,7 +225,7 @@ $(function() {
 		$("#updateNickname").attr("disabled", "true").attr("value", "请稍候");
 		$.getJSON("webManager", {
 			"action" : "updateNickname",
-			"nickname" : nickname,
+			"nickname" : nickname
 		}, function(data) {
 			$("#updateNickname").attr("disabled", "").attr("value", "更改");
 			showMsg(data.result?"pass":"error", data.message);

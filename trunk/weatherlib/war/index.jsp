@@ -142,7 +142,7 @@
 	}else {
 %>
 	<br/><p align="center"><font size="5">天气预报邮件定制<br /></font>
-	<font color='green'>提示：需要<a href="<%=userService.createLoginURL("/") %>">登录</a>才能进行天气预报邮件定制，<span style="color:red;">不支持IE6浏览器</span></font></p>
+	<font color='green'>提示：需要<a href="<%=userService.createLoginURL("/") %>">登录</a>才能进行天气预报邮件定制</font></p>
 <%} %>
 <p align="left"><strong><font size="4">功能：</font></strong><br />
 &nbsp; &nbsp; 定时每天向指定邮箱发送天气预报邮件，可借助手机邮箱（<a href="http://mail.139.com/"
