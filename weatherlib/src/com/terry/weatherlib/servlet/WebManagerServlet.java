@@ -130,8 +130,8 @@ public class WebManagerServlet extends HttpServlet {
 			rows.put(jso);
 		}
 		try {
-			jo.put("total", schedules == null ? 0 : schedules.size());
-			jo.put("page", 1);
+			jo.put("total", scheduleDao.getScheduleCountByAccount(account));
+			jo.put("page", page);
 			jo.put("rows", rows);
 			jo.put("result", true);
 			jo.put("message", "ok");
