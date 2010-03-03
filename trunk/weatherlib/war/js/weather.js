@@ -113,7 +113,7 @@ function scheduleAction(com, grid) {
 				$.ajax( {
 					type : "POST",
 					dataType : "json",
-					url : "webManager?action=deleteSchedules",
+					url : "webManager?action=deleteSchedules&r="+Math.random(),
 					data : "ids=" + itemlist,
 					success : function(data) {
 						showMsg(data.result ? "pass" : "error", data.message);
@@ -192,6 +192,7 @@ $(function() {
 		$("#scheduleSave").attr("disabled", "true").attr("value", "请稍候");
 		$.getJSON("webManager", {
 			"action" : "saveSchedule",
+			"r" : Math.random(),
 			"email" : email,
 			"city" : city,
 			"remark" : remark,
@@ -233,6 +234,7 @@ $(function() {
 	
 	$.getJSON("webManager", {
 		"action" : "getAccountInfo",
+		"r" : Math.random()
 	}, function(data) {
 		if(data.result){
 			$("#nickname").val(data.nickname);
