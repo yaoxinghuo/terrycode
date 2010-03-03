@@ -105,7 +105,7 @@ function scheduleAction(com, grid) {
 	if (com == '删除') {
 		var items = $('.trSelected', grid);
 		if (items.length > 0) {
-			if (confirm('确认删除选中的 ' + items.length + ' 条记录吗？' + '如果只是暂时不想收到邮件，只需设置状态玩为“暂时停用”即可')) {
+			if (confirm('确认删除选中的 ' + items.length + ' 条记录吗？' + '如果只是暂时不想收到邮件，只需设置状态为“暂时停用”即可')) {
 				var itemlist = '';
 				for (i = 0; i < items.length; i++) {
 					itemlist += items[i].id.substr(3) + ",";
