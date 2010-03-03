@@ -36,6 +36,8 @@ public class SendMailServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = -843840894946959108L;
 
+	private static final String HELP = "\r\n管理订阅请登录http://tianqiyubao.org.ru/";
+
 	private SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm",
 			Locale.CHINA);
 
@@ -79,16 +81,18 @@ public class SendMailServlet extends HttpServlet {
 		try {
 			EntityTransaction tx = em.getTransaction();
 			tx.begin();
-			String subject = schedule.getType() == 2 ? weather.getReport()
-					.replace("\r\n", " ")
-					: (weather.getCity() + "天气预报--" + weather.getDesc());
-			MailSender
-					.sendMail(
-							schedule.getEmail(),
-							account == null ? null : account.getNickname(),
-							subject,
-							schedule.getType() == 2 ? "如题。\r\n您可登陆http://tianqiyubao.org.ru/更改发送方式。"
-									: weather.getReport());
+			String subject = null;
+			String content = null;
+			if (schedule.getType() == 2) {
+				subject = weather.getCity()
+						+ weather.getContent().replace("\r\n", " ");
+				content = "如题。" + HELP;
+			} else {
+				subject = "天气预报--" + weather.getDesc();
+				content = weather.getReport() + HELP;
+			}
+			MailSender.sendMail(schedule.getEmail(), account == null ? null
+					: account.getNickname(), subject, content);
 			Date now = new Date();
 			Calendar c_sdate = Calendar.getInstance();
 			c_sdate.setTime(schedule.getSdate());
