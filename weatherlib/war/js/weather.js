@@ -60,7 +60,7 @@ $("#flex1").flexigrid( {
 		width : 120,
 		sortable : false,
 		align : 'left'
-	},{
+	}, {
 		display : '最近发送时间',
 		name : 'adate',
 		width : 120,
@@ -95,7 +95,7 @@ $("#flex1").flexigrid( {
 	} ],
 	title : '定制天气预报列表',
 	usepager : true,
-	rp: 10,
+	rp : 10,
 	useRp : false,
 	pagestat : '显示 第 {from} 到 {to} 条 , 总共  {total} 条记录',
 	procmsg : '加载中, 请稍候 ...',
@@ -113,13 +113,14 @@ function scheduleAction(com, grid) {
 				$.ajax( {
 					type : "POST",
 					dataType : "json",
-					url : "webManager?action=deleteSchedules&r="+Math.random(),
+					url : "webManager?action=deleteSchedules&r="
+							+ Math.random(),
 					data : "ids=" + itemlist,
 					success : function(data) {
 						showMsg(data.result ? "pass" : "error", data.message);
 						if (data.result) {
 							$("#flex1").flexReload();
-							count-=data.affected;
+							count -= data.affected;
 							$("#count").html(count);
 						}
 					}
@@ -129,17 +130,21 @@ function scheduleAction(com, grid) {
 			showMsg("error", "请至少选中一行删除！");
 		}
 	} else if (com == '新建') {
-		if(count>=slimit){
-			showMsg("error", "设置的定时数目已经达到上限:"+slimit+"，请删除一些定时设置后再试，或联系站长");
+		if (count >= slimit) {
+			showMsg("error", "设置的定时数目已经达到上限:" + slimit + "，请删除一些定时设置后再试，或联系站长");
 			return;
 		}
 		$("#sid").val("");
-		$("#newSchedule").attr("title", "<b>新建天气预报提醒</b>");
+		$("#message").html("").hide();
+		if ($("#newSchedule").attr("title").indexOf("新建") == -1) {
+			$("#newSchedule").attr("title", "<b>新建天气预报提醒</b>");
+			resetForm();
+		}
 		$('#newSchedule').trigger("click");
 	} else if (com == '修改') {
 		if ($('.trSelected', grid).length == 1) {
 			var cell = $('.trSelected', grid);
-			var sdate = cell.find("td:eq(2)").eq(0).text().trim();
+			var sdate = cell.find("td:eq(2)").eq(0).text();
 			var hour = sdate.substring(0, 2);
 			var minute = sdate.substring(3, 5);
 			$("#sdate_hour").attr("value", hour);
@@ -147,9 +152,9 @@ function scheduleAction(com, grid) {
 			$("#email").val(cell.find("td:eq(3)").eq(0).text());
 			$("#city").val(cell.find("td:eq(1)").eq(0).text());
 			var remark = cell.find("td:eq(6)").eq(0).text();
-			if(remark!="[无]")
+			if (remark != "[无]")
 				$("#remark").val(remark);
-			var type = cell.find("td:eq(4)").eq(0).text().trim();
+			var type = cell.find("td:eq(4)").eq(0).text();
 			if (type == "天气内容放正文")
 				$("#type").attr("value", "1");
 			else if (type == "天气内容放主题")
@@ -161,6 +166,7 @@ function scheduleAction(com, grid) {
 			showMsg("error", "请选中一行修改！");
 			return;
 		}
+		$("#message").html("").hide();
 		$("#newSchedule").attr("title", "<b>修改天气预报提醒</b>");
 		$('#newSchedule').trigger("click");
 	} else if (com == '刷新') {
@@ -175,7 +181,7 @@ $(function() {
 	$("#scheduleSave").click(function() {
 		var email = $("#email").val();
 		if (!validateEmail(email)) {
-			$("#message").html("Email格式不正确！").show();
+			$("#message").html("接收邮箱不是有效的Email格式！").show();
 			resetForm();
 			return;
 		}
@@ -207,7 +213,7 @@ $(function() {
 				tb_remove();
 				resetForm();
 				$("#flex1").flexReload();
-				if(sid==""){
+				if (sid == "") {
 					count++;
 					$("#count").html(count);
 				}
@@ -228,15 +234,15 @@ $(function() {
 			"nickname" : nickname
 		}, function(data) {
 			$("#updateNickname").attr("disabled", "").attr("value", "更改");
-			showMsg(data.result?"pass":"error", data.message);
+			showMsg(data.result ? "pass" : "error", data.message);
 		});
 	});
-	
+
 	$.getJSON("webManager", {
 		"action" : "getAccountInfo",
 		"r" : Math.random()
 	}, function(data) {
-		if(data.result){
+		if (data.result) {
 			$("#nickname").val(data.nickname);
 			slimit = data.slimit;
 			count = data.count;
