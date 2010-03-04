@@ -36,7 +36,7 @@ public class SendMailServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = -843840894946959108L;
 
-	private static final String HELP = "\r\n管理订阅请登录http://tianqiyubao.org.ru/";
+	private static final String HELP = "\r\n管理订阅请登录http://tianqiyubao.org.ru/ ";
 
 	private SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm",
 			Locale.CHINA);
