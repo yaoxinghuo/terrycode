@@ -228,7 +228,7 @@ public class WebManagerServlet extends HttpServlet {
 			return jo;
 		}
 
-		Weather w = WeatherCache.queryWeather(city);
+		Weather w = WeatherCache.queryWeather(city.trim());
 		if (w == null) {
 			try {
 				jo.put("message", "无法获取“" + city
@@ -236,7 +236,8 @@ public class WebManagerServlet extends HttpServlet {
 			} catch (JSONException e) {
 			}
 			return jo;
-		}
+		} else
+			city = w.getCity();
 		boolean result = false;
 		if (!StringUtil.isEmptyOrWhitespace(sid)) {
 			result = scheduleDao.updateScheduleById(sid, email, city, sdate,
@@ -246,7 +247,7 @@ public class WebManagerServlet extends HttpServlet {
 			s.setAccount(account);
 			s.setAdate(null);
 			s.setCdate(new Date());
-			s.setCity(city.trim());
+			s.setCity(city);
 			s.setEmail(email);
 			s.setRemark(remark.trim());
 			s.setSdate(sdate);
