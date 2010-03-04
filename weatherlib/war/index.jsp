@@ -8,17 +8,23 @@
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css" href="css/core.css" />
+<%
+	UserService userService = UserServiceFactory.getUserService();
+	boolean login = userService.isUserLoggedIn();
+	if (login) {
+%>
 <link rel="stylesheet" type="text/css" href="css/flexigrid.css" />
+<link rel="stylesheet" type="text/css" href="css/flexigrid-ext.css" />
 <link rel="stylesheet" type="text/css" href="css/thickbox.css" />
 
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="js/flexigrid.pack.js"></script>
 <script type="text/javascript" src="js/thickbox.js"></script>
+<%
+	}
+%>
 
 <title>天气预报邮件定制</title>
-<%
-	UserService userService = UserServiceFactory.getUserService();
-%>
 </head>
 <body topmargin=3 marginheight=3>
 
@@ -38,11 +44,10 @@
 <div id=gbar><b class=gb1>天气预报</b> <a
 	href="http://fetion.xinghuo.org.ru/" target="_blank" class=gb1>网页飞信</a>
 <a href="http://websms.org.ru/" target="_blank" class=gb1>GV网页短信</a></div>
-<div id=guser width=100%><%=userService.isUserLoggedIn() ? userService
-					.getCurrentUser().getEmail()
+<div id=guser width=100%><%=login ? userService.getCurrentUser().getEmail()
 					+ " | " : ""%><a
-	href="<%=userService.isUserLoggedIn() ? userService
-					.createLogoutURL("/") : userService.createLoginURL("/")%>"><%=userService.isUserLoggedIn() ? "退出"
+	href="<%=login ? userService.createLogoutURL("/")
+					: userService.createLoginURL("/")%>"><%=login ? "退出"
 					: "<strong style='COLOR: blue'>登录</strong>"%></a></div>
 <div class=gbh style="left: 0"></div>
 <div class=gbh style="right: 0"></div>
@@ -53,7 +58,7 @@
 </div>
 
 <%
-	if (userService.isUserLoggedIn()) {
+	if (login) {
 %>
 <script type="text/javascript" src="js/weather.js"></script>
 
