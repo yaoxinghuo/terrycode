@@ -27,6 +27,8 @@ function clearMsg() {
 var slimit = 10;
 var count = 0;
 
+var errorMsg = "对不起，服务器错误，请稍候再试";
+
 $("#flex1").flexigrid( {
 	url : 'webManager?action=schedulesList',
 	dataType : 'json',
@@ -112,10 +114,13 @@ function scheduleAction(com, grid) {
 				}
 				$.ajax( {
 					type : "POST",
+					cache : false,
 					dataType : "json",
-					url : "webManager?action=deleteSchedules&r="
-							+ Math.random(),
-					data : "ids=" + itemlist,
+					url : "webManager",
+					data : {
+						"action" : "deleteSchedules",
+						"ids" : itemlist
+					},
 					success : function(data) {
 						showMsg(data.result ? "pass" : "error", data.message);
 						if (data.result) {
@@ -123,6 +128,11 @@ function scheduleAction(com, grid) {
 							count -= data.affected;
 							$("#count").html(count);
 						}
+					},
+					complete : function(req) {
+						var code = req.status;
+						if (code < 200 || code > 299)
+							showMsg("error", errorMsg);
 					}
 				});
 			}
@@ -196,28 +206,39 @@ $(function() {
 		var sid = $("#sid").val();
 		$("#message").html("").hide();
 		$("#scheduleSave").attr("disabled", "true").attr("value", "请稍候");
-		$.getJSON("webManager", {
-			"action" : "saveSchedule",
-			"r" : Math.random(),
-			"email" : email,
-			"city" : city,
-			"remark" : remark,
-			"sdate" : sdate,
-			"type" : type,
-			"sid" : $("#sid").val()
-		}, function(data) {
-			$("#scheduleSave").attr("disabled", "").attr("value", "保存");
-			if (!data.result)
-				$("#message").html(data.message).show();
-			else {
-				tb_remove();
-				resetForm();
-				$("#flex1").flexReload();
-				if (sid == "") {
-					count++;
-					$("#count").html(count);
+		$.ajax( {
+			url : "webManager",
+			type : "POST",
+			cache : false,
+			data : {
+				"action" : "saveSchedule",
+				"email" : email,
+				"city" : city,
+				"remark" : remark,
+				"sdate" : sdate,
+				"type" : type,
+				"sid" : $("#sid").val()
+			},
+			dataType : "json",
+			success : function(data) {
+				if (!data.result)
+					$("#message").html(data.message).show();
+				else {
+					tb_remove();
+					resetForm();
+					$("#flex1").flexReload();
+					if (sid == "") {
+						count++;
+						$("#count").html(count);
+					}
+					showMsg("pass", data.message);
 				}
-				showMsg("pass", data.message);
+			},
+			complete : function(req) {
+				$("#scheduleSave").attr("disabled", "").attr("value", "保存");
+				var code = req.status;
+				if (code < 200 || code > 299)
+					$("#message").html(errorMsg).show();
 			}
 		});
 	});
@@ -229,25 +250,43 @@ $(function() {
 			return;
 		}
 		$("#updateNickname").attr("disabled", "true").attr("value", "请稍候");
-		$.getJSON("webManager", {
-			"action" : "updateNickname",
-			"nickname" : nickname
-		}, function(data) {
-			$("#updateNickname").attr("disabled", "").attr("value", "更改");
-			showMsg(data.result ? "pass" : "error", data.message);
+		$.ajax( {
+			url : "webManager",
+			type : "POST",
+			cache : false,
+			data : {
+				"action" : "updateNickname",
+				"nickname" : nickname
+			},
+			dataType : "json",
+			success : function(data) {
+				showMsg(data.result ? "pass" : "error", data.message);
+			},
+			complete : function(req) {
+				$("#updateNickname").attr("disabled", "").attr("value", "更改");
+				var code = req.status;
+				if (code < 200 || code > 299)
+					showMsg("error", errorMsg);
+			}
 		});
 	});
 
-	$.getJSON("webManager", {
-		"action" : "getAccountInfo",
-		"r" : Math.random()
-	}, function(data) {
-		if (data.result) {
-			$("#nickname").val(data.nickname);
-			slimit = data.slimit;
-			count = data.count;
-			$("#slimit").html(slimit);
-			$("#count").html(count);
+	$.ajax( {
+		url : "webManager",
+		type : "POST",
+		cache : false,
+		data : {
+			"action" : "getAccountInfo"
+		},
+		dataType : "json",
+		success : function(data) {
+			if (data.result) {
+				$("#nickname").val(data.nickname);
+				slimit = data.slimit;
+				count = data.count;
+				$("#slimit").html(slimit);
+				$("#count").html(count);
+			}
 		}
 	});
 });

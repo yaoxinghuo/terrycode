@@ -127,23 +127,23 @@
 </table>
 </form>
 </div>
-<div>
-您最多可以定制
-<span id="slimit" style="color: blue; font-weight: bold;">10</span>
-个邮件提醒，已定制
-<span id="count" style="color: blue; font-weight: bold;">0</span>
-个邮件提醒，设置发送邮件时的昵称：
-<input type="text" id="nickname" maxlength="12" />
-<input id="updateNickname" type="button" value="更改" />
-</div>
+<div>您最多可以定制 <span id="slimit"
+	style="color: blue; font-weight: bold;">10</span> 个邮件提醒，已定制 <span
+	id="count" style="color: blue; font-weight: bold;">0</span>
+个邮件提醒，设置发送邮件时的昵称： <input type="text" id="nickname" maxlength="12" /> <input
+	id="updateNickname" type="button" value="更改" style="width: 60px;" /></div>
 <br />
 <br />
 <%
-	}else {
+	} else {
 %>
-	<br/><p align="center"><font size="5">天气预报邮件定制<br /></font>
-	<font color='green'>提示：需要<a href="<%=userService.createLoginURL("/") %>">登录</a>才能进行天气预报邮件定制</font></p>
-<%} %>
+<br />
+<p align="center"><font size="5">天气预报邮件定制<br />
+</font> <font color='green'>提示：需要<a
+	href="<%=userService.createLoginURL("/")%>">登录</a>才能进行天气预报邮件定制</font></p>
+<%
+	}
+%>
 <p align="left"><strong><font size="4">功能：</font></strong><br />
 &nbsp; &nbsp; 定时每天向指定邮箱发送天气预报邮件，可借助手机邮箱（<a href="http://mail.139.com/"
 	target="_blank">139邮箱</a>，<a href="http://mail.wo.com.cn"
@@ -157,7 +157,8 @@
 <strong><font size="4">说明：<br />
 </font></strong>&nbsp; &nbsp; 1.定时只能精确到5分钟<br />
 &nbsp; &nbsp; 2.暂时只能定制10条邮件天气预报列表，有更多需要可以联系作者<br />
-&nbsp; &nbsp; 3.天气数据来自Google，Google每天<b style="color:blue">8:35</b>和<b style="color:blue">17:35</b>点更新数据，请把提醒时间适当设置在这两个时间点之后<br />
+&nbsp; &nbsp; 3.天气数据来自Google，Google每天<b style="color: blue">8:35</b>和<b
+	style="color: blue">17:35</b>点更新数据，请把提醒时间适当设置在这两个时间点之后<br />
 &nbsp; &nbsp; 4.为了方便您今后管理和取消订阅，需要登录到您的Google帐号<br />
 <br />
 程序设计：<a href="http://xinghuo.org.ru/" target="_blank"><font
