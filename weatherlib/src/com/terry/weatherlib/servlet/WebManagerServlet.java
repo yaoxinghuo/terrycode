@@ -49,6 +49,8 @@ public class WebManagerServlet extends HttpServlet {
 
 	private static final String CACHE_COUNT_NAME = "cache-count";
 
+	private static final String CACHE_TOTAL_COUNT_NAME = "cache-count";
+
 	private static final int DEFAULT_SCHEDULES_LIMIT = 10;
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.CHINA);
@@ -199,10 +201,22 @@ public class WebManagerServlet extends HttpServlet {
 			return jo;
 		}
 
+		if (getScheduleCount() >= 2000) {
+			try {
+				jo.put("message", "本站总定时数目已经达到上限:2000，后续会通过开分站的形式为您提供服务。");
+			} catch (JSONException e) {
+			}
+			return jo;
+		}
+
 		if (getAccountScheduleCount(account) >= a.getSlimit()) {
 			try {
-				jo.put("message", "设置的定时数目已经达到上限:" + a.getSlimit()
-						+ "，请删除一些定时设置后再试，或联系站长");
+				jo
+						.put(
+								"message",
+								"设置的定时数目已经达到上限:"
+										+ a.getSlimit()
+										+ "，请删除一些定时设置后再试，或<a target=\"_blank\" href=\"http://xinghuo.org.ru/\">联系站长</a>");
 			} catch (JSONException e) {
 			}
 			return jo;
@@ -259,6 +273,8 @@ public class WebManagerServlet extends HttpServlet {
 		try {
 			jo.put("result", result);
 			jo.put("message", result ? "已成功保存“" + city + "”的天气预报定时设置" : ERROR);
+			jo.put("count", getAccountScheduleCount(account));
+			jo.put("total", getScheduleCount());
 		} catch (JSONException e) {
 		}
 		return jo;
@@ -274,15 +290,16 @@ public class WebManagerServlet extends HttpServlet {
 				if (scheduleDao.deleteScheduleByIdAndAccount(id, account))
 					total++;
 		}
+		updateAccountScheduleCount(account, -total);
 		try {
 			jo.put("result", total > 0);
 			String message = total > 0 ? "您已成功删除" + total + "条天气预报设置" : ERROR;
 			jo.put("message", message);
-			jo.put("affected", total);
+			jo.put("count", getAccountScheduleCount(account));
+			jo.put("total", getScheduleCount());
 		} catch (JSONException e) {
 
 		}
-		updateAccountScheduleCount(account, -total);
 		return jo;
 	}
 
@@ -309,6 +326,7 @@ public class WebManagerServlet extends HttpServlet {
 			jo.put("cdate", sdf2.format(a.getCdate()));
 			jo.put("udate", sdf2.format(a.getUdate()));
 			jo.put("count", getAccountScheduleCount(account));
+			jo.put("total", getScheduleCount());
 		} catch (JSONException e) {
 		}
 		return jo;
@@ -356,11 +374,22 @@ public class WebManagerServlet extends HttpServlet {
 		return count;
 	}
 
+	private int getScheduleCount() {
+		Object o = cache.get(CACHE_TOTAL_COUNT_NAME);
+		if (o != null && o instanceof Integer) {
+			return (Integer) o;
+		}
+		int count = scheduleDao.getScheduleCount();
+		cache.put(CACHE_TOTAL_COUNT_NAME, count);
+		return count;
+	}
+
 	private void updateAccountScheduleCount(String account, int change) {
 		if (change == 0)
 			return;
 		String name = account + "-" + CACHE_COUNT_NAME;
 		cache.increment(name, change);
+		cache.increment(CACHE_TOTAL_COUNT_NAME, change);
 	}
 
 }

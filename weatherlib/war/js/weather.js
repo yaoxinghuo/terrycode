@@ -26,6 +26,7 @@ function clearMsg() {
 
 var slimit = 10;
 var count = 0;
+var total = 0;
 
 var errorMsg = "对不起，服务器错误，请稍候再试";
 
@@ -125,8 +126,7 @@ function scheduleAction(com, grid) {
 						showMsg(data.result ? "pass" : "error", data.message);
 						if (data.result) {
 							$("#flex1").flexReload();
-							count -= data.affected;
-							$("#count").html(count);
+							updateCountAndTotal(data);
 						}
 					},
 					complete : function(req) {
@@ -140,6 +140,12 @@ function scheduleAction(com, grid) {
 			showMsg("error", "请至少选中一行删除！");
 		}
 	} else if (com == '新建') {
+		if (total >= 2000) {
+			showMsg(
+					"error",
+					"设置的定时数目已经达到上限:2000，后续会通过开分站的形式为您提供服务。");
+			return;
+		}
 		if (count >= slimit) {
 			showMsg("error", "设置的定时数目已经达到上限:" + slimit + "，请删除一些定时设置后再试，或联系站长");
 			return;
@@ -227,10 +233,7 @@ $(function() {
 					tb_remove();
 					resetForm();
 					$("#flex1").flexReload();
-					if (sid == "") {
-						count++;
-						$("#count").html(count);
-					}
+					updateCountAndTotal(data);
 					showMsg("pass", data.message);
 				}
 			},
@@ -283,9 +286,8 @@ $(function() {
 			if (data.result) {
 				$("#nickname").val(data.nickname);
 				slimit = data.slimit;
-				count = data.count;
 				$("#slimit").html(slimit);
-				$("#count").html(count);
+				updateCountAndTotal(data);
 			}
 		}
 	});
@@ -293,6 +295,13 @@ $(function() {
 
 function resetForm() {
 	document.getElementById("scheduleForm").reset();
+}
+
+function updateCountAndTotal(data) {
+	total = data.total;
+	count = data.count;
+	$("#count").html(count);
+	$("#total").html(total);
 }
 
 function validateEmail(input) {

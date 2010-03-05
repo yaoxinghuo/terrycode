@@ -132,10 +132,15 @@
 </table>
 </form>
 </div>
-<div>您最多可以定制 <span id="slimit"
-	style="color: blue; font-weight: bold;">10</span> 个邮件提醒，已定制 <span
-	id="count" style="color: blue; font-weight: bold;">0</span>
-个邮件提醒，设置发送邮件时的昵称： <input type="text" id="nickname" maxlength="12" /> <input
+<div><br />
+您的账户定制限额为 <span id="slimit" style="color: blue; font-weight: bold;">10</span>，已定制数为
+<span id="count" style="color: blue; font-weight: bold;">0</span>，本站总定制限额为
+<span style="color: blue; font-weight: bold;">2000</span>，现有总定制数为 <span
+	id="total" style="color: blue; font-weight: bold;">0</span>，到达限额后，会考虑开设分站，有任何问题请到<a
+	target='_blank' href='http://xinghuo.org.ru/2010/03/gae.html'>http://xinghuo.org.ru</a>留言或关注。
+<br />
+<br />
+帐户信息：设置发送邮件时的昵称 <input type="text" id="nickname" maxlength="12" /> <input
 	id="updateNickname" type="button" value="更改" style="width: 60px;" /></div>
 <br />
 <br />
@@ -149,21 +154,21 @@
 <%
 	}
 %>
-<p align="left"><strong><font size="4">功能：</font></strong><br />
-&nbsp; &nbsp; 定时每天向指定邮箱发送天气预报邮件，可借助手机邮箱（<a href="http://mail.139.com/"
+<p align="left"><strong><font size="4">功能：</font><br />
+&nbsp; &nbsp; 定时每天向指定邮箱发送天气预报邮件，借助手机邮箱（<a href="http://mail.139.com/"
 	target="_blank">139邮箱</a>，<a href="http://mail.wo.com.cn"
 	target="_blank">联通邮箱</a>，<a href="http://www.189.cn/webmail/"
-	target="_blank">189邮箱</a>）实现手机天气预报定制<br />
+	target="_blank">189邮箱</a>）提供的邮件到达手机提醒，实现手机天气预报定制</strong><br />
 <strong><font size="4">特点：<br />
-</font></strong> &nbsp; &nbsp; 一个Gtalk帐号可定制多个城市的天气预报或多个好友的邮箱<br />
-&nbsp; &nbsp; 可自定义每天发送时间、可选择天气预报内容放入邮件正文或主题<br />
-&nbsp; &nbsp; 可发送3天的天气情况<br />
-&nbsp; &nbsp; 定时期限无限长（只要gae没倒闭）<br />
+</font></strong> &nbsp; &nbsp; 一个帐号可定制多个城市的天气预报或多个好友的邮箱<br />
+&nbsp; &nbsp; 可自定义每天发送时间、可选择天气预报内容放入邮件正文或主题、可暂停预报<br />
+&nbsp; &nbsp; 可预报3-4天的天气情况<br />
+&nbsp; &nbsp; 部署于GAE免费的服务器，定时期限无限长（只要Google App Engine没倒闭）<br />
 <strong><font size="4">说明：<br />
 </font></strong>&nbsp; &nbsp; 1.定时只能精确到5分钟<br />
 &nbsp; &nbsp; 2.暂时只能定制10条邮件天气预报列表，有更多需要可以联系作者<br />
-&nbsp; &nbsp; 3.天气数据来自Google，Google每天<b style="color: blue">8:35</b>和<b
-	style="color: blue">17:35</b>点更新数据，请把提醒时间适当设置在这两个时间点之后<br />
+&nbsp; &nbsp; 3.天气数据来自Google，Google每天 <b style="color: blue">8:35</b> 和
+<b style="color: blue">17:35</b> 更新数据，请把提醒时间适当设置在这两个时间点之后<br />
 &nbsp; &nbsp; 4.为了方便您今后管理和取消订阅，需要登录到您的Google帐号<br />
 <br />
 程序设计：<a href="http://xinghuo.org.ru/" target="_blank"><font
