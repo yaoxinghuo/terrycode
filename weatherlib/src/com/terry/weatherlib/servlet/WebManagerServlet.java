@@ -158,6 +158,8 @@ public class WebManagerServlet extends HttpServlet {
 		String typeS = req.getParameter("type");
 		String sid = req.getParameter("sid");
 
+		boolean update = !StringUtil.isEmptyOrWhitespace(sid);
+
 		if (StringUtil.isEmptyOrWhitespace(email) || email.length() > 100
 				|| StringUtil.isEmptyOrWhitespace(city) || city.length() > 12
 				|| StringUtil.isEmptyOrWhitespace(sdateS)
@@ -201,7 +203,7 @@ public class WebManagerServlet extends HttpServlet {
 			return jo;
 		}
 
-		if (getScheduleCount() >= 2000) {
+		if (!update && getScheduleCount() >= 2000) {
 			try {
 				jo.put("message", "本站总定时数目已经达到上限:2000，后续会通过开分站的形式为您提供服务。");
 			} catch (JSONException e) {
@@ -209,7 +211,7 @@ public class WebManagerServlet extends HttpServlet {
 			return jo;
 		}
 
-		if (getAccountScheduleCount(account) >= a.getSlimit()) {
+		if (!update && getAccountScheduleCount(account) >= a.getSlimit()) {
 			try {
 				jo
 						.put(
@@ -253,7 +255,7 @@ public class WebManagerServlet extends HttpServlet {
 		} else
 			city = w.getCity();
 		boolean result = false;
-		if (!StringUtil.isEmptyOrWhitespace(sid)) {
+		if (update) {
 			result = scheduleDao.updateScheduleById(sid, email, city, sdate,
 					type, remark);
 		} else {
