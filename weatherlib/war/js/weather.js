@@ -233,8 +233,8 @@ $(function() {
 					tb_remove();
 					resetForm();
 					$("#flex1").flexReload();
-					updateCountAndTotal(data);
 					showMsg("pass", data.message);
+					updateCountAndTotal(data);
 				}
 			},
 			complete : function(req) {
@@ -264,6 +264,7 @@ $(function() {
 			dataType : "json",
 			success : function(data) {
 				showMsg(data.result ? "pass" : "error", data.message);
+				updateCountAndTotal(data);
 			},
 			complete : function(req) {
 				$("#updateNickname").attr("disabled", "").attr("value", "更改");
