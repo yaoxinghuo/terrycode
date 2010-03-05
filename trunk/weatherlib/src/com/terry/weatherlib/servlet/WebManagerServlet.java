@@ -333,6 +333,7 @@ public class WebManagerServlet extends HttpServlet {
 	}
 
 	private JSONObject updateNickanme(HttpServletRequest req) {
+		String account = userService.getCurrentUser().getEmail();
 		JSONObject jo = createDefaultJo();
 		String nickname = req.getParameter("nickname");
 		if (StringUtil.isEmptyOrWhitespace(nickname) || nickname.length() > 12) {
@@ -342,11 +343,12 @@ public class WebManagerServlet extends HttpServlet {
 			}
 			return jo;
 		}
-		if (accountDao.updateAccountNickname(userService.getCurrentUser()
-				.getEmail(), nickname)) {
+		if (accountDao.updateAccountNickname(account, nickname)) {
 			try {
 				jo.put("result", true);
 				jo.put("message", "已成功更新邮件发送时昵称为：" + nickname);
+				jo.put("count", getAccountScheduleCount(account));
+				jo.put("total", getScheduleCount());
 			} catch (JSONException e) {
 			}
 		}
