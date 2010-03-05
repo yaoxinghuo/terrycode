@@ -141,9 +141,7 @@ function scheduleAction(com, grid) {
 		}
 	} else if (com == '新建') {
 		if (total >= 2000) {
-			showMsg(
-					"error",
-					"设置的定时数目已经达到上限:2000，后续会通过开分站的形式为您提供服务。");
+			showMsg("error", "设置的定时数目已经达到上限:2000，后续会通过开分站的形式为您提供服务。");
 			return;
 		}
 		if (count >= slimit) {
@@ -187,6 +185,7 @@ function scheduleAction(com, grid) {
 		$('#newSchedule').trigger("click");
 	} else if (com == '刷新') {
 		$("#flex1").flexReload();
+		getAccountInfo();
 	}
 }
 /*
@@ -194,6 +193,7 @@ function scheduleAction(com, grid) {
  */
 
 $(function() {
+	getAccountInfo();
 	$("#scheduleSave").click(function() {
 		var email = $("#email").val();
 		if (!validateEmail(email)) {
@@ -274,7 +274,13 @@ $(function() {
 			}
 		});
 	});
+});
 
+function resetForm() {
+	document.getElementById("scheduleForm").reset();
+}
+
+function getAccountInfo() {
 	$.ajax( {
 		url : "webManager",
 		type : "POST",
@@ -292,10 +298,6 @@ $(function() {
 			}
 		}
 	});
-});
-
-function resetForm() {
-	document.getElementById("scheduleForm").reset();
 }
 
 function updateCountAndTotal(data) {
