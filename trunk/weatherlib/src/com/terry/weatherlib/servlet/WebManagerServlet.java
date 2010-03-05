@@ -31,6 +31,7 @@ import com.terry.weatherlib.data.intf.IScheduleDao;
 import com.terry.weatherlib.model.Account;
 import com.terry.weatherlib.model.Schedule;
 import com.terry.weatherlib.util.StringUtil;
+import com.terry.weatherlib.util.WeatherMailSender;
 
 /**
  * @author Terry E-mail: yaoxinghuo at 126 dot com
@@ -157,6 +158,7 @@ public class WebManagerServlet extends HttpServlet {
 		String remark = req.getParameter("remark");
 		String typeS = req.getParameter("type");
 		String sid = req.getParameter("sid");
+		String test = req.getParameter("test");
 
 		boolean update = !StringUtil.isEmptyOrWhitespace(sid);
 
@@ -205,7 +207,7 @@ public class WebManagerServlet extends HttpServlet {
 
 		if (!update && getScheduleCount() >= 2000) {
 			try {
-				jo.put("message", "本站总定时数目已经达到上限:2000，后续会通过开分站的形式为您提供服务。");
+				jo.put("message", "本站总定制数目已经达到上限:2000，后续会通过开分站的形式为您提供服务。");
 			} catch (JSONException e) {
 			}
 			return jo;
@@ -216,9 +218,9 @@ public class WebManagerServlet extends HttpServlet {
 				jo
 						.put(
 								"message",
-								"设置的定时数目已经达到上限:"
+								"设置的定制数目已经达到上限:"
 										+ a.getSlimit()
-										+ "，请删除一些定时设置后再试，或<a target=\"_blank\" href=\"http://xinghuo.org.ru/\">联系站长</a>");
+										+ "，请删除一些定制设置后再试，或<a target=\"_blank\" href=\"http://xinghuo.org.ru/\">联系站长</a>");
 			} catch (JSONException e) {
 			}
 			return jo;
@@ -248,7 +250,7 @@ public class WebManagerServlet extends HttpServlet {
 		if (w == null) {
 			try {
 				jo.put("message", "无法获取“" + city
-						+ "”的天气，所以未能保存您的定时设置，请检查您的输入并稍候再试");
+						+ "”的天气，所以未能保存您的定制，请检查您的输入并稍候再试");
 			} catch (JSONException e) {
 			}
 			return jo;
@@ -272,13 +274,23 @@ public class WebManagerServlet extends HttpServlet {
 			if (result)
 				updateAccountScheduleCount(account, 1);
 		}
+		String message = result ? "已成功保存“" + city + "”的天气预报邮件定制" : ERROR;
+		if (result && type != 0 && !StringUtil.isEmptyOrWhitespace(test)
+				&& test.equals("true")) {
+			if (WeatherMailSender.sendWeatherMail(w, email, type, "测试", true)) {
+				message += "，天气预报测试邮件已发往：" + email;
+			} else {
+				// message += "，但测试邮件并未发送成功";
+			}
+		}
 		try {
 			jo.put("result", result);
-			jo.put("message", result ? "已成功保存“" + city + "”的天气预报定时设置" : ERROR);
+			jo.put("message", message);
 			jo.put("count", getAccountScheduleCount(account));
 			jo.put("total", getScheduleCount());
 		} catch (JSONException e) {
 		}
+
 		return jo;
 	}
 
@@ -295,7 +307,7 @@ public class WebManagerServlet extends HttpServlet {
 		updateAccountScheduleCount(account, -total);
 		try {
 			jo.put("result", total > 0);
-			String message = total > 0 ? "您已成功删除" + total + "条天气预报设置" : ERROR;
+			String message = total > 0 ? "您已成功删除" + total + "条天气预报定制设置" : ERROR;
 			jo.put("message", message);
 			jo.put("count", getAccountScheduleCount(account));
 			jo.put("total", getScheduleCount());

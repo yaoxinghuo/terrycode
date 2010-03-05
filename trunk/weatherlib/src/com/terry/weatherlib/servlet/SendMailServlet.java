@@ -22,8 +22,8 @@ import com.terry.weatherlib.WeatherCache;
 import com.terry.weatherlib.model.Account;
 import com.terry.weatherlib.model.Schedule;
 import com.terry.weatherlib.util.EMF;
-import com.terry.weatherlib.util.MailSender;
 import com.terry.weatherlib.util.StringUtil;
+import com.terry.weatherlib.util.WeatherMailSender;
 
 /**
  * @author xinghuo.yao E-mail: yaoxinghuo at 126 dot com
@@ -35,8 +35,6 @@ public class SendMailServlet extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = -843840894946959108L;
-
-	private static final String HELP = "\r\n管理订阅请登录http://tianqiyubao.org.ru/\r\n请勿直接回复";
 
 	private SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm",
 			Locale.CHINA);
@@ -78,21 +76,13 @@ public class SendMailServlet extends HttpServlet {
 		Weather weather = WeatherCache.queryWeather(schedule.getCity());
 		if (weather == null)
 			return;
+		if (!WeatherMailSender.sendWeatherMail(weather, schedule.getEmail(),
+				schedule.getType(), account == null ? null : account
+						.getNickname()))
+			return;
 		try {
 			EntityTransaction tx = em.getTransaction();
 			tx.begin();
-			String subject = null;
-			String content = null;
-			if (schedule.getType() == 2) {
-				subject = weather.getCity()
-						+ weather.getContent().replace("\r\n", " ");
-				content = "如题。" + HELP;
-			} else {
-				subject = "天气预报--" + weather.getDesc();
-				content = weather.getReport() + HELP;
-			}
-			MailSender.sendMail(schedule.getEmail(), account == null ? null
-					: account.getNickname(), subject, content);
 			Date now = new Date();
 			Calendar c_sdate = Calendar.getInstance();
 			c_sdate.setTime(schedule.getSdate());

@@ -52,13 +52,13 @@ $("#flex1").flexigrid( {
 		sortable : false,
 		align : 'left'
 	}, {
-		display : '接受邮箱',
+		display : '接收邮箱',
 		name : 'email',
 		width : 170,
 		sortable : false,
 		align : 'left'
 	}, {
-		display : '状态',
+		display : '定制内容状态',
 		name : 'type',
 		width : 120,
 		sortable : false,
@@ -141,17 +141,17 @@ function scheduleAction(com, grid) {
 		}
 	} else if (com == '新建') {
 		if (total >= 2000) {
-			showMsg("error", "设置的定时数目已经达到上限:2000，后续会通过开分站的形式为您提供服务。");
+			showMsg("error", "设置的定制数目已经达到上限:2000，后续会通过开分站的形式为您提供服务。");
 			return;
 		}
 		if (count >= slimit) {
-			showMsg("error", "设置的定时数目已经达到上限:" + slimit + "，请删除一些定时设置后再试，或联系站长");
+			showMsg("error", "设置的定制数目已经达到上限:" + slimit + "，请删除一些定制设置后再试，或联系站长");
 			return;
 		}
 		$("#sid").val("");
 		$("#message").html("").hide();
 		if ($("#newSchedule").attr("title").indexOf("新建") == -1) {
-			$("#newSchedule").attr("title", "<b>新建天气预报提醒</b>");
+			$("#newSchedule").attr("title", "<b>新建天气预报定制</b>");
 			resetForm();
 		}
 		$('#newSchedule').trigger("click");
@@ -181,7 +181,7 @@ function scheduleAction(com, grid) {
 			return;
 		}
 		$("#message").html("").hide();
-		$("#newSchedule").attr("title", "<b>修改天气预报提醒</b>");
+		$("#newSchedule").attr("title", "<b>修改天气预报定制</b>");
 		$('#newSchedule').trigger("click");
 	} else if (com == '刷新') {
 		$("#flex1").flexReload();
@@ -211,7 +211,7 @@ $(function() {
 		var type = $("#type").val();
 		var sid = $("#sid").val();
 		$("#message").html("").hide();
-		$("#scheduleSave").attr("disabled", "true").attr("value", "请稍候");
+		$("#scheduleSave").attr("disabled", true).attr("value", "请稍候");
 		$.ajax( {
 			url : "webManager",
 			type : "POST",
@@ -223,7 +223,8 @@ $(function() {
 				"remark" : remark,
 				"sdate" : sdate,
 				"type" : type,
-				"sid" : $("#sid").val()
+				"sid" : $("#sid").val(),
+				"test" : $("#test").attr("checked") == true ? "true" : "false"
 			},
 			dataType : "json",
 			success : function(data) {
@@ -238,7 +239,7 @@ $(function() {
 				}
 			},
 			complete : function(req) {
-				$("#scheduleSave").attr("disabled", "").attr("value", "保存");
+				$("#scheduleSave").attr("disabled", false).attr("value", "保存");
 				var code = req.status;
 				if (code < 200 || code > 299)
 					$("#message").html(errorMsg).show();
@@ -252,7 +253,7 @@ $(function() {
 			showMsg("error", "请输入昵称");
 			return;
 		}
-		$("#updateNickname").attr("disabled", "true").attr("value", "请稍候");
+		$("#updateNickname").attr("disabled", true).attr("value", "请稍候");
 		$.ajax( {
 			url : "webManager",
 			type : "POST",
@@ -267,12 +268,20 @@ $(function() {
 				updateCountAndTotal(data);
 			},
 			complete : function(req) {
-				$("#updateNickname").attr("disabled", "").attr("value", "更改");
+				$("#updateNickname").attr("disabled", false).attr("value", "更改");
 				var code = req.status;
 				if (code < 200 || code > 299)
 					showMsg("error", errorMsg);
 			}
 		});
+	});
+	
+	$("#type").change(function(){
+		if($("#type").val()=="0"){
+			$("#test").attr("disabled", true).attr("checked", false);
+		} else {
+			$("#test").attr("disabled", false);
+		}
 	});
 });
 
