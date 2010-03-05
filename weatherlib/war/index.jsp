@@ -70,12 +70,12 @@
 <form id="scheduleForm">
 <table border="0">
 	<tr>
-		<td colspan="3" align="center">&nbsp;<span id="message"
+		<td colspan="2" align="center">&nbsp;<span id="message"
 			style="display: none; color: red; font-weight: bold;"></span></td>
 	</tr>
 	<tr>
 		<td style="width: 100px;">*发送时间：</td>
-		<td align="left"><select name="sdate_hour" id="sdate_hour">
+		<td align="left"><select name="sdate_hour" id="sdate_hour" style="width: 70px;">
 			<%
 				for (int i = 0; i < 24; i++) {
 			%>
@@ -85,8 +85,7 @@
 			<%
 				}
 			%>
-		</select></td>
-		<td align="left"><select name="sdate_minute" id="sdate_minute">
+		</select>&nbsp;&nbsp;<select name="sdate_minute" id="sdate_minute" style="width: 70px;">
 			<%
 				for (int i = 0; i < 12; i++) {
 			%>
@@ -99,8 +98,8 @@
 	</tr>
 	<tr>
 		<td>*发送状态：</td>
-		<td colspan="2"><select name="type" id="type"
-			style="width: 150px;">
+		<td><select name="type" id="type"
+			style="width: 148px;">
 			<option value="1" selected="selected">天气内容放正文</option>
 			<option value="2">天气内容放主题</option>
 			<option value="0">暂时停用</option>
@@ -108,25 +107,25 @@
 	</tr>
 	<tr>
 		<td>*接收邮箱：</td>
-		<td colspan="2"><input name="email" id="email" value="@139.com"
+		<td><input name="email" id="email" value="@139.com"
 			style="width: 180px;" /></td>
 	</tr>
 	<tr>
 		<td>*定制城市：</td>
-		<td colspan="2"><input name="city" id="city"
+		<td><input name="city" id="city"
 			style="width: 180px;" maxlength="12" /></td>
 	</tr>
 	<tr>
 		<td>备注：</td>
-		<td colspan="2"><input name="remark" id="remark" maxlength="100"
+		<td><input name="remark" id="remark" maxlength="100"
 			style="width: 180px;" /></td>
 	</tr>
 	<tr>
 		<td></td>
-		<td colspan="2"><input type="checkbox" name="test" id="test"/>保存后，立即发送测试邮件以查看效果 </td>
+		<td><input type="checkbox" name="test" id="test"/>保存后，立即发送测试邮件以查看效果 </td>
 	</tr>
 	<tr>
-		<td colspan="3"><input type="hidden" id="sid" value="" /></td>
+		<td colspan="2"><input type="hidden" id="sid" value="" /></td>
 	</tr>
 	<tr>
 		<td width="100px;"></td>
