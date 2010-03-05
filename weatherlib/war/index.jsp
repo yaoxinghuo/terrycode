@@ -144,8 +144,8 @@
 %>
 <br />
 <p align="center"><font size="5">天气预报邮件定制<br />
-</font> <font color='green'>提示：需要<a
-	href="<%=userService.createLoginURL("/")%>">登录</a>才能进行天气预报邮件定制</font></p>
+</font> <font color='green'>提示：为了方便您今后管理和取消订阅等操作，需要用Google帐号<a
+	href="<%=userService.createLoginURL("/")%>">登录</a>，Google仅提供登录授权，不会共享您的密码给本站</font></p>
 <%
 	}
 %>
