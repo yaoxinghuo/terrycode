@@ -104,8 +104,7 @@ public class WeatherFetcher {
 					} else if (className.equals("section")
 							|| className.equals("module_open")) {
 						weather.setCity(div.toPlainTextString().trim().replace(
-								"市天气", "").replace("县天气", "")
-								.replace("省天气", ""));
+								"天气", ""));
 						log.debug("city:" + weather.getCity());
 					} else if (className.equals("center small padtop")
 							|| className.equals("small padtop")) {

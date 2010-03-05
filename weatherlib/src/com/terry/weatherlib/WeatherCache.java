@@ -18,7 +18,6 @@ import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import com.google.appengine.api.memcache.stdimpl.GCacheFactory;
 import com.terry.weatherlib.util.Constants;
-import com.terry.weatherlib.util.Pinyin4j;
 
 /**
  * @author xinghuo.yao E-mail: yaoxinghuo at 126 dot com
@@ -45,12 +44,11 @@ public class WeatherCache {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static Weather queryWeather(String loc) {
+	public static Weather queryWeather(String loc, String suffix) {
+		String key = Constants.DEFAULT_WEATHER_CACHE_NAME + "-"
+				+ (suffix == null ? loc : suffix);
 		if (cache != null) {
-			Object o = cache.get(Constants.DEFAULT_WEATHER_CACHE_NAME
-					+ "-"
-					+ Pinyin4j
-							.cn2Spell(loc.replaceAll("\\s", "").toLowerCase()));
+			Object o = cache.get(key);
 			if (o != null && o instanceof Weather) {
 				return (Weather) o;
 			}
@@ -58,9 +56,7 @@ public class WeatherCache {
 
 		Weather w = WeatherFetcher.fetchWeather(loc);
 		if (w != null && cache != null) {
-			String name = Constants.DEFAULT_WEATHER_CACHE_NAME + "-"
-					+ Pinyin4j.cn2Spell(w.getCity());
-			cacheService.put(name, w, getExpiration());
+			cacheService.put(key, w, getExpiration());
 
 			// Add weather cache name to cache.
 			ArrayList<String> names = null;
@@ -69,10 +65,14 @@ public class WeatherCache {
 				names = (ArrayList<String>) o;
 			else
 				names = new ArrayList<String>();
-			names.add(name);
+			names.add(key);
 			cache.put(Constants.DEFAULT_CACHE_CACHE_NAME, names);
 		}
 		return w;
+	}
+
+	public static Weather queryWeather(String loc) {
+		return queryWeather(loc, null);
 	}
 
 	/*
