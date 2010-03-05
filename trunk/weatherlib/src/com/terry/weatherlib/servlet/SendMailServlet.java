@@ -36,7 +36,7 @@ public class SendMailServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = -843840894946959108L;
 
-	private static final String HELP = "\r\n管理订阅请登录http://tianqiyubao.org.ru/ ";
+	private static final String HELP = "\r\n管理订阅请登录http://tianqiyubao.org.ru/\r\n请勿直接回复";
 
 	private SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm",
 			Locale.CHINA);
@@ -106,6 +106,7 @@ public class SendMailServlet extends HttpServlet {
 			if (c_sdate.getTimeInMillis() <= now.getTime())
 				c_sdate.add(Calendar.DAY_OF_YEAR, 1);
 			schedule.setSdate(c_sdate.getTime());
+			schedule.setCity(weather.getCity());
 			schedule.setAdate(now);
 			em.persist(schedule);
 			tx.commit();
