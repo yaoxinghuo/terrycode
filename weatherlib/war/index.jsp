@@ -63,8 +63,8 @@
 <script type="text/javascript" src="js/weather.js"></script>
 
 <div style="display: none;"><input id="newSchedule"
-	alt="#TB_inline?height=180&width=336&inlineId=hiddenModalContent&;modal=false"
-	title="<b>新建天气预报提醒</b>" class="thickbox" type="button" value="Show" /></div>
+	alt="#TB_inline?height=205&width=356&inlineId=hiddenModalContent&;modal=false"
+	title="<b>新建天气预报定制</b>" class="thickbox" type="button" value="Show" /></div>
 
 <div id="hiddenModalContent" style="display: none;">
 <form id="scheduleForm">
@@ -120,6 +120,10 @@
 		<td>备注：</td>
 		<td colspan="2"><input name="remark" id="remark" maxlength="100"
 			style="width: 180px;" /></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td colspan="2"><input type="checkbox" name="test" id="test"/>保存后，立即发送测试邮件以查看效果 </td>
 	</tr>
 	<tr>
 		<td colspan="3"><input type="hidden" id="sid" value="" /></td>
