@@ -75,7 +75,8 @@
 	</tr>
 	<tr>
 		<td style="width: 100px;">*发送时间：</td>
-		<td align="left"><select name="sdate_hour" id="sdate_hour" style="width: 70px;">
+		<td align="left"><select name="sdate_hour" id="sdate_hour"
+			style="width: 70px;">
 			<%
 				for (int i = 0; i < 24; i++) {
 			%>
@@ -85,7 +86,8 @@
 			<%
 				}
 			%>
-		</select>&nbsp;&nbsp;<select name="sdate_minute" id="sdate_minute" style="width: 70px;">
+		</select>&nbsp;&nbsp;<select name="sdate_minute" id="sdate_minute"
+			style="width: 70px;">
 			<%
 				for (int i = 0; i < 12; i++) {
 			%>
@@ -98,8 +100,7 @@
 	</tr>
 	<tr>
 		<td>*发送状态：</td>
-		<td><select name="type" id="type"
-			style="width: 148px;">
+		<td><select name="type" id="type" style="width: 148px;">
 			<option value="1" selected="selected">天气内容放正文</option>
 			<option value="2">天气内容放主题</option>
 			<option value="0">暂时停用</option>
@@ -112,8 +113,8 @@
 	</tr>
 	<tr>
 		<td>*定制城市：</td>
-		<td><input name="city" id="city"
-			style="width: 180px;" maxlength="12" /></td>
+		<td><input name="city" id="city" style="width: 180px;"
+			maxlength="12" /></td>
 	</tr>
 	<tr>
 		<td>备注：</td>
@@ -122,7 +123,8 @@
 	</tr>
 	<tr>
 		<td></td>
-		<td><input type="checkbox" name="test" id="test"/>保存后，立即发送测试邮件以查看效果 </td>
+		<td><input type="checkbox" name="test" id="test" />保存后，立即发送测试邮件以查看效果
+		</td>
 	</tr>
 	<tr>
 		<td colspan="2"><input type="hidden" id="sid" value="" /></td>
@@ -137,17 +139,20 @@
 </div>
 <br />
 <div style="font-weight: bold; line-height: 20px;">
-<div>您的账户定制限额为 <span id="slimit"
-	style="color: blue; font-weight: bold;">10</span>，已定制数为 <span
-	id="count" style="color: blue; font-weight: bold;">--</span>；本站总定制限额为 <span
-	style="color: blue; font-weight: bold;">2000</span>，现有总定制数为 <span
-	id="total" style="color: blue; font-weight: bold;">--</span>；
-到达限额后，会考虑开设分站，有任何问题请到<a target='_blank'
-	href='http://xinghuo.org.ru/2010/03/gae.html'>http://xinghuo.org.ru</a>留言或关注。
-</div>
 <div>帐户信息：设置发送邮件时的昵称 <input type="text" id="nickname"
 	maxlength="12" /> <input id="updateNickname" type="button" value="更改"
 	style="width: 60px;" /></div>
+<div>限额信息：您的账户定制限额为 <span id="slimit"
+	style="color: blue; font-weight: bold;">10</span>，已定制数为 <span
+	id="count" style="color: blue; font-weight: bold;">0</span>；本站总定制限额为 <span
+	style="color: blue; font-weight: bold;">2000</span>，现有总定制数为 <span
+	id="total" style="color: blue; font-weight: bold;">0</span>&nbsp;&nbsp;<span
+	id="count_loading" style="visibility: visible;"><img
+	src="images/load.gif" /></span> <br />
+本站总限额到达后，若您个人账户限额未满，也将无法添加新的定制；后续会考虑开设分站，有任何问题请到<a target='_blank'
+	href='http://xinghuo.org.ru/2010/03/gae.html'>http://xinghuo.org.ru</a>留言或关注。
+</div>
+
 </div>
 <br />
 <br />

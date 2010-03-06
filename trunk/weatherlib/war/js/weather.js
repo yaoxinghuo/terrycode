@@ -185,8 +185,7 @@ function scheduleAction(com, grid) {
 		$('#newSchedule').trigger("click");
 	} else if (com == '刷新') {
 		$("#flex1").flexReload();
-		$("#count").html("--");
-		$("#total").html("--");
+		$("#count_loading").show();
 		getAccountInfo();
 	}
 }
@@ -313,6 +312,7 @@ function updateCountAndTotal(data) {
 	count = data.count;
 	$("#count").html(count);
 	$("#total").html(total);
+	$("#count_loading").hide();
 }
 
 function validateEmail(input) {
