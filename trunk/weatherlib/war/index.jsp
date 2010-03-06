@@ -146,7 +146,8 @@
 	style="color: blue; font-weight: bold;">10</span>，已定制数为 <span
 	id="count" style="color: blue; font-weight: bold;">0</span>；本站总定制限额为 <span
 	style="color: blue; font-weight: bold;">2000</span>，现有总定制数为 <span
-	id="total" style="color: blue; font-weight: bold;">0</span>&nbsp;&nbsp;<span
+	id="total" style="color: blue; font-weight: bold;">0</span>&nbsp;&nbsp;<input
+	id="refreshCount" type="button" value="刷新" style="width: 60px;" />&nbsp;&nbsp;<span
 	id="count_loading" style="visibility: visible;"><img
 	src="images/load.gif" /></span> <br />
 本站总限额到达后，若您个人账户限额未满，也将无法添加新的定制；后续会考虑开设分站，有任何问题请到<a target='_blank'
