@@ -18,7 +18,7 @@ public class WeatherMailSender {
 					+ weather.getContent().replace("\r\n", " ");
 			content = "如题。" + HELP;
 		} else {
-			subject = "天气预报--" + weather.getDesc();
+			subject = weather.getCity() + "天气预报--" + weather.getDesc();
 			content = weather.getReport() + HELP;
 		}
 		if (fetch) {
