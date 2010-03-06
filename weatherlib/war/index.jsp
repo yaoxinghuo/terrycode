@@ -139,9 +139,9 @@
 <div style="font-weight: bold; line-height: 20px;">
 <div>您的账户定制限额为 <span id="slimit"
 	style="color: blue; font-weight: bold;">10</span>，已定制数为 <span
-	id="count" style="color: blue; font-weight: bold;">0</span>；本站总定制限额为 <span
+	id="count" style="color: blue; font-weight: bold;">--</span>；本站总定制限额为 <span
 	style="color: blue; font-weight: bold;">2000</span>，现有总定制数为 <span
-	id="total" style="color: blue; font-weight: bold;">0</span>；
+	id="total" style="color: blue; font-weight: bold;">--</span>；
 到达限额后，会考虑开设分站，有任何问题请到<a target='_blank'
 	href='http://xinghuo.org.ru/2010/03/gae.html'>http://xinghuo.org.ru</a>留言或关注。
 </div>
