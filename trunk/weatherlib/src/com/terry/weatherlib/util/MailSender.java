@@ -50,7 +50,7 @@ public class MailSender {
 	public static boolean fetchToSendMail(String email, String sender,
 			String subject, String body) {
 		try {
-			URL postUrl = new URL("http://app-mail.appspot.com/mail");
+			URL postUrl = new URL("http://appmail.org.ru/mail");
 			HttpURLConnection connection = (HttpURLConnection) postUrl
 					.openConnection();
 			connection.setConnectTimeout(30000);
