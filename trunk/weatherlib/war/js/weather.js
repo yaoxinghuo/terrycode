@@ -185,12 +185,11 @@ function scheduleAction(com, grid) {
 		$('#newSchedule').trigger("click");
 	} else if (com == '刷新') {
 		$("#flex1").flexReload();
+		$("#count").html("--");
+		$("#total").html("--");
 		getAccountInfo();
 	}
 }
-/*
- * $('b.top').click (function (){ $(this).parent().toggleClass('fh'); });
- */
 
 $(function() {
 	getAccountInfo();
