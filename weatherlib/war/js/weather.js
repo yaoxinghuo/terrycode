@@ -185,8 +185,6 @@ function scheduleAction(com, grid) {
 		$('#newSchedule').trigger("click");
 	} else if (com == '刷新') {
 		$("#flex1").flexReload();
-		$("#count_loading").show();
-		getAccountInfo();
 	}
 }
 
@@ -274,6 +272,10 @@ $(function() {
 		});
 	});
 	
+	$("#refreshCount").click(function(){
+		getAccountInfo();
+	});
+	
 	$("#type").change(function(){
 		if($("#type").val()=="0"){
 			$("#test").attr("disabled", true).attr("checked", false);
@@ -288,6 +290,8 @@ function resetForm() {
 }
 
 function getAccountInfo() {
+	$("#refreshCount").attr("disabled", true).attr("value", "请稍候");
+	$("#count_loading").show();
 	$.ajax( {
 		url : "webManager",
 		type : "POST",
@@ -303,6 +307,13 @@ function getAccountInfo() {
 				$("#slimit").html(slimit);
 				updateCountAndTotal(data);
 			}
+		},
+		complete : function(req) {
+			$("#refreshCount").attr("disabled", false).attr("value", "刷新");
+			$("#count_loading").hide();
+			var code = req.status;
+			if (code < 200 || code > 299)
+				showMsg("error", errorMsg);
 		}
 	});
 }
@@ -312,7 +323,6 @@ function updateCountAndTotal(data) {
 	count = data.count;
 	$("#count").html(count);
 	$("#total").html(total);
-	$("#count_loading").hide();
 }
 
 function validateEmail(input) {
