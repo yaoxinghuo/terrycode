@@ -277,7 +277,8 @@ public class WebManagerServlet extends HttpServlet {
 		String message = result ? "已成功保存“" + city + "”的天气预报邮件定制" : ERROR;
 		if (result && type != 0 && !StringUtil.isEmptyOrWhitespace(test)
 				&& test.equals("true")) {
-			if (WeatherMailSender.sendWeatherMail(w, email, type, "测试", true)) {
+			if (WeatherMailSender.sendWeatherMail(w, email, type, "[测试]"
+					+ a.getNickname(), true)) {
 				message += "，天气预报测试邮件已发往：" + email;
 			} else {
 				// message += "，但测试邮件并未发送成功";
