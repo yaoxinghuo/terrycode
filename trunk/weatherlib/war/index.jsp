@@ -161,9 +161,63 @@
 	} else {
 %>
 <br />
-<p align="center"><font size="5">天气预报邮件定制<br />
-</font> <font color='green'>提示：为了方便您今后管理和取消订阅等操作，需要用Google帐号<a
-	href="<%=userService.createLoginURL("/")%>">登录</a>，Google仅提供登录授权，不会共享您的密码给本站</font></p>
+<p align="center"><font size="5">天气预报邮件定制</font></p>
+<font color='green'>提示：为了方便您今后管理和取消订阅等操作，需要用Google帐号<a
+	href="<%=userService.createLoginURL("/")%>">登录</a>，Google仅提供登录授权，不会共享您的密码给本站</font>
+<div style="font-weight: bold; line-height: 20px;">
+<div>本站总定制限额为 <span
+	style="color: blue; font-weight: bold;">2000</span>，现有总定制数为 <span
+	id="nl_total" style="color: blue; font-weight: bold;">0</span>&nbsp;&nbsp;<input
+	id="nl_refreshCount" type="button" value="刷新" style="width: 60px;" onclick="nl_refreshCount();"/>&nbsp;&nbsp;<span
+	id="nl_count_loading" style="visibility: visible;"><img
+	src="images/load.gif" /></span> <br />
+本站总限额到达后，会考虑开设分站，有任何问题请到<a target='_blank'
+	href='http://xinghuo.org.ru/2010/03/gae.html'>http://xinghuo.org.ru</a>留言或关注。
+</div>
+</div> 
+	
+	<script>
+	var _xmlhttp = getXmlHttpObject();
+
+	function getXmlHttpObject() {
+		var xmlHttp = null;
+		try {
+			xmlHttp = new XMLHttpRequest();
+		} catch (e) {
+			try {
+				xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
+			} catch (e) {
+				xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+		}
+		return xmlHttp;
+	}
+
+	function getTotalCount() {
+		_xmlhttp.open("get", "webManager?action=getTotalCount&r=" + Math.random());
+		_xmlhttp.onreadystatechange = onreadystatechange;
+		_xmlhttp.send(null);
+	}
+
+	function onreadystatechange() {
+		if (_xmlhttp.readyState == 4) {
+			if (_xmlhttp.status == 200) {
+	            var data = eval("(" + _xmlhttp.responseText + ")");
+	            if(data.result){
+	            	document.getElementById("nl_total").innerHTML=data.total;
+	            }
+			}
+			document.getElementById("nl_count_loading").style.visibility="hidden";
+            document.getElementById("nl_refreshCount").value="刷新";
+		}
+	}
+	getTotalCount();
+	function nl_refreshCount(){
+		document.getElementById("nl_count_loading").style.visibility="visible";
+		document.getElementById("nl_refreshCount").value="请稍候";
+		getTotalCount();
+	}
+	</script>
 <%
 	}
 %>
