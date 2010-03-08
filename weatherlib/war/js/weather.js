@@ -89,12 +89,6 @@ $("#flex1").flexigrid( {
 		name : '修改',
 		bclass : 'modify',
 		onpress : scheduleAction
-	}, {
-		separator : true
-	}, {
-		name : '刷新',
-		bclass : 'refresh',
-		onpress : scheduleAction
 	} ],
 	title : '定制天气预报列表',
 	usepager : true,
@@ -183,8 +177,6 @@ function scheduleAction(com, grid) {
 		$("#message").html("").hide();
 		$("#newSchedule").attr("title", "<b>修改天气预报定制</b>");
 		$('#newSchedule').trigger("click");
-	} else if (com == '刷新') {
-		$("#flex1").flexReload();
 	}
 }
 
@@ -273,7 +265,7 @@ $(function() {
 	});
 	
 	$("#refreshCount").click(function(){
-		getAccountInfo();
+		getTotalCount();
 	});
 	
 	$("#type").change(function(){
@@ -306,6 +298,33 @@ function getAccountInfo() {
 				slimit = data.slimit;
 				$("#slimit").html(slimit);
 				updateCountAndTotal(data);
+			}
+		},
+		complete : function(req) {
+			$("#refreshCount").attr("disabled", false).attr("value", "刷新");
+			$("#count_loading").hide();
+			var code = req.status;
+			if (code < 200 || code > 299)
+				showMsg("error", errorMsg);
+		}
+	});
+}
+
+function getTotalCount() {
+	$("#refreshCount").attr("disabled", true).attr("value", "请稍候");
+	$("#count_loading").show();
+	$.ajax( {
+		url : "webManager",
+		type : "POST",
+		cache : false,
+		data : {
+			"action" : "getTotalCount"
+		},
+		dataType : "json",
+		success : function(data) {
+			if (data.result) {
+				total = data.total;
+				$("#total").html(total);
 			}
 		},
 		complete : function(req) {

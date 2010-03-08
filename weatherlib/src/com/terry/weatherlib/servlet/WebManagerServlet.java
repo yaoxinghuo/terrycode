@@ -86,12 +86,16 @@ public class WebManagerServlet extends HttpServlet {
 					jo = updateNickanme(req);
 				} else if (action.equals("getAccountInfo")) {
 					jo = getAccountInfo();
+				} else if (action.equals("getTotalCount")) {
+					jo = getTotalCount();
 				} else
 					jo = schedulesList(req);
 			}
-		}
+		} else
+			jo = getTotalCount();
 
-		resp.getWriter().println(jo.toString());
+		if (jo != null)
+			resp.getWriter().println(jo.toString());
 	}
 
 	@Override
@@ -341,6 +345,17 @@ public class WebManagerServlet extends HttpServlet {
 			jo.put("cdate", sdf2.format(a.getCdate()));
 			jo.put("udate", sdf2.format(a.getUdate()));
 			jo.put("count", getAccountScheduleCount(account));
+			jo.put("total", getScheduleCount());
+		} catch (JSONException e) {
+		}
+		return jo;
+	}
+
+	private JSONObject getTotalCount() {
+		JSONObject jo = createDefaultJo();
+		try {
+			jo.put("result", true);
+			jo.put("message", "ok");
 			jo.put("total", getScheduleCount());
 		} catch (JSONException e) {
 		}
