@@ -144,10 +144,10 @@
 	style="width: 60px;" /></div>
 <div>限额信息：您的账户定制限额为 <span id="slimit"
 	style="color: blue; font-weight: bold;">10</span>，已定制数为 <span
-	id="count" style="color: blue; font-weight: bold;">0</span>；本站总定制限额为 <span
+	id="count" style="color: blue; font-weight: bold;">—</span>；本站总定制限额为 <span
 	style="color: blue; font-weight: bold;">2000</span>，现有总定制数为 <span
-	id="total" style="color: blue; font-weight: bold;">0</span>&nbsp;&nbsp;<input
-	id="refreshCount" type="button" value="刷新" style="width: 60px;" />&nbsp;&nbsp;<span
+	id="total" style="color: blue; font-weight: bold;">—</span>&nbsp;&nbsp;<input
+	id="refreshCount" type="button" value="刷新" style="width: 60px;" disabled="disabled"/>&nbsp;&nbsp;<span
 	id="count_loading" style="visibility: visible;"><img
 	src="images/load.gif" /></span> <br />
 本站总限额到达后，若您个人账户限额未满，也将无法添加新的定制；后续会考虑开设分站，有任何问题请到<a target='_blank'
@@ -167,8 +167,8 @@
 <div style="font-weight: bold; line-height: 20px;">
 <div>本站总定制限额为 <span
 	style="color: blue; font-weight: bold;">2000</span>，现有总定制数为 <span
-	id="nl_total" style="color: blue; font-weight: bold;">0</span>&nbsp;&nbsp;<input
-	id="nl_refreshCount" type="button" value="刷新" style="width: 60px;" onclick="nl_refreshCount();"/>&nbsp;&nbsp;<span
+	id="nl_total" style="color: blue; font-weight: bold;">—</span>&nbsp;&nbsp;<input
+	id="nl_refreshCount" type="button" value="刷新" style="width: 60px;" disabled="disabled" onclick="nl_refreshCount();"/>&nbsp;&nbsp;<span
 	id="nl_count_loading" style="visibility: visible;"><img
 	src="images/load.gif" /></span> <br />
 本站总限额到达后，会考虑开设分站，有任何问题请到<a target='_blank'
@@ -209,12 +209,14 @@
 			}
 			document.getElementById("nl_count_loading").style.visibility="hidden";
             document.getElementById("nl_refreshCount").value="刷新";
+            document.getElementById("nl_refreshCount").disabled="";
 		}
 	}
 	getTotalCount();
 	function nl_refreshCount(){
 		document.getElementById("nl_count_loading").style.visibility="visible";
 		document.getElementById("nl_refreshCount").value="请稍候";
+		document.getElementById("nl_refreshCount").disabled="disabled";
 		getTotalCount();
 	}
 	</script>
