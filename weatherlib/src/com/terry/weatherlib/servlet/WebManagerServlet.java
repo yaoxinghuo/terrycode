@@ -275,8 +275,10 @@ public class WebManagerServlet extends HttpServlet {
 			s.setSdate(sdate);
 			s.setType(type);
 			result = scheduleDao.saveSchedule(s);
-			if (result)
+			if (result){
 				updateAccountScheduleCount(account, 1);
+				accountDao.updateAccountUdate(account);
+			}
 		}
 		String message = result ? "已成功保存“" + city + "”的天气预报邮件定制" : ERROR;
 		if (result && type != 0 && !StringUtil.isEmptyOrWhitespace(test)
