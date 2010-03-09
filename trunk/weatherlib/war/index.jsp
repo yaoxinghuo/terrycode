@@ -204,7 +204,7 @@
 其他作品： <a href="http://fetion.xinghuo.org.ru/" target="_blank"><font
 	color="#800080">网页飞信</font></a> <a href="http://feix.org.ru/"
 	target="_blank"><font color="#800080">网页飞信</font></a></p>
-<br/><div>感谢<a href="http://www.you8g.com/" target="_blank">http://www.you8g.com/</a>提供GHS域名解析!&nbsp;<a href="http://www.8gdns.com/" target="_blank">宕机检测多线多地区全智能DNS</a></div>
+<br/><div>感谢<a href="http://www.8gdns.com/" target="_blank">宕机检测多线多地区全智能DNS</a>提供GHS可用IP!</div>
 
 
 <p align="center"><img
