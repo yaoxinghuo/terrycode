@@ -96,6 +96,7 @@ $("#flex1").flexigrid( {
 	useRp : false,
 	pagestat : '显示 第 {from} 到 {to} 条 , 总共  {total} 条记录',
 	procmsg : '加载中, 请稍候 ...',
+	nomsg: '<strong>您还没有建立天气预报定制，现在就<a href="#" onclick="newSchedule();return false;">新建一个</a></strong>',
 	height : 278
 });
 function scheduleAction(com, grid) {
@@ -134,21 +135,7 @@ function scheduleAction(com, grid) {
 			showMsg("error", "请至少选中一行删除！");
 		}
 	} else if (com == '新建') {
-		if (total >= 2000) {
-			showMsg("error", "设置的定制数目已经达到上限:2000，后续会通过开分站的形式为您提供服务。");
-			return;
-		}
-		if (count >= slimit) {
-			showMsg("error", "设置的定制数目已经达到上限:" + slimit + "，请删除一些定制设置后再试，或联系站长");
-			return;
-		}
-		$("#sid").val("");
-		$("#message").html("").hide();
-		if ($("#newSchedule").attr("title").indexOf("新建") == -1) {
-			$("#newSchedule").attr("title", "<b>新建天气预报定制</b>");
-			resetForm();
-		}
-		$('#newSchedule').trigger("click");
+		newSchedule();
 	} else if (com == '修改') {
 		if ($('.trSelected', grid).length == 1) {
 			var cell = $('.trSelected', grid);
@@ -276,6 +263,24 @@ $(function() {
 		}
 	});
 });
+
+function newSchedule(){
+	if (total >= 2000) {
+		showMsg("error", "设置的定制数目已经达到上限:2000，后续会通过开分站的形式为您提供服务。");
+		return;
+	}
+	if (count >= slimit) {
+		showMsg("error", "设置的定制数目已经达到上限:" + slimit + "，请删除一些定制设置后再试，或联系站长");
+		return;
+	}
+	$("#sid").val("");
+	$("#message").html("请确保已在139或相关邮箱设置短信达到提醒").show();
+	if ($("#newSchedule").attr("title").indexOf("新建") == -1) {
+		$("#newSchedule").attr("title", "<b>新建天气预报定制</b>");
+		resetForm();
+	}
+	$('#newSchedule').trigger("click");
+}
 
 function resetForm() {
 	document.getElementById("scheduleForm").reset();
