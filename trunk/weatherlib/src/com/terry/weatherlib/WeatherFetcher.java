@@ -6,7 +6,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -15,6 +17,7 @@ import org.htmlparser.NodeFilter;
 import org.htmlparser.Parser;
 import org.htmlparser.filters.NodeClassFilter;
 import org.htmlparser.tags.Div;
+import org.htmlparser.tags.ImageTag;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 
@@ -27,15 +30,17 @@ public class WeatherFetcher {
 	private static Log log = LogFactory.getLog(WeatherFetcher.class);
 
 	public static Weather fetchWeather(String loc) {
+		if (loc.lastIndexOf("市") == loc.length() - 1)
+			loc = loc.substring(0, loc.length() - 1);
 		String unicodeLoc = null;
 		try {
 			unicodeLoc = URLEncoder.encode(loc, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			return null;
 		}
-		String data = fetchData("http://www.google.cn/m?loc=" + unicodeLoc
+		String data = fetchData("http://www.google.cn/m?q=" + unicodeLoc
 				+ "&site=weather");
-		// log.warn("fetch data:"+data);
+		log.debug("fetch data:" + loc + data);
 		if (data == null)
 			return null;
 		return parserWeather(data, loc);
@@ -74,8 +79,8 @@ public class WeatherFetcher {
 	}
 
 	public static Weather parserWeather(String html, String loc) {
-		log.debug(html);
-		Parser parser = Parser.createParser(html, "utf8");
+		Parser parser = Parser.createParser(html.replace("<br/>", "\r\n")
+				.replace("&nbsp;", " "), "utf8");
 
 		NodeFilter contentFilter = new NodeClassFilter(Div.class);
 		NodeList nodelist = null;
@@ -94,22 +99,16 @@ public class WeatherFetcher {
 			if (node instanceof Div) {
 				Div div = (Div) node;
 				String className = div.getAttribute("class");
+				if (className == null
+						&& div.getFirstChild() instanceof ImageTag) {
+					weather.setContent(div.toPlainTextString().trim());
+					log.debug("content:" + weather.getContent());
+				}
 				if (className != null) {
-					if (className.equals("padbottom")) {
-						if (div.getFirstChild() instanceof Div) {
-							weather.setContent(div.toPlainTextString().replace(
-									"   ", "\r\n").trim());
-							log.debug("content:" + weather.getContent());
-						}
-					} else if (className.equals("section")
-							|| className.equals("module_open")) {
+					if (className.equals("b")) {
 						weather.setCity(div.toPlainTextString().trim().replace(
 								"天气", ""));
 						log.debug("city:" + weather.getCity());
-					} else if (className.equals("center small padtop")
-							|| className.equals("small padtop")) {
-						weather.setDesc(div.toPlainTextString().replace(
-								"&#0169;2010 -", "").replace("隐私权", "").trim());
 					}
 				}
 
@@ -125,14 +124,12 @@ public class WeatherFetcher {
 	}
 
 	public static void main(String[] args) throws Exception {
-		String data = fetchData("http://www.google.cn/m?loc=wuxi&site=weather");
-		Weather weather = parserWeather(data, "无锡");
-		if (weather == null)
-			System.out.println("null");
-		else {
-			System.out.println("city:" + weather.getCity());
-			System.out.println("content:" + weather.getContent());
-			System.out.println("desc:" + weather.getDesc());
-		}
+//		Weather w = WeatherFetcher.fetchWeather("上海");
+//		if (w != null)
+//			System.out.println(w.getReport());
+		
+		 SimpleDateFormat sdf2 = new SimpleDateFormat(
+				"M月d日H:mm", Locale.CHINA);
+		System.out.println(sdf2.format(new Date()));
 	}
 }
