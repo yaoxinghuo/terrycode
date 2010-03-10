@@ -2,6 +2,7 @@ package com.terry.weatherlib.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import com.terry.weatherlib.Weather;
 
@@ -14,6 +15,10 @@ public class WeatherMailSender {
 
 	private static SimpleDateFormat sdf2 = new SimpleDateFormat("M月d日H:mm",
 			Locale.CHINA);
+	
+	static {
+		sdf2.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
+	}
 
 	public static boolean sendWeatherMail(Weather weather, String email,
 			int type, String nickname, boolean fetch) {
