@@ -1,5 +1,8 @@
 package com.terry.weatherlib.util;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import com.terry.weatherlib.Weather;
 
 /**
@@ -8,6 +11,9 @@ import com.terry.weatherlib.Weather;
  */
 public class WeatherMailSender {
 	private static final String HELP = "\r\n管理订阅请登录http://tianqiyubao.org.ru/\r\n请勿直接回复";
+
+	private static SimpleDateFormat sdf2 = new SimpleDateFormat("M月d日H:mm",
+			Locale.CHINA);
 
 	public static boolean sendWeatherMail(Weather weather, String email,
 			int type, String nickname, boolean fetch) {
@@ -18,7 +24,8 @@ public class WeatherMailSender {
 					+ weather.getContent().replace("\r\n", " ");
 			content = "如题。" + HELP;
 		} else {
-			subject = weather.getCity() + "天气预报--" + weather.getDesc();
+			subject = weather.getCity() + "天气预报--" + "谷歌天气"
+					+ sdf2.format(weather.getUdate()) + "更新";
 			content = weather.getReport() + HELP;
 		}
 		if (fetch) {

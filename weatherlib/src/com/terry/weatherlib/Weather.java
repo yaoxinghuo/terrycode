@@ -14,7 +14,6 @@ public class Weather implements Serializable {
 	private static final long serialVersionUID = 3528444236459210859L;
 	private String city;
 	private String content;
-	private String desc;
 
 	private Date udate;
 
@@ -34,14 +33,6 @@ public class Weather implements Serializable {
 		this.content = content;
 	}
 
-	public String getDesc() {
-		return desc;
-	}
-
-	public void setDesc(String desc) {
-		this.desc = desc;
-	}
-
 	public Date getUdate() {
 		return udate;
 	}
@@ -56,12 +47,11 @@ public class Weather implements Serializable {
 		StringBuffer sb = new StringBuffer("");
 		sb.append(city).append("\r\n");
 		sb.append(content).append("\r\n");
-		sb.append(desc).append("\r\n");
 		return sb.toString();
 	}
 
 	public boolean checkComplete() {
-		if (content == null || desc == null || city == null)
+		if (content == null || city == null)
 			return false;
 		return true;
 	}
