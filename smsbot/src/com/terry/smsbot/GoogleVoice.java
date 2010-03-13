@@ -164,9 +164,8 @@ public class GoogleVoice implements Serializable {
 			con.disconnect();
 			return sb.toString();
 		} else {
-			String error = con.getResponseMessage();
 			con.disconnect();
-			throw new AuthenticationExeption(error);
+			throw new AuthenticationExeption("error code " + code);
 		}
 	}
 }
