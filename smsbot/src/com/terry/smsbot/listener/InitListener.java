@@ -1,8 +1,15 @@
 package com.terry.smsbot.listener;
 
+import java.util.Collections;
+
+import javax.cache.Cache;
+import javax.cache.CacheException;
+import javax.cache.CacheManager;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import com.terry.smsbot.GoogleVoice;
+import com.terry.smsbot.servlet.XMPPServlet;
 import com.terry.smsbot.util.Constants;
 
 /**
@@ -24,5 +31,19 @@ public class InitListener implements ServletContextListener {
 
 		Constants.WHITE_LIST = contextEvent.getServletContext()
 				.getInitParameter("whitelist").split(",");
+
+		try {
+			Cache cache = CacheManager.getInstance().getCacheFactory()
+					.createCache(Collections.emptyMap());
+			Object o = cache.get(XMPPServlet.XMPP_GV_CACHE);
+			if (o != null || o instanceof GoogleVoice) {
+				GoogleVoice gv = (GoogleVoice) o;
+				if (!gv.getEmail().equals(Constants.GV_EMAIL)
+						|| !gv.getPassword().equals(Constants.GV_PASSWORD))
+					cache.remove(XMPPServlet.XMPP_GV_CACHE);
+			}
+		} catch (CacheException e) {
+
+		}
 	}
 }

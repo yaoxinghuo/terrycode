@@ -41,7 +41,7 @@ public class XMPPServlet extends HttpServlet {
 
 	private static final int SESSON_TIME = 3600;
 
-	private static final String XMPP_GV_CACHE = "xmpp-gv-cache";
+	public static final String XMPP_GV_CACHE = "xmpp-gv-cache";
 
 	private static final String WRONG_MOBILE = "请输入正确的手机号码";
 
