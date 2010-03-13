@@ -109,7 +109,15 @@ public class XMPPServlet extends HttpServlet {
 			else
 				return "短信未发送";
 		} catch (AuthenticationExeption e) {
+			clearCache();
 			return "对不起，出现错误：" + e.getMessage();
+		}
+	}
+	
+	private void clearCache() {
+		Object o = cache.get(XMPP_GV_CACHE);
+		if (o != null || o instanceof GoogleVoice) {
+			cache.remove(XMPP_GV_CACHE);
 		}
 	}
 
