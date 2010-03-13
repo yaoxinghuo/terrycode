@@ -6,16 +6,16 @@
 	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	
 	<context-param>
-		<param-name>gvemail</param-name><!-- Google Voice Email帐号 -->
-		<param-value>test@gmail.com</param-value>
+		<param-name>gvemail</param-name>
+		<param-value>test@gmail.com</param-value><!-- Google Voice Email帐号 -->
 	</context-param>
 	<context-param>
-		<param-name>gvpassword</param-name><!-- Google Voice 密码 -->
-		<param-value>12345678</param-value>
+		<param-name>gvpassword</param-name>
+		<param-value>12345678</param-value><!-- Google Voice 密码 -->
 	</context-param>
 	<context-param>
-		<param-name>whitelist</param-name><!-- 机器人接受哪些Gtalk用户的指令，用逗号隔开，如果为空，说明允许所有的人 -->
-		<param-value>test1@gmail.com,test2@gmail.com</param-value>
+		<param-name>whitelist</param-name>
+		<param-value>test1@gmail.com,test2@gmail.com</param-value><!-- 机器人接受哪些Gtalk用户的指令，用逗号隔开，如果为空，说明允许所有的人 -->
 	</context-param>
 	
 	<servlet>
