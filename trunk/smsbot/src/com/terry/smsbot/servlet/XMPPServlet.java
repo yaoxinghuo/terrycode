@@ -43,8 +43,6 @@ public class XMPPServlet extends HttpServlet {
 
 	public static final String XMPP_GV_CACHE = "xmpp-gv-cache";
 
-	private static final String WRONG_MOBILE = "请输入正确的手机号码";
-
 	@Override
 	public void init() throws ServletException {
 		Map<Integer, Integer> props = new HashMap<Integer, Integer>();
@@ -80,17 +78,22 @@ public class XMPPServlet extends HttpServlet {
 	private String getResponse(String body) {
 		String[] parts = body.split("\\s", 2);
 		if (parts.length < 2) {
-			return "发送消息的格式为：中国手机号[空格]消息";
+			return "发送消息的格式为：手机号[空格]消息，默认为中国手机，国际手机输入格式为：00[国际代码][手机号码]";
 		}
 		String mobile = parts[0];
-		if (mobile.length() < 11)
-			return WRONG_MOBILE;
-		if (mobile.startsWith("+"))
-			mobile = mobile.substring(1);
-		if (mobile.startsWith("86"))
+		if (!StringUtil.isDigital(mobile)
+				|| mobile.length() < 11
+				|| (mobile.startsWith("0") && (!mobile.startsWith("00") || mobile
+						.startsWith("000")))) {
+			return "请输入正确的手机号码，默认为中国手机，国际手机输入格式为:00[国际代码][手机号码]";
+		}
+		if (!mobile.startsWith("00") && !StringUtil.isMobile(mobile))
+			return "您输入的中国手机号码有误，国际手机输入格式为:00[国际代码][手机号码]";
+		if (!mobile.startsWith("00") && !mobile.startsWith("86"))
+			mobile = "86" + mobile;
+		if (mobile.startsWith("00"))
 			mobile = mobile.substring(2);
-		if (!StringUtil.isMobile(mobile))
-			return WRONG_MOBILE;
+
 		String message = StringUtil.replaceSymbolToEn(parts[1]);
 		if (message.length() > 160)
 			return "消息内容太长，请不要超过160字";
