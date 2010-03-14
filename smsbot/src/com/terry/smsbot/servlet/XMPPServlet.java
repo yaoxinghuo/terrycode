@@ -113,7 +113,7 @@ public class XMPPServlet extends HttpServlet {
 			return "短信未发送：" + e.tranlateError();
 		}
 	}
-	
+
 	private void clearCache() {
 		Object o = cache.get(XMPP_GV_CACHE);
 		if (o != null || o instanceof GoogleVoice) {
@@ -131,8 +131,7 @@ public class XMPPServlet extends HttpServlet {
 			long now = System.currentTimeMillis();
 			if (now - gv.getLastSessionTime() < SESSON_TIME * 1000) {
 				if (!password.equals(gv.getPassword()))
-					throw new AuthenticationExeption(
-							"Forbidden.(Password wrong)");
+					throw new AuthenticationExeption("BadAuthentication");
 				gv.setLastSessionTime(System.currentTimeMillis());
 			}
 		}
