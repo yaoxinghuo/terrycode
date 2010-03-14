@@ -110,7 +110,7 @@ public class XMPPServlet extends HttpServlet {
 				return "短信未发送";
 		} catch (AuthenticationExeption e) {
 			clearCache();
-			return "对不起，出现错误：" + e.getMessage();
+			return "短信未发送：" + e.tranlateError();
 		}
 	}
 	

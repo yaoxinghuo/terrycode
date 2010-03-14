@@ -1,6 +1,7 @@
 package com.terry.smsbot;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Serializable;
@@ -153,19 +154,32 @@ public class GoogleVoice implements Serializable {
 		}
 		int code = con.getResponseCode();
 		if (code == 200) {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					con.getInputStream(), "UTF-8"));
-			StringBuffer sb = new StringBuffer("");
-			String line;
-			while ((line = reader.readLine()) != null) {
-				sb.append(line).append("\r\n");
-			}
-			reader.close();
+			String response = getContent(con.getInputStream(), code);
 			con.disconnect();
-			return sb.toString();
+			return response;
 		} else {
+			String response = getContent(con.getErrorStream(), code);
 			con.disconnect();
-			throw new AuthenticationExeption("error code " + code);
+			throw new AuthenticationExeption(response);
 		}
 	}
+
+	private String getContent(InputStream in, int code) throws Exception {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(in,
+				"UTF-8")); // 读取结果
+		StringBuffer sb = new StringBuffer("");
+		String line;
+		while ((line = reader.readLine()) != null) {
+			sb.append(line).append("\r\n");
+			if (code != 200 && line.startsWith("Error=")) {
+				reader.close();
+				return line.substring(6);
+			}
+		}
+		reader.close();
+		if (code != 200)
+			return String.valueOf(code);
+		return sb.toString();
+	}
+
 }
