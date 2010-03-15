@@ -69,9 +69,18 @@ public class PhotoViewServlet extends HttpServlet {
 					int h = Integer.parseInt(height);
 					Image oldImage = ImagesServiceFactory.makeImage(p.getData()
 							.getBytes());
+					Image tmpImage = null;
+					if (w <= 100 && oldImage.getHeight() > oldImage.getWidth()) {
+						double oh = oldImage.getHeight();
+						double ow = oldImage.getWidth();
+						Transform crop = ImagesServiceFactory
+								.makeCrop(0d, (oh - ow) / (oh * 2d), 1,
+										(oh + ow) / (oh * 2d));
+						tmpImage = imagesService.applyTransform(crop, oldImage);
+					}
 					Transform resize = ImagesServiceFactory.makeResize(w, h);
 					Image newImage = imagesService.applyTransform(resize,
-							oldImage);
+							tmpImage != null ? tmpImage : oldImage);
 					return newImage.getImageData();
 				} else
 					return p.getData().getBytes();
