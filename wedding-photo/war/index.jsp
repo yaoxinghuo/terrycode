@@ -41,10 +41,9 @@ h3 {
 }
 </style>
 <script type="text/javascript"> 
-	$(document).ready(function(){		
+	$(document).ready(function(){
 		$('#photos').galleryView({
-			panel_width: document.body.clientWidth-30,
-			panel_height: 533,
+			panel_width: document.documentElement.clientWidth-76,
 			frame_width: 100,
 			frame_height: 80,
 			transition_speed: 1200,
@@ -55,7 +54,7 @@ h3 {
 			nav_theme: 'custom',
 			overlay_height: 52,
 			filmstrip_position: 'top',
-			overlay_position: 'bottom',
+			overlay_position: 'top',
 			pause_on_hover: true
 		});
 	});
@@ -71,7 +70,7 @@ h3 {
 	List<Photo> photos = photoDao.getPhotos(0, 20);
 	for (Photo photo : photos) {
 %>
-<div class="panel" style="background-color: red"><img src="view?id=<%=photo.getId()%>" />
+<div class="panel"><img src="view?id=<%=photo.getId()%>" />
 <div class="panel-overlay">
 <h2>Effet du soleil sur le paysage</h2>
 <p><%=photo.getCdate()%></p>
