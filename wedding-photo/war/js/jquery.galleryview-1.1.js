@@ -250,6 +250,9 @@
 				'height':(opts.panel_height-opts.overlay_height)+'px',
 				'border':'0'
 			});
+			$('.panel').css({
+				'background':opts.background_fill_color
+			});
 		};
 		
 		function buildFilmstrip() {
@@ -534,6 +537,7 @@
 		overlay_opacity: 0.6,
 		overlay_color: 'black',
 		background_color: 'black',
+		background_fill_color: 'black',
 		overlay_text_color: 'white',
 		caption_text_color: 'white',
 		border: '1px solid black',
