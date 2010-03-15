@@ -19,16 +19,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.appengine.api.datastore.Blob;
-import com.google.appengine.api.images.Image;
-import com.google.appengine.api.images.ImagesService;
-import com.google.appengine.api.images.ImagesServiceFactory;
-import com.google.appengine.api.images.Transform;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.terry.weddingphoto.data.impl.PhotoDaoImpl;
 import com.terry.weddingphoto.data.intf.IPhotoDao;
 import com.terry.weddingphoto.model.Photo;
-import com.terry.weddingphoto.model.Thumb;
 
 /**
  * @author Terry E-mail: yaoxinghuo at 126 dot com
@@ -41,8 +36,6 @@ public class PhotoUploadServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = -3274040408352222112L;
 
-	private ImagesService imagesService = ImagesServiceFactory
-			.getImagesService();
 	private UserService userService = UserServiceFactory.getUserService();
 	private IPhotoDao photoDao = new PhotoDaoImpl();
 
@@ -84,36 +77,12 @@ public class PhotoUploadServlet extends HttpServlet {
 						} else {
 							String fileName = item.getName();
 							try {
-								byte[] b = IOUtils.toByteArray(in);
-								Image oldImage = ImagesServiceFactory
-										.makeImage(b);
-								Transform resize1 = ImagesServiceFactory
-										.makeResize(600, 800);
-								Transform resize2 = ImagesServiceFactory
-										.makeResize(100, 80);
-								Image newImage1 = imagesService.applyTransform(
-										resize1, oldImage);
-								Image newImage2 = imagesService.applyTransform(
-										resize2, oldImage);
-								byte[] thumbImageData1 = newImage1
-										.getImageData();
-								byte[] thumbImageData2 = newImage2
-										.getImageData();
-
+								byte[] data = IOUtils.toByteArray(in);
 								Photo p = new Photo();
 								p.setCdate(new Date());
-								p.setData(new Blob(thumbImageData1));
+								p.setData(new Blob(data));
 								p.setFilename(fileName);
-								p.setHeight(oldImage.getHeight());
-								p.setWidth(oldImage.getWidth());
-								p.setSize(b.length);
 								p.setComment(true);
-
-								Thumb t = new Thumb();
-								t.setCdate(p.getCdate());
-								t.setData(new Blob(thumbImageData2));
-								t.setPid(p.getId());
-								p.setThumb(t);
 
 								if (photoDao.savePhoto(p)) {
 									jo.put("result", true);

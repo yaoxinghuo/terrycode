@@ -3,9 +3,10 @@
 	pageEncoding="UTF-8"%>
 <%@page import="com.terry.weddingphoto.data.intf.IPhotoDao"%>
 <%@page import="com.terry.weddingphoto.data.impl.PhotoDaoImpl"%>
-<%@page import="com.terry.weddingphoto.model.Thumb"%>
 <%@page import="java.util.List"%>
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+<%@page import="com.terry.weddingphoto.model.Photo"%><html
+	xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>jQuery GalleryView</title>
@@ -20,11 +21,10 @@ body {
 	color: white;
 }
 
-#gallery_wrap {
-	width: 820px;
+#gallery_wrap { /*width: 820px;
 	height: 368px;
 	padding: 25px;
-	background: url(images/border.png) top left no-repeat;
+	background: url(images/border.png) top left no-repeat;*/
 }
 
 a:link,a:visited {
@@ -43,41 +43,38 @@ h3 {
 <script type="text/javascript"> 
 	$(document).ready(function(){		
 		$('#photos').galleryView({
-			panel_width: 800,
-			panel_height: 600,
+			panel_width: document.body.clientWidth-30,
+			panel_height: 533,
 			frame_width: 100,
 			frame_height: 80,
 			transition_speed: 1200,
-			background_color: '#222',
+			background_color: '#333',
+			background_fill_color: '#444',
 			border: 'none',
 			easing: 'easeInOutBack',
-			pause_on_hover: true,
 			nav_theme: 'custom',
 			overlay_height: 52,
 			filmstrip_position: 'top',
-			overlay_position: 'top',
+			overlay_position: 'bottom',
 			pause_on_hover: true
 		});
 	});
 </script>
-<!-- InstanceEndEditable -->
 </head>
 
 <body>
-<!-- InstanceBeginEditable name="ContentRegion" -->
-<h1>图片浏览测试</h1>
 
-<div id="gallery_wrap">
+<div id="gallery_wrap" align="center">
 <div id="photos" class="galleryview">
 <%
 	IPhotoDao photoDao = new PhotoDaoImpl();
-	List<Thumb> thumbs = photoDao.getThumbs(0, 10);
-	for (Thumb thumb : thumbs) {
+	List<Photo> photos = photoDao.getPhotos(0, 20);
+	for (Photo photo : photos) {
 %>
-<div class="panel"><img src="view?id=<%=thumb.getId()%>" />
+<div class="panel" style="background-color: red"><img src="view?id=<%=photo.getId()%>" />
 <div class="panel-overlay">
 <h2>Effet du soleil sur le paysage</h2>
-<p><%=thumb.getCdate()%></p>
+<p><%=photo.getCdate()%></p>
 </div>
 </div>
 <%
@@ -86,10 +83,10 @@ h3 {
 
 <ul class="filmstrip">
 	<%
-		for (Thumb thumb : thumbs) {
+		for (Photo photo : photos) {
 	%>
-	<li><img src="view?tid=<%=thumb.getId()%>" alt="Effet du soleil"
-		title="Effet du soleil" /></li>
+	<li><img src="view?w=100&h=80&id=<%=photo.getId()%>"
+		alt="Effet du soleil" title="Effet du soleil" /></li>
 	<%
 		}
 	%>

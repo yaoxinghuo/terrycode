@@ -11,11 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 
 import com.google.appengine.api.images.Image;
+import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
+import com.google.appengine.api.images.Transform;
 import com.terry.weddingphoto.data.impl.PhotoDaoImpl;
 import com.terry.weddingphoto.data.intf.IPhotoDao;
 import com.terry.weddingphoto.model.Photo;
-import com.terry.weddingphoto.model.Thumb;
+import com.terry.weddingphoto.util.StringUtil;
 
 /**
  * @author Terry E-mail: yaoxinghuo at 126 dot com
@@ -28,6 +30,8 @@ public class PhotoViewServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 4072411700253346694L;
 
+	private ImagesService imagesService = ImagesServiceFactory
+			.getImagesService();
 	private IPhotoDao photoDao = new PhotoDaoImpl();
 
 	@Override
@@ -54,22 +58,24 @@ public class PhotoViewServlet extends HttpServlet {
 
 	private byte[] getImageData(HttpServletRequest req) {
 		String id = req.getParameter("id");
-		if (id != null) {
-			Photo p = photoDao.getPhotoByThumbId(id);
-			if (p != null)
-				return p.getData().getBytes();
-		}
-		id = req.getParameter("pid");
-		if (id != null) {
+		if (!StringUtil.isEmptyOrWhitespace(id)) {
 			Photo p = photoDao.getPhotoById(id);
-			if (p != null)
-				return p.getData().getBytes();
-		}
-		id = req.getParameter("tid");
-		if (id != null) {
-			Thumb t = photoDao.getThumbById(id);
-			if (t != null)
-				return t.getData().getBytes();
+			if (p != null) {
+				String width = req.getParameter("w");
+				String height = req.getParameter("h");
+				if (!StringUtil.isEmptyOrWhitespace(width)
+						&& !StringUtil.isEmptyOrWhitespace(height)) {
+					int w = Integer.parseInt(width);
+					int h = Integer.parseInt(height);
+					Image oldImage = ImagesServiceFactory.makeImage(p.getData()
+							.getBytes());
+					Transform resize = ImagesServiceFactory.makeResize(w, h);
+					Image newImage = imagesService.applyTransform(resize,
+							oldImage);
+					return newImage.getImageData();
+				} else
+					return p.getData().getBytes();
+			}
 		}
 		return null;
 	}
