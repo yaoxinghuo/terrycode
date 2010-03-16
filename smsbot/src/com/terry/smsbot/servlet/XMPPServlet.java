@@ -107,7 +107,7 @@ public class XMPPServlet extends HttpServlet {
 		try {
 			GoogleVoice gv = getGoogleVoiceInstance(Constants.GV_EMAIL,
 					Constants.GV_PASSWORD);
-			if (gv.sendSms("86" + mobile, message))
+			if (gv.sendSms(mobile, message))
 				return "短信已发送至：" + parts[0];
 			else
 				return "短信未发送";
