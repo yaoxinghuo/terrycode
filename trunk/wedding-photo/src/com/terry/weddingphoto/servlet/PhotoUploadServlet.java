@@ -19,8 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.appengine.api.datastore.Blob;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
+import com.terry.weddingphoto.constants.Constants;
 import com.terry.weddingphoto.data.impl.PhotoDaoImpl;
 import com.terry.weddingphoto.data.intf.IPhotoDao;
 import com.terry.weddingphoto.model.Photo;
@@ -36,7 +35,6 @@ public class PhotoUploadServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = -3274040408352222112L;
 
-	private UserService userService = UserServiceFactory.getUserService();
 	private IPhotoDao photoDao = new PhotoDaoImpl();
 
 	@Override
@@ -56,7 +54,7 @@ public class PhotoUploadServlet extends HttpServlet {
 			jo.put("message", "对不起，未能保存上传的文件，请稍候再试！");
 		} catch (JSONException e1) {
 		}
-		if (!userService.isUserLoggedIn() || !userService.isUserAdmin()) {
+		if (req.getSession().getAttribute(Constants.SESSION_NAME) == null) {
 			try {
 				jo.put("message", "你无权上传文件！");
 			} catch (JSONException e) {

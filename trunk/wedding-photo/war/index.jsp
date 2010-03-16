@@ -5,7 +5,10 @@
 <%@page import="com.terry.weddingphoto.data.impl.PhotoDaoImpl"%>
 <%@page import="java.util.List"%>
 
-<%@page import="com.terry.weddingphoto.model.Photo"%><html
+<%@page import="com.terry.weddingphoto.model.Photo"%>
+<%@page import="com.google.appengine.api.users.UserService"%>
+<%@page import="com.google.appengine.api.users.UserServiceFactory"%>
+<%@page import="java.util.Calendar"%><html
 	xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -29,7 +32,7 @@ body {
 
 a:link,a:visited {
 	color: #ddd !important;
-	text-decoration: underline;
+	text-decoration: none;
 }
 
 a:hover {
@@ -55,6 +58,7 @@ display: none;
 	$(document).ready(function(){
 		$('#photos').galleryView({
 			panel_width: document.documentElement.clientWidth-76,
+			panel_height: 10,
 			frame_width: 100,
 			frame_height: 80,
 			transition_speed: 1200,
@@ -73,14 +77,18 @@ display: none;
 </head>
 
 <body>
+<h3>照片测试<div align="right" style="font-size: 11px;">
+	程序设计<a target="_blank" href="http://xinghuo.org.ru/">Terry</a>&nbsp;<a target="_blank" href="http://code.google.com/p/terrycode/source/browse/#svn/trunk/wedding-photo">源码</a>&nbsp;<a href="adminRedirect?url=admin.jsp">后台管理</a>
+</div></h3>
 
 <div id="gallery_wrap" align="center">
 <div id="photos" class="galleryview">
 <%
-	IPhotoDao photoDao = new PhotoDaoImpl();
-	List<Photo> photos = photoDao.getPhotos(0, 20);
-	int iter = 0;
-	for (Photo photo : photos) {
+UserService userService = UserServiceFactory.getUserService();
+IPhotoDao photoDao = new PhotoDaoImpl();
+List<Photo> photos = photoDao.getPhotos(0, 20);
+int iter = 0;
+for (Photo photo : photos) {
 %>
 <div class="panel"><img style="display: none;" pid="<%=photo.getId()%>" iter="<%=iter++ %>"/>
 <div class="panel-overlay">

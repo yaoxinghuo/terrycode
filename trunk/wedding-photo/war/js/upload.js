@@ -64,7 +64,7 @@ $(function() {
 					} else {
 						$.jGrowl('<p></p>' + data.message, {
 							theme : 'error',
-							header : 'ERROR',
+							header : '错误',
 							sticky : true
 						});
 						return false;
