@@ -7,9 +7,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
-
 /**
  * @author Terry E-mail: yaoxinghuo at 126 dot com
  * @version create: 2010-3-16 下午05:31:25
@@ -30,8 +27,6 @@ public class AdminServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		UserService userService = UserServiceFactory.getUserService();
-		System.out.println(userService.isUserAdmin()+"---");
 		req.getRequestDispatcher("/admin.jsp").forward(req, resp);
 	}
 }
