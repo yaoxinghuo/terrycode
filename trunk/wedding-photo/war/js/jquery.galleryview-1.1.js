@@ -400,7 +400,7 @@
 				if($(this).attr("src")==undefined){
 					var abs = Math.abs(parseInt($(this).attr("iter"))-i);
 					if(abs<=3){
-						$(this).attr("src","view?id="+$(this).attr("pid")+"&w="+opts.panel_width+"&h=0").attr("title","点击查看下一张").show();
+						$(this).attr("src","view?id="+$(this).attr("pid")+"&w="+(opts.panel_width>948?948:opts.panel_width)+"&h=0").attr("title","点击查看下一张").show();
 					}
 				}
 			});
