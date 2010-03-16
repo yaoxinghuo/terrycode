@@ -9,7 +9,7 @@
 	xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>jQuery GalleryView</title>
+<title>照片测试</title>
 <link type="text/css" rel="stylesheet" href="css/style.css" />
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
@@ -39,8 +39,19 @@ a:hover {
 h3 {
 	border-bottom-color: white;
 }
+
+.filmstripd {
+display: table-cell;
+vertical-align:middle;
+width: 100px;
+height: 80px;
+}
+.filmstripd img {
+vertical-align:middle;
+display: none;
+}
 </style>
-<script type="text/javascript"> 
+<script type="text/javascript">
 	$(document).ready(function(){
 		$('#photos').galleryView({
 			panel_width: document.documentElement.clientWidth-76,
@@ -68,11 +79,12 @@ h3 {
 <%
 	IPhotoDao photoDao = new PhotoDaoImpl();
 	List<Photo> photos = photoDao.getPhotos(0, 20);
+	int iter = 0;
 	for (Photo photo : photos) {
 %>
-<div class="panel"><img src="view?id=<%=photo.getId()%>" />
+<div class="panel"><img style="display: none;" pid="<%=photo.getId()%>" iter="<%=iter++ %>"/>
 <div class="panel-overlay">
-<h2>Effet du soleil sur le paysage</h2>
+<h2><%=photo.getRemark()==null?photo.getFilename():photo.getRemark() %></h2>
 <p><%=photo.getCdate()%></p>
 </div>
 </div>
@@ -82,10 +94,11 @@ h3 {
 
 <ul class="filmstrip">
 	<%
+		iter = 0;
 		for (Photo photo : photos) {
 	%>
-	<li><img src="view?w=100&h=80&id=<%=photo.getId()%>"
-		alt="Effet du soleil" title="Effet du soleil" /></li>
+	<li iter="<%=iter %>"><div class="filmstripd"><img pid="<%=photo.getId()%>" iter="<%=iter++ %>"
+		alt="<%=photo.getFilename() %>" title="<%=photo.getRemark()==null?photo.getFilename():photo.getRemark() %>" /></div></li>
 	<%
 		}
 	%>

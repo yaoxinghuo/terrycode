@@ -46,7 +46,7 @@ public class PhotoViewServlet extends HttpServlet {
 		byte[] data = getImageData(req);
 		if (data == null) {
 			resp.sendError(HttpServletResponse.SC_NOT_FOUND,
-					"can not find photo ");
+					"can not find photo");
 			return;
 		}
 		Image image = ImagesServiceFactory.makeImage(data);
@@ -61,29 +61,28 @@ public class PhotoViewServlet extends HttpServlet {
 		if (!StringUtil.isEmptyOrWhitespace(id)) {
 			Photo p = photoDao.getPhotoById(id);
 			if (p != null) {
+				byte[] data = p.getData().getBytes();
 				String width = req.getParameter("w");
 				String height = req.getParameter("h");
 				if (!StringUtil.isEmptyOrWhitespace(width)
 						&& !StringUtil.isEmptyOrWhitespace(height)) {
 					int w = Integer.parseInt(width);
 					int h = Integer.parseInt(height);
-					Image oldImage = ImagesServiceFactory.makeImage(p.getData()
-							.getBytes());
-					Image tmpImage = null;
-					if (w <= 100 && oldImage.getHeight() > oldImage.getWidth()) {
-						double oh = oldImage.getHeight();
-						double ow = oldImage.getWidth();
-						Transform crop = ImagesServiceFactory
-								.makeCrop(0d, (oh - ow) / (oh * 2d), 1,
-										(oh + ow) / (oh * 2d));
-						tmpImage = imagesService.applyTransform(crop, oldImage);
-					}
-					Transform resize = ImagesServiceFactory.makeResize(w, h);
-					Image newImage = imagesService.applyTransform(resize,
-							tmpImage != null ? tmpImage : oldImage);
-					return newImage.getImageData();
+					Image oldImage = ImagesServiceFactory.makeImage(data);
+					if (w <= 0)
+						w = oldImage.getWidth();
+					if (h <= 0)
+						h = oldImage.getHeight();
+					if (oldImage.getWidth() > w || oldImage.getHeight() > h) {
+						Transform resize = ImagesServiceFactory
+								.makeResize(w, h);
+						Image newImage = imagesService.applyTransform(resize,
+								oldImage);
+						return newImage.getImageData();
+					} else
+						return data;
 				} else
-					return p.getData().getBytes();
+					return data;
 			}
 		}
 		return null;
