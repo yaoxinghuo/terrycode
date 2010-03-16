@@ -28,6 +28,7 @@ body {
 	height: 368px;
 	padding: 25px;
 	background: url(images/border.png) top left no-repeat;*/
+	
 }
 
 a:link,a:visited {
@@ -44,14 +45,15 @@ h3 {
 }
 
 .filmstripd {
-display: table-cell;
-vertical-align:middle;
-width: 100px;
-height: 80px;
+	display: table-cell;
+	vertical-align: middle;
+	width: 100px;
+	height: 80px;
 }
+
 .filmstripd img {
-vertical-align:middle;
-display: none;
+	vertical-align: middle;
+	display: none;
 }
 </style>
 <script type="text/javascript">
@@ -77,22 +79,27 @@ display: none;
 </head>
 
 <body>
-<h3>照片测试<div align="right" style="font-size: 11px;">
-	程序设计<a target="_blank" href="http://xinghuo.org.ru/">Terry</a>&nbsp;<a target="_blank" href="http://code.google.com/p/terrycode/source/browse/#svn/trunk/wedding-photo">源码</a>&nbsp;<a href="admin">后台管理</a>
-</div></h3>
+<h3>照片测试
+<div align="right" style="font-size: 11px;">程序设计<a target="_blank"
+	href="http://xinghuo.org.ru/">Terry</a>&nbsp;<a target="_blank"
+	href="http://code.google.com/p/terrycode/source/browse/#svn/trunk/wedding-photo">源码</a>&nbsp;<a
+	href="admin">后台管理</a></div>
+</h3>
 
 <div id="gallery_wrap" align="center">
 <div id="photos" class="galleryview">
 <%
-UserService userService = UserServiceFactory.getUserService();
-IPhotoDao photoDao = new PhotoDaoImpl();
-List<Photo> photos = photoDao.getPhotos(0, 20);
-int iter = 0;
-for (Photo photo : photos) {
+	UserService userService = UserServiceFactory.getUserService();
+	IPhotoDao photoDao = new PhotoDaoImpl();
+	List<Photo> photos = photoDao.getPhotos(0, 150);
+	int iter = 0;
+	for (Photo photo : photos) {
 %>
-<div class="panel"><img style="display: none;" pid="<%=photo.getId()%>" iter="<%=iter++ %>"/>
+<div class="panel"><img style="display: none;"
+	pid="<%=photo.getId()%>" iter="<%=iter++%>" />
 <div class="panel-overlay">
-<h2><%=photo.getRemark()==null?photo.getFilename():photo.getRemark() %></h2>
+<h2><%=photo.getRemark() == null ? photo.getFilename()
+						: photo.getRemark()%></h2>
 <p><%=photo.getCdate()%></p>
 </div>
 </div>
@@ -105,13 +112,26 @@ for (Photo photo : photos) {
 		iter = 0;
 		for (Photo photo : photos) {
 	%>
-	<li iter="<%=iter %>"><div class="filmstripd"><img pid="<%=photo.getId()%>" iter="<%=iter++ %>"
-		alt="<%=photo.getFilename() %>" title="<%=photo.getRemark()==null?photo.getFilename():photo.getRemark() %>" /></div></li>
+	<li iter="<%=iter%>">
+	<div class="filmstripd"><img pid="<%=photo.getId()%>"
+		iter="<%=iter++%>" alt="<%=photo.getFilename()%>"
+		title="<%=photo.getRemark() == null ? photo.getFilename()
+						: photo.getRemark()%>" /></div>
+	</li>
 	<%
 		}
 	%>
 </ul>
 </div>
 </div>
+<%
+	if (iter == 0) {
+%>
+相册中还没有图片,
+<a href="admin">登录后台</a>
+以上传图片（请在web.xml中将canUploadPhotos开启）!
+<%
+	}
+%>
 </body>
 </html>
