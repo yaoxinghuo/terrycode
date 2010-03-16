@@ -45,6 +45,7 @@
 			j_frames.unbind('click');
 			if(has_panels) {
 				if(opts.fade_panels) {
+					setSrcToMainPhoto(i%item_count);
 					//Fade out all panels and fade in target panel
 					j_panels.fadeOut(opts.transition_speed).eq(i%item_count).fadeIn(opts.transition_speed,function(){
 						if(!has_filmstrip) {
@@ -217,7 +218,8 @@
 				'left':'0px',
 				'overflow':'hidden',
 				'background':'white',
-				'display':'none'
+				'display':'none',
+				'cursor':'pointer'
 			});
 			$('.panel-overlay',j_panels).css({
 				'position':'absolute',
@@ -366,12 +368,14 @@
 				'top':(opts.filmstrip_position=='top'?0:opts.panel_height)+frame_margin_top+((opts.frame_height-22)/2)+'px',
 				'left':(gallery_width/2)-(wrapper_width/2)-10-22+'px'
 			}).click(showPrevItem);
+			//Add By Xinghuo
 			$(window).keydown(function(event){
 				if(event.keyCode==37||event.keyCode==38)
 					showPrevItem();
 				else if(event.keyCode==39||event.keyCode==40)
 					showNextItem();
 				});
+			j_panels.click(showNextItem);
 		};
 		
 		//Check mouse to see if it is within the borders of the panel
@@ -382,6 +386,25 @@
 			var left = pos.left;
 			return x > left && x < left+opts.panel_width && y > top && y < top+opts.panel_height;				
 		};
+		//Add By Xinghuo
+		function setSrcToMainPhoto(i){
+			$(".filmstrip img").each(function(){
+				if($(this).attr("src")==undefined){
+					var a = parseInt($(this).attr("iter"))-i;
+					if(a>=0&&a<10){
+						$(this).attr("src","view?id="+$(this).attr("pid")+"&w="+opts.frame_width+"&h="+opts.frame_height).show();
+					}
+				}
+			});
+			$(".panel img").each(function(){
+				if($(this).attr("src")==undefined){
+					var abs = Math.abs(parseInt($(this).attr("iter"))-i);
+					if(abs<=3){
+						$(this).attr("src","view?id="+$(this).attr("pid")+"&w="+opts.panel_width+"&h=0").attr("title","点击查看下一张").show();
+					}
+				}
+			});
+		}
 		
 /************************************************/
 /*	Main Plugin Code							*/
@@ -514,16 +537,16 @@
 			/************************************************/
 			/*	Initiate Automated Animation				*/
 			/************************************************/
+					setSrcToMainPhoto(0);//Add By Xinghuo
 					//Show the first panel
 					j_panels.eq(0).show();
 
 					//If we have more than one item, begin automated transitions
 					if(item_count > 1) {
 						$(document).everyTime(opts.transition_interval,"transition",function(){
-							showNextItem();
+							showNextItem(0);
 						});
 					}
-					
 					//Make gallery visible now that work is complete
 					j_gallery.css('visibility','visible');
 		});
