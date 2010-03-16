@@ -7,7 +7,7 @@
 	
 	<context-param>
 		<param-name>canUploadPhotos</param-name>
-		<param-value>true</param-value>
+		<param-value>true</param-value><!-- 允许上传图片，因为在安全性方面有问题暂时无法解决，所以只要在这里设置开关true|false -->
 	</context-param>
 	
 	<servlet>
