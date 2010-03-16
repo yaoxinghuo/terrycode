@@ -4,6 +4,12 @@
 	xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+	
+	<context-param>
+		<param-name>canUploadPhotos</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	
 	<servlet>
 		<servlet-name>view</servlet-name>
 		<servlet-class>com.terry.weddingphoto.servlet.PhotoViewServlet</servlet-class>
@@ -23,12 +29,12 @@
 	</servlet-mapping>
 	
 	<servlet>
-		<servlet-name>adminRedirect</servlet-name>
-		<servlet-class>com.terry.weddingphoto.servlet.AdminRedirectServlet</servlet-class>
+		<servlet-name>admin</servlet-name>
+		<servlet-class>com.terry.weddingphoto.servlet.AdminServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>adminRedirect</servlet-name>
-		<url-pattern>/adminRedirect</url-pattern>
+		<servlet-name>admin</servlet-name>
+		<url-pattern>/admin</url-pattern>
 	</servlet-mapping>
 	
 	<welcome-file-list>
@@ -45,10 +51,14 @@
 	</security-constraint>
 	<security-constraint>
 		<web-resource-collection>
-			<url-pattern>/adminRedirect</url-pattern>
+			<url-pattern>/admin</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
 			<role-name>admin</role-name>
 		</auth-constraint>
 	</security-constraint>
+	
+	<listener>
+		<listener-class>com.terry.weddingphoto.listener.InitListener</listener-class>
+	</listener>
 </web-app>

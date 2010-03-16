@@ -54,9 +54,9 @@ public class PhotoUploadServlet extends HttpServlet {
 			jo.put("message", "对不起，未能保存上传的文件，请稍候再试！");
 		} catch (JSONException e1) {
 		}
-		if (req.getSession().getAttribute(Constants.SESSION_NAME) == null) {
+		if (!Constants.CAN_UPLOAD) {
 			try {
-				jo.put("message", "你无权上传文件！");
+				jo.put("message", "你无权上传文件，请开启web.xml中的canUploadPhotos开关");
 			} catch (JSONException e) {
 			}
 		} else {
