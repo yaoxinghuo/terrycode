@@ -78,7 +78,7 @@ display: none;
 
 <body>
 <h3>照片测试<div align="right" style="font-size: 11px;">
-	程序设计<a target="_blank" href="http://xinghuo.org.ru/">Terry</a>&nbsp;<a target="_blank" href="http://code.google.com/p/terrycode/source/browse/#svn/trunk/wedding-photo">源码</a>&nbsp;<a href="adminRedirect?url=admin.jsp">后台管理</a>
+	程序设计<a target="_blank" href="http://xinghuo.org.ru/">Terry</a>&nbsp;<a target="_blank" href="http://code.google.com/p/terrycode/source/browse/#svn/trunk/wedding-photo">源码</a>&nbsp;<a href="admin">后台管理</a>
 </div></h3>
 
 <div id="gallery_wrap" align="center">

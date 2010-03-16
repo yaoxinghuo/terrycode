@@ -6,4 +6,5 @@ package com.terry.weddingphoto.constants;
  */
 public class Constants {
 	public static final String SESSION_NAME = "session-name";
+	public static boolean CAN_UPLOAD = false;
 }

@@ -9,7 +9,8 @@ $(function() {
 				'fileDesc' : 'Image Files',
 				'fileExt' : '*.jpg;*.jpeg;*.png;*.gif',
 				'multi' : true,
-				'simUploadLimit' : 5,
+				'simUploadLimit' : 2,
+				'queueSizeLimit' : 10,
 				'sizeLimit' : 1048576,
 				onError : function(event, queueID, fileObj, errorObj) {
 					var msg;
@@ -67,7 +68,6 @@ $(function() {
 							header : '错误',
 							sticky : true
 						});
-						return false;
 					}
 				}
 
