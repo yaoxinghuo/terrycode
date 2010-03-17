@@ -103,6 +103,15 @@ $(function() {
 	var nickname = $.cookie("nickname");
 	if (nickname != null && nickname != "null")
 		$("#nickname").val(nickname);
+	
+	$("#email").change(function(){
+		$.cookie("email", $("#email").val(), {
+			expires : 180
+		});
+	});
+	var email = $.cookie("email");
+	if (email != null && email != "null")
+		$("#email").val(email);
 });
 
 function validateEmail(input) {
