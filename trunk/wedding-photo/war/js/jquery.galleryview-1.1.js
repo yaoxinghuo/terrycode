@@ -403,14 +403,15 @@
 					}
 				}
 			});
+			var s=false;
 			$(".panel img").each(function(){
-				var s=false;
 				if($(this).attr("src")==undefined){
 					var a = parseInt($(this).attr("iter"))-i;
-					if(a==0||a==1){
+					if(a<10){
 						$(this).attr("src","view?id="+$(this).attr("pid")+"&w="+(opts.panel_width>948?948:opts.panel_width)+"&h=0").attr("title","点击查看下一张").show();
-						if(s)
+						if(s){
 							return false;
+						}
 						s=true;
 					}
 				}
