@@ -83,14 +83,6 @@
 	display:block;
 	height:99%;
 }
-#wBox #imgPrev{
-	float:left;
-	background: url("../images/btn-prev.gif") no-repeat 0% 45%;
-}
-#wBox #imgNext{
-	float:right;
-	background: url("../images/btn-next.gif") no-repeat right 45%;
-}
 #wBox_overlay {
   position: absolute;
   top: 0px;

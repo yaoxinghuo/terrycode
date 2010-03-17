@@ -23,7 +23,8 @@
 <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
 <script type="text/javascript" src="js/jquery.galleryview-1.1.js"></script>
 <script type="text/javascript" src="js/jquery.timers-1.1.2.js"></script>
-<script type="text/javascript" src="js/wbox-min.js"></script>
+<script type="text/javascript" src="js/wbox.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
 
 <style type="text/css">
 body {
@@ -68,37 +69,6 @@ h3 {
 	font-weight: bold;
 }
 </style>
-<script type="text/javascript">
-	$(document).ready(function(){
-		$('#photos').galleryView({
-			panel_width: document.documentElement.clientWidth-76,
-			panel_height: 10,
-			frame_width: 100,
-			frame_height: 80,
-			auto_transition: true,
-			transition_interval: 0,
-			transition_speed: 'slow',
-			background_color: '#333',
-			background_fill_color: '#444',
-			border: 'none',
-			easing: 'easeInOutBack',
-			nav_theme: 'custom',
-			overlay_height: 52,
-			filmstrip_position: 'top',
-			overlay_position: 'top',
-			pause_on_hover: true
-		});
-		$(".wbox").wBox({
-			isFrame:true,
-			drag:true,
-			iframeWH:{width:700,height:600},
-			title:'评论'
-		});
-		$(".wbox2").each(function(){
-			$(this).wBox({images:['view?id='+$(this).attr('pid')],isImage:true});
-		});
-	});
-</script>
 </head>
 
 <body>
@@ -132,7 +102,7 @@ h3 {
 		}
 		desc += "评论,&nbsp;<a class='wbox' href='comment.jsp?pid=" + pid
 				+ "'>我来评论</a>&nbsp;<a class='wbox2' href=# pid='" + pid
-				+ "'>查看原图(按ESC返回)</a>";
+				+ "'>查看原图</a>";
 %>
 <div class="panel"><img style="display: none;"
 	pid="<%=photo.getId()%>" iter="<%=iter++%>" />
