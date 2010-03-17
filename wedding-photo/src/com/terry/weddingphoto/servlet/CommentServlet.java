@@ -129,11 +129,12 @@ public class CommentServlet extends HttpServlet {
 			}
 			return jo;
 		}
-
-		if (photoDao.deleteCommentById(cid)) {
+		int count =photoDao.deleteCommentById(cid);
+		if (count!=-1) {
 			try {
 				jo.put("result", true);
 				jo.put("message", "已成功删除评论");
+				jo.put("count", count);
 			} catch (JSONException e) {
 			}
 		}

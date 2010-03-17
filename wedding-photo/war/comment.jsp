@@ -49,12 +49,20 @@ a:hover {
 }
 
 </style>
-<script type="text/javascript">
-	
-</script>
 </head>
 
 <body>
+<div id="msg"
+	style="visibility: hidden; z-index: 1000; position: absolute; left: 300px;">
+<table border='0' cellspacing='0' cellpadding='0'>
+	<tr>
+		<td style="padding: 4px; background-color: #fad163;color: black;"><font
+			size="-1"><span id="msg_content"></span>&nbsp;<a href="#"
+			onclick="clearMsg();return false;"><img id="close" alt="关闭"
+			title="关闭" style="border: none;" src='images/close.gif' /></a></font></td>
+	</tr>
+</table>
+</div>
 <div align="right" style="font-size: 11px;">程序设计<a target="_blank"
 	href="http://xinghuo.org.ru/">Terry</a>&nbsp;<a target="_blank"
 	href="http://code.google.com/p/terrycode/source/browse/#svn/trunk/wedding-photo">源码</a>&nbsp;<a
@@ -65,16 +73,23 @@ a:hover {
 			Locale.CHINA);
 	sdf.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
 	UserService userService = UserServiceFactory.getUserService();
+	boolean admin = userService.isUserLoggedIn()&&userService.isUserAdmin();
 	IPhotoDao photoDao = new PhotoDaoImpl();
 	String pid = request.getParameter("pid");
 	List<Comment> comments = photoDao.getCommentsByPhotoId(pid, 0, 0);
 	for (Comment c : comments) {
+		String cid = c.getId();
 %>
-<li><p><span class="cnick"><%=c.getName()%></span>&nbsp;<span class="ccdate"><%=sdf.format(c.getCdate())%></span>&nbsp;说：</p><span class="ccont"><%=c.getContent()%></span><br/></li>
+<li id="li-<%=cid %>"><p><span class="cnick"><%=c.getName()%></span>&nbsp;<span class="ccdate"><%=sdf.format(c.getCdate())%></span>&nbsp;说：</p><span class="ccont"><%=c.getContent()%></span>
+	<%=admin?"<a href=# onclick='deleteComment(\""+cid+"\");return false;'>[删除]</a>":"" %>
+<br/></li>
 </div>
 <%
 	}
 %>
+<script type="text/javascript">
+	var admin = <%=admin %>;
+</script>
 <div>
 <form>
 <table>

@@ -22,5 +22,5 @@ public interface IPhotoDao {
 
 	public int saveComment(Comment comment);
 
-	public boolean deleteCommentById(String cid);
+	public int deleteCommentById(String cid);
 }
