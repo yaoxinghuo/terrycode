@@ -55,20 +55,30 @@ public class PhotoDaoImpl implements IPhotoDao {
 	}
 
 	@Override
-	public boolean deleteCommentById(String cid) {
-		EntityManager em = EMF.get().createEntityManager();
-		Key key = KeyFactory.stringToKey(cid);
-		if (key == null || !key.isComplete())
-			return false;
-		Comment c = em.find(Comment.class, key);
+	public int deleteCommentById(String cid) {
 		try {
+			EntityManager em = EMF.get().createEntityManager();
+			Key key = KeyFactory.stringToKey(cid);
+			if (key == null || !key.isComplete())
+				return -1;
+			Comment c = em.find(Comment.class, key);
+			Key key2 = KeyFactory.stringToKey(c.getPid());
+			if (key2 == null || !key2.isComplete())
+				return -1;
+			Photo p = em.find(Photo.class, key2);
+			if (p == null)
+				return -1;
+			p.setComment(p.getComment() - 1);
+			if (p.getComment() < 0)
+				p.setComment(0);
 			EntityTransaction tx = em.getTransaction();
 			tx.begin();
+			em.persist(p);
 			em.remove(c);
 			tx.commit();
-			return true;
+			return p.getComment();
 		} catch (Exception e) {
-			return false;
+			return -1;
 		}
 	}
 
@@ -93,7 +103,11 @@ public class PhotoDaoImpl implements IPhotoDao {
 			if (key == null || !key.isComplete())
 				return -1;
 			Photo p = em.find(Photo.class, key);
-			p.setComment(p.getComment()+1);
+			if (p == null)
+				return -1;
+			p.setComment(p.getComment() + 1);
+			if (p.getComment() < 0)
+				p.setComment(0);
 			comment.setPhoto(p);
 			tx.begin();
 			em.persist(p);

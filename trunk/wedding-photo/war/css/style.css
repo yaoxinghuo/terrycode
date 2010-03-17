@@ -95,14 +95,6 @@ img.nav {
 	border: 1px solid black;
 	margin-bottom: 5px;
 }
-a:link, a:visited {
-	color: #3671A8;
-	font-weight: bold;
-	text-decoration: none;
-}
-a:hover {
-	color: #CC5914;
-}
 .panel-overlay h2,
 .panel-overlay p{
 	margin: .3em 0;

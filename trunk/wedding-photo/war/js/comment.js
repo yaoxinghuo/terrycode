@@ -1,3 +1,30 @@
+var errorMsg = "对不起，程序错误，请稍候再试！";
+var timeoutID = null;
+function showMsg(type, msg) {
+	if (!msg)
+		return;
+	if (type == "error")
+		msg = "<img src=\"images/fail.png\"/>&nbsp;" + msg;
+	else if (type = "pass")
+		msg = "<img src=\"images/pass.png\"/>&nbsp;" + msg;
+	else
+		msg = "<img src=\"images/info.png\"/>&nbsp;" + msg;
+	document.getElementById("msg_content").innerHTML = msg;
+	var l = msg.length;
+	if (msg.indexOf("<a") != -1)
+		l = l - 47;
+	document.getElementById("msg").style.left = (document.body.clientWidth - l * 10)
+			/ 2 + "px";
+	document.getElementById("msg").style.top = document.body.scrollTop +"px";
+	document.getElementById("msg").style.visibility = "visible";
+	if (timeoutID != null)
+		clearTimeout(timeoutID);
+	timeoutID = setTimeout("clearMsg()", 30000);
+}
+function clearMsg() {
+	document.getElementById("msg").style.visibility = "hidden";
+	document.getElementById("msg_content").innerHTML = "";
+}
 $(function() {
 	$("#commentSave")
 			.click(
@@ -5,18 +32,17 @@ $(function() {
 						var pid = $("#pid").val();
 						var nickname = $("#nickname").val();
 						if (nickname == "") {
-							$("#message").html("昵称不能为空！").show();
+							showMsg("error","昵称不能为空！");
 							return;
 						}
 						var email = $("#email").val();
 						if (email != "" && !validateEmail(email)) {
-							$("#message").html("Email格式不正确！").show();
-							resetForm();
+							showMsg("error","Email格式不正确！");
 							return;
 						}
 						var content = $("#ccontent").val();
 						if (content == "") {
-							$("#message").html("评论内容不能为空！").show();
+							showMsg("error","评论内容不能为空！");
 							return;
 						}
 						$("#message").html("").hide();
@@ -37,21 +63,24 @@ $(function() {
 									dataType : "json",
 									success : function(data) {
 										if (!data.result)
-											$("#message").html(data.message)
-													.show();
+											showMsg("error",data.message);
 										else {
 											$("#ccontent").val("");
+											var html = '<li id="li-'+data.cid+'"><p><span class="cnick">'
+											+ data.nickname
+											+ '</span>&nbsp;<span class="ccdate">'
+											+ data.cdate
+											+ '</span>&nbsp;说：</p><span class="ccont">'
+											+ data.content
+											+ '</span>';
+											if(admin)
+												html+="<a href=# onclick='deleteComment(\""+data.cid+"\");return false;'>[删除]</a>";
+											html+='<br/></li>';
 											$("#cc")
 													.append(
-															'<li><p><span class="cnick">'
-																	+ data.nickname
-																	+ '</span>&nbsp;<span class="ccdate">'
-																	+ data.cdate
-																	+ '</span>&nbsp;说：</p><span class="ccont">'
-																	+ data.content
-																	+ '</span><br/></li>')
-											$("#message").html(data.message)
-													.show();
+															html)
+																	
+											showMsg("pass",data.message);
 											window.parent.document
 													.getElementById("c-" + pid).innerHTML = "共有 <span class='commentcount'>"
 													+ data.count + "</span> 条";
@@ -62,7 +91,7 @@ $(function() {
 												false).attr("value", "发布评论");
 										var code = req.status;
 										if (code < 200 || code > 299)
-											$("#message").html(errorMsg).show();
+											showMsg("error",errorMsg);
 									}
 								});
 					});
@@ -74,5 +103,37 @@ function validateEmail(input) {
 		return true;
 	} else {
 		return false;
+	}
+}
+
+function deleteComment(cid){
+	if (confirm('您确定要删除这条评论吗？')) {
+		$
+		.ajax( {
+			url : "comment",
+			type : "POST",
+			cache : false,
+			data : {
+				"action" : "deleteComment",
+				"cid" : cid
+			},
+			dataType : "json",
+			success : function(data) {
+				if (!data.result)
+					showMsg("error",data.message);
+				else {
+					showMsg("pass",data.message);
+					$("#li-"+cid).remove();
+					window.parent.document
+							.getElementById("c-" + pid).innerHTML = data.count==0?"暂无":("共有 <span class='commentcount'>"
+							+ data.count + "</span> 条");
+				}
+			},
+			complete : function(req) {
+				var code = req.status;
+				if (code < 200 || code > 299)
+					showMsg("error",errorMsg);
+			}
+		});
 	}
 }
