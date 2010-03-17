@@ -2,6 +2,7 @@ package com.terry.weddingphoto.data.intf;
 
 import java.util.List;
 
+import com.terry.weddingphoto.model.Comment;
 import com.terry.weddingphoto.model.Photo;
 
 /**
@@ -12,6 +13,14 @@ public interface IPhotoDao {
 	public boolean savePhoto(Photo photo);
 
 	public Photo getPhotoById(String id);
-	
+
+	public boolean deletePhotoById(String pid);
+
 	public List<Photo> getPhotos(int start, int limit);
+
+	public List<Comment> getCommentsByPhotoId(String pid, int start, int limit);
+
+	public int saveComment(Comment comment);
+
+	public boolean deleteCommentById(String cid);
 }

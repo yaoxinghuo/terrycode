@@ -64,7 +64,7 @@ h3 {
 }
 
 .commentcount {
-	color: blue;
+	color: red;
 	font-weight: bold;
 }
 </style>
@@ -91,6 +91,7 @@ h3 {
 		$(".wbox").wBox({
 			isFrame:true,
 			drag:true,
+			iframeWH:{width:700,height:600},
 			title:'评论'
 		});
 	});
@@ -108,28 +109,33 @@ h3 {
 <div id="gallery_wrap" align="center">
 <div id="photos" class="galleryview">
 <%
-SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm",
-		Locale.CHINA);
-sdf.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
-UserService userService = UserServiceFactory.getUserService();
-IPhotoDao photoDao = new PhotoDaoImpl();
-List<Photo> photos = photoDao.getPhotos(0, 150);
-int iter = 0;
-for (Photo photo : photos) {
-	String desc = "创建时间:"+sdf.format(photo.getCdate());
-	int comment = photo.getComment();
-	if(comment==0)
-		desc+=", 还没有评论, <a class='wbox' href='comment.jsp'>抢沙发</a>";
-	else if(comment>0){
-		desc+=", 有 <span class='commentcount'>"+comment+"</span> 条评论,<a class='wbox' href='comment.jsp'>我也要评论</a>";
-	}
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm",
+			Locale.CHINA);
+	sdf.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
+	UserService userService = UserServiceFactory.getUserService();
+	IPhotoDao photoDao = new PhotoDaoImpl();
+	List<Photo> photos = photoDao.getPhotos(0, 150);
+	int iter = 0;
+	for (Photo photo : photos) {
+		String pid = photo.getId();
+		String desc = "创建时间:" + sdf.format(photo.getCdate());
+		int comment = photo.getComment();
+		if (comment == 0)
+			desc += ",&nbsp;<span id='c-" + pid + "'>暂无</span>";
+		else if (comment > 0) {
+			desc += ",&nbsp;<span id='c-" + pid
+					+ "'>共有 <span class='commentcount'>" + comment
+					+ "</span> 条</span>";
+		}
+		desc += "评论,&nbsp;<a class='wbox' href='comment.jsp?pid=" + pid
+				+ "'>我来评论</a>";
 %>
 <div class="panel"><img style="display: none;"
 	pid="<%=photo.getId()%>" iter="<%=iter++%>" />
 <div class="panel-overlay">
 <h2><%=photo.getRemark() == null ? photo.getFilename()
 						: photo.getRemark()%></h2>
-<p><%=desc %></p>
+<p><%=desc%></p>
 </div>
 </div>
 <%

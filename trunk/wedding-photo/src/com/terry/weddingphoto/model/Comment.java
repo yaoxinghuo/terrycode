@@ -3,6 +3,7 @@ package com.terry.weddingphoto.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,6 +19,7 @@ import org.datanucleus.jpa.annotations.Extension;
  * @author Terry E-mail: yaoxinghuo at 126 dot com
  * @version create: 2010-3-17 上午09:22:56
  */
+@Entity
 public class Comment implements Serializable {
 
 	/**
