@@ -95,6 +95,14 @@ $(function() {
 									}
 								});
 					});
+	$("#nickname").change(function(){
+		$.cookie("nickname", $("#nickname").val(), {
+			expires : 180
+		});
+	});
+	var nickname = $.cookie("nickname");
+	if (nickname != null && nickname != "null")
+		$("#nickname").val(nickname);
 });
 
 function validateEmail(input) {

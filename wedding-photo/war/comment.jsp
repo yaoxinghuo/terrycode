@@ -17,6 +17,7 @@
 <title>照片测试</title>
 <link type="text/css" rel="stylesheet" href="css/style.css" />
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="js/jquery.cookie.js"></script>
 <script type="text/javascript" src="js/comment.js"></script>
 
 <style type="text/css">
