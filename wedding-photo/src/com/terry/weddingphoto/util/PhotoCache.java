@@ -46,9 +46,8 @@ public class PhotoCache {
 		if (o != null)
 			return (byte[]) o;
 		byte[] data = getPhotoDataFromDB(pid, width, height);
-		if (data != null) {
-			if (data.length < 1024 * 1024)
-				cache.put(key, data);
+		if (data != null && data.length < 1024 * 1024) {
+			cache.put(key, data);
 		}
 		return data;
 	}
@@ -70,7 +69,7 @@ public class PhotoCache {
 				if (oldImage.getWidth() > w || oldImage.getHeight() > h) {
 					Transform resize = ImagesServiceFactory.makeResize(w, h);
 					Image newImage = imagesService.applyTransform(resize,
-							oldImage);
+							oldImage, ImagesService.OutputEncoding.JPEG);
 					return newImage.getImageData();
 				} else
 					return data;
