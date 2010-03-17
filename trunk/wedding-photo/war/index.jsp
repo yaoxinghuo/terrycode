@@ -8,16 +8,23 @@
 <%@page import="com.terry.weddingphoto.model.Photo"%>
 <%@page import="com.google.appengine.api.users.UserService"%>
 <%@page import="com.google.appengine.api.users.UserServiceFactory"%>
-<%@page import="java.util.Calendar"%><html
+<%@page import="java.util.Calendar"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Locale"%>
+<%@page import="java.util.TimeZone"%><html
 	xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>照片测试</title>
 <link type="text/css" rel="stylesheet" href="css/style.css" />
+<link type="text/css" rel="stylesheet" href="css/wbox.css" />
+
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
 <script type="text/javascript" src="js/jquery.galleryview-1.1.js"></script>
 <script type="text/javascript" src="js/jquery.timers-1.1.2.js"></script>
+<script type="text/javascript" src="js/wbox-min.js"></script>
+
 <style type="text/css">
 body {
 	background: #444;
@@ -55,6 +62,11 @@ h3 {
 	vertical-align: middle;
 	display: none;
 }
+
+.commentcount {
+	color: blue;
+	font-weight: bold;
+}
 </style>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -64,7 +76,7 @@ h3 {
 			frame_width: 100,
 			frame_height: 80,
 			auto_transition: true,
-			transition_interval:20000,
+			transition_interval: 0,
 			transition_speed: 'slow',
 			background_color: '#333',
 			background_fill_color: '#444',
@@ -75,6 +87,11 @@ h3 {
 			filmstrip_position: 'top',
 			overlay_position: 'top',
 			pause_on_hover: true
+		});
+		$(".wbox").wBox({
+			isFrame:true,
+			drag:true,
+			title:'评论'
 		});
 	});
 </script>
@@ -91,18 +108,28 @@ h3 {
 <div id="gallery_wrap" align="center">
 <div id="photos" class="galleryview">
 <%
-	UserService userService = UserServiceFactory.getUserService();
-	IPhotoDao photoDao = new PhotoDaoImpl();
-	List<Photo> photos = photoDao.getPhotos(0, 150);
-	int iter = 0;
-	for (Photo photo : photos) {
+SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm",
+		Locale.CHINA);
+sdf.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
+UserService userService = UserServiceFactory.getUserService();
+IPhotoDao photoDao = new PhotoDaoImpl();
+List<Photo> photos = photoDao.getPhotos(0, 150);
+int iter = 0;
+for (Photo photo : photos) {
+	String desc = "创建时间:"+sdf.format(photo.getCdate());
+	int comment = photo.getComment();
+	if(comment==0)
+		desc+=", 还没有评论, <a class='wbox' href='comment.jsp'>抢沙发</a>";
+	else if(comment>0){
+		desc+=", 有 <span class='commentcount'>"+comment+"</span> 条评论,<a class='wbox' href='comment.jsp'>我也要评论</a>";
+	}
 %>
 <div class="panel"><img style="display: none;"
 	pid="<%=photo.getId()%>" iter="<%=iter++%>" />
 <div class="panel-overlay">
 <h2><%=photo.getRemark() == null ? photo.getFilename()
 						: photo.getRemark()%></h2>
-<p><%=photo.getCdate()%></p>
+<p><%=desc %></p>
 </div>
 </div>
 <%
@@ -135,5 +162,6 @@ h3 {
 <%
 	}
 %>
+
 </body>
 </html>
