@@ -80,7 +80,7 @@ public class PhotoUploadServlet extends HttpServlet {
 								p.setCdate(new Date());
 								p.setData(new Blob(data));
 								p.setFilename(fileName);
-								p.setComment(true);
+								p.setComment(0);
 
 								if (photoDao.savePhoto(p)) {
 									jo.put("result", true);

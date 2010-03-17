@@ -1,13 +1,18 @@
 package com.terry.weddingphoto.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -37,9 +42,12 @@ public class Photo implements Serializable {
 	@Enumerated
 	private String remark;
 	@Enumerated
-	private boolean comment;// 是否允许评论
+	private int comment;// 0允许评论 -1不允许 大于0的数字表示有多少个评论
 	@Enumerated
 	private Blob data;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Comment.class, mappedBy = "photo")
+	private List<Comment> comments = new ArrayList<Comment>();
 
 	public String getId() {
 		return id;
@@ -81,11 +89,19 @@ public class Photo implements Serializable {
 		return data;
 	}
 
-	public void setComment(boolean comment) {
+	public void setComment(int comment) {
 		this.comment = comment;
 	}
 
-	public boolean isComment() {
+	public int getComment() {
 		return comment;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+
+	public List<Comment> getComments() {
+		return comments;
 	}
 }
