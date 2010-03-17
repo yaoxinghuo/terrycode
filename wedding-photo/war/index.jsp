@@ -101,7 +101,7 @@ h3 {
 					+ "</span> 条</span>";
 		}
 		desc += "评论,&nbsp;<a class='wbox' href='comment.jsp?pid=" + pid
-				+ "'>我来评论</a>&nbsp;<a class='wbox2' href=# pid='" + pid
+				+ "'>查看或添加评论</a>&nbsp;<a class='wbox2' href=# pid='" + pid
 				+ "'>查看原图</a>";
 %>
 <div class="panel"><img style="display: none;"
