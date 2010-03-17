@@ -94,6 +94,9 @@ h3 {
 			iframeWH:{width:700,height:600},
 			title:'评论'
 		});
+		$(".wbox2").each(function(){
+			$(this).wBox({images:['view?id='+$(this).attr('pid')],isImage:true});
+		});
 	});
 </script>
 </head>
@@ -128,7 +131,8 @@ h3 {
 					+ "</span> 条</span>";
 		}
 		desc += "评论,&nbsp;<a class='wbox' href='comment.jsp?pid=" + pid
-				+ "'>我来评论</a>";
+				+ "'>我来评论</a>&nbsp;<a class='wbox2' href=# pid='" + pid
+				+ "'>查看原图(按ESC返回)</a>";
 %>
 <div class="panel"><img style="display: none;"
 	pid="<%=photo.getId()%>" iter="<%=iter++%>" />
@@ -168,6 +172,5 @@ h3 {
 <%
 	}
 %>
-
 </body>
 </html>
