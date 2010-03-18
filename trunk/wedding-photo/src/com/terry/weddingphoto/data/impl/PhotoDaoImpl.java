@@ -1,11 +1,13 @@
 package com.terry.weddingphoto.data.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
+import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.terry.weddingphoto.data.intf.IPhotoDao;
@@ -31,6 +33,37 @@ public class PhotoDaoImpl implements IPhotoDao {
 			tx.commit();
 			return true;
 		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean saveOrUpdatePhoto(String filename, byte[] data) {
+		try {
+			Photo photo = null;
+			EntityManager em = EMF.get().createEntityManager();
+			Query query = em.createQuery("SELECT f FROM "
+					+ Photo.class.getName() + " f where f.filename=:filename");
+			query.setParameter("filename", filename);
+			List<Photo> photos = query.getResultList();
+			if (photos == null || photos.size() == 0) {
+				photo = new Photo();
+				photo.setCdate(new Date());
+				photo.setFilename(filename);
+				photo.setComment(0);
+			} else {
+				photo = photos.get(0);
+			}
+			photo.setData(new Blob(data));
+
+			EntityTransaction tx = em.getTransaction();
+			tx.begin();
+			em.persist(photo);
+			tx.commit();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
@@ -135,5 +168,23 @@ public class PhotoDaoImpl implements IPhotoDao {
 		} catch (Exception e) {
 			return false;
 		}
+	}
+
+	@Override
+	public boolean checkPhotoExists(String filename) {
+		List<Photo> photos = getPhotosByFilename(filename);
+		if (photos == null || photos.size() == 0)
+			return false;
+		else
+			return true;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Photo> getPhotosByFilename(String filename) {
+		Query query = em.createQuery("SELECT f FROM " + Photo.class.getName()
+				+ " f where f.filename=:filename");
+		query.setParameter("filename", filename);
+		return query.getResultList();
 	}
 }

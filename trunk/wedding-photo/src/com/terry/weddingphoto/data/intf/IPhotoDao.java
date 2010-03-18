@@ -12,11 +12,17 @@ import com.terry.weddingphoto.model.Photo;
 public interface IPhotoDao {
 	public boolean savePhoto(Photo photo);
 
+	public boolean saveOrUpdatePhoto(String filename, byte[] data);
+
 	public Photo getPhotoById(String id);
 
 	public boolean deletePhotoById(String pid);
 
 	public List<Photo> getPhotos(int start, int limit);
+
+	public List<Photo> getPhotosByFilename(String filename);
+
+	public boolean checkPhotoExists(String filename);
 
 	public List<Comment> getCommentsByPhotoId(String pid, int start, int limit);
 
