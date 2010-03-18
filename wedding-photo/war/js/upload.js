@@ -3,12 +3,13 @@ $(function() {
 			{
 				'uploader' : '../uploadify.swf',
 				'script' : 'photoUpload',
+				'checkScript' : 'checkPhoto',
 				'cancelImg' : 'images/cancel.png',
-				'folder' : 'uploads',
 				'multi' : true,
 				'fileDesc' : 'Image Files',
 				'fileExt' : '*.jpg;*.jpeg;*.png;*.gif',
 				'multi' : true,
+				'queueID' : 'fileQueue',
 				'simUploadLimit' : 2,
 				'queueSizeLimit' : 10,
 				'sizeLimit' : 1048576,
@@ -68,6 +69,7 @@ $(function() {
 							header : '错误',
 							sticky : true
 						});
+						return false;
 					}
 				}
 

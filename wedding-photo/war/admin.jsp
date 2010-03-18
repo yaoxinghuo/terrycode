@@ -37,7 +37,7 @@ UserService userService = UserServiceFactory.getUserService();
 <div align="center">
 <p><strong>选择多个图片文件上传</strong></p>
 <input id="photoInputs" type="file" name="file"></input>
-<br />
+<br /><div id="fileQueue"></div><br/>
 <a href="javascript:$('#photoInputs').uploadifyUpload();">开始上传</a>
 |
 <a href="javascript:$('#photoInputs').uploadifyClearQueue();">清除列队</a>

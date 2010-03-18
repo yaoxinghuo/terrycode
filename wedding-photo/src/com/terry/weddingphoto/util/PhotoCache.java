@@ -10,6 +10,7 @@ import com.google.appengine.api.images.Image;
 import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.images.Transform;
+import com.terry.weddingphoto.constants.Constants;
 import com.terry.weddingphoto.data.impl.PhotoDaoImpl;
 import com.terry.weddingphoto.data.intf.IPhotoDao;
 import com.terry.weddingphoto.model.Photo;
@@ -46,7 +47,7 @@ public class PhotoCache {
 		if (o != null)
 			return (byte[]) o;
 		byte[] data = getPhotoDataFromDB(pid, width, height);
-		if (data != null && data.length < 1024 * 1024) {
+		if (data != null && data.length < Constants.PHOTO_BYTES_LIMIT) {
 			cache.put(key, data);
 		}
 		return data;

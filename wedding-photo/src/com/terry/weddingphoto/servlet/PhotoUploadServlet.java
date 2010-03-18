@@ -3,7 +3,6 @@ package com.terry.weddingphoto.servlet;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,11 +17,9 @@ import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.google.appengine.api.datastore.Blob;
 import com.terry.weddingphoto.constants.Constants;
 import com.terry.weddingphoto.data.impl.PhotoDaoImpl;
 import com.terry.weddingphoto.data.intf.IPhotoDao;
-import com.terry.weddingphoto.model.Photo;
 
 /**
  * @author Terry E-mail: yaoxinghuo at 126 dot com
@@ -62,7 +59,7 @@ public class PhotoUploadServlet extends HttpServlet {
 		} else {
 			try {
 				ServletFileUpload upload = new ServletFileUpload();
-				upload.setSizeMax(1048576);
+				upload.setSizeMax(Constants.PHOTO_BYTES_LIMIT);
 
 				try {
 					FileItemIterator iterator = upload.getItemIterator(req);
@@ -75,14 +72,8 @@ public class PhotoUploadServlet extends HttpServlet {
 						} else {
 							String fileName = item.getName();
 							try {
-								byte[] data = IOUtils.toByteArray(in);
-								Photo p = new Photo();
-								p.setCdate(new Date());
-								p.setData(new Blob(data));
-								p.setFilename(fileName);
-								p.setComment(0);
-
-								if (photoDao.savePhoto(p)) {
+								if (photoDao.saveOrUpdatePhoto(fileName,
+										IOUtils.toByteArray(in))) {
 									jo.put("result", true);
 									jo.put("message", "文件：" + fileName
 											+ " 已成功存入数据库");
