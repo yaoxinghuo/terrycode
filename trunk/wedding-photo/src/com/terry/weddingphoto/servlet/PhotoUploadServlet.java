@@ -62,7 +62,7 @@ public class PhotoUploadServlet extends HttpServlet {
 		} else {
 			try {
 				ServletFileUpload upload = new ServletFileUpload();
-				upload.setSizeMax(1000000);
+				upload.setSizeMax(1048576);
 
 				try {
 					FileItemIterator iterator = upload.getItemIterator(req);
