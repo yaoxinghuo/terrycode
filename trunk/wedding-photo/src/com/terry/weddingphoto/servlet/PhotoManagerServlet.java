@@ -3,6 +3,7 @@ package com.terry.weddingphoto.servlet;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,6 +21,7 @@ import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.terry.weddingphoto.constants.Constants;
 import com.terry.weddingphoto.data.impl.PhotoDaoImpl;
 import com.terry.weddingphoto.data.intf.IPhotoDao;
 import com.terry.weddingphoto.model.Comment;
@@ -40,9 +43,6 @@ public class PhotoManagerServlet extends HttpServlet {
 			Locale.CHINA);
 	private UserService userService = UserServiceFactory.getUserService();
 	private MemcacheService cache = MemcacheServiceFactory.getMemcacheService();
-	private static final String IP_COUNT_CACHE = "ip-count-cache";
-	private static final int COMMENT_LIMIT = 5;
-	private static final int CACHE_SESSION_TIME = 3600;// 1个小时
 	private IPhotoDao photoDao = new PhotoDaoImpl();
 	private static final String ERROR = "对不起，程序出现错误，请稍候再试";
 
@@ -73,6 +73,8 @@ public class PhotoManagerServlet extends HttpServlet {
 				jo = deleteComment(req);
 			} else if (action.equals("updatePhoto")) {
 				jo = updatePhoto(req);
+			} else if (action.equals("photosList")) {
+				jo = photosList(req);
 			}
 		}
 
@@ -100,7 +102,7 @@ public class PhotoManagerServlet extends HttpServlet {
 		}
 
 		String ip = getIpAddr(req);
-		if (getIpCommentCount(pid, ip) >= COMMENT_LIMIT) {
+		if (getIpCommentCount(pid, ip) >= Constants.COMMENT_LIMIT) {
 			try {
 				jo.put("message", "您的评论频率太高");
 			} catch (JSONException e) {
@@ -201,6 +203,44 @@ public class PhotoManagerServlet extends HttpServlet {
 		return jo;
 	}
 
+	private JSONObject photosList(HttpServletRequest req) {
+		// 得到当前页数
+		int page = Integer.parseInt(req.getParameter("page"));
+		// 得到每页显示行数
+		int limit = Integer.parseInt(req.getParameter("rp"));
+		int start = (page - 1) * limit;
+
+		JSONObject jo = createDefaultJo();
+		List<Photo> photos = photoDao.getPhotos(start, limit);
+		JSONArray rows = new JSONArray();
+		for (Photo p : photos) {
+			JSONObject jso = new JSONObject();
+			JSONArray ja = new JSONArray();
+			ja.put(sdf.format(p.getCdate()));
+			ja.put(p.getFilename());
+			ja.put(p.getRemark());
+			ja.put(p.getComment() == -1 ? p.getComments().size() : p
+					.getComment());
+			ja.put(p.getComment() == -1 ? "评论已关闭" : "允许评论");
+			ja.put("<img src='view?id=" + p.getId() + "&w=100&h=80'/>");
+			try {
+				jso.put("id", p.getId());
+				jso.put("cell", ja);
+			} catch (JSONException e) {
+			}
+			rows.put(jso);
+		}
+		try {
+			jo.put("total", getPhotosCount());
+			jo.put("page", page);
+			jo.put("rows", rows);
+			jo.put("result", true);
+			jo.put("message", "ok");
+		} catch (JSONException e) {
+		}
+		return jo;
+	}
+
 	private JSONObject createDefaultJo() {
 		JSONObject jo = new JSONObject();
 		try {
@@ -226,7 +266,7 @@ public class PhotoManagerServlet extends HttpServlet {
 	}
 
 	private int getIpCommentCount(String pid, String ip) {
-		String key = IP_COUNT_CACHE + "-" + pid + "-" + ip;
+		String key = Constants.IP_COUNT_CACHE + "-" + pid + "-" + ip;
 		Object o = cache.get(key);
 		if (o != null && o instanceof Integer) {
 			return (Integer) o;
@@ -235,11 +275,22 @@ public class PhotoManagerServlet extends HttpServlet {
 	}
 
 	private void updateIpCommentCount(String pid, String ip) {
-		String key = IP_COUNT_CACHE + "-" + pid + "-" + ip;
+		String key = Constants.IP_COUNT_CACHE + "-" + pid + "-" + ip;
 		Object o = cache.get(key);
 		if (o != null && o instanceof Integer) {
 			cache.increment(key, 1);
 		} else
-			cache.put(key, 1, Expiration.byDeltaSeconds(CACHE_SESSION_TIME));
+			cache.put(key, 1, Expiration
+					.byDeltaSeconds(Constants.IP_CACHE_SESSION_TIME));
+	}
+
+	private int getPhotosCount() {
+		Object o = cache.get(Constants.PHOTOS_COUNT_CACHE);
+		if (o != null && o instanceof Integer) {
+			return (Integer) o;
+		}
+		int count = photoDao.getPhotosCount();
+		cache.put(Constants.PHOTOS_COUNT_CACHE, count);
+		return count;
 	}
 }
