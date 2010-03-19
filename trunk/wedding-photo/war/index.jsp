@@ -72,11 +72,21 @@ h3 {
 </head>
 
 <body>
+<%
+	UserService userService = UserServiceFactory.getUserService();
+	String welcome = userService.isUserLoggedIn() ? userService
+			.getCurrentUser().getEmail()
+			+ " | <a href='"
+			+ userService.createLogoutURL("/")
+			+ "'>退出</a>" : "<a href='"
+			+ userService.createLoginURL("/") + "'>登录</a>";
+	welcome += "&nbsp;|&nbsp;<a href='admin'>后台管理</a>&nbsp;|&nbsp;";
+%>
 <h3>照片测试
-<div align="right" style="font-size: 11px;">程序设计<a target="_blank"
-	href="http://xinghuo.org.ru/">Terry</a>&nbsp;<a target="_blank"
-	href="http://code.google.com/p/terrycode/source/browse/#svn/trunk/wedding-photo">源码</a>&nbsp;<a
-	href="admin">后台管理</a></div>
+<div align="right" style="font-size: 11px;"><%=welcome%>程序设计:<a
+	target="_blank" href="http://xinghuo.org.ru/">Terry</a>&nbsp;|&nbsp;<a
+	target="_blank"
+	href="http://code.google.com/p/terrycode/source/browse/#svn/trunk/wedding-photo">源码</a></div>
 </h3>
 
 <div id="gallery_wrap" align="center">
@@ -85,30 +95,30 @@ h3 {
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm",
 			Locale.CHINA);
 	sdf.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
-	UserService userService = UserServiceFactory.getUserService();
 	IPhotoDao photoDao = new PhotoDaoImpl();
 	List<Photo> photos = photoDao.getPhotos(0, 150);
 	int iter = 0;
 	for (Photo photo : photos) {
 		String pid = photo.getId();
-		String desc = "创建时间:" + sdf.format(photo.getCdate());
+		String desc = "<span id='c-" + pid + "'>";
 		int comment = photo.getComment();
-		if (comment == 0)
-			desc += ",&nbsp;<span id='c-" + pid + "'>暂无</span>";
+		if (comment == -1) {
+			desc += "评论已关闭";
+		} else if (comment == 0)
+			desc += "暂无评论";
 		else if (comment > 0) {
-			desc += ",&nbsp;<span id='c-" + pid
-					+ "'>共有 <span class='commentcount'>" + comment
-					+ "</span> 条</span>";
+			desc += "共有 <span class='commentcount'>" + comment
+					+ "</span> 条评论";
 		}
-		desc += "评论,&nbsp;<a class='wbox' href='detail.jsp?pid=" + pid
-				+ "'>评论|详情</a>&nbsp;<a class='wbox2' href=# pid='" + pid
-				+ "'>查看原图</a>";
+		desc += "</span>,&nbsp;<a class='wbox' href='detail.jsp?pid="
+				+ pid
+				+ "'>评论|详情</a>&nbsp;<a class='wbox2' href=# pid='"
+				+ pid + "'>查看原图</a>";
 %>
 <div class="panel"><img style="display: none;"
 	pid="<%=photo.getId()%>" iter="<%=iter++%>" />
 <div class="panel-overlay">
-<h2><%=photo.getRemark() == null ? photo.getFilename()
-						: photo.getRemark()%></h2>
+<h2 id="r-<%=pid%>"><%=photo.getRemark()%></h2>
 <p><%=desc%></p>
 </div>
 </div>
@@ -123,9 +133,10 @@ h3 {
 	%>
 	<li iter="<%=iter%>">
 	<div class="filmstripd"><img pid="<%=photo.getId()%>"
-		iter="<%=iter++%>" alt="<%=photo.getFilename()%>"
-		title="<%=photo.getRemark() == null ? photo.getFilename()
-						: photo.getRemark()%>" /></div>
+		id="i-<%=photo.getId()%>" iter="<%=iter++%>"
+		alt="<%=photo.getFilename()%>"
+		title="<%="".equals(photo.getRemark()) ? photo
+						.getFilename() : photo.getRemark()%>" /></div>
 	</li>
 	<%
 		}

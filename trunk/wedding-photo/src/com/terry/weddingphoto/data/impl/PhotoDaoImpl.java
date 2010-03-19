@@ -51,11 +51,42 @@ public class PhotoDaoImpl implements IPhotoDao {
 				photo = new Photo();
 				photo.setCdate(new Date());
 				photo.setFilename(filename);
+				photo.setRemark("");
 				photo.setComment(0);
 			} else {
 				photo = photos.get(0);
 			}
 			photo.setData(new Blob(data));
+
+			EntityTransaction tx = em.getTransaction();
+			tx.begin();
+			em.persist(photo);
+			tx.commit();
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean updatePhoto(String pid, String remark, boolean canComment) {
+		try {
+			Photo photo = null;
+			EntityManager em = EMF.get().createEntityManager();
+			Key key = KeyFactory.stringToKey(pid);
+			if (key == null || !key.isComplete())
+				return false;
+			photo = em.find(Photo.class, key);
+			if (photo == null)
+				return false;
+			photo.setRemark(remark);
+
+			if (canComment) {
+				if (photo.getComment() == -1) {
+					photo.setComment(photo.getComments().size());
+				}
+			} else
+				photo.setComment(-1);
 
 			EntityTransaction tx = em.getTransaction();
 			tx.begin();
