@@ -76,6 +76,14 @@ a:hover {
 	sdf.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
 	UserService userService = UserServiceFactory.getUserService();
 	boolean admin = userService.isUserLoggedIn()&&userService.isUserAdmin();
+	String username=null;
+	String email=null;
+	if(userService.isUserLoggedIn()){
+		username = userService.getCurrentUser().getNickname();
+		email = userService.getCurrentUser().getEmail();
+		if(username.indexOf("@")!=-1)
+			username = username.substring(0,username.indexOf("@"));
+	}
 	IPhotoDao photoDao = new PhotoDaoImpl();
 	String pid = request.getParameter("pid");
 	Photo photo = photoDao.getPhotoById(pid);
@@ -107,14 +115,14 @@ if(photo.getComment()!=-1){
 <table>
 	<tr>
 		<td>*您的昵称</td>
-		<td><input type="text" id="nickname" maxlength="12"/></td>
+		<td><input type="text" id="nickname" maxlength="12" value="<%=username==null?"":username %>"/></td>
 		<td rowspan="2">
 			<img src="view?id=<%=pid %>&w=100&h=80"/>
 		</td>
 	</tr>
 	<tr>
 		<td>Email(选填)</td>
-		<td><input type="text" id="email" /></td>
+		<td><input type="text" id="email" value="<%=email==null?"":email %>"/></td>
 	</tr>
 	<tr>
 		<td>*评论内容</td>

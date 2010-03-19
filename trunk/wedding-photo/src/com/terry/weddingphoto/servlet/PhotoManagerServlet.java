@@ -198,7 +198,7 @@ public class PhotoManagerServlet extends HttpServlet {
 				: true)) {
 			try {
 				jo.put("result", true);
-				jo.put("message", "已成功更新照片");
+				jo.put("message", "已成功更新照片信息");
 			} catch (JSONException e) {
 			}
 		}
