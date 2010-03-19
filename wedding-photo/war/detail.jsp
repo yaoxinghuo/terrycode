@@ -10,7 +10,8 @@
 <%@page import="com.terry.weddingphoto.data.impl.PhotoDaoImpl"%>
 <%@page import="com.terry.weddingphoto.data.intf.IPhotoDao"%>
 <%@page import="java.util.List"%>
-<%@page import="com.terry.weddingphoto.model.Comment"%><html
+<%@page import="com.terry.weddingphoto.model.Comment"%>
+<%@page import="com.terry.weddingphoto.model.Photo"%><html
 	xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -77,10 +78,12 @@ a:hover {
 	boolean admin = userService.isUserLoggedIn()&&userService.isUserAdmin();
 	IPhotoDao photoDao = new PhotoDaoImpl();
 	String pid = request.getParameter("pid");
-	List<Comment> comments = photoDao.getCommentsByPhotoId(pid, 0, 0);
+	Photo photo = photoDao.getPhotoById(pid);
+	List<Comment> comments = photo.getComments();
 	for (Comment c : comments) {
 		String cid = c.getId();
 %>
+<input type="hidden" value="<%=pid %>" id="pid"/> 
 <li id="li-<%=cid %>"><p><span class="cnick"><%=c.getName()%></span>&nbsp;<span class="ccdate"><%=sdf.format(c.getCdate())%></span>&nbsp;说：</p><span class="ccont"><%=c.getContent()%></span>
 	<%=admin?"<a href=# onclick='deleteComment(\""+cid+"\");return false;'>[删除]</a>":"" %>
 <br/></li>
@@ -90,14 +93,18 @@ a:hover {
 %>
 <script type="text/javascript">
 	var admin = <%=admin %>;
+	pid = '<%=pid %>';
+	var canComment = <%=photo.getComment()!=-1 %>;
 </script>
+<%
+if(photo.getComment()!=-1){
+%>
 <div>
+<br/>
+<fieldset>
+    <legend>发布评论</legend>
 <form>
 <table>
-	<tr>
-		<td colspan="3" align="center">&nbsp;<span id="message"
-			style="display: none; color: red; font-weight: bold;"></span></td>
-	</tr>
 	<tr>
 		<td>*您的昵称</td>
 		<td><input type="text" id="nickname" maxlength="12"/></td>
@@ -114,12 +121,43 @@ a:hover {
 		<td colspan="2"><textarea rows="6" cols="35" id="ccontent"></textarea> </td>
 	</tr>
 	<tr>
-		<td><input type="hidden" value="<%=pid %>" id="pid"/> </td>
+		<td></td>
 		<td colspan="2"><input type="button" value="发布评论" id="commentSave"
 			style="width: 80px;"/> </td>
 	</tr>
 </table>
 </form>
+</fieldset>
 </div>
+
+<%
+}
+	if(admin){
+%>
+<br/>
+<fieldset>
+    <legend>管理照片设置</legend>
+<table>
+	<tr>
+		<td colspan="2"></td>
+	</tr>
+	<tr>
+		<td>照片简短说明</td>
+		<td><input type="text" id="premark" value="<%=photo.getRemark() %>" maxlength="500" style="width: 250px;"/></td>
+	</tr>
+	<tr>
+		<td>是否允许评论</td>
+		<td><input type="checkbox" value="cancomment" id="cancomment"/>允许评论</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td><input type="button" value="更新设置" id="photoUpdate"
+			style="width: 100px;"/> </td>
+	</tr>
+</table>
+</fieldset>
+<%
+}
+%>
 </body>
 </html>

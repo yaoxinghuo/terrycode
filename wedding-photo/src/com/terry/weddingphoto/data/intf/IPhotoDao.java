@@ -14,6 +14,8 @@ public interface IPhotoDao {
 
 	public boolean saveOrUpdatePhoto(String filename, byte[] data);
 
+	public boolean updatePhoto(String pid, String remark, boolean canComment);
+
 	public Photo getPhotoById(String id);
 
 	public boolean deletePhotoById(String pid);

@@ -25,11 +25,11 @@ function clearMsg() {
 	document.getElementById("msg").style.visibility = "hidden";
 	document.getElementById("msg_content").innerHTML = "";
 }
+var pid=null;
 $(function() {
 	$("#commentSave")
 			.click(
 					function() {
-						var pid = $("#pid").val();
 						var nickname = $("#nickname").val();
 						if (nickname == "") {
 							showMsg("error","昵称不能为空！");
@@ -45,7 +45,6 @@ $(function() {
 							showMsg("error","评论内容不能为空！");
 							return;
 						}
-						$("#message").html("").hide();
 						$("#commentSave").attr("disabled", true).attr("value",
 								"请稍候");
 						$
@@ -83,7 +82,7 @@ $(function() {
 											showMsg("pass",data.message);
 											window.parent.document
 													.getElementById("c-" + pid).innerHTML = "共有 <span class='commentcount'>"
-													+ data.count + "</span> 条";
+													+ data.count + "</span> 条评论";
 										}
 									},
 									complete : function(req) {
@@ -95,6 +94,45 @@ $(function() {
 									}
 								});
 					});
+	$("#photoUpdate")
+	.click(
+			function() {
+				var remark = $("#premark").val();
+				var comment = $("#cancomment").attr("checked");
+				$("#photoUpdate").attr("disabled", true).attr("value",
+						"请稍候");
+				$
+						.ajax( {
+							url : "photoManager",
+							type : "POST",
+							cache : false,
+							data : {
+								"action" : "updatePhoto",
+								"remark" : remark,
+								"comment" : comment,
+								"pid" : pid
+							},
+							dataType : "json",
+							success : function(data) {
+								if (!data.result)
+									showMsg("error",data.message);
+								else {
+									showMsg("pass",data.message);
+									window.parent.document
+									.getElementById("c-" + pid).innerHTML = comment?"允许评论":"评论已关闭";
+									window.parent.document
+											.getElementById("r-" + pid).innerHTML = remark;
+								}
+							},
+							complete : function(req) {
+								$("#photoUpdate").attr("disabled",
+										false).attr("value", "更新设置");
+								var code = req.status;
+								if (code < 200 || code > 299)
+									showMsg("error",errorMsg);
+							}
+						});
+			});
 	$("#nickname").change(function(){
 		$.cookie("nickname", $("#nickname").val(), {
 			expires : 180
@@ -112,6 +150,9 @@ $(function() {
 	var email = $.cookie("email");
 	if (email != null && email != "null")
 		$("#email").val(email);
+	if(admin){
+		$("#cancomment").attr("checked",canComment);
+	}
 });
 
 function validateEmail(input) {
@@ -142,8 +183,8 @@ function deleteComment(cid){
 					showMsg("pass",data.message);
 					$("#li-"+cid).remove();
 					window.parent.document
-							.getElementById("c-" + pid).innerHTML = data.count==0?"暂无":("共有 <span class='commentcount'>"
-							+ data.count + "</span> 条");
+							.getElementById("c-" + pid).innerHTML = data.count==0?"暂无评论":("共有 <span class='commentcount'>"
+							+ data.count + "</span> 条评论");
 				}
 			},
 			complete : function(req) {

@@ -22,6 +22,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.terry.weddingphoto.data.impl.PhotoDaoImpl;
 import com.terry.weddingphoto.data.intf.IPhotoDao;
 import com.terry.weddingphoto.model.Comment;
+import com.terry.weddingphoto.model.Photo;
 import com.terry.weddingphoto.util.StringUtil;
 
 /**
@@ -70,6 +71,8 @@ public class PhotoManagerServlet extends HttpServlet {
 				jo = saveComment(req);
 			} else if (action.equals("deleteComment")) {
 				jo = deleteComment(req);
+			} else if (action.equals("updatePhoto")) {
+				jo = updatePhoto(req);
 			}
 		}
 
@@ -100,6 +103,15 @@ public class PhotoManagerServlet extends HttpServlet {
 		if (getIpCommentCount(pid, ip) >= COMMENT_LIMIT) {
 			try {
 				jo.put("message", "您的评论频率太高");
+			} catch (JSONException e) {
+			}
+			return jo;
+		}
+
+		Photo p = photoDao.getPhotoById(pid);
+		if (p.getComment() == -1) {
+			try {
+				jo.put("message", "该照片不允许评论");
 			} catch (JSONException e) {
 			}
 			return jo;
@@ -152,6 +164,37 @@ public class PhotoManagerServlet extends HttpServlet {
 				jo.put("result", true);
 				jo.put("message", "已成功删除评论");
 				jo.put("count", count);
+			} catch (JSONException e) {
+			}
+		}
+		return jo;
+	}
+
+	private JSONObject updatePhoto(HttpServletRequest req) {
+		JSONObject jo = createDefaultJo();
+		if (!userService.isUserLoggedIn() || !userService.isUserAdmin()) {
+			try {
+				jo.put("message", "您无权更新照片信息");
+			} catch (JSONException e) {
+			}
+			return jo;
+		}
+		String pid = req.getParameter("pid");
+		String remark = req.getParameter("remark");
+		String comment = req.getParameter("comment");
+		if (StringUtil.isEmptyOrWhitespace(pid) || remark == null
+				|| remark.length() > 500 || comment == null) {
+			try {
+				jo.put("message", "请检查您的输入");
+			} catch (JSONException e) {
+			}
+			return jo;
+		}
+		if (photoDao.updatePhoto(pid, remark, comment.equals("false") ? false
+				: true)) {
+			try {
+				jo.put("result", true);
+				jo.put("message", "已成功更新照片");
 			} catch (JSONException e) {
 			}
 		}
