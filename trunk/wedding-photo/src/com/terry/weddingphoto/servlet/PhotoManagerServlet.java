@@ -216,10 +216,15 @@ public class PhotoManagerServlet extends HttpServlet {
 		List<Photo> photos = photoDao.getPhotos(start, limit);
 		JSONArray rows = new JSONArray();
 		for (Photo p : photos) {
+			String pid = p.getId();
 			JSONObject jso = new JSONObject();
 			JSONArray ja = new JSONArray();
 			ja.put(sdf.format(p.getCdate()));
-			ja.put(p.getFilename());
+			ja
+					.put("<a href=\"detail.jsp?pid="
+							+ pid
+							+ "&admin=true&keepThis=true&TB_iframe=true&height=580&width=700\" class=\"thickbox\">"
+							+ p.getFilename() + "</a>");
 			ja.put(p.getRemark());
 			int comment = p.getComment() == -1 ? p.getComments().size() : p
 					.getComment();
@@ -229,7 +234,7 @@ public class PhotoManagerServlet extends HttpServlet {
 					: "<span class='green'>允许评论</span>");
 			ja.put("<img src='view?id=" + p.getId() + "&w=100&h=80'/>");
 			try {
-				jso.put("id", p.getId());
+				jso.put("id", pid);
 				jso.put("cell", ja);
 			} catch (JSONException e) {
 			}

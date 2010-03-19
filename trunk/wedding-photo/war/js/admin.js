@@ -48,13 +48,22 @@ $(function() {
 			name : '删除照片',
 			bclass : 'delete',
 			onpress : photoAction
+		}, {
+			separator : true
+		}, , {
+			name : '刷新',
+			bclass : 'refresh',
+			onpress : photoAction
 		} ],
-		title : '照片管理列表(若需管理照片说明及评论，请至相册点击详情)',
+		title : '照片管理列表(若需管理照片说明及评论，请单击文件名的链接)',
 		usepager : true,
 		rp : 10,
 		useRp : false,
 		pagestat : '显示 第 {from} 到 {to} 张, 总共  {total} 张照片',
 		procmsg : '加载中, 请稍候 ...',
+		onSuccess : function() {
+			tb_init('a.thickbox')
+		},
 		height : 899
 	});
 	$("#photoInputs").uploadify(
@@ -122,7 +131,7 @@ $(function() {
 							sticky : false
 						});
 						tb_remove();
-						$("#flex1").flexReload();
+						reloadGrid();
 					} else {
 						$.jGrowl('<p></p>' + data.message, {
 							theme : 'error',
@@ -155,9 +164,9 @@ function photoAction(com, grid) {
 						"ids" : itemlist
 					},
 					success : function(data) {
-						var theme ='success';
-						if(data.total!=data.count){
-							if(data.count==0)
+						var theme = 'success';
+						if (data.total != data.count) {
+							if (data.count == 0)
 								theme = 'error';
 							else
 								theme = 'warning';
@@ -169,7 +178,7 @@ function photoAction(com, grid) {
 							sticky : false
 						});
 						if (data.result) {
-							$("#flex1").flexReload();
+							reloadGrid();
 						}
 					},
 					complete : function(req) {
@@ -194,5 +203,11 @@ function photoAction(com, grid) {
 		}
 	} else if (com == '上传新照片') {
 		$('#updatePhotosTrigger').trigger("click");
+	} else {
+		$("#flex1").flexReload();
 	}
+}
+
+function reloadGrid() {
+	$("#flex1").flexReload();
 }

@@ -26,6 +26,7 @@ function clearMsg() {
 	document.getElementById("msg_content").innerHTML = "";
 }
 var pid=null;
+var sadmin = "false";
 $(function() {
 	$("#commentSave")
 			.click(
@@ -80,9 +81,13 @@ $(function() {
 															html)
 																	
 											showMsg("pass",data.message);
+											if(sadmin=="false"){
 											window.parent.document
 													.getElementById("c-" + pid).innerHTML = "共有 <span class='commentcount'>"
 													+ data.count + "</span> 条评论";
+											}else{
+												window.parent.reloadGrid();
+											}
 										}
 									},
 									complete : function(req) {
@@ -122,10 +127,14 @@ $(function() {
 									showMsg("error",data.message);
 								else {
 									showMsg("pass",data.message);
+									if(sadmin=="false"){
 									window.parent.document
 									.getElementById("c-" + pid).innerHTML = comment?"允许评论":"评论已关闭";
 									window.parent.document
 											.getElementById("r-" + pid).innerHTML = remark;
+									}else{
+										window.parent.reloadGrid();
+									}
 								}
 							},
 							complete : function(req) {
@@ -186,9 +195,13 @@ function deleteComment(cid){
 				else {
 					showMsg("pass",data.message);
 					$("#li-"+cid).remove();
+					if(sadmin=="false"){
 					window.parent.document
 							.getElementById("c-" + pid).innerHTML = data.count==0?"暂无评论":("共有 <span class='commentcount'>"
 							+ data.count + "</span> 条评论");
+					}else{
+						window.parent.reloadGrid();
+					}
 				}
 			},
 			complete : function(req) {

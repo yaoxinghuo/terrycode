@@ -43,7 +43,7 @@ UserService userService = UserServiceFactory.getUserService();
 	alt="#TB_inline?height=300&width=500&inlineId=hiddenModalContent&;modal=false"
 	title="<b>照片文件上传</b>" class="thickbox" type="button" value="Show" /></div>
 <div id="hiddenModalContent" style="display: none;"><div align="center">
-<p><strong>可按住ALT或SHIFT选择多个照片文件上传</strong></p>
+<p><strong>可按住ALT或SHIFT同时选择多个照片文件上传</strong></p>
 <input id="photoInputs" type="file" name="file"></input>
 <br /><br/>
 <a href="javascript:$('#photoInputs').uploadifyUpload();">开始上传</a>

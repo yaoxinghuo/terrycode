@@ -112,7 +112,7 @@ h3 {
 		}
 		desc += "</span>,&nbsp;<a class='wbox' href='detail.jsp?pid="
 				+ pid
-				+ "'>评论|详情</a>&nbsp;<a class='wbox2' href=# pid='"
+				+ "&admin=false'>评论|详情</a>&nbsp;<a class='wbox2' href=# pid='"
 				+ pid + "'>查看原图</a>";
 %>
 <div class="panel"><img style="display: none;"
