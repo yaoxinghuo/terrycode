@@ -3,7 +3,7 @@ $(function() {
 			{
 				'uploader' : '../uploadify.swf',
 				'script' : 'photoUpload',
-				'checkScript' : 'checkPhoto',
+				'checkScript' : 'photoCheck',
 				'cancelImg' : 'images/cancel.png',
 				'multi' : true,
 				'fileDesc' : 'Image Files',

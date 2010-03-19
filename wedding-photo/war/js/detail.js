@@ -50,7 +50,7 @@ $(function() {
 								"请稍候");
 						$
 								.ajax( {
-									url : "comment",
+									url : "photoManager",
 									type : "POST",
 									cache : false,
 									data : {
@@ -127,7 +127,7 @@ function deleteComment(cid){
 	if (confirm('您确定要删除这条评论吗？')) {
 		$
 		.ajax( {
-			url : "comment",
+			url : "photoManager",
 			type : "POST",
 			cache : false,
 			data : {

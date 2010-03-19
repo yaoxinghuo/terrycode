@@ -15,7 +15,7 @@
 <script type="text/javascript" src="js/swfobject.js"></script>
 <script type="text/javascript" src="js/jquery.uploadify.v2.1.0.min.js"></script>
 <script type="text/javascript" src="js/jquery.jgrowl_minimized.js"></script>
-<script type="text/javascript" src="js/upload.js"></script>
+<script type="text/javascript" src="js/admin.js"></script>
 </head>
 <body>
 <%
