@@ -1,4 +1,62 @@
+var errorMsg = "对不起，程序错误，请稍候再试！";
 $(function() {
+	$("#flex1").flexigrid( {
+		url : 'photoManager?action=photosList',
+		dataType : 'json',
+		colModel : [ {
+			display : '上传时间',
+			name : 'cdate',
+			width : 120,
+			sortable : false,
+			align : 'left'
+		}, {
+			display : '文件名',
+			name : 'filenam',
+			width : 110,
+			sortable : false,
+			align : 'left'
+		}, {
+			display : '说明',
+			name : 'remark',
+			width : 160,
+			sortable : false,
+			align : 'left'
+		}, {
+			display : '评论数',
+			name : 'count',
+			width : 170,
+			sortable : false,
+			align : 'left'
+		}, {
+			display : '评论状态',
+			name : 'status',
+			width : 120,
+			sortable : false,
+			align : 'left'
+		}, {
+			display : '缩略图',
+			name : 'thumb',
+			width : 120,
+			sortable : false,
+			align : 'left'
+		} ],
+		buttons : [ {
+			name : '上传新照片',
+			bclass : 'add',
+			onpress : photoAction
+		}, {
+			name : '删除照片',
+			bclass : 'delete',
+			onpress : photoAction
+		} ],
+		title : '照片管理列表(若需管理照片说明及评论，请至相册点击详情)',
+		usepager : true,
+		rp : 10,
+		useRp : false,
+		pagestat : '显示 第 {from} 到 {to} 张, 总共  {total} 张照片',
+		procmsg : '加载中, 请稍候 ...',
+		height : 899
+	});
 	$("#photoInputs").uploadify(
 			{
 				'uploader' : '../uploadify.swf',
@@ -63,6 +121,8 @@ $(function() {
 							life : 4000,
 							sticky : false
 						});
+						tb_remove();
+						$("#flex1").flexReload();
 					} else {
 						$.jGrowl('<p></p>' + data.message, {
 							theme : 'error',
@@ -75,3 +135,64 @@ $(function() {
 
 			});
 });
+
+function photoAction(com, grid) {
+	if (com == '删除照片') {
+		var items = $('.trSelected', grid);
+		if (items.length > 0) {
+			if (confirm('确认删除选中的 ' + items.length + ' 张照片吗？')) {
+				var itemlist = '';
+				for (i = 0; i < items.length; i++) {
+					itemlist += items[i].id.substr(3) + ",";
+				}
+				$.ajax( {
+					type : "POST",
+					cache : false,
+					dataType : "json",
+					url : "photoManager",
+					data : {
+						"action" : "deletePhotos",
+						"ids" : itemlist
+					},
+					success : function(data) {
+						var theme ='success';
+						if(data.total!=data.count){
+							if(data.count==0)
+								theme = 'error';
+							else
+								theme = 'warning';
+						}
+						$.jGrowl('<p></p>' + data.message, {
+							theme : theme,
+							header : '删除报告',
+							life : 4000,
+							sticky : false
+						});
+						if (data.result) {
+							$("#flex1").flexReload();
+						}
+					},
+					complete : function(req) {
+						var code = req.status;
+						if (code < 200 || code > 299)
+							$.jGrowl('<p></p>' + errorMsg, {
+								theme : 'error',
+								header : '错误',
+								life : 4000,
+								sticky : false
+							});
+					}
+				});
+			}
+		} else {
+			$.jGrowl('<p></p>' + '请至少选中一行删除！', {
+				theme : 'error',
+				header : '错误',
+				life : 4000,
+				sticky : false
+			});
+		}
+	} else if (com == '上传新照片') {
+		$('#updatePhotosTrigger').trigger("click");
+	}
+}
