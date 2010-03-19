@@ -18,7 +18,7 @@ import com.terry.weddingphoto.data.intf.IPhotoDao;
  * @author Terry E-mail: yaoxinghuo at 126 dot com
  * @version create: Mar 18, 2010 8:38:16 PM
  */
-public class CheckPhotoServlet extends HttpServlet {
+public class PhotoCheckServlet extends HttpServlet {
 
 	/**
 	 * 

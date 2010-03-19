@@ -28,7 +28,7 @@ import com.terry.weddingphoto.util.StringUtil;
  * @author Terry E-mail: yaoxinghuo at 126 dot com
  * @version create: 2010-3-17 下午12:49:41
  */
-public class CommentServlet extends HttpServlet {
+public class PhotoManagerServlet extends HttpServlet {
 
 	/**
 	 * 

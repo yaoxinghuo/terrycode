@@ -20,12 +20,12 @@
 	</servlet-mapping>
 	
 	<servlet>
-		<servlet-name>comment</servlet-name>
-		<servlet-class>com.terry.weddingphoto.servlet.CommentServlet</servlet-class>
+		<servlet-name>photoManager</servlet-name>
+		<servlet-class>com.terry.weddingphoto.servlet.PhotoManagerServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>comment</servlet-name>
-		<url-pattern>/comment</url-pattern>
+		<servlet-name>photoManager</servlet-name>
+		<url-pattern>/photoManager</url-pattern>
 	</servlet-mapping>
 	
 	<servlet>
@@ -38,12 +38,12 @@
 	</servlet-mapping>
 	
 	<servlet>
-		<servlet-name>checkPhoto</servlet-name>
-		<servlet-class>com.terry.weddingphoto.servlet.CheckPhotoServlet</servlet-class>
+		<servlet-name>photoCheck</servlet-name>
+		<servlet-class>com.terry.weddingphoto.servlet.PhotoCheckServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>checkPhoto</servlet-name>
-		<url-pattern>/checkPhoto</url-pattern>
+		<servlet-name>photoCheck</servlet-name>
+		<url-pattern>/photoCheck</url-pattern>
 	</servlet-mapping>
 	
 	<servlet>

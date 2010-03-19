@@ -18,7 +18,7 @@
 <link type="text/css" rel="stylesheet" href="css/style.css" />
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="js/jquery.cookie.js"></script>
-<script type="text/javascript" src="js/comment.js"></script>
+<script type="text/javascript" src="js/detail.js"></script>
 
 <style type="text/css">
 body {
