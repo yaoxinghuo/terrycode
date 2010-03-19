@@ -6,7 +6,7 @@
 <%@page import="com.google.appengine.api.users.UserServiceFactory"%><html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>图片文件上传</title>
+<title>相册后台管理</title>
 <link rel="stylesheet" href="css/admin.css" type="text/css" />
 <link rel="stylesheet" href="css/flexigrid.css" type="text/css" />
 <link rel="stylesheet" href="css/uploadify.jGrowl.css" type="text/css" />
