@@ -103,6 +103,7 @@ a:hover {
 	var admin = <%=admin %>;
 	pid = '<%=pid %>';
 	var canComment = <%=photo.getComment()!=-1 %>;
+	sadmin = '<%=request.getParameter("admin") %>';
 </script>
 <%
 if(photo.getComment()!=-1){

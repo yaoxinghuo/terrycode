@@ -115,3 +115,7 @@ a.gb2:hover {
 .flexigrid div.fbutton .delete {
 	background: url(../images/delete.png) no-repeat center left;
 }
+
+.flexigrid div.fbutton .refresh {
+	background: url(../images/load.png) no-repeat center left;
+}
