@@ -17,6 +17,8 @@ import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.appengine.api.memcache.MemcacheService;
+import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import com.terry.weddingphoto.constants.Constants;
 import com.terry.weddingphoto.data.impl.PhotoDaoImpl;
 import com.terry.weddingphoto.data.intf.IPhotoDao;
@@ -33,6 +35,8 @@ public class PhotoUploadServlet extends HttpServlet {
 	private static final long serialVersionUID = -3274040408352222112L;
 
 	private IPhotoDao photoDao = new PhotoDaoImpl();
+
+	private MemcacheService cache = MemcacheServiceFactory.getMemcacheService();
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -72,12 +76,15 @@ public class PhotoUploadServlet extends HttpServlet {
 						} else {
 							String fileName = item.getName();
 							try {
-								if (photoDao.saveOrUpdatePhoto(fileName,
-										IOUtils.toByteArray(in))) {
+								int result = photoDao.saveOrUpdatePhoto(
+										fileName, IOUtils.toByteArray(in));
+								if (result != -1) {
 									jo.put("result", true);
 									jo.put("message", "文件：" + fileName
 											+ " 已成功存入数据库");
+									updatePhotosCount(result);
 								}
+
 							} finally {
 								IOUtils.closeQuietly(in);
 							}
@@ -97,6 +104,12 @@ public class PhotoUploadServlet extends HttpServlet {
 		}
 		PrintWriter out = resp.getWriter();
 		out.print(jo.toString());
+	}
+
+	private void updatePhotosCount(int change) {
+		if (change == 0)
+			return;
+		cache.increment(Constants.PHOTOS_COUNT_CACHE, change);
 	}
 
 }

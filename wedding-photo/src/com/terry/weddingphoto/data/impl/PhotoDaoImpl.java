@@ -39,7 +39,7 @@ public class PhotoDaoImpl implements IPhotoDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean saveOrUpdatePhoto(String filename, byte[] data) {
+	public int saveOrUpdatePhoto(String filename, byte[] data) {
 		try {
 			Photo photo = null;
 			EntityManager em = EMF.get().createEntityManager();
@@ -47,6 +47,7 @@ public class PhotoDaoImpl implements IPhotoDao {
 					+ Photo.class.getName() + " f where f.filename=:filename");
 			query.setParameter("filename", filename);
 			List<Photo> photos = query.getResultList();
+			boolean update = false;
 			if (photos == null || photos.size() == 0) {
 				photo = new Photo();
 				photo.setCdate(new Date());
@@ -54,6 +55,7 @@ public class PhotoDaoImpl implements IPhotoDao {
 				photo.setRemark("");
 				photo.setComment(0);
 			} else {
+				update = true;
 				photo = photos.get(0);
 			}
 			photo.setData(new Blob(data));
@@ -62,9 +64,9 @@ public class PhotoDaoImpl implements IPhotoDao {
 			tx.begin();
 			em.persist(photo);
 			tx.commit();
-			return true;
+			return update ? 0 : 1;
 		} catch (Exception e) {
-			return false;
+			return -1;
 		}
 	}
 
@@ -217,5 +219,13 @@ public class PhotoDaoImpl implements IPhotoDao {
 				+ " f where f.filename=:filename");
 		query.setParameter("filename", filename);
 		return query.getResultList();
+	}
+
+	@Override
+	public int getPhotosCount() {
+		Query query = em.createQuery("SELECT count(p) FROM "
+				+ Photo.class.getName() + " p");
+		query.setHint("datanucleus.query.resultSizeMethod", "count");
+		return (Integer) query.getSingleResult();
 	}
 }

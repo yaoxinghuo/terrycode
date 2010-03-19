@@ -12,7 +12,7 @@ import com.terry.weddingphoto.model.Photo;
 public interface IPhotoDao {
 	public boolean savePhoto(Photo photo);
 
-	public boolean saveOrUpdatePhoto(String filename, byte[] data);
+	public int saveOrUpdatePhoto(String filename, byte[] data);//1 save 0 update -1 error
 
 	public boolean updatePhoto(String pid, String remark, boolean canComment);
 
@@ -21,6 +21,8 @@ public interface IPhotoDao {
 	public boolean deletePhotoById(String pid);
 
 	public List<Photo> getPhotos(int start, int limit);
+	
+	public int getPhotosCount();
 
 	public List<Photo> getPhotosByFilename(String filename);
 
