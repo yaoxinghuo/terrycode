@@ -75,6 +75,8 @@ public class PhotoManagerServlet extends HttpServlet {
 				jo = updatePhoto(req);
 			} else if (action.equals("photosList")) {
 				jo = photosList(req);
+			} else if (action.equals("deletePhotos")) {
+				jo = deletePhotos(req);
 			}
 		}
 
@@ -219,9 +221,12 @@ public class PhotoManagerServlet extends HttpServlet {
 			ja.put(sdf.format(p.getCdate()));
 			ja.put(p.getFilename());
 			ja.put(p.getRemark());
-			ja.put(p.getComment() == -1 ? p.getComments().size() : p
-					.getComment());
-			ja.put(p.getComment() == -1 ? "评论已关闭" : "允许评论");
+			int comment = p.getComment() == -1 ? p.getComments().size() : p
+					.getComment();
+			ja.put(comment > 0 ? "<span class='red'>" + comment + "</span>"
+					: "0");
+			ja.put(p.getComment() == -1 ? "<span class='red'>评论已关闭</span>"
+					: "<span class='green'>允许评论</span>");
 			ja.put("<img src='view?id=" + p.getId() + "&w=100&h=80'/>");
 			try {
 				jso.put("id", p.getId());
@@ -236,6 +241,52 @@ public class PhotoManagerServlet extends HttpServlet {
 			jo.put("rows", rows);
 			jo.put("result", true);
 			jo.put("message", "ok");
+		} catch (JSONException e) {
+		}
+		return jo;
+	}
+
+	private JSONObject deletePhotos(HttpServletRequest req) {
+		JSONObject jo = createDefaultJo();
+		if (!userService.isUserLoggedIn() || !userService.isUserAdmin()) {
+			try {
+				jo.put("message", "您无权删除该评论");
+			} catch (JSONException e) {
+			}
+			return jo;
+		}
+		String ids = req.getParameter("ids");
+		if (StringUtil.isEmptyOrWhitespace(ids)) {
+			try {
+				jo.put("message", "请检查您的输入");
+			} catch (JSONException e) {
+			}
+			return jo;
+		}
+		String[] id = ids.split(",");
+		int total = id.length;
+		int count = 0;
+		for (String pid : id) {
+			if (pid.equals(""))
+				continue;
+			if (photoDao.deletePhotoById(pid))
+				count++;
+		}
+		try {
+			jo.put("total", id.length);
+			jo.put("count", count);
+			jo.put("result", total == count);
+			updatePhotosCount(count);
+			String message = "您已成功删除 <strong>" + total + "</strong> 张照片";
+			if (total != count) {
+				if (count == 0)
+					message = "对不起，程序出现错误，没有删除照片，请稍候再试";
+				else
+					message = "您计划删除 <strong>" + total
+							+ "</strong> 张照片，有 <strong>" + (total - count)
+							+ "<strong> 张未删除，请稍候再试";
+			}
+			jo.put("message", message);
 		} catch (JSONException e) {
 		}
 		return jo;
@@ -292,5 +343,11 @@ public class PhotoManagerServlet extends HttpServlet {
 		int count = photoDao.getPhotosCount();
 		cache.put(Constants.PHOTOS_COUNT_CACHE, count);
 		return count;
+	}
+
+	private void updatePhotosCount(int change) {
+		if (change == 0)
+			return;
+		cache.increment(Constants.PHOTOS_COUNT_CACHE, change);
 	}
 }

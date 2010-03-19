@@ -1,5 +1,13 @@
-body, div { font-family: 'lucida grande', helvetica, verdana, arial, sans-serif }
-body, table, tr, td { margin: 0; padding: 0; font-size: small; color: #333 }
+body,div {
+	font-family: 'lucida grande', helvetica, verdana, arial, sans-serif
+}
+
+body,table,tr,td {
+	margin: 0;
+	padding: 0;
+	font-size: small;
+	color: #333
+}
 
 body,td,a,p,.h {
 	font-family: arial, sans-serif
@@ -90,4 +98,20 @@ a.gb1,a.gb2,a.gb3 {
 a.gb2:hover {
 	background: #36c;
 	color: #fff !important
+}
+
+.red {
+	color: red;
+}
+
+.green {
+	color: green;
+}
+
+.flexigrid div.fbutton .add {
+	background: url(../images/add.png) no-repeat center left;
+}
+
+.flexigrid div.fbutton .delete {
+	background: url(../images/delete.png) no-repeat center left;
 }

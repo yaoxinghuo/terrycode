@@ -143,7 +143,7 @@ if(photo.getComment()!=-1){
 	</tr>
 	<tr>
 		<td>照片简短说明</td>
-		<td><input type="text" id="premark" value="<%=photo.getRemark() %>" maxlength="500" style="width: 250px;"/></td>
+		<td><textarea rows="4" cols="35" id="premark" value="<%=photo.getRemark() %>"></textarea></td>
 	</tr>
 	<tr>
 		<td>是否允许评论</td>

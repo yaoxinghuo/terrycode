@@ -98,6 +98,10 @@ $(function() {
 	.click(
 			function() {
 				var remark = $("#premark").val();
+				if(remark.length>300){
+					showMsg("error","照片说明不能超过300字");
+					return;
+				}
 				var comment = $("#cancomment").attr("checked");
 				$("#photoUpdate").attr("disabled", true).attr("value",
 						"请稍候");

@@ -8,13 +8,17 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>图片文件上传</title>
 <link rel="stylesheet" href="css/admin.css" type="text/css" />
+<link rel="stylesheet" href="css/flexigrid.css" type="text/css" />
 <link rel="stylesheet" href="css/uploadify.jGrowl.css" type="text/css" />
 <link rel="stylesheet" href="css/uploadify.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="css/thickbox.css" />
 
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="js/flexigrid.pack.js"></script>
 <script type="text/javascript" src="js/swfobject.js"></script>
 <script type="text/javascript" src="js/jquery.uploadify.v2.1.0.min.js"></script>
 <script type="text/javascript" src="js/jquery.jgrowl_minimized.js"></script>
+<script type="text/javascript" src="js/thickbox.js"></script>
 <script type="text/javascript" src="js/admin.js"></script>
 </head>
 <body>
@@ -34,16 +38,20 @@ UserService userService = UserServiceFactory.getUserService();
 <div class="bborderx">
 <table id="flex1" style="display: none"></table>
 </div>
-<div align="center">
-<p><strong>选择多个图片文件上传</strong></p>
+<div id="flex1"></div>
+<div style="display: none;"><input id="updatePhotosTrigger"
+	alt="#TB_inline?height=300&width=500&inlineId=hiddenModalContent&;modal=false"
+	title="<b>照片文件上传</b>" class="thickbox" type="button" value="Show" /></div>
+<div id="hiddenModalContent" style="display: none;"><div align="center">
+<p><strong>可按住ALT或SHIFT选择多个照片文件上传</strong></p>
 <input id="photoInputs" type="file" name="file"></input>
-<br /><div id="fileQueue"></div><br/>
+<br /><br/>
 <a href="javascript:$('#photoInputs').uploadifyUpload();">开始上传</a>
 |
 <a href="javascript:$('#photoInputs').uploadifyClearQueue();">清除列队</a>
-<script type="text/javascript">
-
-</script>
+<br/>
+<div id="fileQueue"></div>
+</div>
 </div>
 </body>
 </html>
