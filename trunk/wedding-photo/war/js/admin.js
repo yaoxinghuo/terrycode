@@ -1,4 +1,6 @@
 var errorMsg = "对不起，程序错误，请稍候再试！";
+var uuid = null;
+var needReload = false;
 $(function() {
 	$("#flex1").flexigrid( {
 		url : 'photoManager?action=photosList',
@@ -69,7 +71,7 @@ $(function() {
 	$("#photoInputs").uploadify(
 			{
 				'uploader' : '../uploadify.swf',
-				'script' : 'photoUpload',
+				'script' : 'photoUpload?uuid='+uuid,
 				'checkScript' : 'photoCheck',
 				'cancelImg' : 'images/cancel.png',
 				'multi' : true,
@@ -208,6 +210,11 @@ function photoAction(com, grid) {
 	}
 }
 
+function setNeedReload(){
+	needReload = true;
+}
+
 function reloadGrid() {
 	$("#flex1").flexReload();
+	needReload= false;
 }

@@ -206,13 +206,20 @@ public class PhotoManagerServlet extends HttpServlet {
 	}
 
 	private JSONObject photosList(HttpServletRequest req) {
-		// 得到当前页数
+		JSONObject jo = createDefaultJo();
+		String spage = req.getParameter("page");// 得到当前页数
+		String slimit = req.getParameter("rp");// 得到每页显示行数
+		if (!StringUtil.isDigital(spage) || !StringUtil.isDigital(slimit)) {
+			try {
+				jo.put("message", "请检查您的输入");
+			} catch (JSONException e) {
+			}
+			return jo;
+		}
 		int page = Integer.parseInt(req.getParameter("page"));
-		// 得到每页显示行数
 		int limit = Integer.parseInt(req.getParameter("rp"));
 		int start = (page - 1) * limit;
 
-		JSONObject jo = createDefaultJo();
 		List<Photo> photos = photoDao.getPhotos(start, limit);
 		JSONArray rows = new JSONArray();
 		for (Photo p : photos) {
@@ -221,7 +228,7 @@ public class PhotoManagerServlet extends HttpServlet {
 			JSONArray ja = new JSONArray();
 			ja.put(sdf.format(p.getCdate()));
 			ja
-					.put("<a href=\"detail.jsp?pid="
+					.put("<a title=\"评论|详情\" href=\"detail.jsp?pid="
 							+ pid
 							+ "&admin=true&keepThis=true&TB_iframe=true&height=580&width=700\" class=\"thickbox\">"
 							+ p.getFilename() + "</a>");

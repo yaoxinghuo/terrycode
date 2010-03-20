@@ -64,6 +64,8 @@ public class StringUtil {
 	}
 
 	public static boolean isDigital(String s) {
+		if(s==null)
+			return false;
 		String pattern = "[0-9]+(.[0-9]+)?";
 		// 对()的用法总结：将()中的表达式作为一个整体进行处理，必须满足他的整体结构才可以。
 		// (.[0-9]+)? ：表示()中的整体出现一次或一次也不出现
@@ -180,6 +182,6 @@ public class StringUtil {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(isChinaMobile("15112345678"));
+		System.out.println(isDigital(""));
 	}
 }

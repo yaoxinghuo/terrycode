@@ -104,6 +104,7 @@ a:hover {
 	pid = '<%=pid %>';
 	var canComment = <%=photo.getComment()!=-1 %>;
 	sadmin = '<%=request.getParameter("admin") %>';
+	var premark = '<%=photo.getRemark() %>';
 </script>
 <%
 if(photo.getComment()!=-1){
@@ -152,7 +153,7 @@ if(photo.getComment()!=-1){
 	</tr>
 	<tr>
 		<td>照片简短说明</td>
-		<td><textarea rows="4" cols="35" id="premark" value="<%=photo.getRemark() %>"></textarea></td>
+		<td><textarea rows="4" cols="35" id="premark"></textarea></td>
 	</tr>
 	<tr>
 		<td>是否允许评论</td>
