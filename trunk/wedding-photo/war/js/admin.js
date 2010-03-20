@@ -66,7 +66,7 @@ $(function() {
 		onSuccess : function() {
 			tb_init('a.thickbox')
 		},
-		height : 899
+		height : document.documentElement.clientHeight-150
 	});
 	$("#photoInputs").uploadify(
 			{
@@ -79,8 +79,6 @@ $(function() {
 				'fileExt' : '*.jpg;*.jpeg;*.png;*.gif',
 				'multi' : true,
 				'queueID' : 'fileQueue',
-				'simUploadLimit' : 2,
-				'queueSizeLimit' : 10,
 				'sizeLimit' : 1048576,
 				onError : function(event, queueID, fileObj, errorObj) {
 					var msg;
@@ -89,9 +87,7 @@ $(function() {
 					} else if (errorObj.type === "HTTP")
 						msg = errorObj.type + ": " + errorObj.status;
 					else if (errorObj.type === "File Size")
-						msg = fileObj.name + '<br>' + errorObj.type
-								+ ' Limit: '
-								+ Math.round(errorObj.sizeLimit / 1024) + 'KB';
+						msg = fileObj.name + '<br>' + '太大,不能超过1MB';
 					else
 						msg = errorObj.type + ": " + errorObj.text;
 					$.jGrowl('<p></p>' + msg, {
