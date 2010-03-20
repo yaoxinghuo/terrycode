@@ -87,7 +87,7 @@ a:hover {
 	IPhotoDao photoDao = new PhotoDaoImpl();
 	String pid = request.getParameter("pid");
 	Photo photo = photoDao.getPhotoById(pid);
-	List<Comment> comments = photo.getComments();
+	List<Comment> comments = photoDao.getCommentsByPhotoId(pid,0,0);
 	for (Comment c : comments) {
 		String cid = c.getId();
 %>

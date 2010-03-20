@@ -105,7 +105,7 @@ public class PhotoDaoImpl implements IPhotoDao {
 	@Override
 	public List<Photo> getPhotos(int start, int limit) {
 		Query query = em.createQuery("SELECT f FROM " + Photo.class.getName()
-				+ " f");
+				+ " f order by f.cdate");
 		query.setFirstResult(start);
 		if (limit > 0)
 			query.setMaxResults(limit);
@@ -152,7 +152,7 @@ public class PhotoDaoImpl implements IPhotoDao {
 	@Override
 	public List<Comment> getCommentsByPhotoId(String pid, int start, int limit) {
 		Query query = em.createQuery("SELECT c FROM " + Comment.class.getName()
-				+ " c where c.pid=:pid");
+				+ " c where c.pid=:pid order by c.cdate");
 		query.setParameter("pid", pid);
 		query.setFirstResult(start);
 		if (limit > 0)
