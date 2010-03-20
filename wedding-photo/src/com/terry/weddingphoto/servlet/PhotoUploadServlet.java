@@ -3,6 +3,7 @@ package com.terry.weddingphoto.servlet;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,6 +23,7 @@ import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import com.terry.weddingphoto.constants.Constants;
 import com.terry.weddingphoto.data.impl.PhotoDaoImpl;
 import com.terry.weddingphoto.data.intf.IPhotoDao;
+import com.terry.weddingphoto.util.StringUtil;
 
 /**
  * @author Terry E-mail: yaoxinghuo at 126 dot com
@@ -55,9 +57,9 @@ public class PhotoUploadServlet extends HttpServlet {
 			jo.put("message", "对不起，未能保存上传的文件，请稍候再试！");
 		} catch (JSONException e1) {
 		}
-		if (!Constants.CAN_UPLOAD) {
+		if (!checkUploadPermission(req)) {
 			try {
-				jo.put("message", "你无权上传文件，请开启web.xml中的canUploadPhotos开关");
+				jo.put("message", "你无权上传文件，若您长时间未操作，请刷新页面后再试");
 			} catch (JSONException e) {
 			}
 		} else {
@@ -80,8 +82,8 @@ public class PhotoUploadServlet extends HttpServlet {
 										fileName, IOUtils.toByteArray(in));
 								if (result != -1) {
 									jo.put("result", true);
-									jo.put("message", "文件：" + fileName
-											+ " 已成功存入数据库");
+									jo.put("message", "照片：" + fileName
+											+ " 已成功存入相册");
 									updatePhotosCount(result);
 								}
 
@@ -110,6 +112,24 @@ public class PhotoUploadServlet extends HttpServlet {
 		if (change == 0)
 			return;
 		cache.increment(Constants.PHOTOS_COUNT_CACHE, change);
+	}
+
+	@SuppressWarnings("unchecked")
+	private boolean checkUploadPermission(HttpServletRequest req) {
+		String uuid = req.getParameter("uuid");
+		if (StringUtil.isEmptyOrWhitespace(uuid))
+			return false;
+		Object o = cache.get(Constants.UPLOAD_SESSION_CACHE);
+		if (o == null)
+			return false;
+		ArrayList<String> al = (ArrayList<String>) o;
+		if (al == null || al.size() == 0)
+			return false;
+		for (String s : al) {
+			if (uuid.equals(s))
+				return true;
+		}
+		return false;
 	}
 
 }

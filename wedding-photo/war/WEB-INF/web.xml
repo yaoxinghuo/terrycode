@@ -5,11 +5,6 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	
-	<context-param>
-		<param-name>canUploadPhotos</param-name>
-		<param-value>true</param-value><!--是否允许上传图片true|false-->
-	</context-param>
-	
 	<servlet>
 		<servlet-name>view</servlet-name>
 		<servlet-class>com.terry.weddingphoto.servlet.PhotoViewServlet</servlet-class>
@@ -76,7 +71,4 @@
 		</auth-constraint>
 	</security-constraint>
 	
-	<listener>
-		<listener-class>com.terry.weddingphoto.listener.InitListener</listener-class>
-	</listener>
 </web-app>

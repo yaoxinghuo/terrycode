@@ -277,6 +277,7 @@ function tb_remove() {
 	}
 	document.onkeydown = "";
 	document.onkeyup = "";
+	if(needReload){reloadGrid()};//Modified by xinghuo
 	return false;
 }
 

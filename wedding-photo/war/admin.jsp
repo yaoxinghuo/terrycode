@@ -25,6 +25,9 @@
 <%
 UserService userService = UserServiceFactory.getUserService();
 %>
+<script>
+	uuid = "<%=request.getAttribute("uuid") %>";
+</script>
 <textarea id=csi style="display: none"></textarea>
 <div id=gbar><b class=gb1><a href="/">相册首页</a></b></div>
 <div id=guser width=100%><%=userService.getCurrentUser().getEmail()

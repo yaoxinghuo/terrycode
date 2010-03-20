@@ -24,7 +24,7 @@ $(document).ready(function() {
 			width : 700,
 			height : 580
 		},
-		title : '评论'
+		title : '评论|详情'
 	});
 	$(".wbox2").each(function() {
 		$(this).wBox( {

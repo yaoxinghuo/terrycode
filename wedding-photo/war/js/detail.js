@@ -86,7 +86,7 @@ $(function() {
 													.getElementById("c-" + pid).innerHTML = "共有 <span class='commentcount'>"
 													+ data.count + "</span> 条评论";
 											}else{
-												window.parent.reloadGrid();
+												window.parent.setNeedReload();
 											}
 										}
 									},
@@ -133,7 +133,7 @@ $(function() {
 									window.parent.document
 											.getElementById("r-" + pid).innerHTML = remark;
 									}else{
-										window.parent.reloadGrid();
+										window.parent.setNeedReload();
 									}
 								}
 							},
@@ -152,7 +152,7 @@ $(function() {
 		});
 	});
 	var nickname = $.cookie("nickname");
-	if (nickname != null && nickname != "null")
+	if (nickname != null && nickname != "null"&&nickname!="")
 		$("#nickname").val(nickname);
 	
 	$("#email").change(function(){
@@ -161,10 +161,11 @@ $(function() {
 		});
 	});
 	var email = $.cookie("email");
-	if (email != null && email != "null")
+	if (email != null && email != "null"&&email!="")
 		$("#email").val(email);
 	if(admin){
 		$("#cancomment").attr("checked",canComment);
+		$("#premark").val(premark);
 	}
 });
 
@@ -200,7 +201,7 @@ function deleteComment(cid){
 							.getElementById("c-" + pid).innerHTML = data.count==0?"暂无评论":("共有 <span class='commentcount'>"
 							+ data.count + "</span> 条评论");
 					}else{
-						window.parent.reloadGrid();
+						window.parent.setNeedReload();
 					}
 				}
 			},
