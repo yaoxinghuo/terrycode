@@ -71,4 +71,8 @@
 		</auth-constraint>
 	</security-constraint>
 	
+	<listener>
+		<listener-class>com.terry.weddingphoto.listener.InitListener</listener-class>
+	</listener>
+	
 </web-app>

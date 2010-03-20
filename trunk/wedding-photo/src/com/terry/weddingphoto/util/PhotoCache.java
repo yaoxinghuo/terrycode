@@ -50,7 +50,7 @@ public class PhotoCache {
 		if (data != null && data.length < Constants.PHOTO_BYTES_LIMIT) {
 			cache.put(key, data);
 		}
-		return data;
+		return data != null ? data : Constants.PHOTO_DELETED_DATA;
 	}
 
 	private static byte[] getPhotoDataFromDB(String pid, String width,
