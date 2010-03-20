@@ -10,6 +10,6 @@ public class Constants {
 	public static final int IP_CACHE_SESSION_TIME = 3600;// 1个小时
 	public static final String PHOTOS_COUNT_CACHE = "photos-count-cache";
 	public static final String UPLOAD_SESSION_CACHE = "upload-session-cache";
-	public static final int UPLOAD_SESSION_TIME = 3600 * 24;// 24Hours
+	public static final int UPLOAD_SESSION_TIME = 3600 * 12;// 12Hours
 	public static final int COMMENT_LIMIT = 5;
 }
