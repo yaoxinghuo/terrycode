@@ -14,25 +14,25 @@ $(function() {
 		}, {
 			display : '文件名',
 			name : 'filenam',
-			width : 110,
+			width : 160,
 			sortable : false,
 			align : 'left'
 		}, {
 			display : '说明',
 			name : 'remark',
-			width : 160,
+			width : 260,
 			sortable : false,
 			align : 'left'
 		}, {
 			display : '评论数',
 			name : 'count',
-			width : 170,
+			width : 80,
 			sortable : false,
 			align : 'left'
 		}, {
 			display : '评论状态',
 			name : 'status',
-			width : 120,
+			width : 80,
 			sortable : false,
 			align : 'left'
 		}, {
