@@ -63,6 +63,7 @@ $(function() {
 		useRp : false,
 		pagestat : '显示 第 {from} 到 {to} 张, 总共  {total} 张照片',
 		procmsg : '加载中, 请稍候 ...',
+		nomsg: '<strong>您还没有上传照片到相册，现在就<a href="#" onclick="uploadPhoto();return false;">上传</a></strong>',
 		onSuccess : function() {
 			tb_init('a.thickbox')
 		},
@@ -200,10 +201,14 @@ function photoAction(com, grid) {
 			});
 		}
 	} else if (com == '上传新照片') {
-		$('#updatePhotosTrigger').trigger("click");
+		uploadPhoto();
 	} else {
 		$("#flex1").flexReload();
 	}
+}
+
+function uploadPhoto(){
+	$('#updatePhotosTrigger').trigger("click");
 }
 
 function setNeedReload(){
