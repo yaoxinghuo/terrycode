@@ -169,5 +169,6 @@ if(photo.getComment()!=-1){
 <%
 }
 %>
+<jsp:include page="analytics.html"></jsp:include>
 </body>
 </html>

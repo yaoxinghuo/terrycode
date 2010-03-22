@@ -56,5 +56,6 @@ UserService userService = UserServiceFactory.getUserService();
 <div id="fileQueue"></div>
 </div>
 </div>
+<jsp:include page="analytics.html"></jsp:include>
 </body>
 </html>
