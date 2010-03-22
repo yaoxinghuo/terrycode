@@ -153,5 +153,6 @@ h3 {
 <%
 	}
 %>
+<jsp:include page="analytics.html"></jsp:include>
 </body>
 </html>
