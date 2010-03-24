@@ -38,8 +38,8 @@ public class WeatherFetcher {
 		} catch (UnsupportedEncodingException e) {
 			return null;
 		}
-		String data = fetchData("http://www.google.cn/m?q=" + unicodeLoc
-				+ "&site=weather");
+		String data = fetchData("http://www.google.com.hk/m?q=" + unicodeLoc
+				+ "&site=weather&gl=cn&hl=zh-CN");
 		log.debug("fetch data:" + loc + data);
 		if (data == null)
 			return null;
