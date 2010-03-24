@@ -149,7 +149,7 @@ h3 {
 %>
 相册中还没有图片,
 <a href="admin">登录后台</a>
-以上传图片（请在web.xml中将canUploadPhotos开启）!
+以上传图片!
 <%
 	}
 %>
