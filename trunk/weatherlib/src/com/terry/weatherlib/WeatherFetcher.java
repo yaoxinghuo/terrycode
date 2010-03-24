@@ -30,8 +30,6 @@ public class WeatherFetcher {
 	private static Log log = LogFactory.getLog(WeatherFetcher.class);
 
 	public static Weather fetchWeather(String loc) {
-		if (loc.lastIndexOf("市") == loc.length() - 1)
-			loc = loc.substring(0, loc.length() - 1);
 		String unicodeLoc = null;
 		try {
 			unicodeLoc = URLEncoder.encode(loc, "UTF-8");
