@@ -104,9 +104,12 @@ public class WeatherFetcher {
 				}
 				if (className != null) {
 					if (className.equals("b")) {
-						weather.setCity(div.toPlainTextString().trim().replace(
-								"天气", ""));
-						log.debug("city:" + weather.getCity());
+						String city = div.toPlainTextString().trim();
+						if (city.contains("天气") && !city.contains(" ")
+								&& (city.length() - loc.length()) < 5) {
+							weather.setCity(city.replace("天气", ""));
+							log.debug("city:" + weather.getCity());
+						}
 					}
 				}
 
@@ -122,12 +125,11 @@ public class WeatherFetcher {
 	}
 
 	public static void main(String[] args) throws Exception {
-//		Weather w = WeatherFetcher.fetchWeather("上海");
-//		if (w != null)
-//			System.out.println(w.getReport());
-		
-		 SimpleDateFormat sdf2 = new SimpleDateFormat(
-				"M月d日H:mm", Locale.CHINA);
+		// Weather w = WeatherFetcher.fetchWeather("上海");
+		// if (w != null)
+		// System.out.println(w.getReport());
+
+		SimpleDateFormat sdf2 = new SimpleDateFormat("M月d日H:mm", Locale.CHINA);
 		System.out.println(sdf2.format(new Date()));
 	}
 }
