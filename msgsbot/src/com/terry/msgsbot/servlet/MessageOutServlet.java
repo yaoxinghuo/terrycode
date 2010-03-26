@@ -52,12 +52,13 @@ public class MessageOutServlet extends HttpServlet {
 	private static final String STATUS = "status";
 
 	private static final String ROOT_MENU = "Menu:\r\n"
-			+ "0000:return 1:msgsbot 2:comutil 3:fetionlib 4:fetiontool 5:newfetion 101:invite";
+			+ "0000:return 1:msgsbot 2:comutil 3:fetionlib 4:litefetion 5:fetiontool 6:newfetion 101:invite";
 
 	private static final int COMUTIL = 2;
 	private static final int FETIONLIB = 3;
-	private static final int FETIONTOOL = 4;
-	private static final int NEWFETION = 5;
+	private static final int LITEFETION = 4;
+	private static final int FETIONTOOL = 5;
+	private static final int NEWFETION = 6;
 
 	private static final int INVITE = 101;
 
@@ -150,9 +151,12 @@ public class MessageOutServlet extends HttpServlet {
 				short_cache.put(STATUS, FETIONLIB);
 				return getJidsByStatus(FETIONLIB);
 			} else if (body.equals("4")) {
+				short_cache.put(STATUS, LITEFETION);
+				return getJidsByStatus(LITEFETION);
+			} else if (body.equals("5")) {
 				short_cache.put(STATUS, FETIONTOOL);
 				return getJidsByStatus(FETIONTOOL);
-			} else if (body.equals("5")) {
+			} else if (body.equals("6")) {
 				short_cache.put(STATUS, NEWFETION);
 				return getJidsByStatus(NEWFETION);
 			} else if (body.equals("101")) {
@@ -324,6 +328,8 @@ public class MessageOutServlet extends HttpServlet {
 			return "comutil@appspot.com";
 		case FETIONLIB:
 			return "fetionlib@appspot.com";
+		case LITEFETION:
+			return "litefetion@appspot.com";
 		case FETIONTOOL:
 			return "fetiontool@appspot.com";
 		case NEWFETION:
