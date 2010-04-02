@@ -56,13 +56,13 @@ public class GoogleVoice implements Serializable {
 	}
 
 	public GoogleVoice(String email, String password)
-			throws AuthenticationExeption {
+			throws AuthenticationException {
 		this.email = email;
 		this.password = password;
 		signIn();
 	}
 
-	private void signIn() throws AuthenticationExeption {
+	private void signIn() throws AuthenticationException {
 		retrieveLoginAuth();
 		retrieveRnr();
 		lastSessionTime = System.currentTimeMillis();
@@ -94,7 +94,7 @@ public class GoogleVoice implements Serializable {
 		return true;
 	}
 
-	private void retrieveLoginAuth() throws AuthenticationExeption {
+	private void retrieveLoginAuth() throws AuthenticationException {
 		String payload = "accountType=GOOGLE&Email=" + email + "&Passwd="
 				+ password + "&service=grandcentral&source=" + "GAE"
 				+ "-GoogleVoiceTool";
@@ -106,13 +106,13 @@ public class GoogleVoice implements Serializable {
 			if (index != -1 && index + 5 < data.length())
 				auth = data.substring(data.indexOf("Auth=") + 5);
 			if (StringUtil.isEmptyOrWhitespace(auth))
-				throw new AuthenticationExeption("Get rnrSEE failed");
+				throw new AuthenticationException("Get rnrSEE failed");
 		} catch (Exception e) {
-			throw new AuthenticationExeption(e.getMessage());
+			throw new AuthenticationException(e.getMessage());
 		}
 	}
 
-	private void retrieveRnr() throws AuthenticationExeption {
+	private void retrieveRnr() throws AuthenticationException {
 		try {
 			String data = fetchData("https://www.google.com/voice/m/", null,
 					auth);
@@ -124,9 +124,9 @@ public class GoogleVoice implements Serializable {
 			if (m.find())
 				rnr = m.group(1);
 			if (StringUtil.isEmptyOrWhitespace(rnr))
-				throw new AuthenticationExeption("Get rnrSEE failed");
+				throw new AuthenticationException("Get rnrSEE failed");
 		} catch (Exception e) {
-			throw new AuthenticationExeption(e.getMessage());
+			throw new AuthenticationException(e.getMessage());
 		}
 	}
 
@@ -160,7 +160,7 @@ public class GoogleVoice implements Serializable {
 		} else {
 			String response = getContent(con.getErrorStream(), code);
 			con.disconnect();
-			throw new AuthenticationExeption(response);
+			throw new AuthenticationException(response);
 		}
 	}
 

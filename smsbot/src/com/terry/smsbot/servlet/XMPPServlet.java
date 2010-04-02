@@ -17,7 +17,7 @@ import com.google.appengine.api.xmpp.JID;
 import com.google.appengine.api.xmpp.Message;
 import com.google.appengine.api.xmpp.XMPPService;
 import com.google.appengine.api.xmpp.XMPPServiceFactory;
-import com.terry.smsbot.AuthenticationExeption;
+import com.terry.smsbot.AuthenticationException;
 import com.terry.smsbot.GoogleVoice;
 import com.terry.smsbot.util.Constants;
 import com.terry.smsbot.util.Pinyin4j;
@@ -111,7 +111,7 @@ public class XMPPServlet extends HttpServlet {
 				return "短信已发送至：" + parts[0];
 			else
 				return "短信未发送";
-		} catch (AuthenticationExeption e) {
+		} catch (AuthenticationException e) {
 			clearCache();
 			return "短信未发送：" + e.tranlateError();
 		}
@@ -126,7 +126,7 @@ public class XMPPServlet extends HttpServlet {
 
 	@SuppressWarnings("unchecked")
 	private GoogleVoice getGoogleVoiceInstance(String email, String password)
-			throws AuthenticationExeption {
+			throws AuthenticationException {
 		Object o = cache.get(XMPP_GV_CACHE);
 		GoogleVoice gv = null;
 		if (o != null || o instanceof GoogleVoice) {
@@ -134,7 +134,7 @@ public class XMPPServlet extends HttpServlet {
 			long now = System.currentTimeMillis();
 			if (now - gv.getLastSessionTime() < SESSON_TIME * 1000) {
 				if (!password.equals(gv.getPassword()))
-					throw new AuthenticationExeption("BadAuthentication");
+					throw new AuthenticationException("BadAuthentication");
 				gv.setLastSessionTime(System.currentTimeMillis());
 			}
 		}
