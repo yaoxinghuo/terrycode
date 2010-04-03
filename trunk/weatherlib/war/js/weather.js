@@ -289,7 +289,7 @@ function newSchedule() {
 		return;
 	}
 	$("#sid").val("");
-	$("#message").html("请确保已在139或相关邮箱设置短信达到提醒").show();
+	$("#message").html("<font color='orange'>请确保已在139或相关邮箱设置短信达到提醒</font>").show();
 	if ($("#newSchedule").attr("title").indexOf("新建") == -1) {
 		$("#newSchedule").attr("title", "<b>新建天气预报定制</b>");
 		resetForm();
