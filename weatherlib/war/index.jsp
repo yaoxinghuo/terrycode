@@ -194,8 +194,9 @@
 &nbsp; &nbsp; 2.暂时只能定制10条邮件天气预报列表，有更多需要可以联系作者<br />
 &nbsp; &nbsp; 3.天气数据来自Google，Google每天 <b style="color: blue">8:35</b> 和
 <b style="color: blue">17:35</b> 更新数据，请把提醒时间适当设置在这两个时间点之后<br />
-&nbsp; &nbsp; 4.为了方便您今后管理和取消订阅，需要登录到您的Google帐号<br />
-&nbsp; &nbsp; 5.新建或修改定制中的“备注”是为方便管理多个定制时的说明，并不会附加在邮件或短信内容中<br />
+&nbsp; &nbsp; 4.<b>若使用139邮箱，会有一个“手机接收时间段”的设置，请 注意设置定制时间在该范围内</b><br />
+&nbsp; &nbsp; 5.为了方便您今后管理和取消订阅，需要登录到您的Google帐号<br />
+&nbsp; &nbsp; 6.新建或修改定制中的“备注”是为方便管理多个定制时的说明，并不会附加在邮件或短信内容中<br />
 <br />
 程序设计：<a href="http://xinghuo.org.ru/" target="_blank"><font
 	color="#800080">Terry</font></a> <a

@@ -30,75 +30,77 @@ var total = 0;
 
 var errorMsg = "对不起，服务器错误，请稍候再试";
 
-$("#flex1").flexigrid( {
-	url : 'webManager?action=schedulesList',
-	dataType : 'json',
-	colModel : [ {
-		display : '创建时间',
-		name : 'cdate',
-		width : 120,
-		sortable : false,
-		align : 'left'
-	}, {
-		display : '定制城市',
-		name : 'city',
-		width : 110,
-		sortable : false,
-		align : 'left'
-	}, {
-		display : '每天发送时间',
-		name : 'sdate',
-		width : 100,
-		sortable : false,
-		align : 'left'
-	}, {
-		display : '接收邮箱',
-		name : 'email',
-		width : 170,
-		sortable : false,
-		align : 'left'
-	}, {
-		display : '定制内容状态',
-		name : 'type',
-		width : 120,
-		sortable : false,
-		align : 'left'
-	}, {
-		display : '最近发送时间',
-		name : 'adate',
-		width : 120,
-		sortable : false,
-		align : 'left',
-		hide : false
-	}, {
-		display : '备注',
-		name : 'remark',
-		width : 150,
-		sortable : false,
-		align : 'left'
-	} ],
-	buttons : [ {
-		name : '新建',
-		bclass : 'add',
-		onpress : scheduleAction
-	}, {
-		name : '删除',
-		bclass : 'delete',
-		onpress : scheduleAction
-	}, {
-		name : '修改',
-		bclass : 'modify',
-		onpress : scheduleAction
-	} ],
-	title : '定制天气预报列表',
-	usepager : true,
-	rp : 10,
-	useRp : false,
-	pagestat : '显示 第 {from} 到 {to} 条 , 总共  {total} 条记录',
-	procmsg : '加载中, 请稍候 ...',
-	nomsg: '<strong>您还没有建立天气预报定制，现在就<a href="#" onclick="newSchedule();return false;">新建一个</a></strong>',
-	height : 278
-});
+$("#flex1")
+		.flexigrid(
+				{
+					url : 'webManager?action=schedulesList',
+					dataType : 'json',
+					colModel : [ {
+						display : '创建时间',
+						name : 'cdate',
+						width : 120,
+						sortable : false,
+						align : 'left'
+					}, {
+						display : '定制城市',
+						name : 'city',
+						width : 110,
+						sortable : false,
+						align : 'left'
+					}, {
+						display : '每天发送时间',
+						name : 'sdate',
+						width : 100,
+						sortable : false,
+						align : 'left'
+					}, {
+						display : '接收邮箱',
+						name : 'email',
+						width : 170,
+						sortable : false,
+						align : 'left'
+					}, {
+						display : '定制内容状态',
+						name : 'type',
+						width : 120,
+						sortable : false,
+						align : 'left'
+					}, {
+						display : '最近发送时间',
+						name : 'adate',
+						width : 120,
+						sortable : false,
+						align : 'left',
+						hide : false
+					}, {
+						display : '备注',
+						name : 'remark',
+						width : 150,
+						sortable : false,
+						align : 'left'
+					} ],
+					buttons : [ {
+						name : '新建',
+						bclass : 'add',
+						onpress : scheduleAction
+					}, {
+						name : '删除',
+						bclass : 'delete',
+						onpress : scheduleAction
+					}, {
+						name : '修改',
+						bclass : 'modify',
+						onpress : scheduleAction
+					} ],
+					title : '定制天气预报列表',
+					usepager : true,
+					rp : 10,
+					useRp : false,
+					pagestat : '显示 第 {from} 到 {to} 条 , 总共  {total} 条记录',
+					procmsg : '加载中, 请稍候 ...',
+					nomsg : '<strong>您还没有建立天气预报定制，现在就<a href="#" onclick="newSchedule();return false;">新建一个</a></strong>',
+					height : 278
+				});
 function scheduleAction(com, grid) {
 	if (com == '删除') {
 		var items = $('.trSelected', grid);
@@ -222,49 +224,62 @@ $(function() {
 		});
 	});
 
-	$("#updateNickname").click(function() {
-		var nickname = $("#nickname").val();
-		if (nickname == "") {
-			showMsg("error", "请输入昵称");
-			return;
-		}
-		$("#updateNickname").attr("disabled", true).attr("value", "请稍候");
-		$.ajax( {
-			url : "webManager",
-			type : "POST",
-			cache : false,
-			data : {
-				"action" : "updateNickname",
-				"nickname" : nickname
-			},
-			dataType : "json",
-			success : function(data) {
-				showMsg(data.result ? "pass" : "error", data.message);
-				updateCountAndTotal(data);
-			},
-			complete : function(req) {
-				$("#updateNickname").attr("disabled", false).attr("value", "更改");
-				var code = req.status;
-				if (code < 200 || code > 299)
-					showMsg("error", errorMsg);
-			}
-		});
-	});
-	
-	$("#refreshCount").click(function(){
+	$("#updateNickname").click(
+			function() {
+				var nickname = $("#nickname").val();
+				if (nickname == "") {
+					showMsg("error", "请输入昵称");
+					return;
+				}
+				$("#updateNickname").attr("disabled", true)
+						.attr("value", "请稍候");
+				$.ajax( {
+					url : "webManager",
+					type : "POST",
+					cache : false,
+					data : {
+						"action" : "updateNickname",
+						"nickname" : nickname
+					},
+					dataType : "json",
+					success : function(data) {
+						showMsg(data.result ? "pass" : "error", data.message);
+						updateCountAndTotal(data);
+					},
+					complete : function(req) {
+						$("#updateNickname").attr("disabled", false).attr(
+								"value", "更改");
+						var code = req.status;
+						if (code < 200 || code > 299)
+							showMsg("error", errorMsg);
+					}
+				});
+			});
+
+	$("#refreshCount").click(function() {
 		getTotalCount();
 	});
-	
-	$("#type").change(function(){
-		if($("#type").val()=="0"){
+
+	$("#type").change(function() {
+		if ($("#type").val() == "0") {
 			$("#test").attr("disabled", true).attr("checked", false);
 		} else {
 			$("#test").attr("disabled", false);
 		}
 	});
+
+	$("#sdate_hour").change(function() {
+		var h = parseInt($("#sdate_hour").val());
+		if (h <= 8)
+			$("#message").html("<font color='orange'>定制时间挺早的，请确认139邮箱手机接收时间奥</a>").show();
+		else if (h >= 22)
+			$("#message").html("<font color='orange'>定制时间挺晚的，请确认139邮箱手机接收时间奥</a>").show();
+		else
+			$("#message").html("").hide();
+	});
 });
 
-function newSchedule(){
+function newSchedule() {
 	if (total >= 2000) {
 		showMsg("error", "设置的定制数目已经达到上限:2000，后续会通过开分站的形式为您提供服务。");
 		return;
