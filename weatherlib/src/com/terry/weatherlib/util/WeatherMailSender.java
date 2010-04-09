@@ -11,7 +11,7 @@ import com.terry.weatherlib.Weather;
  * @version create: Mar 5, 2010 8:24:39 PM
  */
 public class WeatherMailSender {
-	private static final String HELP = "\r\n管理订阅请登录http://tianqiyubao.org.ru/\r\n请勿直接回复";
+	private static final String HELP = "\r\n管理订阅请登录http://weatherlib.appspot.com/\r\n请勿直接回复";
 
 	private static SimpleDateFormat sdf2 = new SimpleDateFormat("M月d日H:mm",
 			Locale.CHINA);
