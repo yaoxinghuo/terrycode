@@ -107,7 +107,12 @@ public class WeatherFetcher {
 						String city = div.toPlainTextString().trim();
 						if (city.contains("天气") && !city.contains(" ")
 								&& (city.length() - loc.length()) < 5) {
-							weather.setCity(city.replace("天气", ""));
+							// http://www.google.com.hk/m/search?site=weather&gl=cn&hl=zh-CN&q=长沙市
+							// 输入长沙，却出来的是长沙县，怪怪的，所以这里if一下
+							if (loc.contains("长沙") && city.contains(loc))
+								weather.setCity(loc);
+							else
+								weather.setCity(city.replace("天气", ""));
 							log.debug("city:" + weather.getCity());
 						}
 					}
