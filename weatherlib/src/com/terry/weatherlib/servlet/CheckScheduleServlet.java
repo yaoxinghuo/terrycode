@@ -1,8 +1,9 @@
 package com.terry.weatherlib.servlet;
 
 import java.io.IOException;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.cache.Cache;
 import javax.cache.CacheException;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.labs.taskqueue.Queue;
 import com.google.appengine.api.labs.taskqueue.QueueFactory;
 import com.google.appengine.api.labs.taskqueue.TaskOptions;
+import com.google.appengine.api.memcache.jsr107cache.GCacheFactory;
 import com.terry.weatherlib.data.impl.ScheduleDaoImpl;
 import com.terry.weatherlib.data.intf.IScheduleDao;
 import com.terry.weatherlib.model.Schedule;
@@ -38,11 +40,16 @@ public class CheckScheduleServlet extends HttpServlet {
 
 	private static final String KEY = "check-status";
 
+	public static final String ID_KEY = "id";
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public void init() throws ServletException {
+		Map props = new HashMap();
+		props.put(GCacheFactory.EXPIRATION_DELTA, 3600);
 		try {
 			cache = CacheManager.getInstance().getCacheFactory().createCache(
-					Collections.emptyMap());
+					props);
 		} catch (CacheException e) {
 		}
 	}
@@ -69,11 +76,16 @@ public class CheckScheduleServlet extends HttpServlet {
 		if (schedules == null || schedules.size() == 0)
 			return;
 		for (Schedule schedule : schedules) {
-			queue.add(TaskOptions.Builder.url("/cron/send").param("id",
-					schedule.getId()));
+			String id = schedule.getId();
+			// 防止还没执行完的Schedule继续放到Queue中
+			if (cache.get(ID_KEY + "-" + id) == null) {
+				queue
+						.add(TaskOptions.Builder.url("/cron/send").param("id",
+								id));
+				cache.put(ID_KEY + "-" + id, Boolean.TRUE);
+			}
 		}
 		if (cache != null)
 			cache.remove(KEY);
 	}
-
 }

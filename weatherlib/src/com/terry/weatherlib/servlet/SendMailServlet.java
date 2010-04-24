@@ -86,7 +86,7 @@ public class SendMailServlet extends HttpServlet {
 				schedule.getType(), account == null ? null : account
 						.getNickname()))
 			return;
-		log.warn("mail sent:" + schedule.getEmail() + " for account:"
+		log.debug("mail sent:" + schedule.getEmail() + " for account:"
 				+ account.getAccount() + ", schedule data:"
 				+ sdf2.format(schedule.getSdate()));
 		try {
