@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.terry.weatherlib.Weather;
@@ -35,6 +38,8 @@ public class SendMailServlet extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = -843840894946959108L;
+
+	private static Log log = LogFactory.getLog(SendMailServlet.class);
 
 	private SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm",
 			Locale.CHINA);
@@ -65,9 +70,10 @@ public class SendMailServlet extends HttpServlet {
 		Schedule schedule = em.find(Schedule.class, key);
 		if (schedule == null)
 			return;
-		if (schedule.getType() == 0) {
+		if (schedule.getType() == 0)
 			return;
-		}
+		if (schedule.getSdate().getTime() > System.currentTimeMillis())
+			return;
 		String a = schedule.getAccount();
 		Query query = em.createQuery("SELECT a FROM " + Account.class.getName()
 				+ " a where a.account=:account");
@@ -80,6 +86,9 @@ public class SendMailServlet extends HttpServlet {
 				schedule.getType(), account == null ? null : account
 						.getNickname()))
 			return;
+		log.warn("mail sent:" + schedule.getEmail() + " for account:"
+				+ account.getAccount() + ", schedule data:"
+				+ sdf2.format(schedule.getSdate()));
 		try {
 			EntityTransaction tx = em.getTransaction();
 			tx.begin();
@@ -96,7 +105,7 @@ public class SendMailServlet extends HttpServlet {
 			if (c_sdate.getTimeInMillis() <= now.getTime())
 				c_sdate.add(Calendar.DAY_OF_YEAR, 1);
 			schedule.setSdate(c_sdate.getTime());
-//			schedule.setCity(weather.getCity());
+			// schedule.setCity(weather.getCity());
 			schedule.setAdate(now);
 			em.persist(schedule);
 			tx.commit();
