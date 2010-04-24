@@ -43,7 +43,8 @@
 <textarea id=csi style="display: none"></textarea>
 <div id=gbar><b class=gb1>天气预报</b> <a
 	href="http://fetion.xinghuo.org.ru/" target="_blank" class=gb1>网页飞信</a>
-<a href="http://www.websms.org.ru/" target="_blank" class=gb1>GV网页短信</a></div>
+<a href="http://www.websms.org.ru/" target="_blank" class=gb1>GV网页短信</a>
+<a href="http://xinghuo.org.ru/" target="_blank" class=gb1>我的博客</a></div>
 <div id=guser width=100%><%=login ? userService.getCurrentUser().getEmail()
 					+ " | " : ""%><a
 	href="<%=login ? userService.createLogoutURL("/")
