@@ -50,7 +50,7 @@ public class WebManagerServlet extends HttpServlet {
 
 	private static final String CACHE_COUNT_NAME = "cache-count";
 
-	private static final String CACHE_TOTAL_COUNT_NAME = "cache-count";
+	private static final String CACHE_TOTAL_COUNT_NAME = "cache-total-count";
 
 	private static final int DEFAULT_SCHEDULES_LIMIT = 10;
 
