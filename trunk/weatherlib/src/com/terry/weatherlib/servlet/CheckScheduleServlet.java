@@ -40,7 +40,7 @@ public class CheckScheduleServlet extends HttpServlet {
 
 	private static final String KEY = "check-status";
 
-	public static final String ID_KEY = "id";
+	public static final String SCHEDULE_ID_KEY = "schedule-id";
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -65,27 +65,23 @@ public class CheckScheduleServlet extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse res)
 			throws IOException, ServletException {
 		if (req.getParameter("recheck") != null) {
-			if (cache != null) {
-				if (cache.get(KEY) == null)
-					return;
-			}
+			if (cache.get(KEY) == null)
+				return;
 		}
-		if (cache != null)
-			cache.put(KEY, Boolean.TRUE);
+		cache.put(KEY, Boolean.TRUE);
 		List<Schedule> schedules = scheduleDao.getReadyToToSchedules();
 		if (schedules == null || schedules.size() == 0)
 			return;
 		for (Schedule schedule : schedules) {
 			String id = schedule.getId();
 			// 防止还没执行完的Schedule继续放到Queue中
-			if (cache.get(ID_KEY + "-" + id) == null) {
+			if (cache.get(SCHEDULE_ID_KEY + "-" + id) == null) {
 				queue
 						.add(TaskOptions.Builder.url("/cron/send").param("id",
 								id));
-				cache.put(ID_KEY + "-" + id, Boolean.TRUE);
+				cache.put(SCHEDULE_ID_KEY + "-" + id, Boolean.TRUE);
 			}
 		}
-		if (cache != null)
-			cache.remove(KEY);
+		cache.remove(KEY);
 	}
 }
