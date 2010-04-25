@@ -57,6 +57,8 @@ public class WebManagerServlet extends HttpServlet {
 	private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.CHINA);
 	private SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm",
 			Locale.CHINA);
+	private SimpleDateFormat sdf3 = new SimpleDateFormat("MM-dd HH:mm",
+			Locale.CHINA);
 
 	private IScheduleDao scheduleDao = new ScheduleDaoImpl();
 	private IAccountDao accountDao = new AccountDaoImpl();
@@ -129,10 +131,15 @@ public class WebManagerServlet extends HttpServlet {
 				ja.put("天气内容放正文");
 			else
 				ja.put("天气内容放主题");
-			if (s.getAdate() == null)
-				ja.put("从未发送过");
-			else
-				ja.put(sdf2.format(s.getAdate()));
+			String adate = "";
+			if (s.getAdate() == null) {
+				if (s.getType() == 0)
+					adate = "从未发送[已暂停]";
+				else
+					adate = "待发送" + sdf3.format(s.getSdate());
+			} else
+				adate = sdf2.format(s.getAdate());
+			ja.put(adate);
 			ja.put(StringUtil.isEmptyOrWhitespace(s.getRemark()) ? "[无]" : s
 					.getRemark());
 			try {
@@ -275,7 +282,7 @@ public class WebManagerServlet extends HttpServlet {
 			s.setSdate(sdate);
 			s.setType(type);
 			result = scheduleDao.saveSchedule(s);
-			if (result){
+			if (result) {
 				updateAccountScheduleCount(account, 1);
 				accountDao.updateAccountUdate(account);
 			}
