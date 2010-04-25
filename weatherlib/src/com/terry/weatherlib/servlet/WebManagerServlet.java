@@ -68,6 +68,7 @@ public class WebManagerServlet extends HttpServlet {
 	public void init() throws ServletException {
 		sdf.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
 		sdf2.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
+		sdf3.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
 	}
 
 	@Override
