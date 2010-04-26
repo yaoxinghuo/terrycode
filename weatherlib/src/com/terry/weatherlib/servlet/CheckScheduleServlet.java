@@ -83,7 +83,7 @@ public class CheckScheduleServlet extends HttpServlet {
 		List<Schedule> schedules = scheduleDao.getReadyToToSchedules();
 		if (schedules == null || schedules.size() == 0)
 			return;
-		log.warn(schedules.size() + " shcedules detected.");
+		log.debug(schedules.size() + " shcedules detected.");
 		Expiration exp = Expiration.byDeltaSeconds(500);
 		for (Schedule schedule : schedules) {
 			String id = schedule.getId();
