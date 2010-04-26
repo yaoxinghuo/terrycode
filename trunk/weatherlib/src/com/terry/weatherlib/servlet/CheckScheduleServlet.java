@@ -13,9 +13,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.google.appengine.api.labs.taskqueue.Queue;
 import com.google.appengine.api.labs.taskqueue.QueueFactory;
 import com.google.appengine.api.labs.taskqueue.TaskOptions;
+import com.google.appengine.api.memcache.Expiration;
+import com.google.appengine.api.memcache.MemcacheService;
+import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import com.google.appengine.api.memcache.jsr107cache.GCacheFactory;
 import com.terry.weatherlib.data.impl.ScheduleDaoImpl;
 import com.terry.weatherlib.data.intf.IScheduleDao;
@@ -32,11 +38,16 @@ public class CheckScheduleServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = -302297776402317937L;
 
+	private static Log log = LogFactory.getLog(CheckScheduleServlet.class);
+
 	private IScheduleDao scheduleDao = new ScheduleDaoImpl();
 
 	private Queue queue = QueueFactory.getDefaultQueue();
 
 	private Cache cache;
+
+	private static MemcacheService cacheService = MemcacheServiceFactory
+			.getMemcacheService();
 
 	private static final String KEY = "check-status";
 
@@ -72,15 +83,19 @@ public class CheckScheduleServlet extends HttpServlet {
 		List<Schedule> schedules = scheduleDao.getReadyToToSchedules();
 		if (schedules == null || schedules.size() == 0)
 			return;
+		log.debug(schedules.size() + " shcedules detected.");
+		Expiration exp = Expiration.byDeltaSeconds(500);
 		for (Schedule schedule : schedules) {
 			String id = schedule.getId();
 			// 防止还没执行完的Schedule继续放到Queue中
-			if (cache.get(SCHEDULE_ID_KEY + "-" + id) == null) {
+			String key = SCHEDULE_ID_KEY + "-" + id;
+			if (cacheService.contains(key)) {
 				queue
 						.add(TaskOptions.Builder.url("/cron/send").param("id",
 								id));
-				cache.put(SCHEDULE_ID_KEY + "-" + id, Boolean.TRUE);
-			}
+				cacheService.put(key, Boolean.TRUE, exp);
+			} else
+				cacheService.delete(key);
 		}
 		cache.remove(KEY);
 	}
