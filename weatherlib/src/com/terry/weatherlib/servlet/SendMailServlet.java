@@ -20,6 +20,8 @@ import org.apache.commons.logging.LogFactory;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.memcache.MemcacheService;
+import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import com.terry.weatherlib.Weather;
 import com.terry.weatherlib.WeatherCache;
 import com.terry.weatherlib.model.Account;
@@ -40,6 +42,9 @@ public class SendMailServlet extends HttpServlet {
 	private static final long serialVersionUID = -843840894946959108L;
 
 	private static Log log = LogFactory.getLog(SendMailServlet.class);
+
+	private static MemcacheService cacheService = MemcacheServiceFactory
+			.getMemcacheService();
 
 	private SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm",
 			Locale.CHINA);
@@ -111,5 +116,7 @@ public class SendMailServlet extends HttpServlet {
 			tx.commit();
 		} catch (Exception e) {
 		}
+
+		cacheService.delete(CheckScheduleServlet.SCHEDULE_ID_KEY + "-" + id);
 	}
 }
