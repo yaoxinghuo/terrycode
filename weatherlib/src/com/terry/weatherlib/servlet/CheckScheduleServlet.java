@@ -83,19 +83,23 @@ public class CheckScheduleServlet extends HttpServlet {
 		List<Schedule> schedules = scheduleDao.getReadyToToSchedules();
 		if (schedules == null || schedules.size() == 0)
 			return;
-		log.debug(schedules.size() + " shcedules detected.");
+		log.warn(schedules.size() + " shcedules detected.");
 		Expiration exp = Expiration.byDeltaSeconds(500);
 		for (Schedule schedule : schedules) {
 			String id = schedule.getId();
 			// 防止还没执行完的Schedule继续放到Queue中
 			String key = SCHEDULE_ID_KEY + "-" + id;
-			if (cacheService.contains(key)) {
+			if (!cacheService.contains(key)) {
+				log.debug("put schedule into queue with id:" + id);
 				queue
 						.add(TaskOptions.Builder.url("/cron/send").param("id",
 								id));
 				cacheService.put(key, Boolean.TRUE, exp);
-			} else
-				cacheService.delete(key);
+			} else {
+				boolean result = cacheService.delete(key);
+				log.debug("schedule already in cache with id:" + id
+						+ ", delete result:" + result);
+			}
 		}
 		cache.remove(KEY);
 	}
