@@ -46,7 +46,7 @@ public class CheckScheduleServlet extends HttpServlet {
 
 	private Cache cache;
 
-	private static MemcacheService cacheService = MemcacheServiceFactory
+	private MemcacheService cacheService = MemcacheServiceFactory
 			.getMemcacheService();
 
 	private static final String KEY = "check-status";

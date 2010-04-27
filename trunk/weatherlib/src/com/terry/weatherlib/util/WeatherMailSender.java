@@ -1,23 +1,45 @@
 package com.terry.weatherlib.util;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import javax.cache.Cache;
+import javax.cache.CacheException;
+import javax.cache.CacheManager;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.terry.weatherlib.Weather;
+import com.terry.weatherlib.model.Schedule;
 
 /**
  * @author Terry E-mail: yaoxinghuo at 126 dot com
  * @version create: Mar 5, 2010 8:24:39 PM
  */
+@SuppressWarnings("unchecked")
 public class WeatherMailSender {
 	private static final String HELP = "\r\n管理订阅请登录http://www.tianqiyubao.org.ru/\r\n请勿直接回复";
 
 	private static SimpleDateFormat sdf2 = new SimpleDateFormat("M月d日H:mm",
 			Locale.CHINA);
-	
+
+	private static Log log = LogFactory.getLog(WeatherMailSender.class);
+
+	private static Cache cache;
+
+	private static final String SCHEDULE_ID_KEY2 = "schedule-id2";
+
 	static {
 		sdf2.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
+		try {
+			cache = CacheManager.getInstance().getCacheFactory().createCache(
+					Collections.emptyMap());
+		} catch (CacheException e) {
+		}
 	}
 
 	public static boolean sendWeatherMail(Weather weather, String email,
@@ -45,8 +67,22 @@ public class WeatherMailSender {
 		}
 	}
 
-	public static boolean sendWeatherMail(Weather weather, String email,
-			int type, String nickname) {
-		return sendWeatherMail(weather, email, type, nickname, false);
+	public static synchronized boolean sendWeatherMail(Weather weather,
+			Schedule schedule, String nickname) {
+		String key = SCHEDULE_ID_KEY2 + "-" + schedule.getId();
+		if (cache.containsKey(key)) {
+			Date sdate = (Date) cache.get(key);
+			if (schedule.getSdate().getTime() <= sdate.getTime()) {
+				log.warn("email already sent with schedule id: "
+						+ schedule.getId());
+				return false;
+			}
+		}
+		boolean result = sendWeatherMail(weather, schedule.getEmail(), schedule
+				.getType(), nickname, false);
+		if (result) {
+			cache.put(key, schedule.getSdate());
+		}
+		return result;
 	}
 }
