@@ -87,9 +87,8 @@ public class SendMailServlet extends HttpServlet {
 		Weather weather = WeatherCache.queryWeather(schedule.getCity());
 		if (weather == null)
 			return;
-		if (!WeatherMailSender.sendWeatherMail(weather, schedule.getEmail(),
-				schedule.getType(), account == null ? null : account
-						.getNickname()))
+		if (!WeatherMailSender.sendWeatherMail(weather, schedule,
+				account == null ? null : account.getNickname()))
 			return;
 		log.debug("mail sent:" + schedule.getEmail() + " for account:"
 				+ account.getAccount() + ", schedule data:"
