@@ -15,7 +15,7 @@ function getXmlHttpObject() {
 }
 
 function getTotalCount() {
-	_xmlhttp.open("get", "webManager?action=getTotalCount&r=" + Math.random());
+	_xmlhttp.open("get", "/webManager?action=getTotalCount&r=" + Math.random());
 	_xmlhttp.onreadystatechange = onreadystatechange;
 	_xmlhttp.send(null);
 }
