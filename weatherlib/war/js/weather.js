@@ -268,15 +268,29 @@ $(function() {
 		}
 	});
 
-	$("#sdate_hour").change(function() {
-		var h = parseInt($("#sdate_hour").val());
-		if (h <= 8)
-			$("#message").html("<font color='orange'>定制时间挺早的，请确认139邮箱手机接收时间奥</a>").show();
-		else if (h >= 22)
-			$("#message").html("<font color='orange'>定制时间挺晚的，请确认139邮箱手机接收时间奥</a>").show();
-		else
-			$("#message").html("").hide();
-	});
+	$("#sdate_hour")
+			.change(
+					function() {
+						var hour = $("#sdate_hour").val();
+						if (hour.indexOf("0") == 0)
+							hour = hour.substring(1, 2);
+						var h = parseInt(hour);
+						var is139 = $("#email").val().indexOf("@139.com") != -1;
+						if (h <= 8) {
+							if (is139)
+								$("#message")
+										.html(
+												"<font color='orange'>定制时间挺早的，请确认139邮箱手机接收时间奥</a>")
+										.show();
+						} else if (h >= 22) {
+							if (is139)
+								$("#message")
+										.html(
+												"<font color='orange'>定制时间挺晚的，请确认139邮箱手机接收时间奥</a>")
+										.show();
+						} else
+							$("#message").html("").hide();
+					});
 });
 
 function newSchedule() {
@@ -289,7 +303,8 @@ function newSchedule() {
 		return;
 	}
 	$("#sid").val("");
-	$("#message").html("<font color='orange'>请确保已在139或相关邮箱设置短信达到提醒</font>").show();
+	$("#message").html("<font color='orange'>请确保已在139或相关邮箱设置短信达到提醒</font>")
+			.show();
 	if ($("#newSchedule").attr("title").indexOf("新建") == -1) {
 		$("#newSchedule").attr("title", "<b>新建天气预报定制</b>");
 		resetForm();
