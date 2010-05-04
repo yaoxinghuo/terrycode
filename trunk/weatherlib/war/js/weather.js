@@ -138,8 +138,8 @@ function scheduleAction(com, grid) {
 		}
 	} else if (com == '新建') {
 		newSchedule();
-		var selhour = Math.round(Math.random()*13)+9;
-		var selmin = Math.round(Math.random()*12)*5;
+		var selhour = Math.round(Math.random()*12)+9;
+		var selmin = Math.round(Math.random()*11)*5;
 		$("#sdate_hour").attr("value", (selhour<10?"0":"")+selhour);
 		$("#sdate_minute").attr("value", (selmin<10?"0":"")+selmin);
 	} else if (com == '修改') {
