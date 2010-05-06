@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
 import java.util.TimeZone;
 
 import javax.cache.Cache;
@@ -13,6 +14,7 @@ import javax.cache.CacheManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.google.apphosting.api.ApiProxy.OverQuotaException;
 import com.terry.weatherlib.Weather;
 import com.terry.weatherlib.model.Schedule;
 
@@ -32,6 +34,8 @@ public class WeatherMailSender {
 	private static Cache cache;
 
 	private static final String SCHEDULE_ID_KEY2 = "schedule-id2";
+
+	private static int mailerCounter = 0;
 
 	static {
 		sdf2.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
@@ -56,12 +60,34 @@ public class WeatherMailSender {
 			content = weather.getReport() + HELP;
 		}
 		if (fetch) {
-			return MailSender
-					.fetchToSendMail(email, nickname, subject, content);
+			return MailSender.fetchToSendMail(null, email, nickname, subject,
+					content);
+		}
+		Random r = new Random();
+		if (r.nextInt(5) == 0 && Constants.BACKUP_MAILERS != null
+				&& Constants.BACKUP_MAILERS.length != 0) {
+			String url = "http://"
+					+ Constants.BACKUP_MAILERS[r
+							.nextInt(Constants.BACKUP_MAILERS.length)]
+					+ "/mail";
+			mailerCounter++;
+			return MailSender.fetchToSendMail(url, email, nickname, subject,
+					content);
 		}
 		try {
 			MailSender.sendMail(email, nickname, subject, content);
 			return true;
+		} catch (OverQuotaException e) {
+			if (Constants.BACKUP_MAILERS == null
+					|| Constants.BACKUP_MAILERS.length == 0)
+				return false;
+			if (mailerCounter >= Constants.BACKUP_MAILERS.length)
+				mailerCounter = 0;
+			String url = "http://" + Constants.BACKUP_MAILERS[mailerCounter]
+					+ "/mail";
+			mailerCounter++;
+			return MailSender.fetchToSendMail(url, email, nickname, subject,
+					content);
 		} catch (Exception e) {
 			return false;
 		}

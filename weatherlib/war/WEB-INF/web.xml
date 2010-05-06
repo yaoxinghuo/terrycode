@@ -8,6 +8,11 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 	
+	<context-param>
+		<param-name>backupMailers</param-name>
+		<param-value>mail.latest.costnote.appspot.com</param-value>
+	</context-param>
+	
 	<servlet>
 		<servlet-name>webManager</servlet-name>
 		<servlet-class>com.terry.weatherlib.servlet.WebManagerServlet</servlet-class>
@@ -61,4 +66,8 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
             <role-name>admin</role-name>
         </auth-constraint>
     </security-constraint>
+    
+    <listener>
+		<listener-class>com.terry.weatherlib.listener.InitListener</listener-class>
+	</listener>
 </web-app>

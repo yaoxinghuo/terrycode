@@ -47,10 +47,14 @@ public class MailSender {
 		Transport.send(msg);
 	}
 
-	public static boolean fetchToSendMail(String email, String sender,
-			String subject, String body) {
+	public static boolean fetchToSendMail(String urlString, String email,
+			String sender, String subject, String body) {
 		try {
-			URL postUrl = new URL("http://service.appmail.org.ru/mail");
+			if (urlString != null)
+				log.warn("using backup mailer: " + urlString);
+			URL postUrl = new URL(
+					urlString == null ? "http://service.appmail.org.ru/mail"
+							: urlString);
 			HttpURLConnection connection = (HttpURLConnection) postUrl
 					.openConnection();
 			connection.setConnectTimeout(30000);
