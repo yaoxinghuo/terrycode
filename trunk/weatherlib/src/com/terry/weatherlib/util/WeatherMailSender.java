@@ -101,7 +101,7 @@ public class WeatherMailSender {
 			if (schedule.getSdate().getTime() <= sdate.getTime()) {
 				log.warn("email already sent with schedule id: "
 						+ schedule.getId());
-				return false;
+				return true;
 			}
 		}
 		boolean result = sendWeatherMail(weather, schedule.getEmail(), schedule
