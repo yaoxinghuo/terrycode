@@ -48,9 +48,11 @@ public class MessageInServlet extends HttpServlet {
 		boolean messageSent = false;
 		try {
 			XMPPService xmpp = XMPPServiceFactory.getXMPPService();
+			String str = from.indexOf("@") == -1 ? ("(From: " + from + ")\r\n" + content)
+					: (from + "\r\n" + content);
 			Message message = new MessageBuilder().withRecipientJids(
-					Constants.REC_JID1, Constants.REC_JID2).withBody(
-					content + "\r\n(From: " + from + ")").build();
+					Constants.REC_JID1, Constants.REC_JID2).withBody(str)
+					.build();
 			if (xmpp.getPresence(Constants.REC_JID1).isAvailable()
 					|| xmpp.getPresence(Constants.REC_JID2).isAvailable()) {
 				SendResponse status = xmpp.sendMessage(message);
