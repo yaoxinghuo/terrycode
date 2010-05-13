@@ -1,7 +1,6 @@
 package com.terry.msgsbot.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -48,7 +47,7 @@ public class MessageInServlet extends HttpServlet {
 		boolean messageSent = false;
 		try {
 			XMPPService xmpp = XMPPServiceFactory.getXMPPService();
-			String str = from.indexOf("@") == -1 ? ("(From: " + from + ")\r\n" + content)
+			String str = from.indexOf("@") == -1 ? ("(From: " + from + ")" + content)
 					: (from + "\r\n" + content);
 			Message message = new MessageBuilder().withRecipientJids(
 					Constants.REC_JID1, Constants.REC_JID2).withBody(str)
@@ -59,9 +58,9 @@ public class MessageInServlet extends HttpServlet {
 				messageSent = (status.getStatusMap().get(Constants.REC_JID1) == SendResponse.Status.SUCCESS)
 						|| (status.getStatusMap().get(Constants.REC_JID2) == SendResponse.Status.SUCCESS);
 			}
-			PrintWriter pw = resp.getWriter();
-			pw.write(String.valueOf(messageSent));
-			pw.flush();
+			req.setAttribute("message", messageSent ? "Message Sent"
+					: "Message Not Sent");
+			req.getRequestDispatcher("/").forward(req, resp);
 		} catch (Exception e) {
 			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e
 					.getMessage());
