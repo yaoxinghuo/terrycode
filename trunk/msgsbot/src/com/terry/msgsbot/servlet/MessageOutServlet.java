@@ -50,16 +50,16 @@ public class MessageOutServlet extends HttpServlet {
 	private static final String CALL_LOGS = "call-logs";
 
 	private static final String STATUS = "status";
+	private static final String OTHER_CACHE = "other-cache";
 
 	private static final String ROOT_MENU = "Menu:\r\n"
-			+ "0000:return 1:msgsbot 2:comutil 3:fetionlib 4:litefetion 5:fetiontool 6:newfetion 101:invite";
+			+ "0000:return 1:msgsbot 2:comutil 3:fetionlib 4:weatherlib 100:others 101:invite";
 
 	private static final int COMUTIL = 2;
 	private static final int FETIONLIB = 3;
-	private static final int LITEFETION = 4;
-	private static final int FETIONTOOL = 5;
-	private static final int NEWFETION = 6;
+	private static final int WEATHERLIB = 4;
 
+	private static final int OTHER = 100;
 	private static final int INVITE = 101;
 
 	private static final int MSGSBOT = 1;
@@ -111,6 +111,7 @@ public class MessageOutServlet extends HttpServlet {
 			}
 		} else {
 			String str = jids + "\r\n" + body;
+			log.debug("receive message: " + str);
 			if (xmpp.getPresence(Constants.REC_JID1).isAvailable())
 				xmpp.sendMessage(new MessageBuilder().withRecipientJids(
 						Constants.REC_JID1).withBody(str).build());
@@ -137,10 +138,12 @@ public class MessageOutServlet extends HttpServlet {
 		if (StringUtil.isEmptyOrWhitespace(body) || body.equals("0000")
 				|| o == null) {
 			short_cache.put(STATUS, ROOT);
+			short_cache.remove(OTHER_CACHE);
 			return ROOT_MENU;
 		}
+		int status = (Integer) o;
 		body = body.trim();
-		if ((Integer) o == ROOT) {
+		if (status == ROOT) {
 			if (body.equals("1")) {
 				short_cache.put(STATUS, MSGSBOT);
 				return getJidsByStatus(MSGSBOT);
@@ -151,29 +154,31 @@ public class MessageOutServlet extends HttpServlet {
 				short_cache.put(STATUS, FETIONLIB);
 				return getJidsByStatus(FETIONLIB);
 			} else if (body.equals("4")) {
-				short_cache.put(STATUS, LITEFETION);
-				return getJidsByStatus(LITEFETION);
-			} else if (body.equals("5")) {
-				short_cache.put(STATUS, FETIONTOOL);
-				return getJidsByStatus(FETIONTOOL);
-			} else if (body.equals("6")) {
-				short_cache.put(STATUS, NEWFETION);
-				return getJidsByStatus(NEWFETION);
+				short_cache.put(STATUS, WEATHERLIB);
+				return getJidsByStatus(WEATHERLIB);
+			} else if (body.equals("100")) {
+				short_cache.put(STATUS, OTHER);
+				return "Please enter jid(xxx@example.com):";
 			} else if (body.equals("101")) {
 				short_cache.put(STATUS, INVITE);
-				return "Please enter jid(xxx@appspot.com):";
+				return "Please enter jid(xxx@example.com):";
 			}
 			return ROOT_MENU;
 		}
 
-		int status = (Integer) o;
 		short_cache.put(STATUS, status);
 		if (status == MSGSBOT)
 			return msgsResponse(body);
-		else if (status == INVITE) {
-			if (!StringUtil.validateEmail(body)
-					|| !body.endsWith("@appspot.com")) {
-				return body + " is not an valid appspot jid!";
+		if (status == OTHER && short_cache.get(OTHER_CACHE) == null) {
+			if (!StringUtil.validateEmail(body)) {
+				return body + " is not a valid jid!";
+			}
+			short_cache.put(OTHER_CACHE, body);
+			return body;
+		}
+		if (status == INVITE) {
+			if (!StringUtil.validateEmail(body)) {
+				return body + " is not a valid jid!";
 			}
 			try {
 				xmpp.sendInvitation(new JID(body));
@@ -186,6 +191,7 @@ public class MessageOutServlet extends HttpServlet {
 			if (jids != null) {
 				xmpp.sendMessage(new MessageBuilder().withRecipientJids(
 						new JID(jids)).withBody(body).build());
+				log.debug("message send to:" + jids + ", content: " + body);
 			}
 		}
 		return null;
@@ -328,12 +334,11 @@ public class MessageOutServlet extends HttpServlet {
 			return "comutil@appspot.com";
 		case FETIONLIB:
 			return "fetionlib@appspot.com";
-		case LITEFETION:
-			return "litefetion@appspot.com";
-		case FETIONTOOL:
-			return "fetiontool@appspot.com";
-		case NEWFETION:
-			return "newfetion@appspot.com";
+		case WEATHERLIB:
+			return "weatherlib@appspot.com";
+		case OTHER:
+			Object o = short_cache.get(OTHER_CACHE);
+			return o == null ? null : (String) o;
 		}
 		return null;
 	}
