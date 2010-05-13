@@ -20,7 +20,8 @@ public class XMPPSender {
 
 	public static boolean sendXMPP(JID jid, String content) {
 		try {
-			if (!xmpp.getPresence(jid).isAvailable())
+			if (!xmpp.getPresence(jid).isAvailable()
+					&& jid.getId().indexOf("@appspot.com") == -1)
 				return false;
 			SendResponse status = xmpp.sendMessage(new MessageBuilder()
 					.withRecipientJids(jid).withBody(content).build());
