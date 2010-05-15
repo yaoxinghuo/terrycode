@@ -48,12 +48,13 @@ public class MessageOutServlet extends HttpServlet {
 	private XMPPService xmpp = XMPPServiceFactory.getXMPPService();
 
 	private static final String CALL_LOGS = "call-logs";
+	private static final String LAST_COMMAND = "last-command";
 
 	private static final String STATUS = "status";
 	private static final String OTHER_CACHE = "other-cache";
 
 	private static final String ROOT_MENU = "Menu:\r\n"
-			+ "0000:return 1:msgsbot 2:comutil 3:fetionlib 4:weatherlib 100:others 101:invite";
+			+ "0000:return 1:msgsbot 2:comutil 3:fetionlib 4:weatherlib 100:others 101:invite r:repeat last command";
 
 	private static final int COMUTIL = 2;
 	private static final int FETIONLIB = 3;
@@ -141,6 +142,14 @@ public class MessageOutServlet extends HttpServlet {
 			short_cache.remove(OTHER_CACHE);
 			return ROOT_MENU;
 		}
+		
+		if (body.equalsIgnoreCase("r")) {// 上一次的命令
+			Object r = short_cache.get(LAST_COMMAND);
+			if (r != null)
+				body = (String) r;
+		}
+		short_cache.put(LAST_COMMAND, body);// 把上一次的命令记下来
+
 		int status = (Integer) o;
 		body = body.trim();
 		if (status == ROOT) {
