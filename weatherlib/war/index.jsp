@@ -7,6 +7,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta name="google-site-verification" content="xXYWS3e5fl1xrP2hWPOTexfG5ovwHF2whsRWdIFwcKs" />
+<meta name="description"
+	content="定时每天向指定邮箱发送天气预报邮件，借助手机邮箱（139邮箱，联通邮箱，189邮箱）提供的邮件到达手机提醒，实现免费手机天气预报定制" />
 <link rel="stylesheet" type="text/css" href="css/core.css" />
 <%
 	UserService userService = UserServiceFactory.getUserService();
@@ -24,7 +27,7 @@
 	}
 %>
 
-<title>天气预报邮件定制</title>
+<title>免费天气预报邮件短信定制</title>
 </head>
 <body topmargin=3 marginheight=3>
 
@@ -196,7 +199,7 @@
 &nbsp; &nbsp; 3.天气数据来自Google，Google每天 <b style="color: blue">8:35</b> 和
 <b style="color: blue">17:35</b> 更新数据，请把提醒时间适当设置在这两个时间点之后<br />
 &nbsp; &nbsp; 4.<b>据统计，大部分网友选择在 <b style="color: blue">8:00</b> 
-<b style="color: blue">18:00</b> <b style="color: blue">20:00</b>等时间发送邮件，
+<b style="color: blue">18:00</b> <b style="color: blue">20:00</b> 等时间发送邮件，
 发送列队众多会导致发送不及时，您也可以选择比较不常见的时间发送</b><br />
 &nbsp; &nbsp; 5.<b>若使用139邮箱，会有一个“手机接收时间段”的设置，请 注意设置定制时间在该范围内</b><br />
 &nbsp; &nbsp; 6.为了方便您今后管理和取消订阅，需要登录到您的Google帐号<br />
