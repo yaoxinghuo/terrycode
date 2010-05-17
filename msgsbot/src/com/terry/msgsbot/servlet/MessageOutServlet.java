@@ -54,7 +54,7 @@ public class MessageOutServlet extends HttpServlet {
 	private static final String OTHER_CACHE = "other-cache";
 
 	private static final String ROOT_MENU = "Menu:\r\n"
-			+ "0000:return 1:msgsbot 2:comutil 3:fetionlib 4:weatherlib 100:others 101:invite r:repeat last command";
+			+ "0000:return 1:msgsbot 2:comutil 3:fetionlib 4:weatherlib 100:others 101:invite r:repeat last command s: status";
 
 	private static final int COMUTIL = 2;
 	private static final int FETIONLIB = 3;
@@ -75,7 +75,7 @@ public class MessageOutServlet extends HttpServlet {
 			cache = CacheManager.getInstance().getCacheFactory().createCache(
 					Collections.emptyMap());
 			Map<Integer, Integer> CACHE_PROPS = new HashMap<Integer, Integer>();
-			CACHE_PROPS.put(GCacheFactory.EXPIRATION_DELTA, 3600);
+			CACHE_PROPS.put(GCacheFactory.EXPIRATION_DELTA, 3600 * 24);
 			short_cache = CacheManager.getInstance().getCacheFactory()
 					.createCache(CACHE_PROPS);
 		} catch (CacheException e) {
@@ -142,13 +142,21 @@ public class MessageOutServlet extends HttpServlet {
 			short_cache.remove(OTHER_CACHE);
 			return ROOT_MENU;
 		}
-		
+
 		if (body.equalsIgnoreCase("r")) {// 上一次的命令
 			Object r = short_cache.get(LAST_COMMAND);
 			if (r != null)
 				body = (String) r;
 		}
 		short_cache.put(LAST_COMMAND, body);// 把上一次的命令记下来
+
+		if (body.equalsIgnoreCase("s")) {// 得到当前是和哪个人对话
+			if (short_cache.get(STATUS) != null) {
+				String s = getJidsByStatus((Integer) short_cache.get(STATUS));
+				if (s != null)
+					return s;
+			}
+		}
 
 		int status = (Integer) o;
 		body = body.trim();
