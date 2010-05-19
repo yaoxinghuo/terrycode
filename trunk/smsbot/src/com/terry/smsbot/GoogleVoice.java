@@ -104,9 +104,9 @@ public class GoogleVoice implements Serializable {
 					null);
 			int index = data.indexOf("Auth=");
 			if (index != -1 && index + 5 < data.length())
-				auth = data.substring(data.indexOf("Auth=") + 5);
+				auth = data.substring(data.indexOf("Auth=") + 5).trim();
 			if (StringUtil.isEmptyOrWhitespace(auth))
-				throw new AuthenticationException("Get rnrSEE failed");
+				throw new AuthenticationException("Get Login Auth failed");
 		} catch (Exception e) {
 			throw new AuthenticationException(e.getMessage());
 		}
@@ -132,10 +132,10 @@ public class GoogleVoice implements Serializable {
 
 	private String fetchData(String url, String payload, String auth)
 			throws Exception {
-		if (auth != null)
-			url = url + "?auth=" + auth;
 		HttpURLConnection con = (HttpURLConnection) new URL(url)
 				.openConnection();
+		if (auth != null)
+			con.setRequestProperty("Authorization", "GoogleLogin auth=" + auth);
 		con
 				.setRequestProperty(
 						"User-Agent",
