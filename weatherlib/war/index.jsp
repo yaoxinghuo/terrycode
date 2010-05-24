@@ -9,7 +9,7 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <meta name="google-site-verification" content="xXYWS3e5fl1xrP2hWPOTexfG5ovwHF2whsRWdIFwcKs" />
 <meta name="description"
-	content="定时每天向指定邮箱发送天气预报邮件，借助手机邮箱（139邮箱，联通邮箱，189邮箱）提供的邮件到达手机提醒，实现免费手机天气预报定制" />
+	content="每天定时向指定邮箱发送天气预报邮件，借助手机邮箱（139邮箱，联通邮箱，189邮箱）提供的邮件到达手机短信提醒，实现免费天气预报短信定制" />
 <link rel="stylesheet" type="text/css" href="css/core.css" />
 <%
 	UserService userService = UserServiceFactory.getUserService();
@@ -184,10 +184,10 @@
 	}
 %>
 <p align="left"><strong><font size="4">功能：</font><br />
-&nbsp; &nbsp; 定时每天向指定邮箱发送天气预报邮件，借助手机邮箱（<a href="http://mail.139.com/"
+&nbsp; &nbsp; 每天定时向指定邮箱发送天气预报邮件，借助手机邮箱（<a href="http://mail.139.com/"
 	target="_blank">139邮箱</a>，<a href="http://mail.wo.com.cn"
 	target="_blank">联通邮箱</a>，<a href="http://www.189.cn/webmail/"
-	target="_blank">189邮箱</a>）提供的邮件到达手机提醒，实现手机天气预报定制</strong><br />
+	target="_blank">189邮箱</a>）提供的邮件到达手机短信提醒，实现天气预报短信定制</strong><br />
 <strong><font size="4">特点：<br />
 </font></strong> &nbsp; &nbsp; 一个帐号可定制多个城市的天气预报或多个好友的邮箱<br />
 &nbsp; &nbsp; 可自定义每天发送时间、可选择天气预报内容放入邮件正文或主题、可暂停预报<br />
@@ -213,7 +213,7 @@
 其他作品： <a href="http://fetion.xinghuo.org.ru/" target="_blank"><font
 	color="#800080">网页飞信</font></a> <a href="http://feix.org.ru/"
 	target="_blank"><font color="#800080">网页飞信</font></a></p>
-<br/><div>感谢<a href="http://www.8gdns.com/" target="_blank">宕机检测多线多地区全智能DNS</a>提供GHS可用IP!</div>
+<br/>
 
 
 <p align="center"><img
