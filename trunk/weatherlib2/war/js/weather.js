@@ -160,8 +160,10 @@ function scheduleAction(com, grid) {
 				$("#type").attr("value", "1");
 			else if (type == "天气内容放主题")
 				$("#type").attr("value", "2");
-			else
+			else {
 				$("#type").attr("value", "0");
+				$("#test").attr("disabled", true);
+			}
 			$("#sid").val(cell[0].id.substr(3));
 		} else {
 			showMsg("error", "请选中一行修改！");
