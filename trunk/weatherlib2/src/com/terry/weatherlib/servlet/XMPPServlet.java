@@ -65,7 +65,7 @@ public class XMPPServlet extends HttpServlet {
 				Weather w = WeatherCache.queryWeather(city, city);
 				if (w == null)
 					return "对不起，无法获取“" + city + "”的天气预报，请稍候再试！";
-				return w.getReport();
+				return w.getReport() + "\r\n" + w.getDesc();
 			}
 		} else
 			return HELP;
