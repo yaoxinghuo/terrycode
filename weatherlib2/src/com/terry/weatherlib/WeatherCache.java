@@ -76,7 +76,7 @@ public class WeatherCache {
 	}
 
 	/*
-	 * http://wap.weather.com.cn/wap的天气预报每天8:00 11:00 17:00更新一次，还有凌晨也要手动更新一次
+	 * http://wap.weather.com.cn/wap的天气预报每天8:00 11:00 18:00更新一次，还有凌晨也要手动更新一次
 	 * 
 	 * 所以要得到Cache的保存时间
 	 */
@@ -85,7 +85,7 @@ public class WeatherCache {
 		Calendar c = Calendar.getInstance();
 		c.setTimeInMillis(now);
 		c.set(Calendar.HOUR_OF_DAY, 0);// 8:00左右
-		c.set(Calendar.MINUTE, 10);
+		c.set(Calendar.MINUTE, 9);
 		boolean add = false;
 		if (c.getTimeInMillis() <= now) {
 			c.add(Calendar.DAY_OF_YEAR, 1);
@@ -98,7 +98,7 @@ public class WeatherCache {
 			add = false;
 		}
 		c.set(Calendar.HOUR_OF_DAY, 3);// 11:00左右
-		c.set(Calendar.MINUTE, 10);
+		c.set(Calendar.MINUTE, 9);
 		if (c.getTimeInMillis() <= now) {
 			c.add(Calendar.DAY_OF_YEAR, 1);
 			add = true;
@@ -109,8 +109,8 @@ public class WeatherCache {
 			c.add(Calendar.DAY_OF_YEAR, -1);
 			add = false;
 		}
-		c.set(Calendar.HOUR_OF_DAY, 9);// 17:00左右
-		c.set(Calendar.MINUTE, 10);
+		c.set(Calendar.HOUR_OF_DAY, 10);// 18:00左右
+		c.set(Calendar.MINUTE, 9);
 		if (c.getTimeInMillis() <= now)
 			c.add(Calendar.DAY_OF_YEAR, 1);
 		long z = c.getTimeInMillis();
@@ -120,7 +120,7 @@ public class WeatherCache {
 			add = false;
 		}
 		c.set(Calendar.HOUR_OF_DAY, 16);// 24:00左右
-		c.set(Calendar.MINUTE, 10);
+		c.set(Calendar.MINUTE, 9);
 		if (c.getTimeInMillis() <= now)
 			c.add(Calendar.DAY_OF_YEAR, 1);
 		long u = c.getTimeInMillis();
