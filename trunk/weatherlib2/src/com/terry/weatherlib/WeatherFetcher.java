@@ -31,6 +31,9 @@ public class WeatherFetcher {
 	private static Log log = LogFactory.getLog(WeatherFetcher.class);
 
 	public static Weather fetchWeather(String loc) {
+		if (loc.endsWith("市") && loc.length() > 1) {
+			loc = loc.substring(0, loc.length() - 1);
+		}
 		String unicodeLoc = null;
 		try {
 			unicodeLoc = URLEncoder.encode(loc, "UTF-8");
@@ -44,9 +47,15 @@ public class WeatherFetcher {
 			return null;
 		Pattern p = Pattern.compile("\"([^\"]*)\"", Pattern.CASE_INSENSITIVE);
 		Matcher matcher = p.matcher(data);
-		if (matcher.find())
+		if (matcher.find()) {
+			String redirectURL = matcher.group(1);
+			if (redirectURL.endsWith("101010100.shtml")) {// 默认找不到都是写是北京
+				if (!loc.contains("北京") || !loc.contains("beijing")) {
+					return null;
+				}
+			}
 			data = fetchData(matcher.group(1), null);
-		else
+		} else
 			return null;
 		log.debug("fetch data:" + loc + data);
 		return parserWeather(data, loc);
