@@ -7,7 +7,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,6 +32,13 @@ import org.htmlparser.util.ParserException;
 public class WeatherFetcher {
 
 	private static Log log = LogFactory.getLog(WeatherFetcher.class);
+
+	private static SimpleDateFormat sdf = new SimpleDateFormat("M月d日",
+			Locale.CHINA);
+
+	static {
+		sdf.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
+	}
 
 	public static Weather fetchWeather(String loc) {
 		if (loc.endsWith("市") && loc.length() > 1) {
@@ -145,18 +155,29 @@ public class WeatherFetcher {
 								StringBuilder sb = new StringBuilder();
 								NodeList dl = days.getChildren();
 								Node[] dlNode = dl.toNodeArray();
+								int cdays = 0;
 								for (int k = 0; k < dlNode.length; k++) {
 									String c = dlNode[k].toPlainTextString();
 									if (c != null && !c.trim().equals("")) {
-										if (sb.length() == 0) {
+										cdays++;
+										if (cdays == 1) {// 第一天把日期换成“今天”
 											String[] s = c.trim().split("\r\n",
 													2);
-											if (s.length == 2) {
+											if (s.length == 2
+													&& s[0]
+															.trim()
+															.equals(
+																	sdf
+																			.format(new Date()))) {
 												c = "今天 " + s[1];
 											}
-										} else {
+										} else if (cdays > 2) {// 第三天开始不要风力等情况了
+											String[] s = c.trim().split("\r\n");
+											if (s.length >= 3)
+												c = s[0] + " " + s[1];
 											sb.append("\r\n");
-										}
+										} else
+											sb.append("\r\n");
 										sb.append(c.replace("\r\n", " ")
 												.replace("    ", " ").trim());
 									}
