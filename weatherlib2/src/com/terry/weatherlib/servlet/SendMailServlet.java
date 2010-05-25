@@ -85,8 +85,11 @@ public class SendMailServlet extends HttpServlet {
 		query.setParameter("account", a);
 		Account account = (Account) query.getSingleResult();
 		Weather weather = WeatherCache.queryWeather(schedule.getCity());
-		if (weather == null)
+		if (weather == null) {
+			log.warn("can not fetch weather for: " + schedule.getCity()
+					+ ", account: " + schedule.getAccount());
 			return;
+		}
 		if (!WeatherMailSender.sendWeatherMail(weather, schedule,
 				account == null ? null : account.getNickname()))
 			return;
