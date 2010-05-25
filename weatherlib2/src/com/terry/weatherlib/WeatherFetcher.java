@@ -1,14 +1,15 @@
 package com.terry.weatherlib;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,7 +18,7 @@ import org.htmlparser.NodeFilter;
 import org.htmlparser.Parser;
 import org.htmlparser.filters.NodeClassFilter;
 import org.htmlparser.tags.Div;
-import org.htmlparser.tags.ImageTag;
+import org.htmlparser.tags.HeadingTag;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 
@@ -36,15 +37,22 @@ public class WeatherFetcher {
 		} catch (UnsupportedEncodingException e) {
 			return null;
 		}
-		String data = fetchData("http://www.google.com.hk/m?q=" + unicodeLoc
-				+ "&site=weather&gl=cn&hl=zh-CN");
+		String data = fetchData("http://search.weather.com.cn/wap/search.php",
+				"city=" + unicodeLoc);
 		log.debug("fetch data:" + loc + data);
 		if (data == null)
 			return null;
+		Pattern p = Pattern.compile("\"([^\"]*)\"", Pattern.CASE_INSENSITIVE);
+		Matcher matcher = p.matcher(data);
+		if (matcher.find())
+			data = fetchData(matcher.group(1), null);
+		else
+			return null;
+		log.debug("fetch data:" + loc + data);
 		return parserWeather(data, loc);
 	}
 
-	private static String fetchData(String url) {
+	private static String fetchData(String url, String param) {
 		try {
 			HttpURLConnection con = (HttpURLConnection) new URL(url)
 					.openConnection();
@@ -54,7 +62,19 @@ public class WeatherFetcher {
 					.setRequestProperty(
 							"User-Agent",
 							"Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/533.1 (KHTML, like Gecko) Chrome/5.0.322.2 Safari/533.1,gzip(gfe),gzip(gfe)");
-			con.setRequestMethod("GET");
+			if (param != null) {
+				con.setDoOutput(true);
+				con.setRequestProperty("Content-Type",
+						"application/x-www-form-urlencoded");
+				con.setRequestMethod("POST");
+				con.connect();
+				DataOutputStream out = new DataOutputStream(con
+						.getOutputStream());
+				out.writeBytes(param);
+				out.flush();
+				out.close();
+			} else
+				con.setRequestMethod("GET");
 
 			int code = con.getResponseCode();
 			if (code >= 200 && code < 300) {
@@ -77,7 +97,7 @@ public class WeatherFetcher {
 	}
 
 	public static Weather parserWeather(String html, String loc) {
-		Parser parser = Parser.createParser(html.replace("<br/>", "\r\n")
+		Parser parser = Parser.createParser(html.replace("<br />", "\r\n")
 				.replace("&nbsp;", " "), "utf8");
 
 		NodeFilter contentFilter = new NodeClassFilter(Div.class);
@@ -96,24 +116,45 @@ public class WeatherFetcher {
 			Node node = nodes[i];
 			if (node instanceof Div) {
 				Div div = (Div) node;
-				String className = div.getAttribute("class");
-				if (className == null
-						&& div.getFirstChild() instanceof ImageTag) {
-					weather.setContent(div.toPlainTextString().trim());
-					log.debug("content:" + weather.getContent());
-				}
-				if (className != null) {
-					if (className.equals("b")) {
-						String city = div.toPlainTextString().trim();
-						if (city.contains("天气") && !city.contains(" ")
-								&& (city.length() - loc.length()) < 5) {
-							// http://www.google.com.hk/m/search?site=weather&gl=cn&hl=zh-CN&q=长沙市
-							// 输入长沙，却出来的是长沙县，怪怪的，所以这里if一下
-							if (loc.contains("长沙") && city.contains(loc))
-								weather.setCity(loc);
-							else
-								weather.setCity(city.replace("天气", ""));
-							log.debug("city:" + weather.getCity());
+				if ("weather".equals(div.getAttribute("class"))) {
+					NodeList wn = div.getChildren();
+					Node[] wnNode = wn.toNodeArray();
+					for (int j = 0; j < wnNode.length; j++) {
+						Node n = wnNode[j];
+						if (n instanceof HeadingTag) {
+							HeadingTag ht = (HeadingTag) n;
+							if ("H2".equalsIgnoreCase(ht.getTagName())) {
+								weather.setCity(ht.toPlainTextString().replace(
+										"天气预报", ""));
+								log.debug("city:" + weather.getCity());
+							} else if ("H3".equalsIgnoreCase(ht.getTagName())) {
+								weather.setDesc(ht.toPlainTextString());
+							}
+						} else if (n instanceof Div) {
+							Div days = (Div) n;
+							if ("days".equals(days.getAttribute("class"))) {
+								StringBuilder sb = new StringBuilder();
+								NodeList dl = days.getChildren();
+								Node[] dlNode = dl.toNodeArray();
+								for (int k = 0; k < dlNode.length; k++) {
+									String c = dlNode[k].toPlainTextString();
+									if (c != null && !c.trim().equals("")) {
+										if (sb.length() == 0) {
+											String[] s = c.trim().split("\r\n",
+													2);
+											if (s.length == 2) {
+												c = "今天 " + s[1];
+											}
+										} else {
+											sb.append("\r\n");
+										}
+										sb.append(c.replace("\r\n", " ")
+												.replace("    ", " ").trim());
+									}
+								}
+								if (sb.length() != 0)
+									weather.setContent(sb.toString());
+							}
 						}
 					}
 				}
@@ -130,11 +171,8 @@ public class WeatherFetcher {
 	}
 
 	public static void main(String[] args) throws Exception {
-		// Weather w = WeatherFetcher.fetchWeather("上海");
-		// if (w != null)
-		// System.out.println(w.getReport());
-
-		SimpleDateFormat sdf2 = new SimpleDateFormat("M月d日H:mm", Locale.CHINA);
-		System.out.println(sdf2.format(new Date()));
+		Weather w = WeatherFetcher.fetchWeather("上海");
+		if (w != null)
+			System.out.println(w.getReport());
 	}
 }
