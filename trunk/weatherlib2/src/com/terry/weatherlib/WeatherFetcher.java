@@ -50,11 +50,11 @@ public class WeatherFetcher {
 		if (matcher.find()) {
 			String redirectURL = matcher.group(1);
 			if (redirectURL.endsWith("101010100.shtml")) {// 默认找不到都是写是北京
-				if (!loc.contains("北京") || !loc.contains("beijing")) {
+				if (!loc.contains("北京") && !loc.contains("beijing")) {
 					return null;
 				}
 			}
-			data = fetchData(matcher.group(1), null);
+			data = fetchData(redirectURL, null);
 		} else
 			return null;
 		log.debug("fetch data:" + loc + data);
