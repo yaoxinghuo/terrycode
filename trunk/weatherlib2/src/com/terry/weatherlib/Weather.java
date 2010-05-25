@@ -14,6 +14,7 @@ public class Weather implements Serializable {
 	private static final long serialVersionUID = 3528444236459210859L;
 	private String city;
 	private String content;
+	private String desc;
 
 	private Date udate;
 
@@ -42,11 +43,28 @@ public class Weather implements Serializable {
 	}
 
 	public String getReport() {
+		return getReport(0);
+	}
+
+	public String getReport(int days) {
 		if (!checkComplete())
 			return "没有天气预报信息";
 		StringBuffer sb = new StringBuffer("");
 		sb.append(city).append("\r\n");
-		sb.append(content).append("\r\n");
+		if (days == 0)
+			sb.append(content);
+		else {
+			String[] dc = content.split("\r\n");
+			if (days >= dc.length)
+				sb.append(content);
+			else {
+				for (int i = 0; i < days; i++) {
+					sb.append(dc[i]);
+					if (i != days - 1)
+						sb.append("\r\n");
+				}
+			}
+		}
 		return sb.toString();
 	}
 
@@ -54,5 +72,13 @@ public class Weather implements Serializable {
 		if (content == null || city == null)
 			return false;
 		return true;
+	}
+
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+
+	public String getDesc() {
+		return desc;
 	}
 }

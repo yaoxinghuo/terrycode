@@ -191,19 +191,17 @@
 <strong><font size="4">特点：<br />
 </font></strong> &nbsp; &nbsp; 一个帐号可定制多个城市的天气预报或多个好友的邮箱<br />
 &nbsp; &nbsp; 可自定义每天发送时间、可选择天气预报内容放入邮件正文或主题、可暂停预报<br />
-&nbsp; &nbsp; 可预报3-4天的天气情况<br />
+&nbsp; &nbsp; 可预报3-4天的天气情况（天气内容放主题3天，内同放正文4天）<br />
 &nbsp; &nbsp; 部署于GAE免费的服务器，定时期限无限长（只要Google App Engine没倒闭）<br />
 <strong><font size="4">说明：<br />
 </font></strong>&nbsp; &nbsp; 1.定时只能精确到5分钟（若遇到发送高峰也会相应延后）<br />
 &nbsp; &nbsp; 2.暂时只能定制10条邮件天气预报列表，有更多需要可以联系我<br />
-&nbsp; &nbsp; 3.天气数据来自Google，Google每天 <b style="color: blue">8:35</b> 和
-<b style="color: blue">17:35</b> 更新数据，请把提醒时间适当设置在这两个时间点之后<br />
-&nbsp; &nbsp; 4.<b>据统计，大部分网友选择在 <b style="color: blue">8:00</b> 
+&nbsp; &nbsp; 3.<b>据统计，大部分网友选择在 <b style="color: blue">8:00</b> 
 <b style="color: blue">18:00</b> <b style="color: blue">20:00</b> 等时间发送邮件，
 发送列队众多会导致发送不及时，您也可以选择比较不常见的时间发送</b><br />
-&nbsp; &nbsp; 5.<b>若使用139邮箱，会有一个“手机接收时间段”的设置，请 注意设置定制时间在该范围内</b><br />
-&nbsp; &nbsp; 6.为了方便您今后管理和取消订阅，需要登录到您的Google帐号<br />
-&nbsp; &nbsp; 7.新建或修改定制中的“备注”是为方便管理多个定制时的说明，并不会附加在邮件或短信内容中<br />
+&nbsp; &nbsp; 4.<b>若使用139邮箱，会有一个“手机接收时间段”的设置，请 注意设置定制时间在该范围内</b><br />
+&nbsp; &nbsp; 5.为了方便您今后管理和取消订阅，需要登录到您的Google帐号<br />
+&nbsp; &nbsp; 6.新建或修改定制中的“备注”是为方便管理多个定制时的说明，并不会附加在邮件或短信内容中<br />
 <br />
 程序设计：<a href="http://xinghuo.org.ru/" target="_blank"><font
 	color="#800080">Terry</font></a> <a

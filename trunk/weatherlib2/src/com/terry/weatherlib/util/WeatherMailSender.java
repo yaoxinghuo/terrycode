@@ -51,13 +51,11 @@ public class WeatherMailSender {
 		String subject = null;
 		String content = null;
 		if (type == 2) {
-			subject = weather.getCity()
-					+ weather.getContent().replace("\r\n", " ");
-			content = "如题。" + HELP;
+			subject = weather.getReport(3).replace("\r\n", " ");
+			content = "如题。" + weather.getDesc() + HELP;
 		} else {
-			subject = weather.getCity() + "天气预报--" + "谷歌天气"
-					+ sdf2.format(weather.getUdate()) + "更新";
-			content = weather.getReport() + HELP;
+			subject = weather.getCity() + "天气预报--" + weather.getDesc();
+			content = weather.getReport(4) + "\r\n" + weather.getDesc() + HELP;
 		}
 		if (fetch) {
 			return MailSender.fetchToSendMail(null, email, nickname, subject,
