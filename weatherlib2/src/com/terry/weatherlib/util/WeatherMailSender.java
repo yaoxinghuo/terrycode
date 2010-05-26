@@ -55,7 +55,7 @@ public class WeatherMailSender {
 			content = "如题。" + weather.getDesc() + HELP;
 		} else {
 			subject = weather.getCity() + "天气预报--" + weather.getDesc();
-			content = weather.getReport(4) + "\r\n" + weather.getDesc() + HELP;
+			content = weather.getReport() + "\r\n" + weather.getDesc() + HELP;
 		}
 		if (fetch) {
 			return MailSender.fetchToSendMail(null, email, nickname, subject,
