@@ -2,7 +2,12 @@ package com.terry.weatherlib.servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Locale;
+import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.cache.Cache;
 import javax.cache.CacheException;
@@ -81,16 +86,49 @@ public class ClearWeatherCacheServlet extends HttpServlet {
 		if (cacheTextWeather == null
 				|| cacheTextWeather.getUdate().getTime() >= nowTime)
 			return false;// 如果是刚刚从网上取的，就不用检查了
+
+		String hourS = getHour(cacheTextWeather.getDesc());
+		if (hourS == null)
+			return false;
+		int cacheHour = Integer.parseInt(hourS);
+		int nowHour = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"),
+				Locale.CHINA).get(Calendar.HOUR_OF_DAY);
+		if (nowHour >= 0 && nowHour < 8)
+			cacheHour = 0;
+		if (cacheHour == 0) {
+			if (cacheHour < 8)
+				return false;
+		} else if (cacheHour == 8) {
+			if (nowHour < 11)
+				return false;
+		} else if (cacheHour == 11) {
+			if (nowHour < 18)
+				return false;
+		} else if (cacheHour == 18) {
+			if (nowHour <= 23)
+				return false;
+		}
+
 		Weather nowTestWeather = WeatherFetcher.fetchWeather(testCity);
 
 		/*
 		 * 如果从cache取出来的和直接从网上取到的desc（类似2010-05-01 11时发布）不一样，就要清空缓存
 		 */
-		if (nowTestWeather == null
+		if (nowTestWeather == null || nowTestWeather.getDesc() == null
 				|| nowTestWeather.getDesc().equals(cacheTextWeather.getDesc()))
 			return false;
 		else
 			return true;
+	}
+
+	private String getHour(String source) {
+		if (source == null)
+			return null;
+		Pattern p = Pattern.compile("[^ ]* ([0-9]+)时发布");
+		Matcher m = p.matcher(source);
+		if (m.find())
+			return m.group(1);
+		return null;
 	}
 
 }
