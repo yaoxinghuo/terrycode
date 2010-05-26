@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -35,6 +36,9 @@ public class WeatherFetcher {
 
 	private static SimpleDateFormat sdf = new SimpleDateFormat("M月d日",
 			Locale.CHINA);
+
+	private static Calendar calendar = Calendar.getInstance(TimeZone
+			.getTimeZone("GMT+08:00"), Locale.CHINA);
 
 	static {
 		sdf.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
@@ -171,13 +175,23 @@ public class WeatherFetcher {
 																			.format(new Date()))) {
 												c = "今天 " + s[1].trim();
 											}
-										} else if (cdays > 2) {// 第三天开始不要风力等情况了
+										} else if (cdays > 3) {// 第4天开始不要风力等情况了
 											String[] s = c.trim().split("\r\n");
 											if (s.length >= 3)
-												c = s[0].trim() + " " + s[1].trim();
+												c = s[0].trim() + " "
+														+ s[1].trim();
 											sb.append("\r\n");
-										} else
+										} else {
+											String[] s = c.trim().split("\r\n",
+													2);
+											if (s.length == 2) {
+												String weekName = getWeekName(s[0]);
+												if (weekName != null)
+													c = weekName + " "
+															+ s[1].trim();
+											}
 											sb.append("\r\n");
+										}
 										sb.append(c.replace("\r\n", " ")
 												.replace("    ", " ").trim());
 									}
@@ -198,6 +212,39 @@ public class WeatherFetcher {
 			return weather;
 		}
 		return null;
+	}
+
+	/*
+	 * date 格式要是类似5月1日
+	 */
+	private static String getWeekName(String dateS) {
+		try {
+			Date date = sdf.parse(dateS);
+			calendar.setTime(date);
+			calendar.set(Calendar.YEAR, Calendar.getInstance(
+					TimeZone.getTimeZone("GMT+08:00"), Locale.CHINA).get(
+					Calendar.YEAR));
+			switch (calendar.get(Calendar.DAY_OF_WEEK)) {
+			case 1:
+				return "周日";
+			case 2:
+				return "周一";
+			case 3:
+				return "周二";
+			case 4:
+				return "周三";
+			case 5:
+				return "周四";
+			case 6:
+				return "周五";
+			case 7:
+				return "周六";
+			default:
+				return null;
+			}
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	public static void main(String[] args) throws Exception {
