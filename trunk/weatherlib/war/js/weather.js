@@ -98,7 +98,7 @@ $("#flex1")
 					useRp : false,
 					pagestat : '显示 第 {from} 到 {to} 条 , 总共  {total} 条记录',
 					procmsg : '加载中, 请稍候 ...',
-					nomsg : '<strong>您还没有建立天气预报定制，现在就<a href="#" onclick="newSchedule();return false;">新建一个</a></strong>',
+					nomsg : '<strong>您还没有建立天气预报定制，现在就<a href="#" onclick="newSchedule();return false;">新建一个</a>，若要定制多个，请再点左上角“<img style="vertical-align:middle;" src="images/add.png" />新建”按钮</strong>',
 					height : 278
 				});
 function scheduleAction(com, grid) {
