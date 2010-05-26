@@ -12,11 +12,16 @@
 	</cron>
 	<cron>
 		<url>/cron/clearWeatherCache</url>
+		<description>clear Weather Cache every 8 minutes</description>
+		<schedule>every 8 minutes</schedule>
+	</cron>
+	<!--<cron>
+		<url>/cron/clearWeatherCache</url>
 		<description>clear Weather Cache</description>
 		<schedule>every day 00:01</schedule>
 		<timezone>Asia/Shanghai</timezone>
 	</cron>
-	<!--<cron>
+	<cron>
 			<url>/cron/clearWeatherCache</url>
 			<description>clear Weather Cache</description>
 			<schedule>every day 08:32</schedule>

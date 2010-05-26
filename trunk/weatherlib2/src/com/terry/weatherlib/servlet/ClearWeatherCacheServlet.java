@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.terry.weatherlib.Weather;
+import com.terry.weatherlib.WeatherCache;
+import com.terry.weatherlib.WeatherFetcher;
 import com.terry.weatherlib.util.Constants;
 
 /**
@@ -29,6 +32,8 @@ public class ClearWeatherCacheServlet extends HttpServlet {
 	private static final long serialVersionUID = -1883179443719794954L;
 
 	private static Log log = LogFactory.getLog(ClearWeatherCacheServlet.class);
+
+	private static final String testCity = "北京";
 
 	private Cache cache;
 
@@ -51,8 +56,10 @@ public class ClearWeatherCacheServlet extends HttpServlet {
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse res)
 			throws IOException, ServletException {
-		if (cache == null)
+
+		if (!checkShouldClearCache())
 			return;
+
 		Object o = cache.get(Constants.DEFAULT_CACHE_CACHE_NAME);
 		if (o != null && o instanceof ArrayList<?>) {
 			ArrayList<String> names = (ArrayList<String>) o;
@@ -65,4 +72,25 @@ public class ClearWeatherCacheServlet extends HttpServlet {
 		} else
 			cache.clear();
 	}
+
+	private boolean checkShouldClearCache() {
+		if (cache == null)
+			return false;
+		long nowTime = System.currentTimeMillis();
+		Weather cacheTextWeather = WeatherCache.queryWeather(testCity);
+		if (cacheTextWeather == null
+				|| cacheTextWeather.getUdate().getTime() >= nowTime)
+			return false;// 如果是刚刚从网上取的，就不用检查了
+		Weather nowTestWeather = WeatherFetcher.fetchWeather(testCity);
+
+		/*
+		 * 如果从cache取出来的和直接从网上取到的desc（类似2010-05-01 11时发布）不一样，就要清空缓存
+		 */
+		if (nowTestWeather == null
+				|| nowTestWeather.getDesc().equals(cacheTextWeather.getDesc()))
+			return false;
+		else
+			return true;
+	}
+
 }
