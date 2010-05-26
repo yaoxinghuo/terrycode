@@ -85,7 +85,7 @@ public class WeatherCache {
 		Calendar c = Calendar.getInstance();
 		c.setTimeInMillis(now);
 		c.set(Calendar.HOUR_OF_DAY, 0);// 8:00左右
-		c.set(Calendar.MINUTE, 9);
+		c.set(Calendar.MINUTE, 0);
 		boolean add = false;
 		if (c.getTimeInMillis() <= now) {
 			c.add(Calendar.DAY_OF_YEAR, 1);
@@ -109,8 +109,8 @@ public class WeatherCache {
 			c.add(Calendar.DAY_OF_YEAR, -1);
 			add = false;
 		}
-		c.set(Calendar.HOUR_OF_DAY, 10);// 18:00左右
-		c.set(Calendar.MINUTE, 9);
+		c.set(Calendar.HOUR_OF_DAY, 9);// 18:00左右
+		c.set(Calendar.MINUTE, 55);
 		if (c.getTimeInMillis() <= now)
 			c.add(Calendar.DAY_OF_YEAR, 1);
 		long z = c.getTimeInMillis();
