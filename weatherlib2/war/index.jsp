@@ -183,7 +183,9 @@
 <%
 	}
 %>
-<p align="left"><strong><font size="4">功能：</font><br />
+<p align="left">
+<font color="blue">2010-05-26 更新第二版：更换了更加权威的天气预报数据采集来源，天气预报更加准确，同时支持国外城市！</font><br/>
+<strong><font size="4">功能：</font><br />
 &nbsp; &nbsp; 每天定时向指定邮箱发送天气预报邮件，借助手机邮箱（<a href="http://mail.139.com/"
 	target="_blank">139邮箱</a>，<a href="http://mail.wo.com.cn"
 	target="_blank">联通邮箱</a>，<a href="http://www.189.cn/webmail/"
@@ -191,7 +193,7 @@
 <strong><font size="4">特点：<br />
 </font></strong> &nbsp; &nbsp; 一个帐号可定制多个城市的天气预报或多个好友的邮箱<br />
 &nbsp; &nbsp; 可自定义每天发送时间、可选择天气预报内容放入邮件正文或主题、可暂停预报<br />
-&nbsp; &nbsp; 可预报3-4天的天气情况（天气内容放主题3天，内同放正文4天）<br />
+&nbsp; &nbsp; 可预报3-4天的天气情况（天气内容放主题3天，放正文4天）<br />
 &nbsp; &nbsp; 部署于GAE免费的服务器，定时期限无限长（只要Google App Engine没倒闭）<br />
 <strong><font size="4">说明：<br />
 </font></strong>&nbsp; &nbsp; 1.定时只能精确到5分钟（若遇到发送高峰也会相应延后）<br />
@@ -205,7 +207,7 @@
 <br />
 程序设计：<a href="http://xinghuo.org.ru/" target="_blank"><font
 	color="#800080">Terry</font></a> <a
-	href="http://code.google.com/p/terrycode/source/browse/#svn/trunk/weatherlib"
+	href="http://code.google.com/p/terrycode/source/browse/#svn/trunk/weatherlib2"
 	target="_blank"><font color="#800080">源代码</font></a> 企划：<a
 	href="http://liming.net.ru/" target="_blank"><font color="#800080">黎明破晓</font></a><br />
 其他作品： <a href="http://fetion.xinghuo.org.ru/" target="_blank"><font
