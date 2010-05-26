@@ -169,12 +169,12 @@ public class WeatherFetcher {
 															.equals(
 																	sdf
 																			.format(new Date()))) {
-												c = "今天 " + s[1];
+												c = "今天 " + s[1].trim();
 											}
 										} else if (cdays > 2) {// 第三天开始不要风力等情况了
 											String[] s = c.trim().split("\r\n");
 											if (s.length >= 3)
-												c = s[0] + " " + s[1];
+												c = s[0].trim() + " " + s[1].trim();
 											sb.append("\r\n");
 										} else
 											sb.append("\r\n");
