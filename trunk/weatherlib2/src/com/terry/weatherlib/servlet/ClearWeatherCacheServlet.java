@@ -38,7 +38,7 @@ public class ClearWeatherCacheServlet extends HttpServlet {
 
 	private static Log log = LogFactory.getLog(ClearWeatherCacheServlet.class);
 
-	private static final String testCity = "北京";
+	private static final String testCity = "上海";
 
 	private Cache cache;
 
