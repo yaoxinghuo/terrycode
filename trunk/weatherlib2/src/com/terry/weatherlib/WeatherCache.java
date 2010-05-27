@@ -50,10 +50,12 @@ public class WeatherCache {
 		if (cache != null) {
 			Object o = cache.get(key);
 			if (o != null && o instanceof Weather) {
+				log.debug("get cache weather for: " + loc);
 				return (Weather) o;
 			}
 		}
 
+		log.debug("fetching weather for: " + loc);
 		Weather w = WeatherFetcher.fetchWeather(loc);
 		if (w != null && cache != null) {
 			cacheService.put(key, w, getExpiration());
@@ -97,8 +99,8 @@ public class WeatherCache {
 			c.add(Calendar.DAY_OF_YEAR, -1);
 			add = false;
 		}
-		c.set(Calendar.HOUR_OF_DAY, 3);// 11:00左右
-		c.set(Calendar.MINUTE, 9);
+		c.set(Calendar.HOUR_OF_DAY, 4);// 11:00左右，估计下来是12点不到更新
+		c.set(Calendar.MINUTE, 0);
 		if (c.getTimeInMillis() <= now) {
 			c.add(Calendar.DAY_OF_YEAR, 1);
 			add = true;
