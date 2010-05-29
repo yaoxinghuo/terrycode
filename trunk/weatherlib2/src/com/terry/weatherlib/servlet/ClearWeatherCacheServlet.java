@@ -62,7 +62,10 @@ public class ClearWeatherCacheServlet extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse res)
 			throws IOException, ServletException {
 
-		if (!checkShouldClearCache()){
+		String forceS = req.getParameter("force");
+		boolean force = forceS != null && forceS.equals("true");
+
+		if (!force && !checkShouldClearCache()) {
 			log.debug("there is no need to clear weather cache.");
 			return;
 		}
