@@ -52,6 +52,8 @@ public class WebManagerServlet extends HttpServlet {
 
 	private static final String CACHE_TOTAL_COUNT_NAME = "cache-total-count";
 
+	private static final String CACHE_TEST_EMAIL_NAME = "cache-test-email";
+
 	private static final int DEFAULT_SCHEDULES_LIMIT = 10;
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.CHINA);
@@ -91,6 +93,8 @@ public class WebManagerServlet extends HttpServlet {
 					jo = getAccountInfo();
 				} else if (action.equals("getTotalCount")) {
 					jo = getTotalCount();
+				} else if (action.equals("testEmail")) {
+					jo = testEmail(req);
 				} else
 					jo = schedulesList(req);
 			}
@@ -161,6 +165,93 @@ public class WebManagerServlet extends HttpServlet {
 		return jo;
 	}
 
+	private JSONObject testEmail(HttpServletRequest req) {
+		JSONObject jo = createDefaultJo();
+		String email = req.getParameter("email");
+		String city = req.getParameter("city");
+		String typeS = req.getParameter("type");
+
+		if (StringUtil.isEmptyOrWhitespace(email) || email.length() > 100
+				|| StringUtil.isEmptyOrWhitespace(city) || city.length() > 12
+				|| StringUtil.isEmptyOrWhitespace(typeS)) {
+			try {
+				jo.put("message", "请检查必填栏位或是否符合长度规定");
+			} catch (JSONException e) {
+			}
+			return jo;
+		}
+
+		if (!StringUtil.validateEmail(email)) {
+			try {
+				jo.put("message", "请检查邮件格式");
+			} catch (JSONException e) {
+			}
+			return jo;
+		}
+
+		if (!StringUtil.isDigital(typeS)) {
+			try {
+				jo.put("message", "请检查状态");
+			} catch (JSONException e) {
+			}
+			return jo;
+		}
+
+		int type = Integer.parseInt(typeS);
+		if (type == 1 || type == 2)
+			;
+		else
+			type = 1;
+
+		String account = userService.getCurrentUser().getEmail();
+		Account a = accountDao.getAccountByAccount(account);
+		if (a == null) {
+			try {
+				jo.put("message", "非法操作");
+			} catch (JSONException e) {
+			}
+			return jo;
+		}
+
+		String key = CACHE_TEST_EMAIL_NAME + "-" + email + "-" + city + "-"
+				+ type;
+		Long last = (Long) cache.get(key);
+		if (last != null && System.currentTimeMillis() - last < 5 * 60 * 1000) {
+			try {
+				jo.put("message", "您对“" + email + "”发送的测试邮件过于频繁，请过5分钟后再试");
+			} catch (JSONException e) {
+			}
+			return jo;
+		}
+
+		Weather w = WeatherCache.queryWeather(city.trim());
+		if (w == null) {
+			try {
+				jo.put("message", "无法获取“" + city + "”的天气，请检查您的输入并稍候再试");
+			} catch (JSONException e) {
+			}
+			return jo;
+		} else
+			city = w.getCity();
+
+		boolean result = WeatherMailSender.sendWeatherMail(w, email, type,
+				"[测试]" + a.getNickname(), true);
+		if (result)
+			cache.put(key, System.currentTimeMillis());
+
+		try {
+			jo.put("result", result);
+			jo.put("message", result ? "“" + city + "”的测试邮件已发送至" + email
+					: "对不起，暂时无法发送测试邮件，请稍候再试");
+			jo.put("city", city);
+			jo.put("count", getAccountScheduleCount(account));
+			jo.put("total", getScheduleCount());
+		} catch (JSONException e) {
+		}
+
+		return jo;
+	}
+
 	private JSONObject saveSchedule(HttpServletRequest req) {
 		JSONObject jo = createDefaultJo();
 
@@ -170,7 +261,6 @@ public class WebManagerServlet extends HttpServlet {
 		String remark = req.getParameter("remark");
 		String typeS = req.getParameter("type");
 		String sid = req.getParameter("sid");
-		String test = req.getParameter("test");
 
 		boolean update = !StringUtil.isEmptyOrWhitespace(sid);
 
@@ -289,15 +379,7 @@ public class WebManagerServlet extends HttpServlet {
 			}
 		}
 		String message = result ? "已成功保存“" + city + "”的天气预报邮件定制" : ERROR;
-		if (result && type != 0 && !StringUtil.isEmptyOrWhitespace(test)
-				&& test.equals("true")) {
-			if (WeatherMailSender.sendWeatherMail(w, email, type, "[测试]"
-					+ a.getNickname(), true)) {
-				message += "，天气预报测试邮件已发往：" + email;
-			} else {
-				// message += "，但测试邮件并未发送成功";
-			}
-		}
+
 		try {
 			jo.put("result", result);
 			jo.put("message", message);
