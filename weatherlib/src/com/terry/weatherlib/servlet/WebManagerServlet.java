@@ -213,6 +213,16 @@ public class WebManagerServlet extends HttpServlet {
 			return jo;
 		}
 
+		Weather w = WeatherCache.queryWeather(city.trim());
+		if (w == null) {
+			try {
+				jo.put("message", "无法获取“" + city + "”的天气，请检查您的输入并稍候再试");
+			} catch (JSONException e) {
+			}
+			return jo;
+		} else
+			city = w.getCity();
+
 		String key = CACHE_TEST_EMAIL_NAME + "-" + email + "-" + city + "-"
 				+ type;
 		Long last = (Long) cache.get(key);
@@ -223,16 +233,6 @@ public class WebManagerServlet extends HttpServlet {
 			}
 			return jo;
 		}
-
-		Weather w = WeatherCache.queryWeather(city.trim());
-		if (w == null) {
-			try {
-				jo.put("message", "无法获取“" + city + "”的天气，请检查您的输入并稍候再试");
-			} catch (JSONException e) {
-			}
-			return jo;
-		} else
-			city = w.getCity();
 
 		boolean result = WeatherMailSender.sendWeatherMail(w, email, type,
 				"[测试]" + a.getNickname(), true);
