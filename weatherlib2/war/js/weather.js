@@ -206,8 +206,7 @@ $(function() {
 				"remark" : remark,
 				"sdate" : sdate,
 				"type" : type,
-				"sid" : $("#sid").val(),
-				"test" : $("#test").attr("checked") == true ? "true" : "false"
+				"sid" : $("#sid").val()
 			},
 			dataType : "json",
 			success : function(data) {
@@ -223,6 +222,49 @@ $(function() {
 			},
 			complete : function(req) {
 				$("#scheduleSave").attr("disabled", false).attr("value", "保存");
+				var code = req.status;
+				if (code < 200 || code > 299)
+					$("#message").html(errorMsg).show();
+			}
+		});
+	});
+	
+	$("#testEmail").click(function() {
+		var email = $("#email").val();
+		if (!validateEmail(email)) {
+			$("#message").html("接收邮箱不是有效的Email格式！").show();
+			resetForm();
+			return;
+		}
+		var city = $("#city").val();
+		if (city == "") {
+			$("#message").html("定制城市不能为空！").show();
+			return;
+		}
+		var type = $("#type").val();
+		$("#message").html("").hide();
+		$("#testEmail").attr("disabled", true).attr("value", "请稍候");
+		$.ajax( {
+			url : "webManager",
+			type : "POST",
+			cache : false,
+			data : {
+				"action" : "testEmail",
+				"email" : email,
+				"city" : city,
+				"type" : type
+			},
+			dataType : "json",
+			success : function(data) {
+				if (data.result){
+					$("#message").html("<font color='blue'>"+data.message+"</font>").show();
+					$("#city").val(data.city);
+				} else {
+					$("#message").html(data.message).show();
+				}
+			},
+			complete : function(req) {
+				$("#testEmail").attr("disabled", false).attr("value", "发送测试邮件");
 				var code = req.status;
 				if (code < 200 || code > 299)
 					$("#message").html(errorMsg).show();
