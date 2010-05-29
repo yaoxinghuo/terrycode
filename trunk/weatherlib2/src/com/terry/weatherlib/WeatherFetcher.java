@@ -72,6 +72,8 @@ public class WeatherFetcher {
 		} else
 			return null;
 		log.debug("fetch data:" + loc + data);
+		if (data == null)
+			return null;
 		return parserWeather(data, loc);
 	}
 
