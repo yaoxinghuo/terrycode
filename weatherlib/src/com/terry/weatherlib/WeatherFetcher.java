@@ -6,9 +6,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -102,11 +100,11 @@ public class WeatherFetcher {
 					weather.setContent(div.toPlainTextString().trim());
 					log.debug("content:" + weather.getContent());
 				}
-				if (className != null) {
-					if (className.equals("b")) {
-						String city = div.toPlainTextString().trim();
-						if (city.contains("天气") && !city.contains(" ")
-								&& (city.length() - loc.length()) < 5) {
+				if (className == null) {
+					String city = div.toPlainTextString();
+					if (city != null && city.trim().endsWith("天气")) {
+						city = city.trim();
+						if (city.length() - loc.length() < 5) {
 							// http://www.google.com.hk/m/search?site=weather&gl=cn&hl=zh-CN&q=长沙市
 							// 输入长沙，却出来的是长沙县，怪怪的，所以这里if一下
 							if (loc.contains("长沙") && city.contains(loc))
@@ -130,11 +128,8 @@ public class WeatherFetcher {
 	}
 
 	public static void main(String[] args) throws Exception {
-		// Weather w = WeatherFetcher.fetchWeather("上海");
-		// if (w != null)
-		// System.out.println(w.getReport());
-
-		SimpleDateFormat sdf2 = new SimpleDateFormat("M月d日H:mm", Locale.CHINA);
-		System.out.println(sdf2.format(new Date()));
+		Weather w = WeatherFetcher.fetchWeather("江苏无锡");
+		if (w != null)
+			System.out.println(w.getReport());
 	}
 }
