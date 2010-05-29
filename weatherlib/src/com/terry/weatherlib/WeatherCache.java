@@ -1,6 +1,5 @@
 package com.terry.weatherlib;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -43,7 +42,6 @@ public class WeatherCache {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public static Weather queryWeather(String loc, String suffix) {
 		String key = Constants.DEFAULT_WEATHER_CACHE_NAME + "-"
 				+ (suffix == null ? loc : suffix);
@@ -57,16 +55,6 @@ public class WeatherCache {
 		Weather w = WeatherFetcher.fetchWeather(loc);
 		if (w != null && cache != null) {
 			cacheService.put(key, w, getExpiration());
-
-			// Add weather cache name to cache.
-			ArrayList<String> names = null;
-			Object o = cache.get(Constants.DEFAULT_CACHE_CACHE_NAME);
-			if (o != null && o instanceof ArrayList<?>)
-				names = (ArrayList<String>) o;
-			else
-				names = new ArrayList<String>();
-			names.add(key);
-			cache.put(Constants.DEFAULT_CACHE_CACHE_NAME, names);
 		}
 		return w;
 	}

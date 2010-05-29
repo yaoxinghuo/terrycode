@@ -7,7 +7,6 @@ package com.terry.weatherlib.util;
 public class Constants {
 	public static final int DEFAULT_WEATHER_CACHE_TIME = 3600 * 16;
 	public static final String DEFAULT_WEATHER_CACHE_NAME = "weather-cache";
-	public static final String DEFAULT_CACHE_CACHE_NAME = "cahce-cache";
 	
 	public static String[] BACKUP_MAILERS;
 }
