@@ -54,7 +54,7 @@ public class MessageOutServlet extends HttpServlet {
 	private static final String OTHER_CACHE = "other-cache";
 
 	private static final String ROOT_MENU = "Menu:\r\n"
-			+ "0000:return 1:msgsbot 2:comutil 3:fetionlib 4:weatherlib 100:others 101:invite r:repeat last command s: status";
+			+ "0000:return\r\n1:msgsbot\r\n2:comutil\r\n3:fetionlib\r\n4:weatherlib\r\n100:others\r\n101:invite\r\nr:repeat last command\r\ns: status";
 
 	private static final int COMUTIL = 2;
 	private static final int FETIONLIB = 3;
