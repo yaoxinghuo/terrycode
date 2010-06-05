@@ -138,10 +138,10 @@ function scheduleAction(com, grid) {
 		}
 	} else if (com == '新建') {
 		newSchedule();
-		var selhour = Math.round(Math.random()*12)+9;
-		var selmin = Math.round(Math.random()*11)*5;
-		$("#sdate_hour").attr("value", (selhour<10?"0":"")+selhour);
-		$("#sdate_minute").attr("value", (selmin<10?"0":"")+selmin);
+		var selhour = Math.round(Math.random() * 12) + 9;
+		var selmin = Math.round(Math.random() * 11) * 5;
+		$("#sdate_hour").attr("value", (selhour < 10 ? "0" : "") + selhour);
+		$("#sdate_minute").attr("value", (selmin < 10 ? "0" : "") + selmin);
 	} else if (com == '修改') {
 		if ($('.trSelected', grid).length == 1) {
 			var cell = $('.trSelected', grid);
@@ -228,49 +228,53 @@ $(function() {
 			}
 		});
 	});
-	
-	$("#testEmail").click(function() {
-		var email = $("#email").val();
-		if (!validateEmail(email)) {
-			$("#message").html("接收邮箱不是有效的Email格式！").show();
-			resetForm();
-			return;
-		}
-		var city = $("#city").val();
-		if (city == "") {
-			$("#message").html("定制城市不能为空！").show();
-			return;
-		}
-		var type = $("#type").val();
-		$("#message").html("").hide();
-		$("#testEmail").attr("disabled", true).attr("value", "请稍候");
-		$.ajax( {
-			url : "webManager",
-			type : "POST",
-			cache : false,
-			data : {
-				"action" : "testEmail",
-				"email" : email,
-				"city" : city,
-				"type" : type
-			},
-			dataType : "json",
-			success : function(data) {
-				if (data.result){
-					$("#message").html("<font color='blue'>"+data.message+"</font>").show();
-					$("#city").val(data.city);
-				} else {
-					$("#message").html(data.message).show();
+
+	$("#testEmail").click(
+			function() {
+				var email = $("#email").val();
+				if (!validateEmail(email)) {
+					$("#message").html("接收邮箱不是有效的Email格式！").show();
+					resetForm();
+					return;
 				}
-			},
-			complete : function(req) {
-				$("#testEmail").attr("disabled", false).attr("value", "发送测试邮件");
-				var code = req.status;
-				if (code < 200 || code > 299)
-					$("#message").html(errorMsg).show();
-			}
-		});
-	});
+				var city = $("#city").val();
+				if (city == "") {
+					$("#message").html("定制城市不能为空！").show();
+					return;
+				}
+				var type = $("#type").val();
+				$("#message").html("").hide();
+				$("#testEmail").attr("disabled", true).attr("value", "请稍候");
+				$.ajax( {
+					url : "webManager",
+					type : "POST",
+					cache : false,
+					data : {
+						"action" : "testEmail",
+						"email" : email,
+						"city" : city,
+						"type" : type
+					},
+					dataType : "json",
+					success : function(data) {
+						if (data.result) {
+							$("#message").html(
+									"<font color='blue'>" + data.message
+											+ "</font>").show();
+							$("#city").val(data.city);
+						} else {
+							$("#message").html(data.message).show();
+						}
+					},
+					complete : function(req) {
+						$("#testEmail").attr("disabled", false).attr("value",
+								"发送测试邮件");
+						var code = req.status;
+						if (code < 200 || code > 299)
+							$("#message").html(errorMsg).show();
+					}
+				});
+			});
 
 	$("#updateNickname").click(
 			function() {
@@ -328,17 +332,39 @@ $(function() {
 							if (is139)
 								$("#message")
 										.html(
-												"<font color='orange'>定制时间挺早的，请确认139邮箱手机接收时间奥</a>")
+												"<font color='orange'>定制时间挺早的，请确认139邮箱手机接收时间奥</font>")
 										.show();
 						} else if (h >= 22) {
 							if (is139)
 								$("#message")
 										.html(
-												"<font color='orange'>定制时间挺晚的，请确认139邮箱手机接收时间奥</a>")
+												"<font color='orange'>定制时间挺晚的，请确认139邮箱手机接收时间奥</font>")
 										.show();
 						} else
 							$("#message").html("").hide();
 					});
+
+	$("#city")
+			.focus(
+					function() {
+						var city = $("#city").val();
+						if (city=="" || city.indexOf("省") != -1 || city.indexOf("市") != -1)
+							$("#message")
+									.html(
+											"<font color='orange'>请输入城市名称或拼音，精确到城市，不要输入省份，如江苏省南京市，直接输入“南京”即可</font>")
+									.show();
+					});
+	
+	$("#remark")
+	.focus(
+			function() {
+				if ($("#remark").val()=="")
+					$("#message")
+							.html(
+									"<font color='orange'>若给您的好友定制天气预报，可在此添加备注，以方便下次方便查找、管理，此信息不会出现在天气预报正文</font>")
+							.show();
+			});
+
 });
 
 function newSchedule() {
