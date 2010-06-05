@@ -151,7 +151,7 @@ function scheduleAction(com, grid) {
 	} else if (com == '修改') {
 		if ($('.trSelected', grid).length == 1) {
 			var cell = $('.trSelected', grid);
-			var sdate = cell.find("td:eq(2)").eq(0).text();
+			var sdate = cell.find("td:eq(3)").eq(0).text();
 			var hour = sdate.substring(0, 2);
 			var minute = sdate.substring(3, 5);
 			$("#sdate_hour").attr("value", hour);
