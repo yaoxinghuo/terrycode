@@ -200,7 +200,7 @@
 <strong><font size="4">特点：<br />
 </font></strong> &nbsp; &nbsp; 一个帐号可定制多个城市的天气预报或多个好友的邮箱<br />
 &nbsp; &nbsp; 可自定义每天发送时间、可选择天气预报内容放入邮件正文或主题、可暂停预报<br />
-&nbsp; &nbsp; 可自定义预报天气情况的天数，默认天气内容放主题3天，放正文4天<br />
+&nbsp; &nbsp; 可自定义预报天气情况的天数，默认天气内容放主题3天，放正文5天<br />
 &nbsp; &nbsp; 部署于GAE免费的服务器，定时期限无限长（只要Google App Engine没倒闭）<br />
 <strong><font size="4">说明：<br />
 </font></strong>&nbsp; &nbsp; 1.定时只能精确到5分钟（若遇到发送高峰也会相应延后）<br />
