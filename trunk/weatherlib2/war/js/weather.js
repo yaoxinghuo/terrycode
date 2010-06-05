@@ -48,6 +48,12 @@ $("#flex1")
 						sortable : false,
 						align : 'left'
 					}, {
+						display : '预报天数',
+						name : 'days',
+						width : 80,
+						sortable : false,
+						align : 'left'
+					}, {
 						display : '每天发送时间',
 						name : 'sdate',
 						width : 100,
@@ -150,12 +156,12 @@ function scheduleAction(com, grid) {
 			var minute = sdate.substring(3, 5);
 			$("#sdate_hour").attr("value", hour);
 			$("#sdate_minute").attr("value", minute);
-			$("#email").val(cell.find("td:eq(3)").eq(0).text());
+			$("#email").val(cell.find("td:eq(4)").eq(0).text());
 			$("#city").val(cell.find("td:eq(1)").eq(0).text());
-			var remark = cell.find("td:eq(6)").eq(0).text();
+			var remark = cell.find("td:eq(7)").eq(0).text();
 			if (remark != "[无]")
 				$("#remark").val(remark);
-			var type = cell.find("td:eq(4)").eq(0).text();
+			var type = cell.find("td:eq(5)").eq(0).text();
 			if (type == "天气内容放正文")
 				$("#type").attr("value", "1");
 			else if (type == "天气内容放主题")
@@ -164,6 +170,11 @@ function scheduleAction(com, grid) {
 				$("#type").attr("value", "0");
 				$("#test").attr("disabled", true);
 			}
+			var days = cell.find("td:eq(2)").eq(0).text();
+			if(days.indexOf("系统默认")!=-1)
+				$("#days").attr("value", "0");
+			else
+				$("#days").attr("value", days);
 			$("#sid").val(cell[0].id.substr(3));
 		} else {
 			showMsg("error", "请选中一行修改！");
@@ -192,6 +203,7 @@ $(function() {
 		var remark = $("#remark").val();
 		var sdate = $("#sdate_hour").val() + ":" + $("#sdate_minute").val();
 		var type = $("#type").val();
+		var days = $("#days").val();
 		var sid = $("#sid").val();
 		$("#message").html("").hide();
 		$("#scheduleSave").attr("disabled", true).attr("value", "请稍候");
@@ -206,6 +218,7 @@ $(function() {
 				"remark" : remark,
 				"sdate" : sdate,
 				"type" : type,
+				"days" : days,
 				"sid" : $("#sid").val()
 			},
 			dataType : "json",
@@ -243,6 +256,7 @@ $(function() {
 					return;
 				}
 				var type = $("#type").val();
+				var days = $("#days").val();
 				$("#message").html("").hide();
 				$("#testEmail").attr("disabled", true).attr("value", "请稍候");
 				$.ajax( {
@@ -253,7 +267,8 @@ $(function() {
 						"action" : "testEmail",
 						"email" : email,
 						"city" : city,
-						"type" : type
+						"type" : type,
+						"days" : days
 					},
 					dataType : "json",
 					success : function(data) {

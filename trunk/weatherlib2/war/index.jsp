@@ -67,7 +67,7 @@
 <script type="text/javascript" src="js/weather.js"></script>
 
 <div style="display: none;"><input id="newSchedule"
-	alt="#TB_inline?height=188&width=356&inlineId=hiddenModalContent&;modal=false"
+	alt="#TB_inline?height=210&width=356&inlineId=hiddenModalContent&;modal=false"
 	title="<b>新建天气预报定制</b>" class="thickbox" type="button" value="Show" /></div>
 
 <div id="hiddenModalContent" style="display: none;">
@@ -108,6 +108,17 @@
 			<option value="1" selected="selected">天气内容放正文</option>
 			<option value="2">天气内容放主题</option>
 			<option value="0">暂时停用</option>
+		</select></td>
+	</tr>
+	<tr>
+		<td>*预报天数：</td>
+		<td><select name="days" id="days" style="width: 148px;">
+			<option value="0" selected="selected">[系统默认]</option>
+			<option value="1">预报未来 1 天天气</option>
+			<option value="2">预报未来 2 天天气</option>
+			<option value="3">预报未来 3 天天气</option>
+			<option value="4">预报未来 4 天天气</option>
+			<option value="5">预报未来 5 天天气</option>
 		</select></td>
 	</tr>
 	<tr>

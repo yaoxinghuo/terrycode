@@ -128,6 +128,17 @@ public class WebManagerServlet extends HttpServlet {
 			JSONArray ja = new JSONArray();
 			ja.put(sdf2.format(s.getCdate()));
 			ja.put(s.getCity());
+			String days;
+			if (s.getDays() == 0) {
+				if (s.getType() == 1)
+					days = "5[系统默认]";
+				else if (s.getType() == 2)
+					days = "3[系统默认]";
+				else
+					days = "[系统默认]";
+			} else
+				days = String.valueOf(s.getDays());
+			ja.put(days);
 			ja.put(sdf.format(s.getSdate()));
 			ja.put(s.getEmail());
 			if (s.getType() == 0)
@@ -170,10 +181,12 @@ public class WebManagerServlet extends HttpServlet {
 		String email = req.getParameter("email");
 		String city = req.getParameter("city");
 		String typeS = req.getParameter("type");
+		String daysS = req.getParameter("days");
 
 		if (StringUtil.isEmptyOrWhitespace(email) || email.length() > 100
 				|| StringUtil.isEmptyOrWhitespace(city) || city.length() > 12
-				|| StringUtil.isEmptyOrWhitespace(typeS)) {
+				|| StringUtil.isEmptyOrWhitespace(typeS)
+				|| StringUtil.isEmptyOrWhitespace(daysS)) {
 			try {
 				jo.put("message", "请检查必填栏位或是否符合长度规定");
 			} catch (JSONException e) {
@@ -196,12 +209,22 @@ public class WebManagerServlet extends HttpServlet {
 			}
 			return jo;
 		}
-
 		int type = Integer.parseInt(typeS);
 		if (type == 1 || type == 2)
 			;
 		else
 			type = 1;
+
+		if (!StringUtil.isDigital(daysS)) {
+			try {
+				jo.put("message", "请检查预报天数");
+			} catch (JSONException e) {
+			}
+			return jo;
+		}
+		int days = Integer.parseInt(daysS);
+		if (days < 0)
+			days = 0;
 
 		String account = userService.getCurrentUser().getEmail();
 		Account a = accountDao.getAccountByAccount(account);
@@ -235,7 +258,7 @@ public class WebManagerServlet extends HttpServlet {
 		}
 
 		boolean result = WeatherMailSender.sendWeatherMail(w, email, type,
-				"[测试]" + a.getNickname(), true);
+				days, "[测试]" + a.getNickname(), true);
 		if (result)
 			cache.put(key, System.currentTimeMillis());
 
@@ -260,6 +283,7 @@ public class WebManagerServlet extends HttpServlet {
 		String city = req.getParameter("city");
 		String remark = req.getParameter("remark");
 		String typeS = req.getParameter("type");
+		String daysS = req.getParameter("days");
 		String sid = req.getParameter("sid");
 
 		boolean update = !StringUtil.isEmptyOrWhitespace(sid);
@@ -267,7 +291,8 @@ public class WebManagerServlet extends HttpServlet {
 		if (StringUtil.isEmptyOrWhitespace(email) || email.length() > 100
 				|| StringUtil.isEmptyOrWhitespace(city) || city.length() > 12
 				|| StringUtil.isEmptyOrWhitespace(sdateS)
-				|| StringUtil.isEmptyOrWhitespace(typeS) || remark == null
+				|| StringUtil.isEmptyOrWhitespace(typeS)
+				|| StringUtil.isEmptyOrWhitespace(daysS) || remark == null
 				|| remark.length() > 100) {
 			try {
 				jo.put("message", "请检查必填栏位或是否符合长度规定");
@@ -296,6 +321,17 @@ public class WebManagerServlet extends HttpServlet {
 			;
 		else
 			type = 0;
+
+		if (!StringUtil.isDigital(daysS)) {
+			try {
+				jo.put("message", "请检查预报天数");
+			} catch (JSONException e) {
+			}
+			return jo;
+		}
+		int days = Integer.parseInt(daysS);
+		if (days < 0)
+			days = 0;
 
 		String account = userService.getCurrentUser().getEmail();
 		Account a = accountDao.getAccountByAccount(account);
@@ -361,7 +397,7 @@ public class WebManagerServlet extends HttpServlet {
 		boolean result = false;
 		if (update) {
 			result = scheduleDao.updateScheduleById(sid, email, city, sdate,
-					type, remark);
+					type, days, remark);
 		} else {
 			Schedule s = new Schedule();
 			s.setAccount(account);
@@ -372,6 +408,7 @@ public class WebManagerServlet extends HttpServlet {
 			s.setRemark(remark.trim());
 			s.setSdate(sdate);
 			s.setType(type);
+			s.setDays(days);
 			result = scheduleDao.saveSchedule(s);
 			if (result) {
 				updateAccountScheduleCount(account, 1);
