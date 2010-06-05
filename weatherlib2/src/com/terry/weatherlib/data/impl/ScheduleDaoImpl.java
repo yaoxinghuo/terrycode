@@ -136,7 +136,7 @@ public class ScheduleDaoImpl implements IScheduleDao {
 
 	@Override
 	public boolean updateScheduleById(String id, String email, String city,
-			Date sdate, int type, String remark) {
+			Date sdate, int type, int days, String remark) {
 		Key key = KeyFactory.stringToKey(id);
 		if (key == null || !key.isComplete())
 			return false;
@@ -150,6 +150,7 @@ public class ScheduleDaoImpl implements IScheduleDao {
 		schedule.setCity(city);
 		schedule.setSdate(sdate);
 		schedule.setType(type);
+		schedule.setDays(days);
 		schedule.setRemark(remark);
 		try {
 			EntityTransaction tx = em.getTransaction();

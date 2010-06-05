@@ -47,15 +47,17 @@ public class WeatherMailSender {
 	}
 
 	public static boolean sendWeatherMail(Weather weather, String email,
-			int type, String nickname, boolean fetch) {
+			int type, int days, String nickname, boolean fetch) {
 		String subject = null;
 		String content = null;
 		if (type == 2) {
-			subject = weather.getReport(3).replace("\r\n", " ");
+			if (days == 0)// 放主题的默认天数为3
+				days = 3;
+			subject = weather.getReport(days).replace("\r\n", " ");
 			content = "如题。" + weather.getDesc() + HELP;
 		} else {
 			subject = weather.getCity() + "天气预报--" + weather.getDesc();
-			content = weather.getReport() + HELP;
+			content = weather.getReport(days) + HELP;
 		}
 		if (fetch) {
 			return MailSender.fetchToSendMail(null, email, nickname, subject,
@@ -103,7 +105,7 @@ public class WeatherMailSender {
 			}
 		}
 		boolean result = sendWeatherMail(weather, schedule.getEmail(), schedule
-				.getType(), nickname, false);
+				.getType(), schedule.getDays(), nickname, false);
 		if (result) {
 			cache.put(key, schedule.getSdate());
 		}

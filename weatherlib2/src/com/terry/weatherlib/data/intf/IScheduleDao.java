@@ -19,7 +19,7 @@ public interface IScheduleDao {
 	public boolean deleteScheduleByIdAndAccount(String id, String account);
 
 	public boolean updateScheduleById(String id, String email, String city,
-			Date sdate, int type, String remark);
+			Date sdate, int type, int days, String remark);
 
 	public int getScheduleCountByAccount(String account);
 
