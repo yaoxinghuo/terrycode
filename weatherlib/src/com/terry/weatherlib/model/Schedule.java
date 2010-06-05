@@ -113,6 +113,14 @@ public class Schedule implements Serializable {
 		return remark;
 	}
 
+	public void setDays(int days) {
+		this.days = days;
+	}
+
+	public int getDays() {
+		return days;
+	}
+
 	@Enumerated
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date adate;
@@ -129,6 +137,7 @@ public class Schedule implements Serializable {
 	@Transient
 	private String nickname;
 	private int type;// 0 暂停，2 天气预报内容写在主题里，1写在正文里
+	private int days;// 预报天数，0有多少报多少 其他按照数据预报
 	private String remark;
 
 }

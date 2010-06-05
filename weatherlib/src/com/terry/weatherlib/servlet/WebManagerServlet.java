@@ -372,6 +372,7 @@ public class WebManagerServlet extends HttpServlet {
 			s.setRemark(remark.trim());
 			s.setSdate(sdate);
 			s.setType(type);
+			s.setDays(0);
 			result = scheduleDao.saveSchedule(s);
 			if (result) {
 				updateAccountScheduleCount(account, 1);
