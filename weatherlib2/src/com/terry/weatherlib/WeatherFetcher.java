@@ -166,16 +166,28 @@ public class WeatherFetcher {
 									String c = dlNode[k].toPlainTextString();
 									if (c != null && !c.trim().equals("")) {
 										cdays++;
-										if (cdays == 1) {// 第一天把日期换成“今天”
+										if (cdays == 1) {// 第一天把日期换成“今天”或“明天”或者周几
 											String[] s = c.trim().split("\r\n",
 													2);
-											if (s.length == 2
-													&& s[0]
-															.trim()
-															.equals(
-																	sdf
-																			.format(new Date()))) {
-												c = "今天 " + s[1].trim();
+											if (s.length == 2) {
+												Date date = new Date();
+												if (s[0].trim().equals(
+														sdf.format(date))) {
+													c = "今天 " + s[1].trim();
+												} else if (s[0]
+														.trim()
+														.equals(
+																sdf
+																		.format(new Date(
+																				date
+																						.getTime() + 24 * 3600 * 1000))))
+													c = "明天 " + s[1].trim();
+												else {
+													String weekName = getWeekName(s[0]);
+													if (weekName != null)
+														c = weekName + " "
+																+ s[1].trim();
+												}
 											}
 										} else if (cdays > 3) {// 第4天开始不要风力等情况了
 											String[] s = c.trim().split("\r\n");
@@ -221,7 +233,7 @@ public class WeatherFetcher {
 	 */
 	private static String getWeekName(String dateS) {
 		try {
-			Date date = sdf.parse(dateS);
+			Date date = sdf.parse(dateS.trim());
 			calendar.setTime(date);
 			calendar.set(Calendar.YEAR, Calendar.getInstance(
 					TimeZone.getTimeZone("GMT+08:00"), Locale.CHINA).get(
