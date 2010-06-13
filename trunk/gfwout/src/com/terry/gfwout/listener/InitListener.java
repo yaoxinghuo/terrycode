@@ -67,7 +67,9 @@ public class InitListener implements ServletContextListener {
 		if (onGoogleAppEngine)
 			BASE_URL = "http://gfwout.appspot.com/";
 
-		BACK_HOME_HTML = "<!-- Injected by http://gfwout.appspot.com/ -->"
+		BACK_HOME_HTML = "<!-- Injected by "
+				+ BASE_URL
+				+ " -->"
 				+ "<div style='opacity:0.8;filter:alpha(opacity=80);-moz-opacity:0.8;"
 				+ "font-family: arial, sans-serif; font-size: 13px;left:0px;"
 				+ "padding: 4px; background-color: #caff70;z-index: 2000;"

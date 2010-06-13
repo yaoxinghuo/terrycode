@@ -44,9 +44,13 @@ public class RouterServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		String url = req.getParameter("r");
+		String search = req.getParameter("s");
 		if (url == null || url.trim().equals(""))
 			resp.sendRedirect("/index.jsp");
 		String uuid = StringUtil.generateUUID();
+		if (!StringUtil.validateUrl(url) || "true".equals(search))
+			url = "http://www.google.com/search?hl=zh_CN&q="
+					+ url.replace("\\s", "+") + "&aq=f&oq=&aqi=";
 		cache.put(uuid, url);
 		resp.sendRedirect("/gfw?go=" + uuid);
 	}

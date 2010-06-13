@@ -11,5 +11,5 @@ public class Constants {
 
 	public static String SCRIPT_HTML = "";
 
-	public static String BASE_URL = "http://localhost:8080/";
+	public static String BASE_URL = "http://localhost:8888/";
 }
