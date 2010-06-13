@@ -47,6 +47,20 @@ public class StringUtil {
 		} catch (CacheException e) {
 		}
 	}
+	
+	public static boolean validateUrl(String url) {
+		if (url == null || url.equals(""))
+			return false;
+		// Pattern p = Pattern
+		// .compile(
+		// "(http|https):\\/\\/[\\w\\-_]+(\\.[\\w\\-_]+)+([\\w\\-\\.,@?^=%&amp;:/~\\+#]*[\\w\\-\\@?^=%&amp;/~\\+#])?",
+		// Pattern.CASE_INSENSITIVE);
+		Pattern p = Pattern.compile(
+				"(http://|https://)?([\\w-]+\\.)+[\\w-]+(/[\\w-   ./?%&=@;]*)?",
+				Pattern.CASE_INSENSITIVE);
+		Matcher matcher = p.matcher(url);
+		return matcher.matches();
+	}
 
 	public static String readLink(String result) {
 		Parser parser = Parser.createParser(result, "utf8");

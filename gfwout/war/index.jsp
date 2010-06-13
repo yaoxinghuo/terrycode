@@ -117,9 +117,7 @@ a.gb2:hover {
 </table>
 </div>
 <textarea id=csi style="display: none"></textarea>
-<div id=gbar><nobr><b class=gb1>GFWout</b> <a
-	href="http://fetionlib.appspot.com" onclick=gbar.qs(this) class=gb1>网页飞信</a>
-<!-- <a href="http://costnote.appspot.com/" onclick=gbar.qs(this) class=gb1>网络账本</a> -->
+<div id=gbar><nobr><b class=gb1>GFWout</b>
 </nobr></div>
 <div id=guser width=100%><nobr><a
 	href="http://www.google.cn/">Google 中国</a></nobr></div>
@@ -136,8 +134,9 @@ a.gb2:hover {
 		<td align=center nowrap><input maxlength=2048 size=55 name="r"
 			style="height: 28px; padding-top: 4px; font-size: 16px; margin-bottom: 2px; width: 28em"
 			title="GFW 代理上网" value=""><br>
-		<input type=submit value="GFW 代理上网" onclick="gfw();return false;" />
-		<input type=submit value="Google 搜索" onclick="google();return false;" /></td>
+		<input type="hidden" name="s">
+		<input type=submit value="GFW 代理上网" onclick="gfw('false');return false;" />
+		<input type=submit value="Google 搜索" onclick="gfw('true');return false;" /></td>
 		<td nowrap width=25% align=left><span style="font-size: 13px">&nbsp;&nbsp;<a
 			href=/help.html>郑重声明</a><br>
 		&nbsp;&nbsp;<a href=/help.html>使用说明</a><br>

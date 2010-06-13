@@ -79,7 +79,7 @@ public class GfwServlet extends HttpServlet {
 			con.setRequestMethod("GET");
 
 			int code = con.getResponseCode();
-			if (code == 200) {
+			if (code >= 200 && code < 300) {
 				String contentType = con.getContentType();
 				if (contentType == null)
 					contentType = "text/html; charset=GBK";
@@ -125,7 +125,7 @@ public class GfwServlet extends HttpServlet {
 				req
 						.setAttribute(
 								"message",
-								"对不起，无法连接至指定的网站，请稍候再试！Error Code:"
+								"对不起，无法连接至指定的网站，请稍候再试！错误码:"
 										+ code
 										+ "&nbsp;<a href=\"javascript:history.go(-1);\">返回</a>");
 				req.getRequestDispatcher("/index.jsp").forward(req, resp);
