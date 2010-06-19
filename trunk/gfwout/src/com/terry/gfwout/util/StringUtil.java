@@ -1,9 +1,5 @@
 package com.terry.gfwout.util;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -47,7 +43,13 @@ public class StringUtil {
 		} catch (CacheException e) {
 		}
 	}
-	
+
+	public static boolean isEmptyOrWhitespace(String s) {
+		if (s == null || s.trim().equals(""))
+			return true;
+		return false;
+	}
+
 	public static boolean validateUrl(String url) {
 		if (url == null || url.equals(""))
 			return false;
@@ -55,9 +57,10 @@ public class StringUtil {
 		// .compile(
 		// "(http|https):\\/\\/[\\w\\-_]+(\\.[\\w\\-_]+)+([\\w\\-\\.,@?^=%&amp;:/~\\+#]*[\\w\\-\\@?^=%&amp;/~\\+#])?",
 		// Pattern.CASE_INSENSITIVE);
-		Pattern p = Pattern.compile(
-				"(http://|https://)?([\\w-]+\\.)+[\\w-]+(/[\\w-   ./?%&=@;]*)?",
-				Pattern.CASE_INSENSITIVE);
+		Pattern p = Pattern
+				.compile(
+						"(http://|https://)?([\\w-]+\\.)+[\\w-]+(/[\\w-   ./?%&=@;]*)?",
+						Pattern.CASE_INSENSITIVE);
 		Matcher matcher = p.matcher(url);
 		return matcher.matches();
 	}
@@ -136,10 +139,7 @@ public class StringUtil {
 		StringBuffer sb = new StringBuffer("");
 		Pattern pattern = Pattern
 				.compile(
-						"(<\\s*a\\s+(?:[^\\s>]\\s*){0,})href\\s*=\\s*(\"|'|)((?:\\s*[^\\s>]){0,}\\s*>)"// <a
-						// href...
-								+ "|"// <img src...
-								+ "(<\\s*img\\s+(?:[^\\s>]\\s*){0,})src\\s*=\\s*(\"|'|)((?:\\s*[^\\s>]){0,}\\s*>)"
+						"(<\\s*img\\s+(?:[^\\s>]\\s*){0,})src\\s*=\\s*(\"|'|)((?:\\s*[^\\s>]){0,}\\s*>)"
 								+ "|"// <link href...
 								+ "(<\\s*link\\s+(?:[^\\s>]\\s*){0,})href\\s*=\\s*(\"|'|)((?:\\s*[^\\s>]){0,}\\s*>)"
 								+ "|"// <form action...
@@ -151,9 +151,12 @@ public class StringUtil {
 		while (matcher.find()) {
 			String findStr = matcher.group();
 			String link = readByParser(findStr);
+			if (link == null) {
+				matcher.appendReplacement(sb, findStr);
+				continue;
+			}
 			String replaceLink = link;
 			String replacedUrl = url;
-
 			String uuid = generateUUID();
 			if (!replaceLink.startsWith("http")) {
 				replacedUrl = url.endsWith("/") ? url + replaceLink : url + "/"
@@ -161,7 +164,6 @@ public class StringUtil {
 				replaceLink = baseUrl + "gfw?go=" + uuid;
 				cache.put(uuid, replacedUrl);
 			} else {
-
 				replaceLink = baseUrl + "gfw?go=" + uuid;
 				cache.put(uuid, link);
 
@@ -170,6 +172,38 @@ public class StringUtil {
 			matcher.appendReplacement(sb, mStr);
 		}
 		matcher.appendTail(sb);
+
+		Pattern pattern3 = Pattern
+				.compile(
+						"(<\\s*a\\s+(?:[^\\s>]\\s*){0,})href\\s*=\\s*(\"|'|)((?:\\s*[^\\s>]){0,}\\s*>)",
+						Pattern.CASE_INSENSITIVE);
+		Matcher matcher3 = pattern3.matcher(sb.toString());
+		sb = new StringBuffer("");
+		while (matcher3.find()) {
+			String findStr = matcher3.group();
+			String link = readByParser(findStr);
+			if (link == null) {
+				matcher.appendReplacement(sb, findStr);
+				continue;
+			}
+			String replaceLink = link;
+			String replacedUrl = url;
+
+			String uuid = generateUUID();
+			if (!replaceLink.startsWith("http")) {
+				replacedUrl = url.endsWith("/") ? url + replaceLink : url + "/"
+						+ replaceLink;
+				replaceLink = baseUrl + "gfw?g=" + uuid;
+				cache.put(uuid, replacedUrl);
+			} else {
+				replaceLink = baseUrl + "gfw?g=" + uuid;
+				cache.put(uuid, link);
+
+			}
+			String mStr = findStr.replace(link, replaceLink);
+			matcher3.appendReplacement(sb, mStr);
+		}
+		matcher3.appendTail(sb);
 
 		Pattern pattern2 = Pattern
 				.compile(
@@ -313,30 +347,29 @@ public class StringUtil {
 	public static void main(String[] args) throws Exception {
 		// regexpTest();
 		// System.out.println(readByParser("<img src=xxx.css />"));
-		// String s =
-		// "Teat<img src=abc.jpg/><a href=a.html>Google</a>xxxx<script src=xxx.js />bbb<link href=xxx.css />";
-		// System.out.println(replace(s, "http://gfwout.appspot.com/",
-		// "http://www.google.com"));
+		String s = "Teat<img src=abc.jpg/><a href=a.html>Google</a>xxxx<script src=xxx.js />bbb<link href=xxx.css />";
+		System.out.println(replace(s, "http://gfwout.appspot.com/",
+				"http://www.google.com"));
 
-		String s = "http://www.google.cn";
-		URL url = new URL(s);
-		HttpURLConnection con = (HttpURLConnection) url.openConnection();
-		con.setDoOutput(true);
-		con.setRequestMethod("GET");
-		String contentType = con.getContentType();
-		if (contentType == null)
-			contentType = "text/html; charset=UTF-8";
-		BufferedReader reader = new BufferedReader(new InputStreamReader(con
-				.getInputStream(), StringUtil.getContentType(contentType))); // 读取结果
-		StringBuffer sb = new StringBuffer();
-		String line;
-		while ((line = reader.readLine()) != null) {
-			sb.append(line);
-		}
-		reader.close();
-		con.disconnect();
-		System.out.println(StringUtil.replace(sb.toString(),
-				"http://gfwout.appspot.com/", "http://www.google.cn"));
+		// String s = "http://www.google.cn";
+		// URL url = new URL(s);
+		// HttpURLConnection con = (HttpURLConnection) url.openConnection();
+		// con.setDoOutput(true);
+		// con.setRequestMethod("GET");
+		// String contentType = con.getContentType();
+		// if (contentType == null)
+		// contentType = "text/html; charset=UTF-8";
+		// BufferedReader reader = new BufferedReader(new InputStreamReader(con
+		// .getInputStream(), StringUtil.getContentType(contentType))); // 读取结果
+		// StringBuffer sb = new StringBuffer();
+		// String line;
+		// while ((line = reader.readLine()) != null) {
+		// sb.append(line);
+		// }
+		// reader.close();
+		// con.disconnect();
+		// System.out.println(StringUtil.replace(sb.toString(),
+		// "http://gfwout.appspot.com/", "http://www.google.cn"));
 	}
 
 	static class StyleLinkTag extends CompositeTag {

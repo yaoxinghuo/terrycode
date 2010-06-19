@@ -52,7 +52,7 @@ public class RouterServlet extends HttpServlet {
 			url = "http://www.google.com/search?hl=zh_CN&q="
 					+ url.replace("\\s", "+") + "&aq=f&oq=&aqi=";
 		cache.put(uuid, url);
-		resp.sendRedirect("/gfw?go=" + uuid);
+		resp.sendRedirect("/gfw?g=" + uuid);
 	}
 
 	@Override
