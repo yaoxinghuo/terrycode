@@ -52,15 +52,22 @@ public class GfwServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		boolean main = false;
 		String uuid = req.getParameter("go");
-		if (uuid == null || uuid.equals("")) {
+		if (StringUtil.isEmptyOrWhitespace(uuid)) {
+			uuid = req.getParameter("g");
+			if (!StringUtil.isEmptyOrWhitespace(uuid))
+				main = true;
+		}
+		if (StringUtil.isEmptyOrWhitespace(uuid)) {
 			req.setAttribute("message", "对不起，该操作暂时无法在GFWout代理上支持！"
 					+ "&nbsp;<a href=\"javascript:history.go(-1);\">返回</a>");
 			req.getRequestDispatcher("/index.jsp").forward(req, resp);
 			return;
 		}
 		String s = (String) cache.get(uuid);
-		if (s == null || s.trim().equals("") || s.trim().equals("/index.jsp")) {
+		if ((StringUtil.isEmptyOrWhitespace(s) || s.trim().equals("/index.jsp"))
+				&& main) {
 			resp.sendRedirect("/index.jsp");
 			return;
 		}
@@ -122,19 +129,30 @@ public class GfwServlet extends HttpServlet {
 					pw.close();
 				}
 			} else {
+				if (main) {
+					req
+							.setAttribute(
+									"message",
+									"对不起，无法连接至指定的网站，请稍候再试！错误码:"
+											+ code
+											+ "&nbsp;<a href=\"javascript:history.go(-1);\">返回</a>");
+					req.getRequestDispatcher("/index.jsp").forward(req, resp);
+				} else {
+					// resp.getWriter().print("[NULL]");
+				}
+			}
+		} catch (Exception e) {
+			if (main) {
 				req
 						.setAttribute(
 								"message",
-								"对不起，无法连接至指定的网站，请稍候再试！错误码:"
-										+ code
+								"对不起，无法连接至指定的网站，请稍候再试！"
+										+ e.getMessage()
 										+ "&nbsp;<a href=\"javascript:history.go(-1);\">返回</a>");
 				req.getRequestDispatcher("/index.jsp").forward(req, resp);
+			} else {
+				// resp.getWriter().print("[NULL]");
 			}
-		} catch (Exception e) {
-			req.setAttribute("message", "对不起，无法连接至指定的网站，请稍候再试！"
-					+ e.getMessage()
-					+ "&nbsp;<a href=\"javascript:history.go(-1);\">返回</a>");
-			req.getRequestDispatcher("/index.jsp").forward(req, resp);
 		} finally {
 			if (con != null)
 				try {
