@@ -33,12 +33,12 @@ public class MailServlet extends HttpServlet {
 			throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
 
-		String email = req.getParameter("email");
+		String em = req.getParameter("email");
 		String sender = req.getParameter("sender");
 		String subject = req.getParameter("subject");
 		String body = req.getParameter("body");
 
-		if (StringUtil.isEmptyOrWhitespace(email)
+		if (StringUtil.isEmptyOrWhitespace(em)
 				|| StringUtil.isEmptyOrWhitespace(sender)
 				|| StringUtil.isEmptyOrWhitespace(subject)
 				|| StringUtil.isEmptyOrWhitespace(body)) {
@@ -46,21 +46,28 @@ public class MailServlet extends HttpServlet {
 					"Parameter: email,sender,subject,body can not be empty.");
 			return;
 		}
-		if (!StringUtil.validateEmail(email)) {
+		String[] emails = em.split(",");
+		if (emails.length <= 0 || emails.length > 10) {
 			resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-					"Invaid email address.");
+					"Parameter: email length must bewteen 1 and 10");
 			return;
 		}
-		if (email.length() > 100 || sender.length() > 50
-				|| subject.length() > 500 || body.length() > 1000) {
+		for (String email : emails)
+			if (!StringUtil.validateEmail(email)) {
+				resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
+						"Invaid email address.");
+				return;
+			}
+		if (sender.length() > 50 || subject.length() > 500
+				|| body.length() > 1000) {
 			resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
 					"Parameter: email,sender,subject,body too long.");
 			return;
 		}
 		try {
-			MailSender.sendMail(email, sender, subject, body);
+			MailSender.sendMail(emails, sender, subject, body);
 			PrintWriter pw = resp.getWriter();
-			pw.print("Mail sent to +" + email + ".");
+			pw.print("Mail sent to +" + em + ".");
 			pw.flush();
 		} catch (Exception e) {
 			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e
