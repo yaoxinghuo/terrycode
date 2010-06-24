@@ -343,6 +343,7 @@ public class MessageOutServlet extends HttpServlet {
 		return fetchData(parts[0], parts.length > 1 ? parts[1] : null);
 	}
 
+	@SuppressWarnings("unchecked")
 	private String getJidsByStatus(int status) {
 		switch (status) {
 		case MSGSBOT:
@@ -355,7 +356,10 @@ public class MessageOutServlet extends HttpServlet {
 			return "weatherlib@appspot.com";
 		case OTHER:
 			Object o = short_cache.get(OTHER_CACHE);
-			return o == null ? null : (String) o;
+			if (o != null) {
+				short_cache.put(OTHER_CACHE, o);
+				return (String) o;
+			}
 		}
 		return null;
 	}
