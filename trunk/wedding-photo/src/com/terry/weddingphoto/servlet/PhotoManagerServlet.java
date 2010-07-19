@@ -299,6 +299,7 @@ public class PhotoManagerServlet extends HttpServlet {
 							+ "<strong> 张未删除，请稍候再试";
 			}
 			jo.put("message", message);
+			updatePhotosCount(count);
 		} catch (JSONException e) {
 		}
 		return jo;
