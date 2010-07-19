@@ -21,11 +21,13 @@ import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.api.utils.SystemProperty;
 import com.terry.weddingphoto.constants.Constants;
 import com.terry.weddingphoto.data.impl.PhotoDaoImpl;
 import com.terry.weddingphoto.data.intf.IPhotoDao;
 import com.terry.weddingphoto.model.Comment;
 import com.terry.weddingphoto.model.Photo;
+import com.terry.weddingphoto.util.MailSender;
 import com.terry.weddingphoto.util.StringUtil;
 
 /**
@@ -133,13 +135,27 @@ public class PhotoManagerServlet extends HttpServlet {
 			updateIpCommentCount(pid, ip);
 			try {
 				jo.put("result", true);
-				jo.put("message", "已成功发布评论");
+				jo.put("message", "已成功发表评论");
 				jo.put("count", count);
 				jo.put("cdate", sdf.format(comment.getCdate()));
 				jo.put("nickname", comment.getName());
 				jo.put("content", comment.getContent());
 				jo.put("cid", comment.getId());
 			} catch (JSONException e) {
+			}
+			if (Constants.COMMENT_NOTIFICATION_EMAILS != null) {
+				String c = comment.getName() + "于 "
+						+ sdf.format(comment.getCdate()) + " 对“"
+						+ p.getFilename();
+				if (!StringUtil.isEmptyOrWhitespace(p.getRemark()))
+					c += ("(" + p.getRemark() + ")");
+				c += ("”发表了新评论：\r\n" + comment.getContent());
+				c += ("\r\n网址：http://" + SystemProperty.applicationId.get() + ".appspot.com/");
+				try {
+					MailSender.sendMail(Constants.COMMENT_NOTIFICATION_EMAILS,
+							"照片评论提醒", p.getFilename() + "有新评论", c);
+				} catch (Exception e) {
+				}
 			}
 		}
 		return jo;

@@ -9,6 +9,7 @@ import javax.servlet.ServletContextListener;
 import org.apache.commons.io.IOUtils;
 
 import com.terry.weddingphoto.constants.Constants;
+import com.terry.weddingphoto.util.StringUtil;
 
 /**
  * @author Terry E-mail: yaoxinghuo at 126 dot com
@@ -30,5 +31,11 @@ public class InitListener implements ServletContextListener {
 							+ "deleted.png")));
 		} catch (Exception e) {
 		}
+
+		String str = contextEvent.getServletContext().getInitParameter(
+				"commentNotificationEmails");
+		if (!StringUtil.isEmptyOrWhitespace(str))
+			Constants.COMMENT_NOTIFICATION_EMAILS = str.split(",");
+
 	}
 }

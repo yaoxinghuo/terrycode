@@ -5,6 +5,11 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	
+	<context-param>
+		<param-name>commentNotificationEmails</param-name>
+		<param-value></param-value><!-- 有网友发表新评论后将通知邮件发给此邮箱,多个邮箱用英文逗号隔开 -->
+	</context-param>
+	
 	<servlet>
 		<servlet-name>view</servlet-name>
 		<servlet-class>com.terry.weddingphoto.servlet.PhotoViewServlet</servlet-class>
