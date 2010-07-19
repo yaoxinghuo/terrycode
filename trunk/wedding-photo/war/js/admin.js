@@ -129,8 +129,9 @@ $(function() {
 							life : 4000,
 							sticky : false
 						});
-						tb_remove();
-						reloadGrid();
+						setNeedReload();
+						//tb_remove();
+						//reloadGrid();
 					} else {
 						$.jGrowl('<p></p>' + data.message, {
 							theme : 'error',
