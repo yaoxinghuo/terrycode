@@ -15,4 +15,6 @@ public class Constants {
 	public static final int COMMENT_LIMIT = 5;
 	
 	public static byte[] PHOTO_DELETED_DATA = null;
+	
+	public static String[] COMMENT_NOTIFICATION_EMAILS = null;
 }
