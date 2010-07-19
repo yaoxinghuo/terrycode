@@ -26,6 +26,7 @@ function clearMsg() {
 	document.getElementById("msg_content").innerHTML = "";
 }
 var pid=null;
+var uuid = null;
 var sadmin = "false";
 $(function() {
 	$("#commentSave")
@@ -166,6 +167,45 @@ $(function() {
 	if(admin){
 		$("#cancomment").attr("checked",canComment);
 		$("#premark").val(premark);
+	}
+	
+	if(admin){
+		$("#photoInputs").uploadify(
+				{
+					'uploader' : '../uploadify.swf',
+					'script' : 'photoUpload?id='+uuid+'/'+pid,
+					'cancelImg' : 'images/cancel.png',
+					'fileDesc' : 'Image Files',
+					'fileExt' : '*.jpg;*.jpeg;*.png;*.gif',
+					'multi' : false,
+					'queueID' : 'fileQueue',
+					'sizeLimit' : 1048576,
+					onError : function(event, queueID, fileObj, errorObj) {
+						var msg;
+						if (errorObj.status == 404) {
+							msg = '无法找到上传程序';
+						} else if (errorObj.type === "HTTP")
+							msg = errorObj.type + ": " + errorObj.status;
+						else if (errorObj.type === "File Size")
+							msg = fileObj.name + '<br>' + '太大,不能超过1MB';
+						else
+							msg = errorObj.type + ": " + errorObj.text;
+						showMsg("error",msg);
+						return false;
+					},
+					onComplete : function(a, b, c, d, e) {
+						var size = Math.round(c.size / 1024);
+						var data = eval("(" + d + ")");
+						if (data.result) {
+							$("#thumbnail").attr("src","view?id="+pid+"&w=100&h=80&r="+Math.random());
+							showMsg("pass",data.message);
+						} else {
+							showMsg("error",data.message);
+							return false;
+						}
+					}
+
+				});
 	}
 });
 

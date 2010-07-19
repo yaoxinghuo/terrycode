@@ -1,5 +1,6 @@
 package com.terry.weddingphoto.util;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 import javax.cache.Cache;
@@ -23,6 +24,7 @@ public class PhotoCache {
 	private static Cache cache;
 
 	private static final String PHOTO_CACHE = "photo-cache";
+	private static final String PHOTO_CACHE_NAME = "photo-cache-name";
 
 	private static ImagesService imagesService = ImagesServiceFactory
 			.getImagesService();
@@ -49,6 +51,13 @@ public class PhotoCache {
 		byte[] data = getPhotoDataFromDB(pid, width, height);
 		if (data != null && data.length < Constants.PHOTO_BYTES_LIMIT) {
 			cache.put(key, data);
+			String key2 = PHOTO_CACHE_NAME + "-" + pid;
+			ArrayList<String> al = (ArrayList<String>) cache.get(key2);
+			if (al == null)
+				al = new ArrayList<String>();
+			if (!al.contains(key))
+				al.add(key);
+			cache.put(key2, al);
 		}
 		return data != null ? data : Constants.PHOTO_DELETED_DATA;
 	}
@@ -78,6 +87,17 @@ public class PhotoCache {
 				return data;
 		}
 		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static void clearPhotoCache(String pid) {
+		String key2 = PHOTO_CACHE_NAME + "-" + pid;
+		ArrayList<String> al = (ArrayList<String>) cache.get(key2);
+		if (al != null && al.size() > 0) {
+			for (String key : al) {
+				cache.remove(key);
+			}
+		}
 	}
 
 }

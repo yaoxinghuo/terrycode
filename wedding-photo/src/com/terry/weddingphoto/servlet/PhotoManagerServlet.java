@@ -28,6 +28,7 @@ import com.terry.weddingphoto.data.intf.IPhotoDao;
 import com.terry.weddingphoto.model.Comment;
 import com.terry.weddingphoto.model.Photo;
 import com.terry.weddingphoto.util.MailSender;
+import com.terry.weddingphoto.util.PhotoCache;
 import com.terry.weddingphoto.util.StringUtil;
 
 /**
@@ -297,8 +298,10 @@ public class PhotoManagerServlet extends HttpServlet {
 		for (String pid : id) {
 			if (pid.equals(""))
 				continue;
-			if (photoDao.deletePhotoById(pid))
+			if (photoDao.deletePhotoById(pid)) {
 				count++;
+				PhotoCache.clearPhotoCache(pid);
+			}
 		}
 		try {
 			jo.put("total", id.length);

@@ -11,7 +11,8 @@
 <%@page import="com.terry.weddingphoto.data.intf.IPhotoDao"%>
 <%@page import="java.util.List"%>
 <%@page import="com.terry.weddingphoto.model.Comment"%>
-<%@page import="com.terry.weddingphoto.model.Photo"%><html
+<%@page import="com.terry.weddingphoto.model.Photo"%>
+<%@page import="com.terry.weddingphoto.servlet.AdminServlet"%><html
 	xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -19,8 +20,11 @@
 <link type="text/css" rel="stylesheet" href="css/style.css" />
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="js/jquery.cookie.js"></script>
+<script type="text/javascript" src="js/swfobject.js"></script>
+<script type="text/javascript" src="js/jquery.uploadify.v2.1.0.min.js"></script>
 <script type="text/javascript" src="js/detail.js"></script>
 
+<link rel="stylesheet" href="css/uploadify.css" type="text/css" />
 <style type="text/css">
 body {
 	background: #444;
@@ -50,6 +54,10 @@ a:hover {
 	font-weight: bold;
 }
 
+.uploadifyQueueItem {
+	color: #black;
+}
+
 </style>
 </head>
 
@@ -76,6 +84,10 @@ a:hover {
 	sdf.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
 	UserService userService = UserServiceFactory.getUserService();
 	boolean admin = userService.isUserLoggedIn()&&userService.isUserAdmin();
+	String uuid = null;
+	if(admin){
+		uuid = AdminServlet.generateUUID();
+	}
 	String username=null;
 	String email=null;
 	if(userService.isUserLoggedIn()){
@@ -102,6 +114,7 @@ a:hover {
 <script type="text/javascript">
 	var admin = <%=admin %>;
 	pid = '<%=pid %>';
+	uuid = '<%=uuid %>';
 	var canComment = <%=photo.getComment()!=-1 %>;
 	sadmin = '<%=request.getParameter("admin") %>';
 	var premark = '<%=photo.getRemark() %>';
@@ -119,7 +132,7 @@ if(photo.getComment()!=-1){
 		<td>*您的昵称</td>
 		<td><input type="text" id="nickname" maxlength="12" value="<%=username==null?"":username %>"/></td>
 		<td rowspan="2">
-			<img src="view?id=<%=pid %>&w=100&h=80"/>
+			<img src="view?id=<%=pid %>&w=100&h=80" id="thumbnail"/>
 		</td>
 	</tr>
 	<tr>
@@ -144,6 +157,23 @@ if(photo.getComment()!=-1){
 }
 	if(admin){
 %>
+<br/>
+<fieldset>
+    <legend>更新照片</legend>
+<table>
+	<tr>
+		<td colspan="2"></td>
+	</tr>
+	<tr>
+		<td>选择照片</td>
+		<td><input id="photoInputs" type="file" name="file"></input><div style="color:white;" id="fileQueue"></div></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td><input type="button" value="开始更新" onclick="javascript:$('#photoInputs').uploadifyUpload();" style="width: 100px;"/> </td>
+	</tr>
+</table>
+</fieldset>
 <br/>
 <fieldset>
     <legend>管理照片设置</legend>

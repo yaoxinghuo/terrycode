@@ -72,10 +72,9 @@ $(function() {
 	$("#photoInputs").uploadify(
 			{
 				'uploader' : '../uploadify.swf',
-				'script' : 'photoUpload?uuid='+uuid,
+				'script' : 'photoUpload?id='+uuid,
 				'checkScript' : 'photoCheck',
 				'cancelImg' : 'images/cancel.png',
-				'multi' : true,
 				'fileDesc' : 'Image Files',
 				'fileExt' : '*.jpg;*.jpeg;*.png;*.gif',
 				'multi' : true,

@@ -53,7 +53,7 @@ UserService userService = UserServiceFactory.getUserService();
 |
 <a href="javascript:$('#photoInputs').uploadifyClearQueue();">清除列队</a>
 <br/>
-<div id="fileQueue"></div>
+<div style="text-align:left" id="fileQueue"></div>
 </div>
 </div>
 <jsp:include page="analytics.html"></jsp:include>

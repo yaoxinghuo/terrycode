@@ -50,10 +50,16 @@ public class AdminServlet extends HttpServlet {
 		doPost(req, resp);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		String uuid = generateUUID();
+		req.setAttribute("uuid", uuid);
+		req.getRequestDispatcher("/admin.jsp").forward(req, resp);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static String generateUUID() {
 		String uuid = UUID.randomUUID().toString();
 		if (cache != null) {
 			Object o = cache.get(Constants.UPLOAD_SESSION_CACHE);
@@ -65,7 +71,6 @@ public class AdminServlet extends HttpServlet {
 			al.add(uuid);
 			cache.put(Constants.UPLOAD_SESSION_CACHE, al);
 		}
-		req.setAttribute("uuid", uuid);
-		req.getRequestDispatcher("/admin.jsp").forward(req, resp);
+		return uuid;
 	}
 }
