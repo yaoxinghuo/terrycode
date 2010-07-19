@@ -13,6 +13,8 @@ public interface IPhotoDao {
 	public boolean savePhoto(Photo photo);
 
 	public int saveOrUpdatePhoto(String filename, byte[] data);//1 save 0 update -1 error
+	
+	public boolean updatePhoto(String pid, byte[] data);
 
 	public boolean updatePhoto(String pid, String remark, boolean canComment);
 

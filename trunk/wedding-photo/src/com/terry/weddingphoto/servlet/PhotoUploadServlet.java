@@ -23,6 +23,7 @@ import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import com.terry.weddingphoto.constants.Constants;
 import com.terry.weddingphoto.data.impl.PhotoDaoImpl;
 import com.terry.weddingphoto.data.intf.IPhotoDao;
+import com.terry.weddingphoto.util.PhotoCache;
 import com.terry.weddingphoto.util.StringUtil;
 
 /**
@@ -57,12 +58,14 @@ public class PhotoUploadServlet extends HttpServlet {
 			jo.put("message", "对不起，未能保存上传的文件，请稍候再试！");
 		} catch (JSONException e1) {
 		}
-		if (!checkUploadPermission(req)) {
+		String id = req.getParameter("id");
+		if (!checkUploadPermission(id)) {
 			try {
 				jo.put("message", "你无权上传文件，若您长时间未操作，请刷新页面后再试");
 			} catch (JSONException e) {
 			}
 		} else {
+			String[] ids = id.split("/");
 			try {
 				ServletFileUpload upload = new ServletFileUpload();
 				upload.setSizeMax(Constants.PHOTO_BYTES_LIMIT);
@@ -74,17 +77,39 @@ public class PhotoUploadServlet extends HttpServlet {
 						InputStream in = item.openStream();
 
 						if (item.isFormField()) {
-
 						} else {
 							String fileName = item.getName();
 							try {
-								int result = photoDao.saveOrUpdatePhoto(
-										fileName, IOUtils.toByteArray(in));
-								if (result != -1) {
-									jo.put("result", true);
-									jo.put("message", "照片：" + fileName
-											+ " 已成功存入相册");
-									updatePhotosCount(result);
+								if (ids.length == 2
+										&& !StringUtil
+												.isEmptyOrWhitespace(ids[1])) {
+									boolean result = photoDao.updatePhoto(
+											ids[1], IOUtils.toByteArray(in));
+									jo.put("result", result);
+									jo
+											.put(
+													"message",
+													"照片："
+															+ fileName
+															+ (result ? " 已成功更新，因浏览器缓存，可能旧图片会存在一段时间"
+																	: " 未能更新，请稍候再试"));
+									if (result) {
+										PhotoCache.clearPhotoCache(ids[1]);
+									}
+								} else {
+									int result = photoDao.saveOrUpdatePhoto(
+											fileName, IOUtils.toByteArray(in));
+									if (result != -1) {
+										jo.put("result", true);
+										jo
+												.put(
+														"message",
+														"照片："
+																+ fileName
+																+ (result == 0 ? " 存在服务器，已成功覆盖原照片"
+																		: " 已成功存入相册"));
+										updatePhotosCount(result);
+									}
 								}
 
 							} finally {
@@ -115,10 +140,10 @@ public class PhotoUploadServlet extends HttpServlet {
 	}
 
 	@SuppressWarnings("unchecked")
-	private boolean checkUploadPermission(HttpServletRequest req) {
-		String uuid = req.getParameter("uuid");
-		if (StringUtil.isEmptyOrWhitespace(uuid))
+	private boolean checkUploadPermission(String id) {
+		if (StringUtil.isEmptyOrWhitespace(id))
 			return false;
+		String[] ids = id.split("/");
 		Object o = cache.get(Constants.UPLOAD_SESSION_CACHE);
 		if (o == null)
 			return false;
@@ -126,7 +151,7 @@ public class PhotoUploadServlet extends HttpServlet {
 		if (al == null || al.size() == 0)
 			return false;
 		for (String s : al) {
-			if (uuid.equals(s))
+			if (ids[0].equals(s))
 				return true;
 		}
 		return false;

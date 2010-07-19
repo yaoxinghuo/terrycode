@@ -71,6 +71,29 @@ public class PhotoDaoImpl implements IPhotoDao {
 	}
 
 	@Override
+	public boolean updatePhoto(String pid, byte[] data) {
+		try {
+			Photo photo = null;
+			EntityManager em = EMF.get().createEntityManager();
+			Key key = KeyFactory.stringToKey(pid);
+			if (key == null || !key.isComplete())
+				return false;
+			photo = em.find(Photo.class, key);
+			if (photo == null)
+				return false;
+
+			photo.setData(new Blob(data));
+			EntityTransaction tx = em.getTransaction();
+			tx.begin();
+			em.persist(photo);
+			tx.commit();
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	@Override
 	public boolean updatePhoto(String pid, String remark, boolean canComment) {
 		try {
 			Photo photo = null;
