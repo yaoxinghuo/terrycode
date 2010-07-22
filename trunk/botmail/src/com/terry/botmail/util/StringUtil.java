@@ -95,7 +95,7 @@ public class StringUtil {
 		if (s == null)
 			return false;
 
-		String regMobileStr = "^1(([3][456789])|([5][0124789])|([8][78]))[0-9]{8}$";
+		String regMobileStr = "^1(([3][456789])|([5][0124789])|([8][789]))[0-9]{8}$";
 		String regMobile3GStr = "^((157)|(18[78]))[0-9]{8}$";
 		if (s.matches(regMobileStr) || s.matches(regMobile3GStr))
 			return true;
@@ -103,6 +103,6 @@ public class StringUtil {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(validateUrl("http://www.google.cn/a.txtd&s=123"));
+		System.out.println(isChinaMobile("18912345678"));
 	}
 }
