@@ -380,7 +380,7 @@
 			$(window).keydown(function(event){
 				if(event.keyCode==37||event.keyCode==38)
 					showPrevItem();
-				else if(event.keyCode==39||event.keyCode==40)
+				else if(event.keyCode==39||event.keyCode==40||event.keyCode==32)
 					showNextItem();
 				});
 			j_panels.click(showNextItem);
