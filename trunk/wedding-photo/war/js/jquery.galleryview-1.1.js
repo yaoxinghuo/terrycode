@@ -46,6 +46,7 @@
 			if(has_panels) {
 				if(opts.fade_panels) {
 					setSrcToMainPhoto(i%item_count);
+					checkSize($(".panel img").eq(i%item_count).get(0));
 					// Fade out all panels and fade in target panel
 					j_panels.fadeOut(opts.transition_speed).eq(i%item_count).fadeIn(opts.transition_speed,function(){
 						if(!has_filmstrip) {
@@ -223,8 +224,8 @@
 				'left':'0px',
 				'overflow':'hidden',
 				'background':'white',
-				'display':'none',
-				'cursor':'pointer'
+				'display':'none'//,
+				//'cursor':'pointer'
 			});
 			$('.panel-overlay',j_panels).css({
 				'position':'absolute',
@@ -382,7 +383,7 @@
 				else if(event.keyCode==39||event.keyCode==40)
 					showNextItem();
 				});
-			j_panels.click(showNextItem);
+			// j_panels.click(showNextItem);
 		};
 		
 		// Check mouse to see if it is within the borders of the panel
@@ -408,7 +409,7 @@
 				if($(this).attr("src")==undefined){
 					var a = parseInt($(this).attr("iter"))-i;
 					if(a==0||a==1){
-						$(this).attr("src","view?id="+$(this).attr("pid")+"&w="+(opts.panel_width>948?948:opts.panel_width)+"&h=0").attr("title","点击查看下一张").show();
+						$(this).attr("src","view?id="+$(this).attr("pid")+"&w="+(opts.panel_width>948?948:opts.panel_width)+"&h=0").show();
 						if(s){
 							return false;
 						}
@@ -417,6 +418,9 @@
 				}
 			});
 		}
+		
+		$("#photonav1").click(showPrevItem);
+		$("#photonav2").click(showNextItem);
 		
 /** ********************************************* */
 /* Main Plugin Code */
@@ -551,6 +555,7 @@
 			/* Initiate Automated Animation */
 			/** ********************************************* */
 					setSrcToMainPhoto(0);// Add By Xinghuo
+					checkSize($(".panel img").eq(0).get(0));
 					// Show the first panel
 					j_panels.eq(0).show();
 
