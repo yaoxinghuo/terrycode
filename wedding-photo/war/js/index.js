@@ -33,3 +33,18 @@ $(document).ready(function() {
 		});
 	});
 });
+
+function checkSize(img) {
+	if(typeof(img)!='object')
+        img=document.getElementById(img);
+    if(img==null)
+        return;
+    var image=document.createElement("img");
+    image.onload=function (){
+        var width=this.width;
+        var height=this.height;
+        $("#photonav1").attr("coords", "0,0," + width / 2 + "," + height);
+    	$("#photonav2").attr("coords", width / 2 + ",0," + width + "," + height);
+    };
+    image.src=img.src;
+}

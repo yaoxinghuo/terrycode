@@ -115,8 +115,9 @@ h3 {
 				+ "&admin=false'>评论|详情</a>&nbsp;<a class='wbox2' href=# pid='"
 				+ pid + "'>查看原图</a>";
 %>
-<div class="panel"><img style="display: none;"
-	pid="<%=photo.getId()%>" iter="<%=iter++%>" />
+<div class="panel">
+<img style="display: none;" usemap="#photonav" border="none"
+	pid="<%=pid%>" iter="<%=iter++%>"/>
 <div class="panel-overlay">
 <h2 id="r-<%=pid%>"><%=photo.getRemark()%></h2>
 <p><%=desc%></p>
@@ -125,7 +126,10 @@ h3 {
 <%
 	}
 %>
-
+<map name="photonav"> 
+<area id="photonav1" shape="rect" coords="0,0,100,100" alt="上一张" title="上一张" style="cursor: pointer"/> 
+<area id="photonav2" shape="rect" coords="100,0,200,100" alt="下一张" title="下一张" /> 
+</map> 
 <ul class="filmstrip">
 	<%
 		iter = 0;
