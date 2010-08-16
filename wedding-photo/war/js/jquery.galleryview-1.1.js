@@ -383,7 +383,7 @@
 				else if(event.keyCode==39||event.keyCode==40)
 					showNextItem();
 				});
-			// j_panels.click(showNextItem);
+			j_panels.click(showNextItem);
 		};
 		
 		// Check mouse to see if it is within the borders of the panel

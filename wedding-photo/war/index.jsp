@@ -127,7 +127,7 @@ h3 {
 	}
 %>
 <map name="photonav"> 
-<area id="photonav1" shape="rect" coords="0,0,100,100" alt="上一张" title="上一张" style="cursor: pointer"/> 
+<area id="photonav1" shape="rect" coords="0,0,100,100" alt="上一张" title="上一张"/> 
 <area id="photonav2" shape="rect" coords="100,0,200,100" alt="下一张" title="下一张" /> 
 </map> 
 <ul class="filmstrip">
