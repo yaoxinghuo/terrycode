@@ -43,6 +43,10 @@ function checkSize(img) {
     image.onload=function (){
         var width=this.width;
         var height=this.height;
+        if(width%2==1)
+        	width=width+1;
+        if(height%2==1)
+        	height=height+1;
         $("#photonav1").attr("coords", "0,0," + width / 2 + "," + height);
     	$("#photonav2").attr("coords", width / 2 + ",0," + width + "," + height);
     };
