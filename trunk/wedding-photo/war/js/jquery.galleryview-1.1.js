@@ -397,7 +397,8 @@
 		// Add By Xinghuo
 		function setSrcToMainPhoto(i){
 			$(".filmstrip img").each(function(){
-				if($(this).attr("src")==undefined){
+				var src = $(this).attr("src");
+				if(!src){
 					var a = parseInt($(this).attr("iter"))-i;
 					if(a>=0&&a<10){
 						$(this).attr("src","view?id="+$(this).attr("pid")+"&w="+opts.frame_width+"&h="+opts.frame_height).show();
@@ -406,7 +407,8 @@
 			});
 			var s=false;
 			$(".panel img").each(function(){
-				if($(this).attr("src")==undefined){
+				var src = $(this).attr("src");
+				if(!src){
 					var a = parseInt($(this).attr("iter"))-i;
 					if(a==0||a==1){
 						$(this).attr("src","view?id="+$(this).attr("pid")+"&w="+(opts.panel_width>948?948:opts.panel_width)+"&h=0").show();
