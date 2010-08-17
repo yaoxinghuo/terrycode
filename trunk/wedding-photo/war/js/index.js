@@ -52,3 +52,21 @@ function checkSize(img) {
     };
     image.src=img.src;
 }
+
+var manClose=false;
+function closeHelp(){
+	manClose = true;
+	$('#help-div').hide();
+}
+
+window.onscroll=function(){
+	if(manClose)
+		return;
+	var help = document.getElementById('help-div');
+	var scrollTop = document.documentElement.scrollTop || document.body.scrollTop || 0;
+	help.style.visibility=scrollTop>142?"visible":"hidden";
+	var scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft || 0;
+	help.style.top = scrollTop+'px';
+	help.style.left = scrollLeft+'px';
+}
+window.onresize = window.onscroll;
