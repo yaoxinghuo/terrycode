@@ -15,7 +15,7 @@
 	xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>照片测试</title>
+<title>甜蜜</title>
 <link type="text/css" rel="stylesheet" href="css/style.css" />
 <link type="text/css" rel="stylesheet" href="css/wbox.css" />
 
@@ -82,7 +82,7 @@ h3 {
 			+ userService.createLoginURL("/") + "'>登录</a>";
 	welcome += "&nbsp;|&nbsp;<a href='admin'>后台管理</a>&nbsp;|&nbsp;";
 %>
-<h3>照片测试
+<h3><span style="color: pink">甜蜜-_-</span>
 <div align="right" style="font-size: 11px;"><%=welcome%>程序设计:<a
 	target="_blank" href="http://xinghuo.org.ru/">Terry</a>&nbsp;|&nbsp;<a
 	target="_blank"
@@ -116,7 +116,7 @@ h3 {
 				+ pid + "'>查看原图</a>";
 %>
 <div class="panel">
-<img style="display: none;" usemap="#photonav" border="none"
+<img style="display: none; cursor: auto;" usemap="#photonav" border="none"
 	pid="<%=pid%>" iter="<%=iter++%>"/>
 <div class="panel-overlay">
 <h2 id="r-<%=pid%>"><%=photo.getRemark()%></h2>
@@ -127,7 +127,7 @@ h3 {
 	}
 %>
 <map name="photonav"> 
-<area id="photonav1" shape="rect" coords="0,0,100,100" alt="上一张" title="上一张"/> 
+<area id="photonav1" shape="rect" coords="0,0,100,100" alt="上一张" title="上一张" /> 
 <area id="photonav2" shape="rect" coords="100,0,200,100" alt="下一张" title="下一张" /> 
 </map> 
 <ul class="filmstrip">
@@ -157,6 +157,9 @@ h3 {
 <%
 	}
 %>
+<div class="help" id='help-div'>
+小提示：您可以点击大图片的左、右部分、键盘方向键、空格键等 来向前或向后翻页
+<a href='#' onclick="closeHelp();return false;"><img src='images/close.gif' alt='关闭' title='关闭' style='border:none;'/></a></div>
 <jsp:include page="analytics.html"></jsp:include>
 </body>
 </html>
