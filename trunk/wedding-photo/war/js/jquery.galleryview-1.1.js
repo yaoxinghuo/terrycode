@@ -224,8 +224,8 @@
 				'left':'0px',
 				'overflow':'hidden',
 				'background':'white',
-				'display':'none'//,
-				//'cursor':'pointer'
+				'display':'none'// ,
+				// 'cursor':'pointer'
 			});
 			$('.panel-overlay',j_panels).css({
 				'position':'absolute',
@@ -378,10 +378,20 @@
 			}).click(showPrevItem);
 			// Add By Xinghuo
 			$(window).keydown(function(event){
-				if(event.keyCode==37||event.keyCode==38)
+				// 38向上 40向下 37向左 39向右 33Pg Up 34Pg Down 32空格
+				alert(event.keyCode);
+				switch(event.keyCode){
+				case 37:
+				case 33:
 					showPrevItem();
-				else if(event.keyCode==39||event.keyCode==40||event.keyCode==32)
+					break;
+				case 39:
+				case 32:
+				case 34:
 					showNextItem();
+					break;
+				default:
+				}
 				});
 			j_panels.click(showNextItem);
 		};
@@ -421,8 +431,14 @@
 			});
 		}
 		
-		$("#photonav1").click(showPrevItem);
-		$("#photonav2").click(showNextItem);
+		$("#photonav1").click(function(event){
+			event.stopPropagation();
+			showPrevItem();
+		});
+		$("#photonav2").click(function(event){
+			event.stopPropagation();
+			showNextItem();
+		});
 		
 /** ********************************************* */
 /* Main Plugin Code */
