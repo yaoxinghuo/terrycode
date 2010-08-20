@@ -377,9 +377,8 @@
 				'left':(gallery_width/2)-(wrapper_width/2)-10-22+'px'
 			}).click(showPrevItem);
 			// Add By Xinghuo
-			$(window).keydown(function(event){
+			$(document).keydown(function(event){
 				// 38向上 40向下 37向左 39向右 33Pg Up 34Pg Down 32空格
-				alert(event.keyCode);
 				switch(event.keyCode){
 				case 37:
 				case 33:
