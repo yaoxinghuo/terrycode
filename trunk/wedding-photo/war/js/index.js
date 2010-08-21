@@ -1,5 +1,6 @@
 $(document).ready(function() {
-	$('#photos').galleryView( {
+	$('#loading-div').hide()
+	$('#photos').show().galleryView( {
 		panel_width : document.documentElement.clientWidth - 76,
 		panel_height : 10,
 		frame_width : 100,
