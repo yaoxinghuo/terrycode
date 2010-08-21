@@ -135,7 +135,6 @@ img.nav {
 	background-color: pink;
 	z-index: 2000;
 	position: absolute;
-	visibility: visible;
 	top: 0px;
 	visibility: hidden;
 }

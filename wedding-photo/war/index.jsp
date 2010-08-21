@@ -90,7 +90,8 @@ h3 {
 </h3>
 
 <div id="gallery_wrap" align="center">
-<div id="photos" class="galleryview">
+<div id='loading-div'><img src="images/loading.gif" />照片加载中,请稍候...</div>
+<div id="photos" style="display: none;" class="galleryview">
 <%
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm",
 			Locale.CHINA);
