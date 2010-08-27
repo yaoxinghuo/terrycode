@@ -8,6 +8,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
 
+import com.google.appengine.api.utils.SystemProperty;
+
 /**
  * @author xinghuo.yao E-mail: yaoxinghuo at 126 dot com
  * @version create: 2010-2-3 下午04:38:15
@@ -28,8 +30,10 @@ public class MailSender {
 		 * 
 		 * 不能随意设置发件人
 		 */
-		msg.setFrom(new InternetAddress("service@appmail.org.ru", MimeUtility
-				.encodeText(sender, "UTF-8", "b")));
+		String from = "service@" + SystemProperty.applicationId.get()
+				+ ".appspotmail.com";
+		msg.setFrom(new InternetAddress(from, MimeUtility.encodeText(sender,
+				"UTF-8", "b")));
 		for (String email : emails)
 			msg.addRecipient(javax.mail.Message.RecipientType.BCC,
 					new InternetAddress(email));
