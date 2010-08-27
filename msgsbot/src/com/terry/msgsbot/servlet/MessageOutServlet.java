@@ -54,11 +54,10 @@ public class MessageOutServlet extends HttpServlet {
 	private static final String OTHER_CACHE = "other-cache";
 
 	private static final String ROOT_MENU = "Menu:\r\n"
-			+ "0000:return\r\n1:msgsbot\r\n2:comutil\r\n3:fetionlib\r\n4:weatherlib\r\n100:others\r\n101:invite\r\nr:repeat last command\r\ns: status";
+			+ "0000:return\r\n1:msgsbot\r\n2:comutil\r\n3:weatherlib\r\n100:others\r\n101:invite\r\nr:repeat last command\r\ns: status";
 
 	private static final int COMUTIL = 2;
-	private static final int FETIONLIB = 3;
-	private static final int WEATHERLIB = 4;
+	private static final int WEATHERLIB = 3;
 
 	private static final int OTHER = 100;
 	private static final int INVITE = 101;
@@ -168,9 +167,6 @@ public class MessageOutServlet extends HttpServlet {
 				short_cache.put(STATUS, COMUTIL);
 				return getJidsByStatus(COMUTIL);
 			} else if (body.equals("3")) {
-				short_cache.put(STATUS, FETIONLIB);
-				return getJidsByStatus(FETIONLIB);
-			} else if (body.equals("4")) {
 				short_cache.put(STATUS, WEATHERLIB);
 				return getJidsByStatus(WEATHERLIB);
 			} else if (body.equals("100")) {
@@ -350,8 +346,6 @@ public class MessageOutServlet extends HttpServlet {
 			return "msgsbot@appspot.com";
 		case COMUTIL:
 			return "comutil@appspot.com";
-		case FETIONLIB:
-			return "fetionlib@appspot.com";
 		case WEATHERLIB:
 			return "weatherlib@appspot.com";
 		case OTHER:
