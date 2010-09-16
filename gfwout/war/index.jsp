@@ -120,7 +120,8 @@ a.gb2:hover {
 <div id=gbar><nobr><b class=gb1>GFWout</b>
 </nobr></div>
 <div id=guser width=100%><nobr><a
-	href="http://www.google.cn/">Google 中国</a></nobr></div>
+	href="http://www.google.cn/">Google 中国</a></nobr> | <a
+	href="google.html">山寨Google</a></div>
 <div class=gbh style="left: 0"></div>
 <div class=gbh style="right: 0"></div>
 <center><br clear=all id=lgpd>
