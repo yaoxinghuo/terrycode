@@ -117,11 +117,9 @@ a.gb2:hover {
 </table>
 </div>
 <textarea id=csi style="display: none"></textarea>
-<div id=gbar><nobr><b class=gb1>GFWout</b>
-</nobr></div>
+<div id=gbar><nobr><b class=gb1>GFWout</b> </nobr></div>
 <div id=guser width=100%><nobr><a
-	href="http://www.google.cn/">Google 中国</a></nobr> | <a
-	href="google.html">山寨Google</a></div>
+	href="http://www.google.cn/">Google 中国</a></nobr> | <a href="google.html">山寨Google</a></div>
 <div class=gbh style="left: 0"></div>
 <div class=gbh style="right: 0"></div>
 <center><br clear=all id=lgpd>
@@ -135,9 +133,9 @@ a.gb2:hover {
 		<td align=center nowrap><input maxlength=2048 size=55 name="r"
 			style="height: 28px; padding-top: 4px; font-size: 16px; margin-bottom: 2px; width: 28em"
 			title="GFW 代理上网" value=""><br>
-		<input type="hidden" name="s">
-		<input type=submit value="GFW 代理上网" onclick="gfw('false');return false;" />
-		<input type=submit value="Google 搜索" onclick="gfw('true');return false;" /></td>
+		<input type="hidden" name="s"> <input type=submit
+			value="GFW 代理上网" onclick="gfw('false');return false;" /> <input
+			type=submit value="Google 搜索" onclick="gfw('true');return false;" /></td>
 		<td nowrap width=25% align=left><span style="font-size: 13px">&nbsp;&nbsp;<a
 			href=/help.html>郑重声明</a><br>
 		&nbsp;&nbsp;<a href=/help.html>使用说明</a><br>
@@ -146,14 +144,16 @@ a.gb2:hover {
 </table>
 </form>
 <br>
-<p><span style="font-size: 13px;color: blue;">有时候着急上某个网站，却因为某些原因不让访问，把网址输进去，试试这个网站吧？本站只限于浏览网页内容。</span></p>
+<p><span style="font-size: 13px; color: blue;">有时候着急上某个网站，却因为某些原因不让访问，把网址输进去，试试这个网站吧？本站只限于浏览网页内容。</span></p>
+<p><span style="font-size: 13px; color: blue; font-weight: bold;">用这个网站不灵？再试试<a
+	href="http://py.latest.gfwout.appspot.com/_real_index.html">PY版本</a>的？</span></p>
 <br>
 <font size=-1></font>
-<p><span style="font-size: 13px;color: green;">小提示:您可以输入想要代理上网的网址或输入关键词搜索后再点击！</span></p>
+<p><span style="font-size: 13px; color: green;">小提示:您可以输入想要代理上网的网址或输入关键词搜索后再点击！</span></p>
 <p><span style="font-size: 13px">&copy;<%=Calendar.getInstance().get(Calendar.YEAR)%>
 - <a href="/help.html">隐私权政策</a> - <a
-	href="http://spreadsheets.google.com/viewform?key=0AkW7RjU4e3Q3cF9XQWJkZTQzOHg1dnpGSmppYVo4ZkE&hl=en&cfg=true">意见反映</a> - <img
-	style="vertical-align: middle; align: left; border: none"
+	href="http://spreadsheets.google.com/viewform?key=0AkW7RjU4e3Q3cF9XQWJkZTQzOHg1dnpGSmppYVo4ZkE&hl=en&cfg=true">意见反映</a>
+- <img style="vertical-align: middle; align: left; border: none"
 	src="http://code.google.com/appengine/images/appengine-noborder-120x30.gif"
 	alt="Powered by Google App Engine" /></span></p>
 <p><jsp:include page="ads.html"></jsp:include></p>
