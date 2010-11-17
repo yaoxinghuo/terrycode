@@ -145,8 +145,8 @@ a.gb2:hover {
 </form>
 <br>
 <p><span style="font-size: 13px; color: blue;">有时候着急上某个网站，却因为某些原因不让访问，把网址输进去，试试这个网站吧？本站只限于浏览网页内容。</span></p>
-<p><span style="font-size: 13px; color: blue; font-weight: bold;">用这个网站不灵？再试试<a
-	href="http://py.latest.gfwout.appspot.com/_real_index.html">PY版本</a>的？</span></p>
+<p><span style="font-size: 13px; color: blue; font-weight: bold;">用这个网站不给力？再试试<a
+	href="http://py.latest.gfwout.appspot.com/">PY版本</a>的？</span></p>
 <br>
 <font size=-1></font>
 <p><span style="font-size: 13px; color: green;">小提示:您可以输入想要代理上网的网址或输入关键词搜索后再点击！</span></p>
