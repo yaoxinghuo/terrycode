@@ -15,7 +15,7 @@
 	xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>甜蜜</title>
+<title>照片测试</title>
 <link type="text/css" rel="stylesheet" href="css/style.css" />
 <link type="text/css" rel="stylesheet" href="css/wbox.css" />
 
@@ -72,6 +72,7 @@ h3 {
 </head>
 
 <body>
+<div id="head">
 <%
 	UserService userService = UserServiceFactory.getUserService();
 	String welcome = userService.isUserLoggedIn() ? userService
@@ -82,13 +83,15 @@ h3 {
 			+ userService.createLoginURL("/") + "'>登录</a>";
 	welcome += "&nbsp;|&nbsp;<a href='admin'>后台管理</a>&nbsp;|&nbsp;";
 %>
-<h3><span style="color: pink">甜蜜-_-</span>
+<h3><span style="color: pink">照片测试</span>
 <div align="right" style="font-size: 11px;"><%=welcome%>程序设计:<a
 	target="_blank" href="http://xinghuo.org.ru/">Terry</a>&nbsp;|&nbsp;<a
 	target="_blank"
-	href="http://code.google.com/p/terrycode/source/browse/#svn/trunk/wedding-photo">源码</a></div>
+	href="http://code.google.com/p/terrycode/source/browse/#svn/trunk/wedding-photo">源码</a>&nbsp;<img
+	src="images/slideup.png" class="control"
+	style="cursor: pointer; vertical-align: bottom;"></img></div>
 </h3>
-
+</div>
 <div id="gallery_wrap" align="center">
 <div id='loading-div'><img src="images/loading.gif" />照片加载中,请稍候...</div>
 <div id="photos" style="display: none;" class="galleryview">
@@ -116,9 +119,8 @@ h3 {
 				+ "&admin=false'>评论|详情</a>&nbsp;<a class='wbox2' href=# pid='"
 				+ pid + "'>查看原图</a>";
 %>
-<div class="panel">
-<img style="display: none; cursor: auto;" usemap="#photonav" border="none"
-	pid="<%=pid%>" iter="<%=iter++%>"/>
+<div class="panel"><img style="display: none; cursor: auto;"
+	usemap="#photonav" border="none" pid="<%=pid%>" iter="<%=iter++%>" />
 <div class="panel-overlay">
 <h2 id="r-<%=pid%>"><%=photo.getRemark()%></h2>
 <p><%=desc%></p>
@@ -126,11 +128,12 @@ h3 {
 </div>
 <%
 	}
-%>
-<map name="photonav"> 
-<area id="photonav1" shape="rect" coords="0,0,100,100" alt="上一张" title="上一张" /> 
-<area id="photonav2" shape="rect" coords="100,0,200,100" alt="下一张" title="下一张" /> 
-</map> 
+%> <map name="photonav">
+	<area id="photonav1" shape="rect" coords="0,0,100,100" alt="上一张"
+		title="上一张" />
+	<area id="photonav2" shape="rect" coords="100,0,200,100" alt="下一张"
+		title="下一张" />
+</map>
 <ul class="filmstrip">
 	<%
 		iter = 0;
@@ -158,9 +161,9 @@ h3 {
 <%
 	}
 %>
-<div class="help" id='help-div'>
-小提示：您可以点击大图片的左、右部分、键盘方向键、空格键等 来向前或向后翻页
-<a href='#' onclick="closeHelp();return false;"><img src='images/close.gif' alt='关闭' title='关闭' style='border:none;'/></a></div>
+<div class="help" id='help-div'>小提示：您可以点击大图片的左、右部分、键盘方向键、空格键等
+来向前或向后翻页 <a href='#' onclick="closeHelp();return false;"><img
+	src='images/close.gif' alt='关闭' title='关闭' style='border: none;' /></a></div>
 <jsp:include page="analytics.html"></jsp:include>
 </body>
 </html>

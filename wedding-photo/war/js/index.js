@@ -33,41 +33,73 @@ $(document).ready(function() {
 			isImage : true
 		});
 	});
+
+	$(".control").click(function() {
+		$("#head").slideUp();
+	});
+
+	var lastPosYTime = new Date().getTime();
+	$(document).mousemove(function(e) {
+		if ($("#head").is(":hidden")) {
+			if (e.clientY < 20) {
+				if ($("#head").is(":hidden")) {
+					if (new Date().getTime() - lastPosYTime > 500)
+						slideDown();
+				}
+			} else
+				lastPosYTime = new Date().getTime();
+		}
+	});
+	slideUp();
 });
 
-function checkSize(img) {
-	if(typeof(img)!='object')
-        img=document.getElementById(img);
-    if(img==null)
-        return;
-    var image=document.createElement("img");
-    image.onload=function (){
-        var width=this.width;
-        var height=this.height;
-        if(width%2==1)
-        	width=width+1;
-        if(height%2==1)
-        	height=height+1;
-        $("#photonav1").attr("coords", "0,0," + width / 2 + "," + height);
-    	$("#photonav2").attr("coords", width / 2 + ",0," + width + "," + height);
-    };
-    image.src=img.src;
+function slideUp() {
+	setTimeout(function() {
+		$("#head").slideUp();
+	}, 5000);
 }
 
-var manClose=false;
-function closeHelp(){
+function slideDown() {
+	$("#head").slideDown();
+	slideUp();
+}
+
+function checkSize(img) {
+	if (typeof (img) != 'object')
+		img = document.getElementById(img);
+	if (img == null)
+		return;
+	var image = document.createElement("img");
+	image.onload = function() {
+		var width = this.width;
+		var height = this.height;
+		if (width % 2 == 1)
+			width = width + 1;
+		if (height % 2 == 1)
+			height = height + 1;
+		$("#photonav1").attr("coords", "0,0," + width / 2 + "," + height);
+		$("#photonav2")
+				.attr("coords", width / 2 + ",0," + width + "," + height);
+	};
+	image.src = img.src;
+}
+
+var manClose = false;
+function closeHelp() {
 	manClose = true;
 	$('#help-div').hide();
 }
 
-window.onscroll=function(){
-	if(manClose)
+window.onscroll = function() {
+	if (manClose)
 		return;
 	var help = document.getElementById('help-div');
-	var scrollTop = document.documentElement.scrollTop || document.body.scrollTop || 0;
-	help.style.visibility=scrollTop>142?"visible":"hidden";
-	var scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft || 0;
-	help.style.top = scrollTop+'px';
-	help.style.left = scrollLeft+'px';
+	var scrollTop = document.documentElement.scrollTop
+			|| document.body.scrollTop || 0;
+	help.style.visibility = scrollTop > 142 ? "visible" : "hidden";
+	var scrollLeft = document.documentElement.scrollLeft
+			|| document.body.scrollLeft || 0;
+	help.style.top = scrollTop + 'px';
+	help.style.left = scrollLeft + 'px';
 }
 window.onresize = window.onscroll;
