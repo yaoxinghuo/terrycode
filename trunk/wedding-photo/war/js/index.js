@@ -43,7 +43,8 @@ $(document).ready(function() {
 		if ($("#head").is(":hidden")) {
 			if (e.clientY < 20) {
 				if ($("#head").is(":hidden")) {
-					if (new Date().getTime() - lastPosYTime > 500)
+					var t = new Date().getTime() - lastPosYTime;
+					if (t > 500 && t < 1000)
 						slideDown();
 				}
 			} else
