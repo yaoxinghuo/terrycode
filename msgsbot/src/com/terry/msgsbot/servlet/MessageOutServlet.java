@@ -387,9 +387,9 @@ public class MessageOutServlet extends HttpServlet {
 		case WEATHERLIB2:
 			return "weatherlib2@appspot.com";
 		case YAOXINGHUO:
-			return "gcnmusic@appspot.com";
-		case GCNMUSIC:
 			return "yaoxinghuo@appspot.com";
+		case GCNMUSIC:
+			return "gcnmusic@appspot.com";
 		}
 		return null;
 	}
