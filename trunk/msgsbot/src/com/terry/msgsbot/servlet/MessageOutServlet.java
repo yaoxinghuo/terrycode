@@ -54,12 +54,13 @@ public class MessageOutServlet extends HttpServlet {
 	private static final String OTHER_CACHE = "other-cache";
 
 	private static final String ROOT_MENU = "Menu:\r\n"
-			+ "0000:return\r\n1:msgsbot\r\n2:comutil\r\n3:weatherlib\r\n4:weatherlib2\r\n5:gcnmusic\r\n100:others\r\n101:invite\r\nr:repeat last command\r\ns: status";
+			+ "0000:return\r\n1:msgsbot\r\n2:comutil\r\n3:weatherlib\r\n4:weatherlib2\r\n5:gcnmusic\r\n6:yaoxinghuo\r\n100:others\r\n101:invite\r\nr:repeat last command\r\ns: status";
 
 	public static final int COMUTIL = 2;
 	public static final int WEATHERLIB = 3;
 	public static final int WEATHERLIB2 = 4;
 	public static final int GCNMUSIC = 5;
+	public static final int YAOXINGHUO = 6;
 
 	public static final int OTHER = 100;
 	private static final int INVITE = 101;
@@ -177,6 +178,9 @@ public class MessageOutServlet extends HttpServlet {
 			} else if (body.equals("5")) {
 				short_cache.put(STATUS, GCNMUSIC);
 				return getJidsByStatus(GCNMUSIC);
+			} else if (body.equals("6")) {
+				short_cache.put(STATUS, YAOXINGHUO);
+				return getJidsByStatus(YAOXINGHUO);
 			} else if (body.equals("100")) {
 				short_cache.put(STATUS, OTHER);
 				return "Please enter jid(xxx@example.com):";
@@ -360,6 +364,8 @@ public class MessageOutServlet extends HttpServlet {
 			return "weatherlib2@appspot.com";
 		case GCNMUSIC:
 			return "gcnmusic@appspot.com";
+		case YAOXINGHUO:
+			return "yaoxinghuo@appspot.com";
 		case OTHER:
 			Object o = short_cache.get(OTHER_CACHE);
 			if (o != null) {
@@ -380,8 +386,10 @@ public class MessageOutServlet extends HttpServlet {
 			return "weatherlib@appspot.com";
 		case WEATHERLIB2:
 			return "weatherlib2@appspot.com";
-		case GCNMUSIC:
+		case YAOXINGHUO:
 			return "gcnmusic@appspot.com";
+		case GCNMUSIC:
+			return "yaoxinghuo@appspot.com";
 		}
 		return null;
 	}

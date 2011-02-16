@@ -3,7 +3,6 @@ package com.terry.msgsbot.util;
 import com.google.appengine.api.xmpp.JID;
 import com.google.appengine.api.xmpp.MessageBuilder;
 import com.google.appengine.api.xmpp.PresenceShow;
-import com.google.appengine.api.xmpp.PresenceType;
 import com.google.appengine.api.xmpp.SendResponse;
 import com.google.appengine.api.xmpp.XMPPService;
 import com.google.appengine.api.xmpp.XMPPServiceFactory;
@@ -42,8 +41,7 @@ public class XMPPSender {
 		try {
 			if (jid.getId().indexOf("@appspot.com") != -1)
 				return;
-			xmpp.sendPresence(jid, PresenceType.AVAILABLE, PresenceShow.CHAT,
-					status);
+			xmpp.sendPresence(jid, null, PresenceShow.NONE, status);
 		} catch (Exception e) {
 		}
 	}
