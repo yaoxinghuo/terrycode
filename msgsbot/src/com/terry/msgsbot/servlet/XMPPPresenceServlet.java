@@ -54,5 +54,7 @@ public class XMPPPresenceServlet extends HttpServlet {
 				.getJidByStatus(MessageOutServlet.WEATHERLIB2), "c");
 		XMPPSender.sendXMPP(MessageOutServlet
 				.getJidByStatus(MessageOutServlet.GCNMUSIC), "c");
+		XMPPSender.sendXMPP(MessageOutServlet
+				.getJidByStatus(MessageOutServlet.ETFETION), "c");
 	}
 }
