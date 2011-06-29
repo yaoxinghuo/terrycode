@@ -1,7 +1,11 @@
 package com.terry.msgsbot.servlet;
 
 import java.io.IOException;
+import java.util.Collections;
 
+import javax.cache.Cache;
+import javax.cache.CacheException;
+import javax.cache.CacheManager;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,9 +35,27 @@ public class MessageInServlet extends HttpServlet {
 
 	private static Log log = LogFactory.getLog(MessageInServlet.class);
 
+	private Cache cache;
+
+	@Override
+	public void init() throws ServletException {
+		try {
+			cache = CacheManager.getInstance().getCacheFactory().createCache(
+					Collections.emptyMap());
+		} catch (CacheException e) {
+			log.error("can not create cache instance. exception:"
+					+ e.getMessage());
+		}
+	}
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		if (cache == null || cache.containsKey(Constants.STATUS_CACHE_NAME)) {
+			// log.debug("admin paused, so abort send to admin.");
+			return;
+		}
+
 		req.setCharacterEncoding("UTF-8");
 		String content = req.getParameter("content");
 		String from = req.getParameter("from");

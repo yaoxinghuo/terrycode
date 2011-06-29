@@ -1,7 +1,11 @@
 package com.terry.msgsbot.servlet;
 
 import java.io.IOException;
+import java.util.Collections;
 
+import javax.cache.Cache;
+import javax.cache.CacheException;
+import javax.cache.CacheManager;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +16,7 @@ import com.google.appengine.api.xmpp.Presence;
 import com.google.appengine.api.xmpp.PresenceType;
 import com.google.appengine.api.xmpp.XMPPService;
 import com.google.appengine.api.xmpp.XMPPServiceFactory;
+import com.terry.msgsbot.util.Constants;
 import com.terry.msgsbot.util.XMPPSender;
 
 /**
@@ -25,6 +30,8 @@ public class XMPPPresenceServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = -7028751881815193212L;
 
+	private Cache cache;
+
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws IOException, ServletException {
@@ -32,8 +39,22 @@ public class XMPPPresenceServlet extends HttpServlet {
 	}
 
 	@Override
+	public void init() throws ServletException {
+		try {
+			cache = CacheManager.getInstance().getCacheFactory().createCache(
+					Collections.emptyMap());
+		} catch (CacheException e) {
+		}
+	}
+
+	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse res)
 			throws IOException, ServletException {
+		if (cache == null || cache.containsKey(Constants.STATUS_CACHE_NAME)) {
+			// log.debug("admin paused, so abort send to admin.");
+			return;
+		}
+
 		XMPPService xmppService = XMPPServiceFactory.getXMPPService();
 		Presence presence = xmppService.parsePresence(req);
 

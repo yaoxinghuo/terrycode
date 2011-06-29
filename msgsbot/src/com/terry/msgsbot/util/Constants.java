@@ -11,4 +11,6 @@ public class Constants {
 			"itcontent@gmail.com" };
 	public static final JID REC_JID1 = new JID("yaoxinghuo@gmail.com");
 	public static final JID REC_JID2 = new JID("itcontent@gmail.com");
+	
+	public static final String STATUS_CACHE_NAME = "statusCache";
 }

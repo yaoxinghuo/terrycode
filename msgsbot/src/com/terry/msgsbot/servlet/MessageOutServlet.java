@@ -107,6 +107,10 @@ public class MessageOutServlet extends HttpServlet {
 			jids = jids.substring(0, jids.indexOf("/"));
 		if (isAdmin(jids)) {
 			String msgBody = getResponse(body);
+			if (cache != null && cache.containsKey(Constants.STATUS_CACHE_NAME)
+					&& msgBody != null && !msgBody.startsWith("Set ")) {
+				msgBody = msgBody + "(Paused)";
+			}
 			if (!StringUtil.isEmptyOrWhitespace(msgBody)) {
 				if (xmpp.getPresence(jid).isAvailable()) {
 					xmpp.sendMessage(new MessageBuilder()
@@ -116,6 +120,10 @@ public class MessageOutServlet extends HttpServlet {
 		} else {
 			String str = jids + "\r\n" + body;
 			log.debug("receive message: " + str);
+			if (cache == null || cache.containsKey(Constants.STATUS_CACHE_NAME)) {
+				// log.debug("admin paused, so abort send to admin.");
+				return;
+			}
 			if (xmpp.getPresence(Constants.REC_JID1).isAvailable())
 				xmpp.sendMessage(new MessageBuilder().withRecipientJids(
 						Constants.REC_JID1).withBody(str).build());
@@ -154,11 +162,27 @@ public class MessageOutServlet extends HttpServlet {
 		short_cache.put(LAST_COMMAND, body);// 把上一次的命令记下来
 
 		if (body.equalsIgnoreCase("s")) {// 得到当前是和哪个人对话
+			boolean paused = cache.containsKey(Constants.STATUS_CACHE_NAME);
+			String status = "Session:\t";
+			String s = null;
 			if (short_cache.get(STATUS) != null) {
-				String s = getJidsByStatus((Integer) short_cache.get(STATUS));
-				if (s != null)
-					return s;
+				s = getJidsByStatus((Integer) short_cache.get(STATUS));
 			}
+			if (s == null)
+				status = status + "null";
+			else
+				status = status + s;
+			status = status + "\r\nStatus:\t" + (paused ? "Paused" : "Normal");
+			return status;
+		}
+
+		if (body.equalsIgnoreCase("pause")) {
+			cache.put(Constants.STATUS_CACHE_NAME, true);
+			return "Set Paused";
+		}
+		if (body.equalsIgnoreCase("continue")) {
+			cache.remove(Constants.STATUS_CACHE_NAME);
+			return "Set Continued";
 		}
 
 		int status = (Integer) o;
