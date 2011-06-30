@@ -109,7 +109,7 @@ public class MessageOutServlet extends HttpServlet {
 			String msgBody = getResponse(body);
 			if (cache != null && cache.containsKey(Constants.STATUS_CACHE_NAME)
 					&& msgBody != null && !msgBody.startsWith("Set ")) {
-				msgBody = msgBody + "(Paused)";
+				msgBody = msgBody + "\r\n(Paused)";
 			}
 			if (!StringUtil.isEmptyOrWhitespace(msgBody)) {
 				if (xmpp.getPresence(jid).isAvailable()) {
@@ -163,7 +163,7 @@ public class MessageOutServlet extends HttpServlet {
 
 		if (body.equalsIgnoreCase("s")) {// 得到当前是和哪个人对话
 			boolean paused = cache.containsKey(Constants.STATUS_CACHE_NAME);
-			String status = "Session:\t";
+			String status = "Session: ";
 			String s = null;
 			if (short_cache.get(STATUS) != null) {
 				s = getJidsByStatus((Integer) short_cache.get(STATUS));
@@ -172,7 +172,7 @@ public class MessageOutServlet extends HttpServlet {
 				status = status + "null";
 			else
 				status = status + s;
-			status = status + "\r\nStatus:\t" + (paused ? "Paused" : "Normal");
+			status = status + "\r\nStatus: " + (paused ? "Paused" : "Normal");
 			return status;
 		}
 
