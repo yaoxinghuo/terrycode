@@ -2,6 +2,7 @@ package com.terry.appmail.util;
 
 import java.util.Properties;
 
+import javax.mail.Address;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
@@ -15,8 +16,9 @@ import com.google.appengine.api.utils.SystemProperty;
  * @version create: 2010-2-3 下午04:38:15
  */
 public class MailSender {
-	public static void sendMail(String[] emails, String sender, String subject,
-			String body) throws Exception {
+	public static void sendMail(String replyto, String replyname,
+			String[] emails, String sender, String subject, String body)
+			throws Exception {
 		Properties props = new Properties();
 		Session session = Session.getDefaultInstance(props, null);
 
@@ -34,6 +36,10 @@ public class MailSender {
 				+ ".appspotmail.com";
 		msg.setFrom(new InternetAddress(from, MimeUtility.encodeText(sender,
 				"UTF-8", "b")));
+		if (!StringUtil.isEmptyOrWhitespace(replyto)
+				&& !StringUtil.isEmptyOrWhitespace(replyname))
+			msg.setReplyTo(new Address[] { new InternetAddress(replyto,
+					MimeUtility.encodeText(replyname, "UTF-8", "b")) });
 		for (String email : emails)
 			msg.addRecipient(javax.mail.Message.RecipientType.BCC,
 					new InternetAddress(email));
