@@ -37,6 +37,8 @@ public class MailServlet extends HttpServlet {
 		String sender = req.getParameter("sender");
 		String subject = req.getParameter("subject");
 		String body = req.getParameter("body");
+		String replyto = req.getParameter("replyto");
+		String replyname = req.getParameter("replyname");
 
 		if (StringUtil.isEmptyOrWhitespace(em)
 				|| StringUtil.isEmptyOrWhitespace(sender)
@@ -64,14 +66,27 @@ public class MailServlet extends HttpServlet {
 					"Parameter: email,sender,subject,body too long.");
 			return;
 		}
+		if (!StringUtil.isEmptyOrWhitespace(replyto)) {
+			if (!StringUtil.validateEmail(replyto)) {
+				resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
+						"Invaid replyto address.");
+				return;
+			}
+			if (StringUtil.isEmptyOrWhitespace(replyname)) {
+				resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
+						"Reply name can not be empty.");
+				return;
+			}
+		}
 		try {
-			MailSender.sendMail(emails, sender, subject, body);
+			MailSender.sendMail(replyto, replyname, emails, sender, subject,
+					body);
 			PrintWriter pw = resp.getWriter();
 			pw.print("Mail sent to +" + em + ".");
 			pw.flush();
 		} catch (Exception e) {
-			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e
-					.getMessage());
+			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+					e.getMessage());
 		}
 
 	}
