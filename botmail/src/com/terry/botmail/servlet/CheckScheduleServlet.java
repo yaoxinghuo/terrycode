@@ -12,9 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.appengine.api.labs.taskqueue.Queue;
-import com.google.appengine.api.labs.taskqueue.QueueFactory;
-import com.google.appengine.api.labs.taskqueue.TaskOptions;
+import com.google.appengine.api.taskqueue.Queue;
+import com.google.appengine.api.taskqueue.QueueFactory;
+import com.google.appengine.api.taskqueue.TaskOptions;
 import com.terry.botmail.data.impl.ScheduleDaoImpl;
 import com.terry.botmail.data.intf.IScheduleDao;
 import com.terry.botmail.model.Schedule;
@@ -69,7 +69,7 @@ public class CheckScheduleServlet extends HttpServlet {
 		if (schedules == null || schedules.size() == 0)
 			return;
 		for (Schedule schedule : schedules) {
-			queue.add(TaskOptions.Builder.url("/cron/send").param("id",
+			queue.add(TaskOptions.Builder.withUrl("/cron/send").param("id",
 					schedule.getId()));
 		}
 		if (cache != null)
