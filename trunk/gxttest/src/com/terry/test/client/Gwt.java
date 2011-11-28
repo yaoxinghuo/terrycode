@@ -29,16 +29,9 @@ public class Gwt implements EntryPoint {
 
 	private Viewport viewport;
 
-	/**
-	 * Create a remote service proxy to talk to the server-side Greeting
-	 * service.
-	 */
 	private final GreetingServiceAsync greetingService = GWT
 			.create(GreetingService.class);
 
-	/**
-	 * This is the entry point method.
-	 */
 	@Override
 	public void onModuleLoad() {
 
@@ -75,26 +68,26 @@ public class Gwt implements EntryPoint {
 //		w.setUrl("http://www.extjs.com/products/gxt");
 //		w.show();
 		
-		RequestBuilder br = new RequestBuilder(RequestBuilder.GET, null);
-		try {
-			br.sendRequest(null, new RequestCallback() {
-				
-				@Override
-				public void onResponseReceived(Request request, Response response) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void onError(Request request, Throwable exception) {
-					// TODO Auto-generated method stub
-					
-				}
-			});
-		} catch (RequestException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		RequestBuilder br = new RequestBuilder(RequestBuilder.GET, null);
+//		try {
+//			br.sendRequest(null, new RequestCallback() {
+//				
+//				@Override
+//				public void onResponseReceived(Request request, Response response) {
+//					// TODO Auto-generated method stub
+//					
+//				}
+//				
+//				@Override
+//				public void onError(Request request, Throwable exception) {
+//					// TODO Auto-generated method stub
+//					
+//				}
+//			});
+//		} catch (RequestException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 
 	private void createNorth() {
@@ -118,7 +111,7 @@ public class Gwt implements EntryPoint {
 		BorderLayoutData westData = new BorderLayoutData(LayoutRegion.WEST, 200);
 		westData.setSplit(true);
 		westData.setCollapsible(true);
-		westData.setMargins(new Margins(0, 5, 0, 0));
+		westData.setMargins(new Margins());
 
 		viewport.add(panel, westData);
 
