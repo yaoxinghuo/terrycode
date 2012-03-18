@@ -1,0 +1,7 @@
+name: niubi
+	version: 1
+    cron:
+        - description: cron test
+        url: index.jsp
+        schedule: every 2 mins
+        timezone: Beijing
