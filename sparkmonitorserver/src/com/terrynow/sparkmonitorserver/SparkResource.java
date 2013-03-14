@@ -24,7 +24,14 @@ public class SparkResource extends ServerResource {
 	@Override
 	protected Representation post(Representation entity)
 			throws ResourceException {
-		Form form = new Form(entity);
+		return processForm(new Form(entity));
+	}
+
+	private StringRepresentation defaultSR() {
+		return new StringRepresentation("OK");
+	}
+
+	private Representation processForm(Form form) {
 		String username = form.getFirstValue("username");
 		String password = form.getFirstValue("password");
 		String host = form.getFirstValue("host");
@@ -52,13 +59,10 @@ public class SparkResource extends ServerResource {
 		return defaultSR();
 	}
 
-	private StringRepresentation defaultSR() {
-		return new StringRepresentation("OK");
-	}
-
 	@Override
 	protected Representation get() throws ResourceException {
-		return super.get();
+		return processForm(getReference().getQueryAsForm());
+
 	}
 
 	private String sendMsg(String host, String username, String password,
