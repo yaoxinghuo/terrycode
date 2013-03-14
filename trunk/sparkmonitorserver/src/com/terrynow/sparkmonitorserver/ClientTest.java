@@ -10,6 +10,13 @@ import java.net.URLEncoder;
  * @date 2011-11-9 上午11:30:55
  */
 public class ClientTest {
+	/**
+	 * 添加了一个Outlook收到邮件后，发送spark提醒的例子，Outlook中建立规则，自定义脚本，然后新建宏，参考Outlook_VBS_Bas1.bas
+	 * 
+	 * @param args
+	 * @author Terry
+	 * @date 2013-3-14
+	 */
 	//http://localhost:8182/spark?username=monitor&password=12345678&host=im.e104.com.cn&to=xinghuo.yao@spark.e104.com.cn&message=test
 	public static void main(String[] args) {
 		fetchToSendMsg("http://localhost:8182/spark", "im.e104.com.cn",
