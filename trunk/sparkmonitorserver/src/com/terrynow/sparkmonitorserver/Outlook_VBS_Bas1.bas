@@ -1,6 +1,6 @@
-Attribute VB_Name = "Ä£¿é1"
 Sub spark(Item As MailItem)
-  ' ¹¤¾ß-ÒıÓÃ-´ò¿ªMicrosoft Win Http Service 5.1
+
+  ' å·¥å…·-å¼•ç”¨-æ‰“å¼€Microsoft Win Http Service 5.1
     Dim MyRequest As Object
     Set MyRequest = CreateObject("WinHttp.WinHttpRequest.5.1")
     
@@ -8,11 +8,23 @@ Sub spark(Item As MailItem)
     MyRequest.SetRequestHeader "Content-Type", "application/x-www-form-urlencoded"
     Dim sendStr As String
     Dim mesg As String
-    mesg = encodeURL("Outlook½ÓÊÕµ½À´×Ô£º" + Item.SenderName + "<" + Item.SenderEmailAddress + ">µÄĞÂÓÊ¼ş£º" + Item.Subject)
-    sendStr = "username=monitor&password=12345678&host=im.terrynow.com&to=terry@im.terrynow.com&message=" + mesg
+    mesg = encodeURL("Outlookæ¥æ”¶åˆ°æ¥è‡ªï¼š" + Item.SenderName + "<" + Item.SenderEmailAddress + ">çš„æ–°é‚®ä»¶ï¼š" + Item.Subject)
+    Dim body As String
+     If Len(Item.body) > 50 Then
+         body = ""
+    ElseIf Len(Item.body) > 0 Then
+        body = vbCrLf + encodeURL("æ­£æ–‡ï¼š" + Item.body)
+    Else
+        body = ""
+    End If
+    
+    sendStr = "username=monitor&password=12345678&host=im.terrynow.com&to=terry@terrynow.com&message=" + mesg + body
+    
     MyRequest.Send (sendStr)
 End Sub
-' ¹¤¾ß-ÒıÓÃ-´ò¿ªMicrosoft Script Control
+
+
+' å·¥å…·-å¼•ç”¨-æ‰“å¼€Microsoft Script Control
 Function encodeURL(str As String)
     Dim ScriptEngine As ScriptControl
     Set ScriptEngine = New ScriptControl
